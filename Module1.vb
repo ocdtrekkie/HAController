@@ -40,6 +40,43 @@ Public Module modInsteon
         End Try
     End Sub
 
+    Sub InsteonThermostatControl(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg, ByVal Command1, Optional ByVal intTemperature = 72)
+        Dim comm1 As Short
+        Dim comm2 As Short
+        Dim data(7) As Byte
+        Dim arrAddress() As String = strAddress.Split(".")
+
+        Select Case Command1
+            Case "Down"
+                comm1 = 105
+                comm2 = 0
+            Case "Off"
+                comm1 = 107
+                comm2 = 9
+            Case "Up"
+                comm1 = 104
+                comm2 = 0
+            Case Else
+                My.Application.Log.WriteEntry("InsteonThermostatControl received invalid request")
+                Exit Sub
+        End Select
+
+        data(0) = 2 'all commands start with 2
+        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+        data(3) = Convert.ToInt32(arrAddress(1), 16)
+        data(4) = Convert.ToInt32(arrAddress(2), 16)
+        data(5) = 15 'flags
+        data(6) = comm1
+        data(7) = comm2
+        Try
+            SerialConnection.Write(data, 0, 8)
+        Catch Excep As System.InvalidOperationException
+            My.Application.Log.WriteException(Excep)
+            ResponseMsg = "ERROR: " + Excep.Message
+        End Try
+    End Sub
+
     Function InsteonCommandLookup(ByVal ICmd)
         Select Case ICmd
             Case 3

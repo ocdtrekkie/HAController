@@ -80,6 +80,21 @@
         modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On", 68)
     End Sub
 
+    Private Sub btnInsteonTempDown_Click(sender As Object, e As EventArgs) Handles btnInsteonTempUp.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " down one degree")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Down")
+    End Sub
+
+    Private Sub btnInsteonTempUp_Click(sender As Object, e As EventArgs) Handles btnInsteonTempUp.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " up one degree")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Up")
+    End Sub
+
+    Private Sub btnInsteonTempOff_Click(sender As Object, e As EventArgs) Handles btnInsteonTempOff.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to off")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Off")
+    End Sub
+
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
         InsteonConnect(cmbComPort.SelectedItem.ToString)
     End Sub

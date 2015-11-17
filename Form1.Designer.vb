@@ -39,6 +39,9 @@ Partial Class frmMain
         Me.btnInsteonNite = New System.Windows.Forms.Button()
         Me.rtbEvent = New System.Windows.Forms.RichTextBox()
         Me.mnuShowPLC = New System.Windows.Forms.CheckBox()
+        Me.btnInsteonTempDown = New System.Windows.Forms.Button()
+        Me.btnInsteonTempUp = New System.Windows.Forms.Button()
+        Me.btnInsteonTempOff = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'SerialPLM
@@ -167,9 +170,9 @@ Partial Class frmMain
         'rtbEvent
         '
         Me.rtbEvent.BackColor = System.Drawing.Color.Black
-        Me.rtbEvent.Location = New System.Drawing.Point(12, 198)
+        Me.rtbEvent.Location = New System.Drawing.Point(12, 280)
         Me.rtbEvent.Name = "rtbEvent"
-        Me.rtbEvent.Size = New System.Drawing.Size(260, 51)
+        Me.rtbEvent.Size = New System.Drawing.Size(260, 118)
         Me.rtbEvent.TabIndex = 13
         Me.rtbEvent.Text = ""
         '
@@ -178,18 +181,48 @@ Partial Class frmMain
         Me.mnuShowPLC.AutoSize = True
         Me.mnuShowPLC.Checked = True
         Me.mnuShowPLC.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuShowPLC.Location = New System.Drawing.Point(12, 180)
+        Me.mnuShowPLC.Location = New System.Drawing.Point(12, 262)
         Me.mnuShowPLC.Name = "mnuShowPLC"
         Me.mnuShowPLC.Size = New System.Drawing.Size(104, 17)
         Me.mnuShowPLC.TabIndex = 14
         Me.mnuShowPLC.Text = "Show PLM Data"
         Me.mnuShowPLC.UseVisualStyleBackColor = True
         '
+        'btnInsteonTempDown
+        '
+        Me.btnInsteonTempDown.Location = New System.Drawing.Point(216, 221)
+        Me.btnInsteonTempDown.Name = "btnInsteonTempDown"
+        Me.btnInsteonTempDown.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempDown.TabIndex = 15
+        Me.btnInsteonTempDown.Text = "Down"
+        Me.btnInsteonTempDown.UseVisualStyleBackColor = True
+        '
+        'btnInsteonTempUp
+        '
+        Me.btnInsteonTempUp.Location = New System.Drawing.Point(160, 221)
+        Me.btnInsteonTempUp.Name = "btnInsteonTempUp"
+        Me.btnInsteonTempUp.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempUp.TabIndex = 16
+        Me.btnInsteonTempUp.Text = "Up"
+        Me.btnInsteonTempUp.UseVisualStyleBackColor = True
+        '
+        'btnInsteonTempOff
+        '
+        Me.btnInsteonTempOff.Location = New System.Drawing.Point(104, 221)
+        Me.btnInsteonTempOff.Name = "btnInsteonTempOff"
+        Me.btnInsteonTempOff.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempOff.TabIndex = 17
+        Me.btnInsteonTempOff.Text = "Off"
+        Me.btnInsteonTempOff.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.ClientSize = New System.Drawing.Size(284, 410)
+        Me.Controls.Add(Me.btnInsteonTempOff)
+        Me.Controls.Add(Me.btnInsteonTempUp)
+        Me.Controls.Add(Me.btnInsteonTempDown)
         Me.Controls.Add(Me.mnuShowPLC)
         Me.Controls.Add(Me.rtbEvent)
         Me.Controls.Add(Me.btnInsteonNite)
@@ -227,4 +260,7 @@ Partial Class frmMain
     Friend WithEvents btnInsteonNite As System.Windows.Forms.Button
     Friend WithEvents rtbEvent As System.Windows.Forms.RichTextBox
     Friend WithEvents mnuShowPLC As System.Windows.Forms.CheckBox
+    Friend WithEvents btnInsteonTempDown As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonTempUp As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonTempOff As System.Windows.Forms.Button
 End Class

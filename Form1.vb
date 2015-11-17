@@ -169,7 +169,7 @@
                 If DataAvailable >= 8 Then
                     x_Start = MessageEnd
                     ' Display message
-                    PLM_Address = GetHex(x(ms + 2)) & "." & GetHex(x(ms + 3)) & "." & GetHex(x(ms + 4))
+                    PLM_Address = Hex(x(ms + 2)) & "." & Hex(x(ms + 3)) & "." & Hex(x(ms + 4))
                     My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)))
                     ' Set the PLM as the controller
                     ' --> I use this to verify the PLM is connected, disable some menu options, enable others, etc
@@ -186,8 +186,8 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 10 Then
                     x_Start = MessageEnd
-                    FromAddress = GetHex(x(ms + 2)) & "." & GetHex(x(ms + 3)) & "." & GetHex(x(ms + 4))
-                    ToAddress = GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6)) & "." & GetHex(x(ms + 7))
+                    FromAddress = Hex(x(ms + 2)) & "." & Hex(x(ms + 3)) & "." & Hex(x(ms + 4))
+                    ToAddress = Hex(x(ms + 5)) & "." & Hex(x(ms + 6)) & "." & Hex(x(ms + 7))
                     Flags = x(ms + 8)
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
@@ -208,7 +208,7 @@
                             WriteEvent(White, " (" & ToAddress & ")")
                         End If
                         WriteEvent(Gray, " Flags: ")
-                        WriteEvent(White, GetHex(Flags))
+                        WriteEvent(White, Hex(Flags))
                         Select Case Flags And 224
                             Case 0 ' 000 Direct message
                                 WriteEvent(White, " (direct) ")
@@ -228,9 +228,9 @@
                                 WriteEvent(White, " (NAK Group cleanup direct) ")
                         End Select
                         WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, GetHex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
+                        WriteEvent(White, Hex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
                         WriteEvent(Gray, " Command2: ")
-                        WriteEvent(White, GetHex(Command2) + vbCrLf)
+                        WriteEvent(White, Hex(Command2) + vbCrLf)
                     End If
                     ' Update the status of the sending device
                     IAddress = InsteonNum(FromAddress)  ' already checked to make sure it was in list
@@ -294,7 +294,7 @@
                                 If Command1 = 1 Then
                                     WriteEvent(Green, FromName & " broadcast 'Set Button Pressed'")
                                 Else
-                                    WriteEvent(Green, FromName & " broadcast command " & GetHex(Command1))
+                                    WriteEvent(Green, FromName & " broadcast command " & Hex(Command1))
                                 End If
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
@@ -361,7 +361,7 @@
                                 ' Command received by another device but failed - display message in log
                                 ' Time stamp in blue
                                 WriteEvent(Blue, Format(TimeOfDay) & " ")
-                                WriteEvent(Green, FromAddress & " NAK to command " & GetHex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
+                                WriteEvent(Green, FromAddress & " NAK to command " & Hex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
@@ -374,8 +374,8 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 24 Then
                     x_Start = MessageEnd
-                    FromAddress = GetHex(x(ms + 2)) & "." & GetHex(x(ms + 3)) & "." & GetHex(x(ms + 4))
-                    ToAddress = GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6)) & "." & GetHex(x(ms + 7))
+                    FromAddress = Hex(x(ms + 2)) & "." & Hex(x(ms + 3)) & "." & Hex(x(ms + 4))
+                    ToAddress = Hex(x(ms + 5)) & "." & Hex(x(ms + 6)) & "." & Hex(x(ms + 7))
                     Flags = x(ms + 8)
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
@@ -391,7 +391,7 @@
                             WriteEvent(White, " (" & ToAddress & ")")
                         End If
                         WriteEvent(Gray, " Flags: ")
-                        WriteEvent(White, GetHex(Flags))
+                        WriteEvent(White, Hex(Flags))
                         Select Case Flags And 224
                             Case 0 ' 000 Direct message
                                 WriteEvent(White, " (direct) ")
@@ -411,9 +411,9 @@
                                 WriteEvent(White, " (NAK Group cleanup direct) ")
                         End Select
                         WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, GetHex(Command1) & " (" & Command1 & ")")
+                        WriteEvent(White, Hex(Command1) & " (" & Command1 & ")")
                         WriteEvent(Gray, " Command2: ")
-                        WriteEvent(White, GetHex(Command2))
+                        WriteEvent(White, Hex(Command2))
                         If Command1 = 3 Then
                             ' Product Data Response
                             Select Case Command2
@@ -421,28 +421,28 @@
                                     WriteEvent(White, " Product Data Response")
                                     WriteEvent(Gray, " Data: ")
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
-                                    WriteEvent(White, "--> Product Key " & GetHex(x(ms + 12)) & GetHex(x(ms + 13)) & GetHex(x(ms + 14)))
-                                    WriteEvent(White, " DevCat: " & GetHex(x(ms + 15)))
-                                    WriteEvent(White, " SubCat: " & GetHex(x(ms + 16)))
-                                    WriteEvent(White, " Firmware: " & GetHex(x(ms + 17)))
+                                    WriteEvent(White, "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)))
+                                    WriteEvent(White, " DevCat: " & Hex(x(ms + 15)))
+                                    WriteEvent(White, " SubCat: " & Hex(x(ms + 16)))
+                                    WriteEvent(White, " Firmware: " & Hex(x(ms + 17)))
                                 Case 1 ' FX Username Response
                                     WriteEvent(White, " FX Username Response")
                                     WriteEvent(Gray, " D1-D8 FX Command Username: ")
                                     For i = 11 To 18
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                     WriteEvent(Gray, " D9-D14: ")
                                     For i = 19 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                 Case 2 ' Device Text String
                                     WriteEvent(White, " Device Text String Response")
                                     WriteEvent(Gray, " D1-D8 FX Command Username: ")
                                     DataString = ""
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                     For i = 11 To 24
                                         If x(ms + i) = 0 Then Exit For
@@ -454,7 +454,7 @@
                                     WriteEvent(Gray, " D1-D8 FX Command Username: ")
                                     DataString = ""
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                     For i = 11 To 24
                                         If x(ms + i) = 0 Then Exit For
@@ -465,26 +465,26 @@
                                     WriteEvent(White, " Set ALL-Link Command Alias")
                                     WriteEvent(Gray, " Data: ")
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                 Case 5 ' Set ALL-Link Command Alias Extended Data
                                     WriteEvent(White, " Set ALL-Link Command Alias Extended Data")
                                     WriteEvent(Gray, " Data: ")
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                                 Case Else
                                     WriteEvent(White, " (unrecognized product data response)")
                                     WriteEvent(Gray, " Data: ")
                                     For i = 11 To 24
-                                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                        WriteEvent(White, Hex(x(ms + i)) & " ")
                                     Next
                             End Select
                         Else
                             ' Anything other than a product data response
                             WriteEvent(Gray, " Data: ")
                             For i = 11 To 24
-                                WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                WriteEvent(White, Hex(x(ms + i)) & " ")
                             Next
                         End If
                         WriteEvent(White, vbCrLf)
@@ -529,7 +529,7 @@
                                     ' --> at this point I play a WAV file and run any macro associated with the device
                             End Select
                         Case Else ' invalid data
-                            If mnuShowPLC.Checked Then WriteEvent(White, "Unrecognized X10: " & GetHex(x(ms + 2)) & " " & GetHex(x(ms + 3)) & vbCrLf)
+                            If mnuShowPLC.Checked Then WriteEvent(White, "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)) & vbCrLf)
                     End Select
                 End If
             Case 98 ' 0x062 Send Insteon standard OR extended message
@@ -546,7 +546,7 @@
                             If mnuShowPLC.Checked Then
                                 WriteEvent(Gray, "PLM: Sent Insteon message (extended): ")
                                 For i = 0 To 22
-                                    WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                    WriteEvent(White, Hex(x(ms + i)) & " ")
                                 Next
                                 WriteEvent(White, vbCrLf)
                             End If
@@ -557,7 +557,7 @@
                         If mnuShowPLC.Checked Then
                             WriteEvent(Gray, "PLM: Sent Insteon message (standard): ")
                             For i = 0 To 8
-                                WriteEvent(White, GetHex(x(ms + i)) & " ")
+                                WriteEvent(White, Hex(x(ms + i)) & " ")
                             Next
                             WriteEvent(White, vbCrLf)
                         End If
@@ -580,10 +580,10 @@
                             If X10Code > -1 And X10Code < 17 Then
                                 WriteEvent(White, Chr(65 + X10House) & " " & X10Code)
                             Else
-                                WriteEvent(White, Chr(65 + X10House) & " unrecognized command " & GetHex(x(ms + 2) And 15))
+                                WriteEvent(White, Chr(65 + X10House) & " unrecognized command " & Hex(x(ms + 2) And 15))
                             End If
                         Case Else ' invalid data
-                            WriteEvent(White, "Unrecognized X10: " & GetHex(x(ms + 2)) & " " & GetHex(x(ms + 3)))
+                            WriteEvent(White, "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)))
                     End Select
                     WriteEvent(Gray, " ACK/NAK: ")
                     Select Case x(ms + 4)
@@ -592,7 +592,7 @@
                         Case 21
                             WriteEvent(White, "15 (failed)" + vbCrLf)
                         Case Else
-                            WriteEvent(White, GetHex(x(ms + 4)) & " (?)" + vbCrLf)
+                            WriteEvent(White, Hex(x(ms + 4)) & " (?)" + vbCrLf)
                     End Select
                 End If
             Case 83 ' 0x053 ALL-Linking complete - 8 bytes of data
@@ -602,7 +602,7 @@
                     x_Start = MessageEnd
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: ALL-Linking Complete: 0x53 Link Code: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         Select Case x(ms + 2)
                             Case 0
                                 WriteEvent(White, " (responder)")
@@ -612,17 +612,17 @@
                                 WriteEvent(White, " (deleted)")
                         End Select
                         WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " ID: ")
-                        FromAddress = GetHex(x(ms + 4)) & "." & GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6))
+                        FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                         WriteEvent(White, FromAddress)
                         WriteEvent(White, " (" & FromAddress & ")")
                         WriteEvent(Gray, " DevCat: ")
-                        WriteEvent(White, GetHex(x(ms + 7)))
+                        WriteEvent(White, Hex(x(ms + 7)))
                         WriteEvent(Gray, " SubCat: ")
-                        WriteEvent(White, GetHex(x(ms + 8)))
+                        WriteEvent(White, Hex(x(ms + 8)))
                         WriteEvent(Gray, " Firmware: ")
-                        WriteEvent(White, GetHex(x(ms + 9)))
+                        WriteEvent(White, Hex(x(ms + 9)))
                         If x(ms + 9) = 255 Then WriteEvent(White, " (all newer devices = FF)")
                         WriteEvent(White, vbCrLf)
                     End If
@@ -632,7 +632,7 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 9 Then
                     x_Start = MessageEnd
-                    FromAddress = GetHex(x(ms + 4)) & "." & GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6))
+                    FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     ' Check if FromAddress is in device database, if not add it
                     If InsteonNum(FromAddress) = 0 Then
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
@@ -640,14 +640,14 @@
                     End If
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: ALL-Link Record response: 0x57 Flags: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " Address: ")
                         WriteEvent(White, FromAddress)
                         WriteEvent(White, " (" & FromAddress & ")")
                         WriteEvent(Gray, " Data: ")
-                        WriteEvent(White, GetHex(x(ms + 7)) & " " & GetHex(x(ms + 8)) & " " & GetHex(x(ms + 9)) & vbCrLf)
+                        WriteEvent(White, Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)) & vbCrLf)
                     End If
                     ' --> I assume this happened because I requested the data, and want the rest of it. So now
                     ' Send 02 6A to get next record (e.g. continue reading link database from PLM)
@@ -665,12 +665,12 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 6 Then
                     x_Start = MessageEnd
-                    ToAddress = GetHex(x(ms + 4)) & "." & GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6))
+                    ToAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " Address: ")
                         WriteEvent(White, ToAddress & " (" & ToAddress & ")" & vbCrLf)
                     End If
@@ -682,11 +682,11 @@
                     x_Start = MessageEnd
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: Sent Group Broadcast: 0x61 Group: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " Command2 (Group): ")
-                        WriteEvent(White, GetHex(x(ms + 4)))
+                        WriteEvent(White, Hex(x(ms + 4)))
                         WriteEvent(Gray, " ACK/NAK: ")
                         Select Case x(ms + 5)
                             Case 6
@@ -694,7 +694,7 @@
                             Case 21
                                 WriteEvent(White, "15 (failed)" + vbCrLf)
                             Case Else
-                                WriteEvent(White, GetHex(x(ms + 5)) & " (?)" + vbCrLf)
+                                WriteEvent(White, Hex(x(ms + 5)) & " (?)" + vbCrLf)
                         End Select
                     End If
                 End If
@@ -705,11 +705,11 @@
                     x_Start = MessageEnd
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: Set Host Device Category: 0x66 DevCat: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         WriteEvent(Gray, " SubCat: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " Firmware: ")
-                        WriteEvent(White, GetHex(x(ms + 4)))
+                        WriteEvent(White, Hex(x(ms + 4)))
                         If x(ms + 4) = 255 Then WriteEvent(White, " (all newer devices = FF)")
                         WriteEvent(Gray, " ACK/NAK: ")
                         Select Case x(ms + 5)
@@ -718,7 +718,7 @@
                             Case 21
                                 WriteEvent(White, "15 (failed)" + vbCrLf)
                             Case Else
-                                WriteEvent(White, GetHex(x(ms + 5)) & " (?)" + vbCrLf)
+                                WriteEvent(White, Hex(x(ms + 5)) & " (?)" + vbCrLf)
                         End Select
                     End If
                 End If
@@ -728,16 +728,16 @@
                 If DataAvailable >= 5 Then
                     x_Start = MessageEnd
                     WriteEvent(Gray, "PLM: Get IM Configuration: 0x73 Flags: ")
-                    WriteEvent(White, GetHex(x(ms + 2)))
+                    WriteEvent(White, Hex(x(ms + 2)))
                     If x(ms + 2) And 128 Then WriteEvent(White, " (no button linking)")
                     If x(ms + 2) And 64 Then WriteEvent(White, " (monitor mode)")
                     If x(ms + 2) And 32 Then WriteEvent(White, " (manual LED control)")
                     If x(ms + 2) And 16 Then WriteEvent(White, " (disable deadman comm feature)")
                     If x(ms + 2) And (128 + 64 + 32 + 16) Then WriteEvent(White, " (default)")
                     WriteEvent(Gray, " Data: ")
-                    WriteEvent(White, GetHex(x(ms + 3)) & " " & GetHex(x(ms + 4)))
+                    WriteEvent(White, Hex(x(ms + 3)) & " " & Hex(x(ms + 4)))
                     WriteEvent(Gray, " ACK: ")
-                    WriteEvent(White, GetHex(x(ms + 5)) + vbCrLf)
+                    WriteEvent(White, Hex(x(ms + 5)) + vbCrLf)
                 End If
             Case 100 ' 0x064 Start ALL-Linking, echoed - 3 bytes
                 MessageEnd = ms + 4
@@ -745,7 +745,7 @@
                 If DataAvailable >= 4 Then
                     x_Start = MessageEnd
                     WriteEvent(Gray, "PLM: Start ALL-Linking 0x64 Code: ")
-                    WriteEvent(White, GetHex(x(ms + 2)))
+                    WriteEvent(White, Hex(x(ms + 2)))
                     Select Case x(ms + 2)
                         Case 0
                             WriteEvent(White, " (PLM is responder)")
@@ -757,7 +757,7 @@
                             WriteEvent(White, " (deleted)")
                     End Select
                     WriteEvent(Gray, " Group: ")
-                    WriteEvent(White, GetHex(x(ms + 3)))
+                    WriteEvent(White, Hex(x(ms + 3)))
                     WriteEvent(Gray, " ACK/NAK: ")
                     Select Case x(ms + 4)
                         Case 6
@@ -765,7 +765,7 @@
                         Case 21
                             WriteEvent(White, "15 (failed)" + vbCrLf)
                         Case Else
-                            WriteEvent(White, GetHex(x(ms + 4)) & " (?)" + vbCrLf)
+                            WriteEvent(White, Hex(x(ms + 4)) & " (?)" + vbCrLf)
                     End Select
                 End If
             Case 113 ' 0x071 Set Insteon ACK message two bytes - 3 bytes
@@ -775,7 +775,7 @@
                     x_Start = MessageEnd
                     WriteEvent(Gray, "PLM: Set Insteon ACK message 0x71 ")
                     For i = 2 To 4
-                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                        WriteEvent(White, Hex(x(ms + i)) & " ")
                     Next
                     WriteEvent(White, vbCrLf)
                 End If
@@ -787,7 +787,7 @@
                     x_Start = MessageEnd
                     WriteEvent(Gray, "PLM: ")
                     For i = 0 To 3
-                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                        WriteEvent(White, Hex(x(ms + i)) & " ")
                     Next
                     WriteEvent(White, vbCrLf)
                 End If
@@ -803,7 +803,7 @@
                         Case 21
                             WriteEvent(White, "15 (interrupted)" + vbCrLf)
                         Case Else
-                            WriteEvent(White, GetHex(x(ms + 2)) & " (?)" + vbCrLf)
+                            WriteEvent(White, Hex(x(ms + 2)) & " (?)" + vbCrLf)
                     End Select
                 End If
             Case 84, 103, 108, 109, 110, 114
@@ -815,7 +815,7 @@
                     x_Start = MessageEnd
                     WriteEvent(Gray, "PLM: ")
                     For i = 0 To 2
-                        WriteEvent(White, GetHex(x(ms + i)) & " ")
+                        WriteEvent(White, Hex(x(ms + i)) & " ")
                     Next
                     WriteEvent(White, vbCrLf)
                 End If
@@ -831,7 +831,7 @@
                         Case 21
                             WriteEvent(White, "15 (failed)" + vbCrLf)
                         Case Else
-                            WriteEvent(White, GetHex(x(ms + 2)) & " (?)" + vbCrLf)
+                            WriteEvent(White, Hex(x(ms + 2)) & " (?)" + vbCrLf)
                     End Select
                 End If
             Case 105 ' 0x069 Get First ALL-Link record
@@ -841,7 +841,7 @@
                     x_Start = MessageEnd
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: 0x69 Get First ALL-Link record: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         Select Case x(ms + 2)
                             Case 6
                                 WriteEvent(White, " (ACK)")
@@ -858,7 +858,7 @@
                     x_Start = MessageEnd
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: 0x6A Get Next ALL-Link record: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         Select Case x(ms + 2)
                             Case 6
                                 WriteEvent(White, " (ACK)")
@@ -873,10 +873,10 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 11 Then
                     x_Start = MessageEnd
-                    ToAddress = GetHex(x(ms + 5)) & "." & GetHex(x(ms + 6)) & "." & GetHex(x(ms + 7))
+                    ToAddress = Hex(x(ms + 5)) & "." & Hex(x(ms + 6)) & "." & Hex(x(ms + 7))
                     If mnuShowPLC.Checked Then
                         WriteEvent(Gray, "PLM: Manage ALL-Link Record 0x6F: Code: ")
-                        WriteEvent(White, GetHex(x(ms + 2)))
+                        WriteEvent(White, Hex(x(ms + 2)))
                         Select Case x(ms + 2)
                             Case 0 ' 0x00
                                 WriteEvent(White, " (Check for record)")
@@ -894,13 +894,13 @@
                                 WriteEvent(White, " (?)")
                         End Select
                         WriteEvent(Gray, " Link Flags: ")
-                        WriteEvent(White, GetHex(x(ms + 3)))
+                        WriteEvent(White, Hex(x(ms + 3)))
                         WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, GetHex(x(ms + 4)))
+                        WriteEvent(White, Hex(x(ms + 4)))
                         WriteEvent(Gray, " Address: ")
                         WriteEvent(White, ToAddress & " (" & ToAddress & ")")
                         WriteEvent(Gray, " Link Data: ")
-                        WriteEvent(White, GetHex(x(ms + 8)) & " " & GetHex(x(ms + 9)) & " " & GetHex(x(ms + 10)))
+                        WriteEvent(White, Hex(x(ms + 8)) & " " & Hex(x(ms + 9)) & " " & Hex(x(ms + 10)))
                         WriteEvent(Gray, " ACK/NAK: ")
                         Select Case x(ms + 11)
                             Case 6
@@ -908,7 +908,7 @@
                             Case 21
                                 WriteEvent(White, "15 (failed)" + vbCrLf)
                             Case Else
-                                WriteEvent(White, GetHex(x(ms + 11)) & " (?)" + vbCrLf)
+                                WriteEvent(White, Hex(x(ms + 11)) & " (?)" + vbCrLf)
                         End Select
                     End If
                 End If
@@ -917,9 +917,9 @@
                 x_Start = x_Start + 1  ' just skip over this and hope to hit a real command next time through the loop
                 If x_Start > 1000 Then x_Start = x_Start - 1000
                 WriteEvent(Gray, "PLM: Unrecognized command received: ")
-                Debug.WriteLine("Unrecognized command received " & GetHex(x(ms)) & " " & GetHex(x(ms + 1)) & " " & GetHex(x(ms + 2)))
+                Debug.WriteLine("Unrecognized command received " & Hex(x(ms)) & " " & Hex(x(ms + 1)) & " " & Hex(x(ms + 2)))
                 For i = 0 To DataAvailable
-                    WriteEvent(White, GetHex(x(ms + DataAvailable)))
+                    WriteEvent(White, Hex(x(ms + DataAvailable)))
                 Next
         End Select
 
@@ -988,9 +988,5 @@
         Else
             X10Device_from_PLM = -1
         End If
-    End Function
-
-    Public Function GetHex(ByVal IntIn) As String
-        GetHex = Hex(IntIn)
     End Function
 End Class

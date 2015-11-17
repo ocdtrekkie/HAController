@@ -98,9 +98,9 @@
     End Sub
 
     Private Sub cmbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbStatus.SelectionChangeCommitted
-        modGlobal.GlobalStatus = cmbStatus.SelectedItem.ToString
-        My.Application.Log.WriteEntry("Status changed to " + modGlobal.GlobalStatus)
-        lblCurrentStatus.Text = modGlobal.GlobalStatus
+        modGlobal.HomeStatus = cmbStatus.SelectedItem.ToString
+        My.Application.Log.WriteEntry("Home status changed to " + modGlobal.HomeStatus)
+        lblCurrentStatus.Text = modGlobal.HomeStatus
     End Sub
 
     Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs) Handles SerialPLM.DataReceived

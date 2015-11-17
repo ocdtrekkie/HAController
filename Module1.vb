@@ -1,5 +1,5 @@
 ﻿Public Module modGlobal
-    Public GlobalStatus As String
+    Public HomeStatus As String
 End Module
 
 Public Module modInsteon

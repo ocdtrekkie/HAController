@@ -3,53 +3,26 @@
 End Module
 
 Public Module modInsteon
-    Sub InsteonBeep(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg)
+    Sub InsteonLightControl(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg, ByVal Command1, Optional ByVal intBrightness = 255)
+        Dim comm1 As Short
+        Dim comm2 As Short
         Dim data(7) As Byte
         Dim arrAddress() As String = strAddress.Split(".")
 
-        data(0) = 2  ' all commands start with 2
-        data(1) = 98 ' 0x62 = send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16)  ' three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 15 ' flags
-        data(6) = 48 '0x30 = beep
-        data(7) = 0
-        Try
-            SerialConnection.Write(data, 0, 8)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
-    End Sub
-
-    Sub InsteonOff(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg)
-        Dim data(7) As Byte
-        Dim arrAddress() As String = strAddress.Split(".")
-
-        data(0) = 2  ' all commands start with 2
-        data(1) = 98 ' 0062 = send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16)  ' three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 15 ' flags
-        data(6) = 19 ' 0x13 = the Insteon command for "Off "
-        data(7) = 0 ' 0x00 = 0% the level is always 0 for Off
-        Try
-            SerialConnection.Write(data, 0, 8)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
-    End Sub
-
-    Sub InsteonOn(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg, Optional ByVal intBrightness = 255)
-        Dim data(7) As Byte
-        Dim arrAddress() As String = strAddress.Split(".")
-
-        If intBrightness = 0 Then
-            intBrightness = 255
-        End If
+        Select Case Command1
+            Case "Beep"
+                comm1 = 48
+                comm2 = 0
+            Case "Off"
+                comm1 = 19
+                comm2 = 0
+            Case "On"
+                comm1 = 17
+                comm2 = intBrightness
+            Case Else
+                My.Application.Log.WriteEntry("InsteonLightControl received invalid request")
+                Exit Sub
+        End Select
 
         data(0) = 2 'all commands start with 2
         data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
@@ -57,8 +30,8 @@ Public Module modInsteon
         data(3) = Convert.ToInt32(arrAddress(1), 16)
         data(4) = Convert.ToInt32(arrAddress(2), 16)
         data(5) = 15 'flags
-        data(6) = 17 '0x11  = the Insteon command for "On"
-        data(7) = intBrightness '255 = 0xFF = 100% --to change the level up or down, just replace this value
+        data(6) = comm1
+        data(7) = comm2
         Try
             SerialConnection.Write(data, 0, 8)
         Catch Excep As System.InvalidOperationException

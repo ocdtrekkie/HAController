@@ -52,32 +52,32 @@
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On")
-        modInsteon.InsteonOn(txtAddress.Text, SerialPLM, lblCommandSent.Text)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On")
     End Sub
 
     Private Sub btnInsteonOff_Click(sender As Object, e As EventArgs) Handles btnInsteonOff.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to Off")
-        modInsteon.InsteonOff(txtAddress.Text, SerialPLM, lblCommandSent.Text)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Off")
     End Sub
 
     Private Sub btnInsteonBeep_Click(sender As Object, e As EventArgs) Handles btnInsteonBeep.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " instructed to Beep")
-        modInsteon.InsteonBeep(txtAddress.Text, SerialPLM, lblCommandSent.Text)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Beep")
     End Sub
 
     Private Sub btnInsteonSoft_Click(sender As Object, e As EventArgs) Handles btnInsteonSoft.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Soft)")
-        modInsteon.InsteonOn(txtAddress.Text, SerialPLM, lblCommandSent.Text, 190)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On", 190)
     End Sub
 
     Private Sub btnInsteonDim_Click(sender As Object, e As EventArgs) Handles btnInsteonDim.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Dim)")
-        modInsteon.InsteonOn(txtAddress.Text, SerialPLM, lblCommandSent.Text, 136)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On", 136)
     End Sub
 
     Private Sub btnInsteonNite_Click(sender As Object, e As EventArgs) Handles btnInsteonNite.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Nite)")
-        modInsteon.InsteonOn(txtAddress.Text, SerialPLM, lblCommandSent.Text, 68)
+        modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On", 68)
     End Sub
 
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted

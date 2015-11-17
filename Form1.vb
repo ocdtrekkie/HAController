@@ -37,6 +37,12 @@
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Application.Log.WriteEntry("Main application form loaded")
 
+        If My.Settings.LastHomeStatus <> "" Then
+            My.Application.Log.WriteEntry("Found previous home status")
+            cmbStatus.Text = My.Settings.LastHomeStatus
+            SetHomeStatus(My.Settings.LastHomeStatus)
+        End If
+
         If My.Settings.LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.LastGoodCOMPort)
             cmbComPort.Text = My.Settings.LastGoodCOMPort
@@ -109,8 +115,13 @@
     End Sub
 
     Private Sub cmbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbStatus.SelectionChangeCommitted
-        modGlobal.HomeStatus = cmbStatus.SelectedItem.ToString
+        SetHomeStatus(cmbStatus.SelectedItem.ToString)
+    End Sub
+
+    Private Sub SetHomeStatus(ByVal HomeStatus)
+        modGlobal.HomeStatus = HomeStatus
         My.Application.Log.WriteEntry("Home status changed to " + modGlobal.HomeStatus)
+        My.Settings.LastHomeStatus = modGlobal.HomeStatus
         lblCurrentStatus.Text = modGlobal.HomeStatus
     End Sub
 

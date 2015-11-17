@@ -36,6 +36,12 @@
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Application.Log.WriteEntry("Main application form loaded")
+
+        If My.Settings.LastGoodCOMPort <> "" Then
+            My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.LastGoodCOMPort)
+            cmbComPort.Text = My.Settings.LastGoodCOMPort
+            InsteonConnect(My.Settings.LastGoodCOMPort)
+        End If
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click
@@ -69,12 +75,16 @@
     End Sub
 
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
+        InsteonConnect(cmbComPort.SelectedItem.ToString)
+    End Sub
+
+    Private Sub InsteonConnect(ByVal PortName)
         If SerialPLM.IsOpen = True Then
             My.Application.Log.WriteEntry("Closing serial connection")
             SerialPLM.Close()
         End If
 
-        SerialPLM.PortName = cmbComPort.SelectedItem.ToString
+        SerialPLM.PortName = PortName
         SerialPLM.BaudRate = 19200
         SerialPLM.DataBits = 8
         SerialPLM.Handshake = IO.Ports.Handshake.None
@@ -82,7 +92,7 @@
         SerialPLM.StopBits = 1
 
         Try
-            My.Application.Log.WriteEntry("Trying to connect on port " + cmbComPort.SelectedItem.ToString)
+            My.Application.Log.WriteEntry("Trying to connect on port " + PortName)
             SerialPLM.Open()
         Catch IOExcep As System.IO.IOException
             My.Application.Log.WriteException(IOExcep)
@@ -91,7 +101,8 @@
         End Try
 
         If SerialPLM.IsOpen = True Then
-            My.Application.Log.WriteEntry("Serial connection opened on port " + cmbComPort.SelectedItem.ToString)
+            My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
+            My.Settings.LastGoodCOMPort = PortName
             lblComConnected.ForeColor = Color.Green
             lblComConnected.Text = "Connected"
         End If

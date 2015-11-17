@@ -69,6 +69,8 @@ Public Module modInsteon
 
     Function InsteonCommandLookup(ByVal ICmd)
         Select Case ICmd
+            Case 3
+                Return "Product Data Request"
             Case 9
                 Return "Enter Link Mode"
             Case 10

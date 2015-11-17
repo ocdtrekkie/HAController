@@ -169,17 +169,8 @@
                 If DataAvailable >= 8 Then
                     x_Start = MessageEnd
                     ' Display message
-                    WriteEvent(Gray, "PLM response to Get IM Info: PLM ID: ")
                     PLM_Address = GetHex(x(ms + 2)) & "." & GetHex(x(ms + 3)) & "." & GetHex(x(ms + 4))
-                    WriteEvent(White, PLM_Address)
-                    WriteEvent(Gray, " Device Category: ")
-                    WriteEvent(White, GetHex(x(ms + 5)))
-                    WriteEvent(Gray, " Subcategory: ")
-                    WriteEvent(White, GetHex(x(ms + 6)))
-                    WriteEvent(Gray, " Firmware: ")
-                    WriteEvent(White, GetHex(x(ms + 7)))
-                    WriteEvent(Gray, " ACK/NAK: ")
-                    WriteEvent(White, GetHex(x(ms + 8)) & vbCrLf)
+                    My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)))
                     ' Set the PLM as the controller
                     ' --> I use this to verify the PLM is connected, disable some menu options, enable others, etc
                 End If

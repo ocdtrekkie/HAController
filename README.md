@@ -6,8 +6,7 @@ Basically I made a little program to send Insteon commands with his code, and th
 
 ** Modules **
 
-Form1 is basically meant to get factored out eventually in it's entirety.
-
-modGlobal will mostly just hang onto stuff that needs to be accessible to the whole program.
-modInsteon will handle Insteon and X10 home automation devices.
-modOpenWeatherMap gathers weather data from an API to present to the user.
+* Form1 is basically meant to get factored out eventually in it's entirety.
+* modGlobal will mostly just hang onto stuff that needs to be accessible to the whole program.
+* modInsteon will handle Insteon and X10 home automation devices.
+* modOpenWeatherMap gathers weather data from an API to present to the user.

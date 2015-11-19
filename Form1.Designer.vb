@@ -42,6 +42,11 @@ Partial Class frmMain
         Me.btnInsteonTempDown = New System.Windows.Forms.Button()
         Me.btnInsteonTempUp = New System.Windows.Forms.Button()
         Me.btnInsteonTempOff = New System.Windows.Forms.Button()
+        Me.btnInsteonTempAuto = New System.Windows.Forms.Button()
+        Me.btnInsteonTempHeat = New System.Windows.Forms.Button()
+        Me.btnInsteonTempCool = New System.Windows.Forms.Button()
+        Me.lblThermostat = New System.Windows.Forms.Label()
+        Me.lblLight = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'SerialPLM
@@ -170,9 +175,9 @@ Partial Class frmMain
         'rtbEvent
         '
         Me.rtbEvent.BackColor = System.Drawing.Color.Black
-        Me.rtbEvent.Location = New System.Drawing.Point(12, 280)
+        Me.rtbEvent.Location = New System.Drawing.Point(12, 315)
         Me.rtbEvent.Name = "rtbEvent"
-        Me.rtbEvent.Size = New System.Drawing.Size(260, 118)
+        Me.rtbEvent.Size = New System.Drawing.Size(260, 225)
         Me.rtbEvent.TabIndex = 13
         Me.rtbEvent.Text = ""
         '
@@ -181,7 +186,7 @@ Partial Class frmMain
         Me.mnuShowPLC.AutoSize = True
         Me.mnuShowPLC.Checked = True
         Me.mnuShowPLC.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuShowPLC.Location = New System.Drawing.Point(12, 262)
+        Me.mnuShowPLC.Location = New System.Drawing.Point(12, 297)
         Me.mnuShowPLC.Name = "mnuShowPLC"
         Me.mnuShowPLC.Size = New System.Drawing.Size(104, 17)
         Me.mnuShowPLC.TabIndex = 14
@@ -215,11 +220,61 @@ Partial Class frmMain
         Me.btnInsteonTempOff.Text = "Off"
         Me.btnInsteonTempOff.UseVisualStyleBackColor = True
         '
+        'btnInsteonTempAuto
+        '
+        Me.btnInsteonTempAuto.Location = New System.Drawing.Point(104, 250)
+        Me.btnInsteonTempAuto.Name = "btnInsteonTempAuto"
+        Me.btnInsteonTempAuto.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempAuto.TabIndex = 18
+        Me.btnInsteonTempAuto.Text = "Auto"
+        Me.btnInsteonTempAuto.UseVisualStyleBackColor = True
+        '
+        'btnInsteonTempHeat
+        '
+        Me.btnInsteonTempHeat.Location = New System.Drawing.Point(160, 250)
+        Me.btnInsteonTempHeat.Name = "btnInsteonTempHeat"
+        Me.btnInsteonTempHeat.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempHeat.TabIndex = 19
+        Me.btnInsteonTempHeat.Text = "Heat"
+        Me.btnInsteonTempHeat.UseVisualStyleBackColor = True
+        '
+        'btnInsteonTempCool
+        '
+        Me.btnInsteonTempCool.Location = New System.Drawing.Point(216, 250)
+        Me.btnInsteonTempCool.Name = "btnInsteonTempCool"
+        Me.btnInsteonTempCool.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonTempCool.TabIndex = 20
+        Me.btnInsteonTempCool.Text = "Cool"
+        Me.btnInsteonTempCool.UseVisualStyleBackColor = True
+        '
+        'lblThermostat
+        '
+        Me.lblThermostat.AutoSize = True
+        Me.lblThermostat.Location = New System.Drawing.Point(134, 205)
+        Me.lblThermostat.Name = "lblThermostat"
+        Me.lblThermostat.Size = New System.Drawing.Size(101, 13)
+        Me.lblThermostat.TabIndex = 21
+        Me.lblThermostat.Text = "Thermostat Controls"
+        '
+        'lblLight
+        '
+        Me.lblLight.AutoSize = True
+        Me.lblLight.Location = New System.Drawing.Point(184, 89)
+        Me.lblLight.Name = "lblLight"
+        Me.lblLight.Size = New System.Drawing.Size(71, 13)
+        Me.lblLight.TabIndex = 22
+        Me.lblLight.Text = "Light Controls"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 410)
+        Me.ClientSize = New System.Drawing.Size(284, 552)
+        Me.Controls.Add(Me.lblLight)
+        Me.Controls.Add(Me.lblThermostat)
+        Me.Controls.Add(Me.btnInsteonTempCool)
+        Me.Controls.Add(Me.btnInsteonTempHeat)
+        Me.Controls.Add(Me.btnInsteonTempAuto)
         Me.Controls.Add(Me.btnInsteonTempOff)
         Me.Controls.Add(Me.btnInsteonTempUp)
         Me.Controls.Add(Me.btnInsteonTempDown)
@@ -263,4 +318,9 @@ Partial Class frmMain
     Friend WithEvents btnInsteonTempDown As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempUp As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempOff As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonTempAuto As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonTempHeat As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonTempCool As System.Windows.Forms.Button
+    Friend WithEvents lblThermostat As System.Windows.Forms.Label
+    Friend WithEvents lblLight As System.Windows.Forms.Label
 End Class

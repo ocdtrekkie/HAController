@@ -47,9 +47,24 @@ Public Module modInsteon
         Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
+            Case "Auto"
+                comm1 = 107
+                comm2 = 6
+            Case "Cool"
+                comm1 = 107
+                comm2 = 5
             Case "Down"
                 comm1 = 105
                 comm2 = 0
+            Case "FanOff"
+                comm1 = 107
+                comm2 = 8
+            Case "FanOn"
+                comm1 = 107
+                comm2 = 7
+            Case "Heat"
+                comm1 = 107
+                comm2 = 4
             Case "Off"
                 comm1 = 107
                 comm2 = 9

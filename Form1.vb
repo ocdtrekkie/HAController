@@ -80,7 +80,7 @@
         modInsteon.InsteonLightControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "On", 68)
     End Sub
 
-    Private Sub btnInsteonTempDown_Click(sender As Object, e As EventArgs) Handles btnInsteonTempUp.Click
+    Private Sub btnInsteonTempDown_Click(sender As Object, e As EventArgs) Handles btnInsteonTempDown.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " down one degree")
         modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Down")
     End Sub
@@ -91,8 +91,23 @@
     End Sub
 
     Private Sub btnInsteonTempOff_Click(sender As Object, e As EventArgs) Handles btnInsteonTempOff.Click
-        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to off")
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Off")
         modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Off")
+    End Sub
+
+    Private Sub btnInsteonTempAuto_Click(sender As Object, e As EventArgs) Handles btnInsteonTempAuto.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Auto")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Auto")
+    End Sub
+
+    Private Sub btnInsteonTempHeat_Click(sender As Object, e As EventArgs) Handles btnInsteonTempHeat.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Heat")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Heat")
+    End Sub
+
+    Private Sub btnInsteonTempCool_Click(sender As Object, e As EventArgs) Handles btnInsteonTempCool.Click
+        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Cool")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Cool")
     End Sub
 
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted

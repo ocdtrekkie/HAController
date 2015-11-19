@@ -47,6 +47,7 @@ Partial Class frmMain
         Me.btnInsteonTempCool = New System.Windows.Forms.Button()
         Me.lblThermostat = New System.Windows.Forms.Label()
         Me.lblLight = New System.Windows.Forms.Label()
+        Me.chkInsteonTempFan = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'SerialPLM
@@ -265,11 +266,22 @@ Partial Class frmMain
         Me.lblLight.TabIndex = 22
         Me.lblLight.Text = "Light Controls"
         '
+        'chkInsteonTempFan
+        '
+        Me.chkInsteonTempFan.AutoSize = True
+        Me.chkInsteonTempFan.Location = New System.Drawing.Point(174, 279)
+        Me.chkInsteonTempFan.Name = "chkInsteonTempFan"
+        Me.chkInsteonTempFan.Size = New System.Drawing.Size(92, 17)
+        Me.chkInsteonTempFan.TabIndex = 23
+        Me.chkInsteonTempFan.Text = "Fan ALWAYS"
+        Me.chkInsteonTempFan.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 552)
+        Me.Controls.Add(Me.chkInsteonTempFan)
         Me.Controls.Add(Me.lblLight)
         Me.Controls.Add(Me.lblThermostat)
         Me.Controls.Add(Me.btnInsteonTempCool)
@@ -323,4 +335,5 @@ Partial Class frmMain
     Friend WithEvents btnInsteonTempCool As System.Windows.Forms.Button
     Friend WithEvents lblThermostat As System.Windows.Forms.Label
     Friend WithEvents lblLight As System.Windows.Forms.Label
+    Friend WithEvents chkInsteonTempFan As System.Windows.Forms.CheckBox
 End Class

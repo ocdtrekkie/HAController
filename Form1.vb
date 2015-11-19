@@ -110,6 +110,16 @@
         modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "Cool")
     End Sub
 
+    Private Sub chkInsteonTempFan_CheckedChanged(sender As Object, e As EventArgs) Handles chkInsteonTempFan.CheckedChanged
+        If chkInsteonTempFan.Checked = False Then
+            My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Fan Off")
+            modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "FanOff")
+        ElseIf chkInsteonTempFan.Checked = True Then
+            My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Fan On")
+            modInsteon.InsteonThermostatControl(txtAddress.Text, SerialPLM, lblCommandSent.Text, "FanOn")
+        End If
+    End Sub
+
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
         InsteonConnect(cmbComPort.SelectedItem.ToString)
     End Sub

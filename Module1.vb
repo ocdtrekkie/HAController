@@ -55,7 +55,7 @@ Public Module modInsteon
                 comm2 = 5
             Case "Down"
                 comm1 = 105
-                comm2 = 0
+                comm2 = 2
             Case "FanOff"
                 comm1 = 107
                 comm2 = 8
@@ -70,7 +70,7 @@ Public Module modInsteon
                 comm2 = 9
             Case "Up"
                 comm1 = 104
-                comm2 = 0
+                comm2 = 2
             Case Else
                 My.Application.Log.WriteEntry("InsteonThermostatControl received invalid request")
                 Exit Sub

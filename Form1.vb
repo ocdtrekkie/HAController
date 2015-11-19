@@ -207,6 +207,7 @@
         Dim Group As Byte
         Dim FromName As String
         Dim DataString As String
+        Dim strTemp As String
         ' Dim HasName As Boolean
         If x_Start = x_LastWrite Then Exit Sub ' reached end of data, get out of sub
         ' x_Start = the last byte that was read and processed here
@@ -609,22 +610,22 @@
                         If DataAvailable >= 22 Then
                             x_Start = MessageEnd
                             If mnuShowPLC.Checked Then
-                                WriteEvent(Gray, "PLM: Sent Insteon message (extended): ")
+                                strTemp = "PLM: Sent Insteon message (extended): "
                                 For i = 0 To 22
-                                    WriteEvent(White, Hex(x(ms + i)) & " ")
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
                                 Next
-                                WriteEvent(White, vbCrLf)
+                                My.Application.Log.WriteEntry(strTemp)
                             End If
                         End If
                     Else
                         ' Standard message
                         x_Start = MessageEnd
                         If mnuShowPLC.Checked Then
-                            WriteEvent(Gray, "PLM: Sent Insteon message (standard): ")
+                            strTemp = "PLM: Sent Insteon message (standard): "
                             For i = 0 To 8
-                                WriteEvent(White, Hex(x(ms + i)) & " ")
+                                strTemp = strTemp & Hex(x(ms + i)) & " "
                             Next
-                            WriteEvent(White, vbCrLf)
+                            My.Application.Log.WriteEntry(strTemp)
                         End If
                     End If
                 End If

@@ -14,7 +14,7 @@ Module modOpenWeatherMap
 
         Dim WeatherData As XmlDocument = New XmlDocument
         Dim WeatherNode As XmlNode
-        Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.CityID + "&appid=" + My.Settings.OWMAPIKey + "&mode=xml"
+        Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.CityID + "&appid=" + My.Settings.OWMAPIKey + "&mode=xml&units=imperial"
         WeatherData.Load(WeatherRequestString)
 
         WeatherNode = WeatherData.SelectSingleNode("/current/weather")
@@ -23,6 +23,6 @@ Module modOpenWeatherMap
 
         WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
         Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
-        My.Application.Log.WriteEntry("Outside temperature in Kelvin is " + dblTemperature.ToString)
+        My.Application.Log.WriteEntry("Outside temperature is " + dblTemperature.ToString + " degrees Fahrenheit")
     End Sub
 End Module

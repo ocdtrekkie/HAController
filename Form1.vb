@@ -48,6 +48,9 @@
             cmbComPort.Text = My.Settings.LastGoodCOMPort
             InsteonConnect(My.Settings.LastGoodCOMPort)
         End If
+
+        My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
+        modOpenWeatherMap.GatherWeatherData()
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click

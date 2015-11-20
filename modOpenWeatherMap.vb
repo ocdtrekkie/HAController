@@ -17,19 +17,23 @@ Module modOpenWeatherMap
         Dim WeatherData As XmlDocument = New XmlDocument
         Dim WeatherNode As XmlNode
         Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.CityID + "&appid=" + My.Settings.OWMAPIKey + "&mode=xml&units=imperial"
-        WeatherData.Load(WeatherRequestString)
+        Try
+            WeatherData.Load(WeatherRequestString)
 
-        WeatherNode = WeatherData.SelectSingleNode("/current/weather")
-        Dim strWeather As String = WeatherNode.Attributes.GetNamedItem("value").Value
-        SpeechString = "The current outside weather condition is " + strWeather
-        My.Application.Log.WriteEntry(SpeechString)
-        modSpeech.Say(SpeechString)
+            WeatherNode = WeatherData.SelectSingleNode("/current/weather")
+            Dim strWeather As String = WeatherNode.Attributes.GetNamedItem("value").Value
+            SpeechString = "The current outside weather condition is " + strWeather
+            My.Application.Log.WriteEntry(SpeechString)
+            modSpeech.Say(SpeechString)
 
-        WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
-        Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
-        SpeechString = "The current outside temperature is " + dblTemperature.ToString + " degrees Fahrenheit"
-        My.Application.Log.WriteEntry(SpeechString)
-        modSpeech.Say(SpeechString)
+            WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
+            Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
+            SpeechString = "The current outside temperature is " + CStr(Int(dblTemperature)) + " degrees Fahrenheit"
+            My.Application.Log.WriteEntry(SpeechString)
+            modSpeech.Say(SpeechString)
+        Catch NetExcep As System.Net.WebException
+            My.Application.Log.WriteException(NetExcep)
+        End Try
     End Sub
 
     Sub Load()

@@ -52,7 +52,7 @@
         My.Application.Log.WriteEntry("Loading speech module")
         modSpeech.Load()
         My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
-        modOpenWeatherMap.GatherWeatherData()
+        modOpenWeatherMap.Load()
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click

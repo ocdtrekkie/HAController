@@ -19,10 +19,12 @@ Module modOpenWeatherMap
 
         WeatherNode = WeatherData.SelectSingleNode("/current/weather")
         Dim strWeather As String = WeatherNode.Attributes.GetNamedItem("value").Value
-        My.Application.Log.WriteEntry("Current outside weather condition is " + strWeather)
+        My.Application.Log.WriteEntry("The current outside weather condition is " + strWeather)
+        modSpeech.Say("The current weather condition is " + strWeather)
 
         WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
         Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
-        My.Application.Log.WriteEntry("Outside temperature is " + dblTemperature.ToString + " degrees Fahrenheit")
+        My.Application.Log.WriteEntry("The current outside temperature is " + dblTemperature.ToString + " degrees Fahrenheit")
+        modSpeech.Say("The current outside temperature is " + dblTemperature.ToString + " degrees Fahrenheit")
     End Sub
 End Module

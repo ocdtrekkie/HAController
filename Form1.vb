@@ -49,6 +49,8 @@
             InsteonConnect(My.Settings.LastGoodCOMPort)
         End If
 
+        My.Application.Log.WriteEntry("Loading speech module")
+        modSpeech.Load()
         My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
         modOpenWeatherMap.GatherWeatherData()
     End Sub

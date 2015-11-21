@@ -210,7 +210,7 @@
         Dim FromName As String
         Dim DataString As String
         Dim strTemp As String
-        ' Dim HasName As Boolean
+
         If x_Start = x_LastWrite Then Exit Sub ' reached end of data, get out of sub
         ' x_Start = the last byte that was read and processed here
         ' Each time this sub is executed, one command will be processed (if enough data has arrived)
@@ -264,42 +264,35 @@
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
                         ' TODO: Make this: SortInsteon()
                     End If
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: Insteon Received: From: ")
-                        WriteEvent(White, FromAddress)
-                        WriteEvent(White, " (" & FromAddress & ")")
-                        WriteEvent(Gray, " To: ")
-                        WriteEvent(White, ToAddress)
-                        If ToAddress = PLM_Address Then
-                            WriteEvent(White, " (PLM)")
-                        Else
-                            WriteEvent(White, " (" & ToAddress & ")")
-                        End If
-                        WriteEvent(Gray, " Flags: ")
-                        WriteEvent(White, Hex(Flags))
-                        Select Case Flags And 224
-                            Case 0 ' 000 Direct message
-                                WriteEvent(White, " (direct) ")
-                            Case 32 ' 001 ACK direct message
-                                WriteEvent(White, " (ACK direct) ")
-                            Case 64 ' 010 Group cleanup direct message
-                                WriteEvent(White, " (Group cleanup direct) ")
-                            Case 96 ' 011 ACK group cleanup direct message
-                                WriteEvent(White, " (ACK Group cleanup direct) ")
-                            Case 128 ' 100 Broadcast message
-                                WriteEvent(White, " (Broadcast) ")
-                            Case 160 ' 101 NAK direct message
-                                WriteEvent(Red, " (NAK direct) ")
-                            Case 192 ' 110 Group broadcast message
-                                WriteEvent(White, " (Group broadcast) ")
-                            Case 224 ' 111 NAK group cleanup direct message
-                                WriteEvent(White, " (NAK Group cleanup direct) ")
-                        End Select
-                        WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, Hex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
-                        WriteEvent(Gray, " Command2: ")
-                        WriteEvent(White, Hex(Command2) + vbCrLf)
+                    strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
+                    If ToAddress = PLM_Address Then
+                        strTemp = strTemp & " (PLM)"
+                    Else
+                        strTemp = strTemp & " (" & ToAddress & ")"
+                        ' Fix this redundancy later
                     End If
+                    strTemp = strTemp & " Flags: " & Hex(Flags)
+                    Select Case Flags And 224
+                        Case 0 ' 000 Direct message
+                            strTemp = strTemp & " (direct) "
+                        Case 32 ' 001 ACK direct message
+                            strTemp = strTemp & " (ACK direct) "
+                        Case 64 ' 010 Group cleanup direct message
+                            strTemp = strTemp & " (Group cleanup direct) "
+                        Case 96 ' 011 ACK group cleanup direct message
+                            strTemp = strTemp & " (ACK Group cleanup direct) "
+                        Case 128 ' 100 Broadcast message
+                            strTemp = strTemp & " (Broadcast) "
+                        Case 160 ' 101 NAK direct message
+                            strTemp = strTemp & " (NAK direct) "
+                        Case 192 ' 110 Group broadcast message
+                            strTemp = strTemp & " (Group broadcast) "
+                        Case 224 ' 111 NAK group cleanup direct message
+                            strTemp = strTemp & " (NAK Group cleanup direct) "
+                    End Select
+                    strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+
                     ' Update the status of the sending device
                     IAddress = InsteonNum(FromAddress)  ' already checked to make sure it was in list
                     FromName = Insteon(IAddress).Name

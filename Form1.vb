@@ -350,13 +350,13 @@
                             Case 128 ' 100 Broadcast message
                                 ' Button-press linking, etc. Just display a message.
                                 ' Message format: FromAddress, DevCat, SubCat, Firmware, Flags, Cmd1, Cmd2 (=Device Attributes)
-                                ' Time stamp in blue
-                                WriteEvent(Blue, Format(TimeOfDay) & " ")
+                                strTemp = Format(TimeOfDay) & " "
                                 If Command1 = 1 Then
-                                    WriteEvent(Green, FromName & " broadcast 'Set Button Pressed'")
+                                    strTemp = strTemp & FromName & " broadcast 'Set Button Pressed'"
                                 Else
-                                    WriteEvent(Green, FromName & " broadcast command " & Hex(Command1))
+                                    strTemp = strTemp & FromName & " broadcast command " & Hex(Command1)
                                 End If
+                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
@@ -401,14 +401,14 @@
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
                                 Insteon(IAddress).LastGroup = Group
-                                ' Time stamp in blue
-                                WriteEvent(Blue, Format(TimeOfDay) & " ")
+                                strTemp = Format(TimeOfDay) & " "
                                 ' Write command to event log
                                 If Group > 0 Then
-                                    WriteEvent(Green, FromName & " " & InsteonCommandLookup(Command1) & " (Group " & Format(Group) & ")" & vbCrLf)
+                                    strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1) & " (Group " & Format(Group) & ")"
                                 Else
-                                    WriteEvent(Green, FromName & " " & InsteonCommandLookup(Command1) & vbCrLf)
+                                    strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1)
                                 End If
+                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                                 ' Handle incoming event and play sounds
                                 ' --> at this point I play a WAV file and run any macro associated with the device
                             Case 32, 96 ' 001 ACK direct message, 011 ACK group cleanup direct message
@@ -420,9 +420,8 @@
                                 Insteon(IAddress).LastGroup = 0
                             Case 160, 224 ' 101 NAK direct message, 111 NAK group cleanup direct message
                                 ' Command received by another device but failed - display message in log
-                                ' Time stamp in blue
-                                WriteEvent(Blue, Format(TimeOfDay) & " ")
-                                WriteEvent(Green, FromAddress & " NAK to command " & Hex(Command1) & " (" & InsteonCommandLookup(Command1) & ")")
+                                strTemp = Format(TimeOfDay) & " " & FromAddress & " NAK to command " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")"
+                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now

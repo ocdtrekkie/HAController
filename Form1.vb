@@ -269,7 +269,7 @@
                         strTemp = strTemp & " (PLM)"
                     Else
                         strTemp = strTemp & " (" & ToAddress & ")"
-                        ' Fix this redundancy later
+                        ' TODO: Fix this redundancy later
                     End If
                     strTemp = strTemp & " Flags: " & Hex(Flags)
                     Select Case Flags And 224
@@ -439,118 +439,99 @@
                     Flags = x(ms + 8)
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: Insteon Extended Received: From: ")
-                        WriteEvent(White, FromAddress)
-                        WriteEvent(White, " (" & FromAddress & ")")
-                        WriteEvent(Gray, " To: ")
-                        WriteEvent(White, ToAddress)
-                        If ToAddress = PLM_Address Then
-                            WriteEvent(White, " (PLM)")
-                        Else
-                            WriteEvent(White, " (" & ToAddress & ")")
-                        End If
-                        WriteEvent(Gray, " Flags: ")
-                        WriteEvent(White, Hex(Flags))
-                        Select Case Flags And 224
-                            Case 0 ' 000 Direct message
-                                WriteEvent(White, " (direct) ")
-                            Case 32 ' 001 ACK direct message
-                                WriteEvent(White, " (ACK direct) ")
-                            Case 64 ' 010 Group cleanup direct message
-                                WriteEvent(White, " (Group cleanup direct) ")
-                            Case 96 ' 011 ACK group cleanup direct message
-                                WriteEvent(White, " (ACK Group cleanup direct) ")
-                            Case 128 ' 100 Broadcast message
-                                WriteEvent(White, " (Broadcast) ")
-                            Case 160 ' 101 NAK direct message
-                                WriteEvent(Red, " (NAK direct) ")
-                            Case 192 ' 110 Group broadcast message
-                                WriteEvent(White, " (Group broadcast) ")
-                            Case 224 ' 111 NAK group cleanup direct message
-                                WriteEvent(White, " (NAK Group cleanup direct) ")
-                        End Select
-                        WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, Hex(Command1) & " (" & Command1 & ")")
-                        WriteEvent(Gray, " Command2: ")
-                        WriteEvent(White, Hex(Command2))
-                        If Command1 = 3 Then
-                            ' Product Data Response
-                            Select Case Command2
-                                Case 0 ' Product Data Response
-                                    WriteEvent(White, " Product Data Response")
-                                    WriteEvent(Gray, " Data: ")
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                    WriteEvent(White, "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)))
-                                    WriteEvent(White, " DevCat: " & Hex(x(ms + 15)))
-                                    WriteEvent(White, " SubCat: " & Hex(x(ms + 16)))
-                                    WriteEvent(White, " Firmware: " & Hex(x(ms + 17)))
-                                Case 1 ' FX Username Response
-                                    WriteEvent(White, " FX Username Response")
-                                    WriteEvent(Gray, " D1-D8 FX Command Username: ")
-                                    For i = 11 To 18
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                    WriteEvent(Gray, " D9-D14: ")
-                                    For i = 19 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                Case 2 ' Device Text String
-                                    WriteEvent(White, " Device Text String Response")
-                                    WriteEvent(Gray, " D1-D8 FX Command Username: ")
-                                    DataString = ""
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                    For i = 11 To 24
-                                        If x(ms + i) = 0 Then Exit For
-                                        DataString = DataString + Chr(x(ms + i))
-                                    Next
-                                    WriteEvent(White, """" & DataString & """")
-                                Case 3 ' Set Device Text String
-                                    WriteEvent(White, " Set Device Text String")
-                                    WriteEvent(Gray, " D1-D8 FX Command Username: ")
-                                    DataString = ""
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                    For i = 11 To 24
-                                        If x(ms + i) = 0 Then Exit For
-                                        DataString = DataString + Chr(x(ms + i))
-                                    Next
-                                    WriteEvent(White, """" & DataString & """")
-                                Case 4 ' Set ALL-Link Command Alias
-                                    WriteEvent(White, " Set ALL-Link Command Alias")
-                                    WriteEvent(Gray, " Data: ")
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                Case 5 ' Set ALL-Link Command Alias Extended Data
-                                    WriteEvent(White, " Set ALL-Link Command Alias Extended Data")
-                                    WriteEvent(Gray, " Data: ")
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                                Case Else
-                                    WriteEvent(White, " (unrecognized product data response)")
-                                    WriteEvent(Gray, " Data: ")
-                                    For i = 11 To 24
-                                        WriteEvent(White, Hex(x(ms + i)) & " ")
-                                    Next
-                            End Select
-                        Else
-                            ' Anything other than a product data response
-                            WriteEvent(Gray, " Data: ")
-                            For i = 11 To 24
-                                WriteEvent(White, Hex(x(ms + i)) & " ")
-                            Next
-                        End If
-                        WriteEvent(White, vbCrLf)
+                    strTemp = "PLM: Insteon Extended Received: From: " & FromAddress & " To: " & ToAddress
+                    If ToAddress = PLM_Address Then
+                        strTemp = strTemp & " (PLM)"
+                    Else
+                        strTemp = strTemp & " (" & ToAddress & ")"
+                        ' TODO: Fix this redundancy later
                     End If
+                    strTemp = strTemp & " Flags: " & Hex(Flags)
+                    Select Case Flags And 224
+                        Case 0 ' 000 Direct message
+                            strTemp = strTemp & " (direct) "
+                        Case 32 ' 001 ACK direct message
+                            strTemp = strTemp & " (ACK direct) "
+                        Case 64 ' 010 Group cleanup direct message
+                            strTemp = strTemp & " (Group cleanup direct) "
+                        Case 96 ' 011 ACK group cleanup direct message
+                            strTemp = strTemp & " (ACK Group cleanup direct) "
+                        Case 128 ' 100 Broadcast message
+                            strTemp = strTemp & " (Broadcast) "
+                        Case 160 ' 101 NAK direct message
+                            strTemp = strTemp & " (NAK direct) "
+                        Case 192 ' 110 Group broadcast message
+                            strTemp = strTemp & " (Group broadcast) "
+                        Case 224 ' 111 NAK group cleanup direct message
+                            strTemp = strTemp & " (NAK Group cleanup direct) "
+                    End Select
+                    strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & Command1 & ")" & " Command2: " & Hex(Command2)
+                    If Command1 = 3 Then
+                        ' Product Data Response
+                        Select Case Command2
+                            Case 0 ' Product Data Response
+                                strTemp = strTemp & " Product Data Response:" & " Data: "
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                                strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
+                            Case 1 ' FX Username Response
+                                strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
+                                For i = 11 To 18
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                                strTemp = strTemp & " D9-D14: "
+                                For i = 19 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                            Case 2 ' Device Text String
+                                strTemp = strTemp & " Device Text String Response:" & " D1-D8 FX Command Username: "
+                                DataString = ""
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                                For i = 11 To 24
+                                    If x(ms + i) = 0 Then Exit For
+                                    DataString = DataString + Chr(x(ms + i))
+                                Next
+                                strTemp = strTemp & """" & DataString & """"
+                            Case 3 ' Set Device Text String
+                                strTemp = strTemp & " Set Device Text String:" & " D1-D8 FX Command Username: "
+                                DataString = ""
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                                For i = 11 To 24
+                                    If x(ms + i) = 0 Then Exit For
+                                    DataString = DataString + Chr(x(ms + i))
+                                Next
+                                strTemp = strTemp & """" & DataString & """"
+                            Case 4 ' Set ALL-Link Command Alias
+                                strTemp = strTemp & " Set ALL-Link Command Alias:" & " Data: "
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                            Case 5 ' Set ALL-Link Command Alias Extended Data
+                                strTemp = strTemp & " Set ALL-Link Command Alias Extended Data:" & " Data: "
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                            Case Else
+                                strTemp = strTemp & " (unrecognized product data response)" & " Data: "
+                                For i = 11 To 24
+                                    strTemp = strTemp & Hex(x(ms + i)) & " "
+                                Next
+                        End Select
+                    Else
+                        ' Anything other than a product data response
+                        strTemp = strTemp & " Data: "
+                        For i = 11 To 24
+                            strTemp = strTemp & Hex(x(ms + i)) & " "
+                        Next
+                    End If
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
-                ' I’m not planning on actually doing anything with this data, just displayed if mnuShowPLC.Checked
+                ' I’m not planning on actually doing anything with this data, just displayed
             Case 82 ' 0x052 X10 Received
                 ' next byte: raw X10   x(MsStart + 2)
                 ' next byte: x10 flag  x(MsStart + 3)

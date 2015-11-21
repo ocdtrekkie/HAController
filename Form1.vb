@@ -843,49 +843,44 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 2 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: Cancel ALL-Linking 0x65 ACK/NAK: ")
+                    strTemp = "PLM: Cancel ALL-Linking 0x65 ACK/NAK: "
                     Select Case x(ms + 2)
                         Case 6
-                            WriteEvent(White, "06 (success)" + vbCrLf)
+                            strTemp = strTemp & "06 (success)"
                         Case 21
-                            WriteEvent(White, "15 (failed)" + vbCrLf)
+                            strTemp = strTemp & "15 (failed)"
                         Case Else
-                            WriteEvent(White, Hex(x(ms + 2)) & " (?)" + vbCrLf)
+                            strTemp = strTemp & Hex(x(ms + 2)) & " (?)"
                     End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 105 ' 0x069 Get First ALL-Link record
                 MessageEnd = ms + 2
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 2 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: 0x69 Get First ALL-Link record: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        Select Case x(ms + 2)
-                            Case 6
-                                WriteEvent(White, " (ACK)")
-                            Case 21
-                                WriteEvent(White, " (NAK - no links in database)")
-                        End Select
-                        WriteEvent(White, vbCrLf)
-                    End If
+                    strTemp = "PLM: 0x69 Get First ALL-Link record: " & Hex(x(ms + 2))
+                    Select Case x(ms + 2)
+                        Case 6
+                            strTemp = strTemp & " (ACK)"
+                        Case 21
+                            strTemp = strTemp & " (NAK - no links in database)"
+                    End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 106 ' 0x06A Get Next ALL-Link record
                 MessageEnd = ms + 2
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 2 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: 0x6A Get Next ALL-Link record: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        Select Case x(ms + 2)
-                            Case 6
-                                WriteEvent(White, " (ACK)")
-                            Case 21
-                                WriteEvent(White, " (NAK - no more links in database)")
-                        End Select
-                        WriteEvent(White, vbCrLf)
-                    End If
+                    strTemp = "PLM: 0x6A Get Next ALL-Link record: " & Hex(x(ms + 2))
+                    Select Case x(ms + 2)
+                        Case 6
+                            strTemp = strTemp & " (ACK)"
+                        Case 21
+                            strTemp = strTemp & " (NAK - no more links in database)"
+                    End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 111 ' 0x06F Manage ALL-Link record - 10 bytes
                 MessageEnd = ms + 11
@@ -893,43 +888,33 @@
                 If DataAvailable >= 11 Then
                     x_Start = MessageEnd
                     ToAddress = Hex(x(ms + 5)) & "." & Hex(x(ms + 6)) & "." & Hex(x(ms + 7))
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: Manage ALL-Link Record 0x6F: Code: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        Select Case x(ms + 2)
-                            Case 0 ' 0x00
-                                WriteEvent(White, " (Check for record)")
-                            Case 1 ' 0x01
-                                WriteEvent(White, " (Next record for...)")
-                            Case 32 ' 0x20
-                                WriteEvent(White, " (Update or add)")
-                            Case 64 ' 0x40
-                                WriteEvent(White, " (Update or add as controller)")
-                            Case 65 ' 0x41
-                                WriteEvent(White, " (Update or add as responder)")
-                            Case 128 ' 0x80
-                                WriteEvent(White, " (Delete)")
-                            Case Else ' ?
-                                WriteEvent(White, " (?)")
-                        End Select
-                        WriteEvent(Gray, " Link Flags: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, Hex(x(ms + 4)))
-                        WriteEvent(Gray, " Address: ")
-                        WriteEvent(White, ToAddress & " (" & ToAddress & ")")
-                        WriteEvent(Gray, " Link Data: ")
-                        WriteEvent(White, Hex(x(ms + 8)) & " " & Hex(x(ms + 9)) & " " & Hex(x(ms + 10)))
-                        WriteEvent(Gray, " ACK/NAK: ")
-                        Select Case x(ms + 11)
-                            Case 6
-                                WriteEvent(White, "06 (executed correctly)" + vbCrLf)
-                            Case 21
-                                WriteEvent(White, "15 (failed)" + vbCrLf)
-                            Case Else
-                                WriteEvent(White, Hex(x(ms + 11)) & " (?)" + vbCrLf)
-                        End Select
-                    End If
+                    strTemp = "PLM: Manage ALL-Link Record 0x6F: Code: " & Hex(x(ms + 2))
+                    Select Case x(ms + 2)
+                        Case 0 ' 0x00
+                            strTemp = strTemp & " (Check for record)"
+                        Case 1 ' 0x01
+                            strTemp = strTemp & " (Next record for...)"
+                        Case 32 ' 0x20
+                            strTemp = strTemp & " (Update or add)"
+                        Case 64 ' 0x40
+                            strTemp = strTemp & " (Update or add as controller)"
+                        Case 65 ' 0x41
+                            strTemp = strTemp & " (Update or add as responder)"
+                        Case 128 ' 0x80
+                            strTemp = strTemp & " (Delete)"
+                        Case Else ' ?
+                            strTemp = strTemp & " (?)"
+                    End Select
+                    strTemp = strTemp & " Link Flags: " & Hex(x(ms + 3)) & " Group: " & Hex(x(ms + 4)) & " Address: " & ToAddress & " Link Data: " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)) & " " & Hex(x(ms + 10)) & " ACK/NAK: "
+                    Select Case x(ms + 11)
+                        Case 6
+                            strTemp = strTemp & "06 (executed correctly)"
+                        Case 21
+                            strTemp = strTemp & "15 (failed)"
+                        Case Else
+                            strTemp = strTemp & Hex(x(ms + 11)) & " (?)"
+                    End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case Else
                 ' in principle this shouldn't happen... unless there are undocumented PLM messages (probably!)

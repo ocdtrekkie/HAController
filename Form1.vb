@@ -634,31 +634,32 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 4 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: X10 Sent: ")
+                    strTemp = "PLM: X10 Sent: "
                     X10House = X10House_from_PLM(x(ms + 2) And 240)
                     Select Case x(ms + 3)
                         Case 0 ' House + Device
                             X10Code = X10Device_from_PLM(x(ms + 2) And 15)
-                            WriteEvent(White, Chr(65 + X10House) & (X10Code + 1))
+                            strTemp = strTemp & Chr(65 + X10House) & (X10Code + 1)
                         Case 63, 128 ' 0x80 House + Command    63 = 0x3F - should be 0x80 but for some reason I keep getting 0x3F instead
                             X10Code = (x(ms + 2) And 15) + 1
                             If X10Code > -1 And X10Code < 17 Then
-                                WriteEvent(White, Chr(65 + X10House) & " " & X10Code)
+                                strTemp = strTemp & Chr(65 + X10House) & " " & X10Code
                             Else
-                                WriteEvent(White, Chr(65 + X10House) & " unrecognized command " & Hex(x(ms + 2) And 15))
+                                strTemp = strTemp & Chr(65 + X10House) & " unrecognized command " & Hex(x(ms + 2) And 15)
                             End If
                         Case Else ' invalid data
-                            WriteEvent(White, "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)))
+                            strTemp = strTemp & "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3))
                     End Select
-                    WriteEvent(Gray, " ACK/NAK: ")
+                    strTemp = strTemp & " ACK/NAK: "
                     Select Case x(ms + 4)
                         Case 6
-                            WriteEvent(White, "06 (sent)" + vbCrLf)
+                            strTemp = strTemp & "06 (sent)"
                         Case 21
-                            WriteEvent(White, "15 (failed)" + vbCrLf)
+                            strTemp = strTemp & "15 (failed)"
                         Case Else
-                            WriteEvent(White, Hex(x(ms + 4)) & " (?)" + vbCrLf)
+                            strTemp = strTemp & Hex(x(ms + 4)) & " (?)"
                     End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 83 ' 0x053 ALL-Linking complete - 8 bytes of data
                 MessageEnd = ms + 9

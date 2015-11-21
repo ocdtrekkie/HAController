@@ -666,32 +666,19 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 9 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: ALL-Linking Complete: 0x53 Link Code: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        Select Case x(ms + 2)
-                            Case 0
-                                WriteEvent(White, " (responder)")
-                            Case 1
-                                WriteEvent(White, " (controller)")
-                            Case 244
-                                WriteEvent(White, " (deleted)")
-                        End Select
-                        WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " ID: ")
-                        FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
-                        WriteEvent(White, FromAddress)
-                        WriteEvent(White, " (" & FromAddress & ")")
-                        WriteEvent(Gray, " DevCat: ")
-                        WriteEvent(White, Hex(x(ms + 7)))
-                        WriteEvent(Gray, " SubCat: ")
-                        WriteEvent(White, Hex(x(ms + 8)))
-                        WriteEvent(Gray, " Firmware: ")
-                        WriteEvent(White, Hex(x(ms + 9)))
-                        If x(ms + 9) = 255 Then WriteEvent(White, " (all newer devices = FF)")
-                        WriteEvent(White, vbCrLf)
-                    End If
+                    strTemp = "PLM: ALL-Linking Complete: 0x53 Link Code: " & Hex(x(ms + 2))
+                    Select Case x(ms + 2)
+                        Case 0
+                            strTemp = strTemp & " (responder)"
+                        Case 1
+                            strTemp = strTemp & " (controller)"
+                        Case 244
+                            strTemp = strTemp & " (deleted)"
+                    End Select
+                    FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
+                    strTemp = strTemp & " Group: " & Hex(x(ms + 3)) & " ID: " & FromAddress & " DevCat: " & Hex(x(ms + 7)) & " SubCat: " & Hex(x(ms + 8)) & " Firmware: " & Hex(x(ms + 9))
+                    If x(ms + 9) = 255 Then strTemp = strTemp & " (all newer devices = FF)"
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 87 ' 0x057 ALL-Link record response - 8 bytes of data
                 MessageEnd = ms + 9
@@ -729,47 +716,34 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 5 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: Sent Group Broadcast: 0x61 Group: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        WriteEvent(Gray, " Command1: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " Command2 (Group): ")
-                        WriteEvent(White, Hex(x(ms + 4)))
-                        WriteEvent(Gray, " ACK/NAK: ")
-                        Select Case x(ms + 5)
-                            Case 6
-                                WriteEvent(White, "06 (sent)" + vbCrLf)
-                            Case 21
-                                WriteEvent(White, "15 (failed)" + vbCrLf)
-                            Case Else
-                                WriteEvent(White, Hex(x(ms + 5)) & " (?)" + vbCrLf)
-                        End Select
-                    End If
+                    strTemp = "PLM: Sent Group Broadcast: 0x61 Group: " & Hex(x(ms + 2)) & " Command1: " & Hex(x(ms + 3)) & " Command2 (Group): " & Hex(x(ms + 4)) & " ACK/NAK: "
+                    Select Case x(ms + 5)
+                        Case 6
+                            strTemp = strTemp & "06 (sent)"
+                        Case 21
+                            strTemp = strTemp & "15 (failed)"
+                        Case Else
+                            strTemp = strTemp & Hex(x(ms + 5)) & " (?)"
+                    End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 102 ' 0x066 Set Host Device Category - 4 bytes
                 MessageEnd = ms + 5
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 5 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: Set Host Device Category: 0x66 DevCat: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        WriteEvent(Gray, " SubCat: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " Firmware: ")
-                        WriteEvent(White, Hex(x(ms + 4)))
-                        If x(ms + 4) = 255 Then WriteEvent(White, " (all newer devices = FF)")
-                        WriteEvent(Gray, " ACK/NAK: ")
-                        Select Case x(ms + 5)
-                            Case 6
-                                WriteEvent(White, "06 (executed correctly)" + vbCrLf)
-                            Case 21
-                                WriteEvent(White, "15 (failed)" + vbCrLf)
-                            Case Else
-                                WriteEvent(White, Hex(x(ms + 5)) & " (?)" + vbCrLf)
-                        End Select
-                    End If
+                    strTemp = "PLM: Set Host Device Category: 0x66 DevCat: " & Hex(x(ms + 2)) & " SubCat: " & Hex(x(ms + 3)) & " Firmware: " & Hex(x(ms + 4))
+                    If x(ms + 4) = 255 Then strTemp = strTemp & " (all newer devices = FF)"
+                    strTemp = strTemp & " ACK/NAK: "
+                    Select Case x(ms + 5)
+                        Case 6
+                            strTemp = strTemp & "06 (executed correctly)"
+                        Case 21
+                            strTemp = strTemp & "15 (failed)"
+                        Case Else
+                            strTemp = strTemp & Hex(x(ms + 5)) & " (?)"
+                    End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 115 ' 0x073 Get IM Configuration - 4 bytes
                 MessageEnd = ms + 5

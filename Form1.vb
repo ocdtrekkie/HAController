@@ -750,57 +750,52 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 5 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: Get IM Configuration: 0x73 Flags: ")
-                    WriteEvent(White, Hex(x(ms + 2)))
-                    If x(ms + 2) And 128 Then WriteEvent(White, " (no button linking)")
-                    If x(ms + 2) And 64 Then WriteEvent(White, " (monitor mode)")
-                    If x(ms + 2) And 32 Then WriteEvent(White, " (manual LED control)")
-                    If x(ms + 2) And 16 Then WriteEvent(White, " (disable deadman comm feature)")
-                    If x(ms + 2) And (128 + 64 + 32 + 16) Then WriteEvent(White, " (default)")
-                    WriteEvent(Gray, " Data: ")
-                    WriteEvent(White, Hex(x(ms + 3)) & " " & Hex(x(ms + 4)))
-                    WriteEvent(Gray, " ACK: ")
-                    WriteEvent(White, Hex(x(ms + 5)) + vbCrLf)
+                    strTemp = "PLM: Get IM Configuration: 0x73 Flags: " & Hex(x(ms + 2))
+                    If x(ms + 2) And 128 Then strTemp = strTemp & " (no button linking)"
+                    If x(ms + 2) And 64 Then strTemp = strTemp & " (monitor mode)"
+                    If x(ms + 2) And 32 Then strTemp = strTemp & " (manual LED control)"
+                    If x(ms + 2) And 16 Then strTemp = strTemp & " (disable deadman comm feature)"
+                    If x(ms + 2) And (128 + 64 + 32 + 16) Then strTemp = strTemp & " (default)"
+                    strTemp = strTemp & " Data: " & Hex(x(ms + 3)) & " " & Hex(x(ms + 4)) & " ACK: " & Hex(x(ms + 5))
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 100 ' 0x064 Start ALL-Linking, echoed - 3 bytes
                 MessageEnd = ms + 4
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 4 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: Start ALL-Linking 0x64 Code: ")
-                    WriteEvent(White, Hex(x(ms + 2)))
+                    strTemp = "PLM: Start ALL-Linking 0x64 Code: " & Hex(x(ms + 2))
                     Select Case x(ms + 2)
                         Case 0
-                            WriteEvent(White, " (PLM is responder)")
+                            strTemp = strTemp & " (PLM is responder)"
                         Case 1
-                            WriteEvent(White, " (PLM is controller)")
+                            strTemp = strTemp & " (PLM is controller)"
                         Case 3
-                            WriteEvent(White, " (initiator is controller)")
+                            strTemp = strTemp & " (initiator is controller)"
                         Case 244
-                            WriteEvent(White, " (deleted)")
+                            strTemp = strTemp & " (deleted)"
                     End Select
-                    WriteEvent(Gray, " Group: ")
-                    WriteEvent(White, Hex(x(ms + 3)))
-                    WriteEvent(Gray, " ACK/NAK: ")
+                    strTemp = strTemp & " Group: " & Hex(x(ms + 3)) & " ACK/NAK: "
                     Select Case x(ms + 4)
                         Case 6
-                            WriteEvent(White, "06 (executed correctly)" + vbCrLf)
+                            strTemp = strTemp & "06 (executed correctly)"
                         Case 21
-                            WriteEvent(White, "15 (failed)" + vbCrLf)
+                            strTemp = strTemp & "15 (failed)"
                         Case Else
-                            WriteEvent(White, Hex(x(ms + 4)) & " (?)" + vbCrLf)
+                            strTemp = strTemp & Hex(x(ms + 4)) & " (?)"
                     End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 113 ' 0x071 Set Insteon ACK message two bytes - 3 bytes
                 MessageEnd = ms + 4
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 4 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: Set Insteon ACK message 0x71 ")
+                    strTemp = "PLM: Set Insteon ACK message 0x71 "
                     For i = 2 To 4
-                        WriteEvent(White, Hex(x(ms + i)) & " ")
+                        strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    WriteEvent(White, vbCrLf)
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 104, 107, 112 ' 0x068 Set Insteon ACK message byte, 0x06B Set IM Configuration, 0x070 Set Insteon NAK message byte
                 ' 2 bytes
@@ -808,26 +803,27 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 3 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: ")
+                    strTemp = "PLM: "
                     For i = 0 To 3
-                        WriteEvent(White, Hex(x(ms + i)) & " ")
+                        strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    WriteEvent(White, vbCrLf)
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 88 ' 0x058 ALL-Link cleanup status report - 1 byte
                 MessageEnd = ms + 2
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 2 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: ALL-Link (Group Broadcast) Cleanup Status Report 0x58 ACK/NAK: ")
+                    strTemp = "PLM: ALL-Link (Group Broadcast) Cleanup Status Report 0x58 ACK/NAK: "
                     Select Case x(ms + 2)
                         Case 6
-                            WriteEvent(White, "06 (completed)" + vbCrLf)
+                            strTemp = strTemp & "06 (completed)"
                         Case 21
-                            WriteEvent(White, "15 (interrupted)" + vbCrLf)
+                            strTemp = strTemp & "15 (interrupted)"
                         Case Else
-                            WriteEvent(White, Hex(x(ms + 2)) & " (?)" + vbCrLf)
+                            strTemp = strTemp & Hex(x(ms + 2)) & " (?)"
                     End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 84, 103, 108, 109, 110, 114
                 ' 0x054 Button (on PLM) event, 0x067 Reset the IM, 0x06C Get ALL-Link record for sender, 0x06D LED On, 0x06E LED Off, 0x072 RF Sleep
@@ -836,11 +832,11 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 2 Then
                     x_Start = MessageEnd
-                    WriteEvent(Gray, "PLM: ")
+                    strTemp = "PLM: "
                     For i = 0 To 2
-                        WriteEvent(White, Hex(x(ms + i)) & " ")
+                        strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    WriteEvent(White, vbCrLf)
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 101 ' 0x065 Cancel ALL-Linking - 1 byte
                 MessageEnd = ms + 2

@@ -566,17 +566,17 @@
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 If DataAvailable >= 3 Then
                     x_Start = MessageEnd
-                    If mnuShowPLC.Checked Then WriteEvent(Gray, "PLM: X10 Received: ")
+                    strTemp = "PLM: X10 Received: "
                     X10House = X10House_from_PLM(x(ms + 2) And 240)
                     Select Case x(ms + 3)
                         Case 0 ' House + Device
                             X10Code = X10Device_from_PLM(x(ms + 2) And 15)
-                            If mnuShowPLC.Checked Then WriteEvent(White, Chr(65 + X10House) & (X10Code + 1) & vbCrLf)
+                            strTemp = strTemp & Chr(65 + X10House) & (X10Code + 1)
                             PLM_LastX10Device = X10Code ' Device Code 0-15
                         Case 63, 128 ' 0x80 House + Command    63 = 0x3F - should be 0x80 but for some reason I keep getting 0x3F instead
                             X10Code = (x(ms + 2) And 15) + 1
                             X10Address = Chr(65 + X10House) & (PLM_LastX10Device + 1)
-                            If mnuShowPLC.Checked Then WriteEvent(White, Chr(65 + X10House) & " " & X10Code & vbCrLf)
+                            strTemp = strTemp & Chr(65 + X10House) & " " & X10Code
                             ' Now actually process the event
                             ' Does it have a name?
                             'If DeviceName(X10Address) = X10Address Then HasName = False Else HasName = True
@@ -597,8 +597,9 @@
                                     ' --> at this point I play a WAV file and run any macro associated with the device
                             End Select
                         Case Else ' invalid data
-                            My.Application.Log.WriteEntry("Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)), TraceEventType.Verbose)
+                            strTemp = strTemp & "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3))
                     End Select
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 End If
             Case 98 ' 0x062 Send Insteon standard OR extended message
                 ' PLM is just echoing the last command sent, discard this: 7 or 21 bytes

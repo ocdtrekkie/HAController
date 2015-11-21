@@ -16,7 +16,7 @@
                 comm1 = 17
                 comm2 = intBrightness
             Case Else
-                My.Application.Log.WriteEntry("InsteonLightControl received invalid request")
+                My.Application.Log.WriteEntry("InsteonLightControl received invalid request", TraceEventType.Warning)
                 Exit Sub
         End Select
 
@@ -68,7 +68,7 @@
                 comm1 = 104
                 comm2 = 2
             Case Else
-                My.Application.Log.WriteEntry("InsteonThermostatControl received invalid request")
+                My.Application.Log.WriteEntry("InsteonThermostatControl received invalid request", TraceEventType.Warning)
                 Exit Sub
         End Select
 

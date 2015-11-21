@@ -238,7 +238,7 @@
                     x_Start = MessageEnd
                     ' Display message
                     PLM_Address = Hex(x(ms + 2)) & "." & Hex(x(ms + 3)) & "." & Hex(x(ms + 4))
-                    My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)))
+                    My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)), TraceEventType.Verbose)
                     ' Set the PLM as the controller
                     ' --> I use this to verify the PLM is connected, disable some menu options, enable others, etc
                 End If
@@ -597,7 +597,7 @@
                                     ' --> at this point I play a WAV file and run any macro associated with the device
                             End Select
                         Case Else ' invalid data
-                            If mnuShowPLC.Checked Then WriteEvent(White, "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)) & vbCrLf)
+                            My.Application.Log.WriteEntry("Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3)), TraceEventType.Verbose)
                     End Select
                 End If
             Case 98 ' 0x062 Send Insteon standard OR extended message
@@ -611,24 +611,20 @@
                         If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                         If DataAvailable >= 22 Then
                             x_Start = MessageEnd
-                            If mnuShowPLC.Checked Then
-                                strTemp = "PLM: Sent Insteon message (extended): "
-                                For i = 0 To 22
-                                    strTemp = strTemp & Hex(x(ms + i)) & " "
-                                Next
-                                My.Application.Log.WriteEntry(strTemp)
-                            End If
+                            strTemp = "PLM: Sent Insteon message (extended): "
+                            For i = 0 To 22
+                                strTemp = strTemp & Hex(x(ms + i)) & " "
+                            Next
+                            My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                         End If
                     Else
                         ' Standard message
                         x_Start = MessageEnd
-                        If mnuShowPLC.Checked Then
-                            strTemp = "PLM: Sent Insteon message (standard): "
-                            For i = 0 To 8
-                                strTemp = strTemp & Hex(x(ms + i)) & " "
-                            Next
-                            My.Application.Log.WriteEntry(strTemp)
-                        End If
+                        strTemp = "PLM: Sent Insteon message (standard): "
+                        For i = 0 To 8
+                            strTemp = strTemp & Hex(x(ms + i)) & " "
+                        Next
+                        My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                     End If
                 End If
             Case 99 ' 0x063 Sent X10
@@ -706,9 +702,7 @@
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
                         ' TODO: Make this: SortInsteon()
                     End If
-                    If mnuShowPLC.Checked Then
-                        My.Application.Log.WriteEntry("PLM: ALL-Link Record response: 0x57 Flags: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & FromAddress & " Data: " & Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)))
-                    End If
+                    My.Application.Log.WriteEntry("PLM: ALL-Link Record response: 0x57 Flags: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & FromAddress & " Data: " & Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)), TraceEventType.Verbose)
                     ' --> I assume this happened because I requested the data, and want the rest of it. So now
                     ' Send 02 6A to get next record (e.g. continue reading link database from PLM)
                     data(0) = 2  ' all commands start with 2
@@ -726,9 +720,7 @@
                 If DataAvailable >= 6 Then
                     x_Start = MessageEnd
                     ToAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
-                    If mnuShowPLC.Checked Then
-                        My.Application.Log.WriteEntry("PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & ToAddress)
-                    End If
+                    My.Application.Log.WriteEntry("PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & ToAddress, TraceEventType.Verbose)
                 End If
             Case 97 ' 0x061 Sent ALL-Link (Group Broadcast) command - 4 bytes
                 MessageEnd = ms + 5
@@ -975,7 +967,7 @@
                 For i = 0 To DataAvailable
                     strTemp = strTemp & Hex(x(ms + DataAvailable))
                 Next
-                My.Application.Log.WriteEntry(strTemp)
+                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                 Debug.WriteLine("Unrecognized command received " & Hex(x(ms)) & " " & Hex(x(ms + 1)) & " " & Hex(x(ms + 2)))
         End Select
 

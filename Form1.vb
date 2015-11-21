@@ -26,14 +26,6 @@
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
 
-    Public Const Green As Integer = &H80FF80
-    Public Const Gray As Integer = &H808080
-    Public Const Black As Integer = 0
-    Public Const Red As Integer = &HFF
-    Public Const Yellow As Integer = &HFFFF
-    Public Const Blue As Integer = &HFF8080
-    Public Const White As Integer = &HFFFFFF
-
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Application.Log.WriteEntry("Main application form loaded")
 
@@ -553,11 +545,9 @@
                             ' Now actually process the event
                             ' Does it have a name?
                             'If DeviceName(X10Address) = X10Address Then HasName = False Else HasName = True
-                            ' Time stamp in blue
-                            WriteEvent(Blue, Format(TimeOfDay) & " ")
+                            My.Application.Log.WriteEntry(Format(TimeOfDay) & " " & X10Address & " " & X10Code, TraceEventType.Verbose)
                             'If LoggedIn And HasName Then frmHack.WriteWebtrix(Blue, VB6.Format(TimeOfDay) & " ")
                             ' Write command to event log
-                            WriteEvent(Green, X10Address + " " + X10Code + vbCrLf)
                             ' Handle incoming event
                             Select Case X10Code
                                 Case 3 ' On
@@ -903,25 +893,6 @@
 
         Debug.WriteLine("PLM finished: ms = " & ms & " MessageEnd = " & MessageEnd & " X_Start = " & x_Start)
         Exit Sub
-    End Sub
-
-    Public Sub WriteEvent(ByRef Color As Integer, ByRef NewText As String)
-        Dim last As Short
-        ' WriteEvent(Color, Text) prints Text to the rtbEvent box, in Color
-        ' --> Obviously this will only work if you have a rich text box named rtbEvent.
-        ' Colors:
-        '   Blue: time
-        '   Green: events (macros)
-        '   Yellow: commands sent
-        '   Red: errors (also debug info: gives info about Play and If/Then/Else/Endif macro commands)
-        last = Len(rtbEvent.Text)
-        rtbEvent.SelectionStart = last
-        rtbEvent.SelectedText = NewText
-        rtbEvent.SelectionStart = last
-        rtbEvent.SelectionLength = Len(NewText)
-        rtbEvent.SelectionColor = System.Drawing.ColorTranslator.FromOle(Color)
-        rtbEvent.SelectionStart = Len(rtbEvent.Text)
-        rtbEvent.ScrollToCaret()
     End Sub
 
     Public Function InsteonNum(ByVal Address As String) As Short

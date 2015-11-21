@@ -37,8 +37,6 @@ Partial Class frmMain
         Me.btnInsteonSoft = New System.Windows.Forms.Button()
         Me.btnInsteonDim = New System.Windows.Forms.Button()
         Me.btnInsteonNite = New System.Windows.Forms.Button()
-        Me.rtbEvent = New System.Windows.Forms.RichTextBox()
-        Me.mnuShowPLC = New System.Windows.Forms.CheckBox()
         Me.btnInsteonTempDown = New System.Windows.Forms.Button()
         Me.btnInsteonTempUp = New System.Windows.Forms.Button()
         Me.btnInsteonTempOff = New System.Windows.Forms.Button()
@@ -173,27 +171,6 @@ Partial Class frmMain
         Me.btnInsteonNite.Text = "Nite"
         Me.btnInsteonNite.UseVisualStyleBackColor = True
         '
-        'rtbEvent
-        '
-        Me.rtbEvent.BackColor = System.Drawing.Color.Black
-        Me.rtbEvent.Location = New System.Drawing.Point(12, 315)
-        Me.rtbEvent.Name = "rtbEvent"
-        Me.rtbEvent.Size = New System.Drawing.Size(260, 225)
-        Me.rtbEvent.TabIndex = 13
-        Me.rtbEvent.Text = ""
-        '
-        'mnuShowPLC
-        '
-        Me.mnuShowPLC.AutoSize = True
-        Me.mnuShowPLC.Checked = True
-        Me.mnuShowPLC.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuShowPLC.Location = New System.Drawing.Point(12, 297)
-        Me.mnuShowPLC.Name = "mnuShowPLC"
-        Me.mnuShowPLC.Size = New System.Drawing.Size(104, 17)
-        Me.mnuShowPLC.TabIndex = 14
-        Me.mnuShowPLC.Text = "Show PLM Data"
-        Me.mnuShowPLC.UseVisualStyleBackColor = True
-        '
         'btnInsteonTempDown
         '
         Me.btnInsteonTempDown.Location = New System.Drawing.Point(216, 221)
@@ -280,7 +257,7 @@ Partial Class frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 552)
+        Me.ClientSize = New System.Drawing.Size(284, 306)
         Me.Controls.Add(Me.chkInsteonTempFan)
         Me.Controls.Add(Me.lblLight)
         Me.Controls.Add(Me.lblThermostat)
@@ -290,8 +267,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.btnInsteonTempOff)
         Me.Controls.Add(Me.btnInsteonTempUp)
         Me.Controls.Add(Me.btnInsteonTempDown)
-        Me.Controls.Add(Me.mnuShowPLC)
-        Me.Controls.Add(Me.rtbEvent)
         Me.Controls.Add(Me.btnInsteonNite)
         Me.Controls.Add(Me.btnInsteonDim)
         Me.Controls.Add(Me.btnInsteonSoft)
@@ -325,8 +300,6 @@ Partial Class frmMain
     Friend WithEvents btnInsteonSoft As System.Windows.Forms.Button
     Friend WithEvents btnInsteonDim As System.Windows.Forms.Button
     Friend WithEvents btnInsteonNite As System.Windows.Forms.Button
-    Friend WithEvents rtbEvent As System.Windows.Forms.RichTextBox
-    Friend WithEvents mnuShowPLC As System.Windows.Forms.CheckBox
     Friend WithEvents btnInsteonTempDown As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempUp As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempOff As System.Windows.Forms.Button

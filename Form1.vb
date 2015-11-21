@@ -707,15 +707,7 @@
                         ' TODO: Make this: SortInsteon()
                     End If
                     If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: ALL-Link Record response: 0x57 Flags: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " Address: ")
-                        WriteEvent(White, FromAddress)
-                        WriteEvent(White, " (" & FromAddress & ")")
-                        WriteEvent(Gray, " Data: ")
-                        WriteEvent(White, Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)) & vbCrLf)
+                        My.Application.Log.WriteEntry("PLM: ALL-Link Record response: 0x57 Flags: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & FromAddress & " Data: " & Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)))
                     End If
                     ' --> I assume this happened because I requested the data, and want the rest of it. So now
                     ' Send 02 6A to get next record (e.g. continue reading link database from PLM)
@@ -727,7 +719,7 @@
                 MessageEnd = ms + 1
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
                 x_Start = MessageEnd
-                WriteEvent(Gray, "PLM: User Reset 0x55" + vbCrLf)
+                My.Application.Log.WriteEntry("PLM: User Reset 0x55")
             Case 86 ' 0x056 ALL-Link cleanup failure report - 5 bytes of data
                 MessageEnd = ms + 6
                 If MessageEnd > 1000 Then MessageEnd = MessageEnd - 1000
@@ -735,12 +727,7 @@
                     x_Start = MessageEnd
                     ToAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     If mnuShowPLC.Checked Then
-                        WriteEvent(Gray, "PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: ")
-                        WriteEvent(White, Hex(x(ms + 2)))
-                        WriteEvent(Gray, " Group: ")
-                        WriteEvent(White, Hex(x(ms + 3)))
-                        WriteEvent(Gray, " Address: ")
-                        WriteEvent(White, ToAddress & " (" & ToAddress & ")" & vbCrLf)
+                        My.Application.Log.WriteEntry("PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & ToAddress)
                     End If
                 End If
             Case 97 ' 0x061 Sent ALL-Link (Group Broadcast) command - 4 bytes
@@ -984,11 +971,12 @@
                 ' in principle this shouldn't happen... unless there are undocumented PLM messages (probably!)
                 x_Start = x_Start + 1  ' just skip over this and hope to hit a real command next time through the loop
                 If x_Start > 1000 Then x_Start = x_Start - 1000
-                WriteEvent(Gray, "PLM: Unrecognized command received: ")
-                Debug.WriteLine("Unrecognized command received " & Hex(x(ms)) & " " & Hex(x(ms + 1)) & " " & Hex(x(ms + 2)))
+                strTemp = "PLM: Unrecognized command received: "
                 For i = 0 To DataAvailable
-                    WriteEvent(White, Hex(x(ms + DataAvailable)))
+                    strTemp = strTemp & Hex(x(ms + DataAvailable))
                 Next
+                My.Application.Log.WriteEntry(strTemp)
+                Debug.WriteLine("Unrecognized command received " & Hex(x(ms)) & " " & Hex(x(ms + 1)) & " " & Hex(x(ms + 2)))
         End Select
 
         Debug.WriteLine("PLM finished: ms = " & ms & " MessageEnd = " & MessageEnd & " X_Start = " & x_Start)

@@ -43,7 +43,7 @@
 
         My.Application.Log.WriteEntry("Loading speech module")
         modSpeech.Load()
-        My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
+        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
     End Sub
 

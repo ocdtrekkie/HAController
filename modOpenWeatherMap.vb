@@ -4,19 +4,20 @@ Module modOpenWeatherMap
     Sub GatherWeatherData()
         Dim SpeechString As String
 
-        If My.Settings.OWMAPIKey = "" Then
+        If My.Settings.OpenWeatherMap_APIKey = "" Then
             My.Application.Log.WriteEntry("No OpenWeatherMap API key, asking for it")
-            My.Settings.OWMAPIKey = InputBox("Enter OpenWeatherMap API Key", "OpenWeatherMap API")
+            My.Settings.OpenWeatherMap_APIKey = InputBox("Enter OpenWeatherMap API Key", "OpenWeatherMap API")
         End If
 
-        If My.Settings.CityID = "" Then
+        If My.Settings.OpenWeatherMap_CityID = "" Then
             My.Application.Log.WriteEntry("No City ID set, asking for it")
-            My.Settings.CityID = InputBox("Enter City ID", "City ID")
+            My.Settings.OpenWeatherMap_CityID = InputBox("Enter City ID", "City ID")
         End If
 
         Dim WeatherData As XmlDocument = New XmlDocument
         Dim WeatherNode As XmlNode
-        Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.CityID + "&appid=" + My.Settings.OWMAPIKey + "&mode=xml&units=imperial"
+        Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.OpenWeatherMap_CityID + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
+        My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
         Try
             WeatherData.Load(WeatherRequestString)
 
@@ -37,7 +38,11 @@ Module modOpenWeatherMap
     End Sub
 
     Sub Load()
-        Dim WeatherThread As New Threading.Thread(AddressOf GatherWeatherData)
-        WeatherThread.Start()
+        If My.Settings.OpenWeatherMap_Enable = True Then
+            Dim WeatherThread As New Threading.Thread(AddressOf GatherWeatherData)
+            WeatherThread.Start()
+        Else
+            My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")
+        End If
     End Sub
 End Module

@@ -46,12 +46,12 @@
             InsteonConnect(My.Settings.LastGoodCOMPort)
         End If
 
+        My.Application.Log.WriteEntry("Loading scheduler module (experimental)")
+        modScheduler.Load()
         My.Application.Log.WriteEntry("Loading speech module")
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
-        My.Application.Log.WriteEntry("Loading scheduler module (experimental)")
-        modScheduler.Load()
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click

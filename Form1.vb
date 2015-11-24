@@ -26,6 +26,11 @@
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
 
+    Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        ' If we don't unload the scheduler, the app does not finish
+        modScheduler.Unload()
+    End Sub
+
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Application.Log.WriteEntry("Main application form loaded")
 
@@ -45,6 +50,8 @@
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
+        My.Application.Log.WriteEntry("Loading scheduler module (experimental)")
+        modScheduler.Load()
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click

@@ -34,16 +34,16 @@
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Application.Log.WriteEntry("Main application form loaded")
 
-        If My.Settings.LastHomeStatus <> "" Then
+        If My.Settings.Global_LastHomeStatus <> "" Then
             My.Application.Log.WriteEntry("Found previous home status")
-            cmbStatus.Text = My.Settings.LastHomeStatus
-            SetHomeStatus(My.Settings.LastHomeStatus)
+            cmbStatus.Text = My.Settings.Global_LastHomeStatus
+            SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
 
-        If My.Settings.LastGoodCOMPort <> "" Then
-            My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.LastGoodCOMPort)
-            cmbComPort.Text = My.Settings.LastGoodCOMPort
-            InsteonConnect(My.Settings.LastGoodCOMPort)
+        If My.Settings.Insteon_LastGoodCOMPort <> "" Then
+            My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)
+            cmbComPort.Text = My.Settings.Insteon_LastGoodCOMPort
+            InsteonConnect(My.Settings.Insteon_LastGoodCOMPort)
         End If
 
         My.Application.Log.WriteEntry("Loading scheduler module (experimental)")
@@ -152,7 +152,7 @@
 
         If SerialPLM.IsOpen = True Then
             My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
-            My.Settings.LastGoodCOMPort = PortName
+            My.Settings.Insteon_LastGoodCOMPort = PortName
             lblComConnected.ForeColor = Color.Green
             lblComConnected.Text = "Connected"
         End If
@@ -165,7 +165,7 @@
     Private Sub SetHomeStatus(ByVal HomeStatus)
         modGlobal.HomeStatus = HomeStatus
         My.Application.Log.WriteEntry("Home status changed to " + modGlobal.HomeStatus)
-        My.Settings.LastHomeStatus = modGlobal.HomeStatus
+        My.Settings.Global_LastHomeStatus = modGlobal.HomeStatus
         lblCurrentStatus.Text = modGlobal.HomeStatus
     End Sub
 

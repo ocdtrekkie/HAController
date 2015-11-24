@@ -42,6 +42,14 @@ Module modInsteon
         Dim comm1 As Short
         Dim comm2 As Short
         Dim data(21) As Byte
+
+        ' TODO: Yes, I'm currently ignoring strAddress here, this is terrible. I should do better.
+        If My.Settings.Insteon_ThermostatAddr = "" Then
+            My.Application.Log.WriteEntry("No thermostat set, asking for it")
+            My.Settings.Insteon_ThermostatAddr = InputBox("Enter Thermostat Address", "Thermostat")
+        End If
+        strAddress = My.Settings.Insteon_ThermostatAddr
+
         Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1

@@ -36,7 +36,6 @@
 
         If My.Settings.Global_LastHomeStatus <> "" Then
             My.Application.Log.WriteEntry("Found previous home status")
-            cmbStatus.Text = My.Settings.Global_LastHomeStatus
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
 
@@ -162,8 +161,10 @@
         SetHomeStatus(cmbStatus.SelectedItem.ToString)
     End Sub
 
-    Private Sub SetHomeStatus(ByVal HomeStatus)
-        modGlobal.HomeStatus = HomeStatus
+    Private Sub SetHomeStatus(ByVal ChangeHomeStatus)
+        ' TODO: This could probably use some sort of change countdown with the scheduler
+        cmbStatus.Text = ChangeHomeStatus
+        modGlobal.HomeStatus = ChangeHomeStatus
         My.Application.Log.WriteEntry("Home status changed to " + modGlobal.HomeStatus)
         My.Settings.Global_LastHomeStatus = modGlobal.HomeStatus
         lblCurrentStatus.Text = modGlobal.HomeStatus

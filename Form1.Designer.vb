@@ -22,8 +22,6 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Me.SerialPLM = New System.IO.Ports.SerialPort(Me.components)
         Me.cmbComPort = New System.Windows.Forms.ComboBox()
         Me.lblComConnected = New System.Windows.Forms.Label()
         Me.txtAddress = New System.Windows.Forms.TextBox()
@@ -47,9 +45,6 @@ Partial Class frmMain
         Me.lblLight = New System.Windows.Forms.Label()
         Me.chkInsteonTempFan = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
-        '
-        'SerialPLM
-        '
         '
         'cmbComPort
         '
@@ -286,7 +281,6 @@ Partial Class frmMain
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents SerialPLM As System.IO.Ports.SerialPort
     Friend WithEvents cmbComPort As System.Windows.Forms.ComboBox
     Friend WithEvents lblComConnected As System.Windows.Forms.Label
     Friend WithEvents txtAddress As System.Windows.Forms.TextBox

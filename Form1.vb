@@ -17,6 +17,8 @@
     Public Insteon(200) As InsteonDevice
     Public NumInsteon As Short ' Number of assigned Insteon devices
 
+    Dim SerialPLM As System.IO.Ports.SerialPort
+
     Public PLM_Address As String
     Public PLM_LastX10Device As Byte
     Public PLM_X10_Device(16) As Byte
@@ -38,6 +40,9 @@
             My.Application.Log.WriteEntry("Found previous home status")
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
+
+        SerialPLM = New System.IO.Ports.SerialPort
+        AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
 
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)
@@ -147,6 +152,10 @@
             My.Application.Log.WriteException(IOExcep)
             lblComConnected.ForeColor = Color.Red
             lblComConnected.Text = "ERROR: " + IOExcep.Message
+        Catch UnauthExcep As System.UnauthorizedAccessException
+            My.Application.Log.WriteException(UnauthExcep)
+            lblComConnected.ForeColor = Color.Red
+            lblComConnected.Text = "ERROR: " + UnauthExcep.Message
         End Try
 
         If SerialPLM.IsOpen = True Then
@@ -170,7 +179,7 @@
         lblCurrentStatus.Text = modGlobal.HomeStatus
     End Sub
 
-    Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs) Handles SerialPLM.DataReceived
+    Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)
         ' this is the serial port data received event on a secondary thread
         Dim handler As New mySerialDelegate(AddressOf PLM)
 

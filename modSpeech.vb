@@ -3,7 +3,7 @@
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading speech module")
-        synth.Dispose()
+        Unload()
         My.Settings.Speech_Enable = False
         My.Application.Log.WriteEntry("Speech module is disabled")
     End Sub
@@ -28,5 +28,9 @@
         If My.Settings.Speech_Enable = True Then
             synth.SpeakAsync(TextToSpeak)
         End If
+    End Sub
+
+    Sub Unload()
+        synth.Dispose()
     End Sub
 End Module

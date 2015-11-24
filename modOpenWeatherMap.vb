@@ -1,6 +1,20 @@
 ﻿Imports System.Xml
 
 Module modOpenWeatherMap
+    Sub Disable()
+        My.Application.Log.WriteEntry("Unloading OpenWeatherMap module")
+        Unload()
+        My.Settings.OpenWeatherMap_Enable = False
+        My.Application.Log.WriteEntry("OpenWeatherMap module is disabled")
+    End Sub
+
+    Sub Enable()
+        My.Settings.OpenWeatherMap_Enable = True
+        My.Application.Log.WriteEntry("OpenWeatherMap module is enabled")
+        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
+        Load()
+    End Sub
+
     Sub GatherWeatherData()
         Dim SpeechString As String
 
@@ -44,5 +58,9 @@ Module modOpenWeatherMap
         Else
             My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")
         End If
+    End Sub
+
+    Sub Unload()
+
     End Sub
 End Module

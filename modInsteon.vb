@@ -1,4 +1,6 @@
-﻿Module modInsteon
+﻿' TODO: Add Disable, Enable, Load, and Unload methods
+
+Module modInsteon
     Sub InsteonLightControl(ByRef strAddress, ByRef SerialConnection, ByRef ResponseMsg, ByVal Command1, Optional ByVal intBrightness = 255)
         Dim comm1 As Short
         Dim comm2 As Short

@@ -1,6 +1,8 @@
 ﻿Imports Quartz
 Imports Quartz.Impl
 
+' modScheduler cannot be disabled, Disable and Enable methods will be skipped
+
 Module modScheduler
     ' construct a scheduler factory
     Dim schedFact As ISchedulerFactory = New StdSchedulerFactory()
@@ -16,6 +18,7 @@ Module modScheduler
     End Class
 
     Sub Load()
+        My.Application.Log.WriteEntry("Starting scheduler")
         sched.Start()
 
         ' construct job info
@@ -29,6 +32,7 @@ Module modScheduler
     End Sub
 
     Sub Unload()
+        My.Application.Log.WriteEntry("Shutting down scheduler")
         sched.Shutdown()
     End Sub
 End Module

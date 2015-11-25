@@ -177,7 +177,7 @@
 
     Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)
         ' this is the serial port data received event on a secondary thread
-        Dim handler As New mySerialDelegate(AddressOf PLM)
+        Dim PLMThread As New Threading.Thread(AddressOf PLM)
 
         Do Until SerialPLM.BytesToRead = 0
             x(x_LastWrite + 1) = SerialPLM.ReadByte
@@ -189,11 +189,8 @@
             If x_LastWrite > 1000 Then x_LastWrite = 1
         Loop
 
-        ' invoke delegate
-        handler()
+        PLMThread.Start()
     End Sub
-
-    Public Delegate Sub mySerialDelegate()
 
     Public Sub PLM()
         ' This routine handles the serial data on the primary thread

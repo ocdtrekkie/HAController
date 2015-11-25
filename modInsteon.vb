@@ -41,33 +41,35 @@
     End Sub
 
     Sub InsteonConnect(ByVal PortName As String, ByRef ResponseMsg As String)
-        If SerialPLM.IsOpen = True Then
-            My.Application.Log.WriteEntry("Closing serial connection")
-            SerialPLM.Close()
-        End If
+        If My.Settings.Insteon_Enable = True Then
+            If SerialPLM.IsOpen = True Then
+                My.Application.Log.WriteEntry("Closing serial connection")
+                SerialPLM.Close()
+            End If
 
-        SerialPLM.PortName = PortName
-        SerialPLM.BaudRate = 19200
-        SerialPLM.DataBits = 8
-        SerialPLM.Handshake = IO.Ports.Handshake.None
-        SerialPLM.Parity = IO.Ports.Parity.None
-        SerialPLM.StopBits = 1
+            SerialPLM.PortName = PortName
+            SerialPLM.BaudRate = 19200
+            SerialPLM.DataBits = 8
+            SerialPLM.Handshake = IO.Ports.Handshake.None
+            SerialPLM.Parity = IO.Ports.Parity.None
+            SerialPLM.StopBits = 1
 
-        Try
-            My.Application.Log.WriteEntry("Trying to connect on port " + PortName)
-            SerialPLM.Open()
-        Catch IOExcep As System.IO.IOException
-            My.Application.Log.WriteException(IOExcep)
-            ResponseMsg = "ERROR: " + IOExcep.Message
-        Catch UnauthExcep As System.UnauthorizedAccessException
-            My.Application.Log.WriteException(UnauthExcep)
-            ResponseMsg = "ERROR: " + UnauthExcep.Message
-        End Try
+            Try
+                My.Application.Log.WriteEntry("Trying to connect on port " + PortName)
+                SerialPLM.Open()
+            Catch IOExcep As System.IO.IOException
+                My.Application.Log.WriteException(IOExcep)
+                ResponseMsg = "ERROR: " + IOExcep.Message
+            Catch UnauthExcep As System.UnauthorizedAccessException
+                My.Application.Log.WriteException(UnauthExcep)
+                ResponseMsg = "ERROR: " + UnauthExcep.Message
+            End Try
 
-        If SerialPLM.IsOpen = True Then
-            My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
-            My.Settings.Insteon_LastGoodCOMPort = PortName
-            ResponseMsg = "Connected"
+            If SerialPLM.IsOpen = True Then
+                My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
+                My.Settings.Insteon_LastGoodCOMPort = PortName
+                ResponseMsg = "Connected"
+            End If
         End If
     End Sub
 
@@ -170,8 +172,12 @@
     End Sub
 
     Sub Load()
-        SerialPLM = New System.IO.Ports.SerialPort
-        AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
+        If My.Settings.Insteon_Enable = True Then
+            SerialPLM = New System.IO.Ports.SerialPort
+            AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
+        Else
+            My.Application.Log.WriteEntry("Insteon module is disabled, module not loaded")
+        End If
     End Sub
 
     Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)

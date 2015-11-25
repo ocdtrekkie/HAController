@@ -1,4 +1,6 @@
 ﻿Module modInsteon
+    ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
+
     Structure InsteonDevice
         Dim Address As String
         Dim Name As String
@@ -38,7 +40,7 @@
         Load()
     End Sub
 
-    Sub InsteonConnect(ByVal PortName As String, ByVal ResponseMsg As String)
+    Sub InsteonConnect(ByVal PortName As String, ByRef ResponseMsg As String)
         If SerialPLM.IsOpen = True Then
             My.Application.Log.WriteEntry("Closing serial connection")
             SerialPLM.Close()

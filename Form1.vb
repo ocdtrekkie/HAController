@@ -1,8 +1,6 @@
 ﻿Public Class frmMain
     Dim ResponseMsg As String
 
-    ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for pretty much everything in this app that currently works.
-
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         ' If we don't unload the scheduler, the app does not finish
         modScheduler.Unload()

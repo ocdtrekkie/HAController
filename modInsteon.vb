@@ -1,6 +1,4 @@
-﻿' TODO: Add Disable, Enable, Load, and Unload methods
-
-Module modInsteon
+﻿Module modInsteon
     Structure InsteonDevice
         Dim Address As String
         Dim Name As String
@@ -25,6 +23,20 @@ Module modInsteon
     Public x(1030) As Byte ' Serial data as it gets brought in
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
+
+    Sub Disable()
+        My.Application.Log.WriteEntry("Unloading Insteon module")
+        Unload()
+        My.Settings.Insteon_Enable = False
+        My.Application.Log.WriteEntry("Insteon module is disabled")
+    End Sub
+
+    Sub Enable()
+        My.Settings.Insteon_Enable = True
+        My.Application.Log.WriteEntry("Insteon module is enabled")
+        My.Application.Log.WriteEntry("Loading Insteon module")
+        Load()
+    End Sub
 
     Sub InsteonConnect(ByVal PortName)
         If SerialPLM.IsOpen = True Then
@@ -894,6 +906,10 @@ Module modInsteon
 
         Debug.WriteLine("PLM finished: ms = " & ms & " MessageEnd = " & MessageEnd & " X_Start = " & x_Start)
         Exit Sub
+    End Sub
+
+    Sub Unload()
+
     End Sub
 
     Public Function InsteonNum(ByVal Address As String) As Short

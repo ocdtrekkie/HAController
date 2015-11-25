@@ -9,6 +9,6 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
 The following modules should function optionally:
-* modInsteon will handle Insteon and X10 home automation devices. (Currently a core component)
+* modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.
 * modSpeech contains speech synthesis code.

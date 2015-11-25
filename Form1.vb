@@ -1,4 +1,5 @@
 ﻿Public Class frmMain
+    Dim ResponseMsg As String
 
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for pretty much everything in this app that currently works.
 
@@ -27,7 +28,8 @@
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)
             cmbComPort.Text = My.Settings.Insteon_LastGoodCOMPort
-            modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort)
+            modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
+            lblComConnected.Text = ResponseMsg
         End If
     End Sub
 
@@ -102,7 +104,8 @@
     End Sub
 
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
-        modInsteon.InsteonConnect(cmbComPort.SelectedItem.ToString)
+        modInsteon.InsteonConnect(cmbComPort.SelectedItem.ToString, ResponseMsg)
+        lblComConnected.Text = ResponseMsg
     End Sub
 
     Private Sub cmbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbStatus.SelectionChangeCommitted

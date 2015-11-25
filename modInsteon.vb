@@ -38,7 +38,7 @@
         Load()
     End Sub
 
-    Sub InsteonConnect(ByVal PortName)
+    Sub InsteonConnect(ByVal PortName As String, ByVal ResponseMsg As String)
         If SerialPLM.IsOpen = True Then
             My.Application.Log.WriteEntry("Closing serial connection")
             SerialPLM.Close()
@@ -56,19 +56,16 @@
             SerialPLM.Open()
         Catch IOExcep As System.IO.IOException
             My.Application.Log.WriteException(IOExcep)
-            'lblComConnected.ForeColor = Color.Red
-            'lblComConnected.Text = "ERROR: " + IOExcep.Message
+            ResponseMsg = "ERROR: " + IOExcep.Message
         Catch UnauthExcep As System.UnauthorizedAccessException
             My.Application.Log.WriteException(UnauthExcep)
-            'lblComConnected.ForeColor = Color.Red
-            'lblComConnected.Text = "ERROR: " + UnauthExcep.Message
+            ResponseMsg = "ERROR: " + UnauthExcep.Message
         End Try
 
         If SerialPLM.IsOpen = True Then
             My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
             My.Settings.Insteon_LastGoodCOMPort = PortName
-            'lblComConnected.ForeColor = Color.Green
-            'lblComConnected.Text = "Connected"
+            ResponseMsg = "Connected"
         End If
     End Sub
 

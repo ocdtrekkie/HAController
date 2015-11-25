@@ -58,7 +58,7 @@ Partial Class frmMain
         'lblComConnected
         '
         Me.lblComConnected.AutoSize = True
-        Me.lblComConnected.ForeColor = System.Drawing.Color.Red
+        Me.lblComConnected.ForeColor = System.Drawing.Color.Black
         Me.lblComConnected.Location = New System.Drawing.Point(12, 36)
         Me.lblComConnected.MaximumSize = New System.Drawing.Size(121, 42)
         Me.lblComConnected.Name = "lblComConnected"

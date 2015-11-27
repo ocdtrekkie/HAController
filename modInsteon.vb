@@ -339,7 +339,11 @@
                         Case 224 ' 111 NAK group cleanup direct message
                             strTemp = strTemp & " (NAK Group cleanup direct) "
                     End Select
-                    strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
+                    If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
+                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
+                    Else
+                        strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
+                    End If
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
 
                     ' Update the status of the sending device
@@ -1138,6 +1142,38 @@
                 Return "Specific Code Record Read"
             Case Else
                 Return "Unrecognized"
+        End Select
+    End Function
+
+    Function InsteonThermostatResponse(ByVal comm1 As Short, ByVal comm2 As Short)
+        Select Case comm1
+            Case 110
+                Return "Temperature: " & comm2 & " F"
+            Case 111
+                Return "Humidity Level: " & comm2 & "%"
+            Case 112
+                Select Case comm2
+                    Case 0
+                        Return "Mode: Off"
+                    Case 1
+                        Return "Mode: Heat"
+                    Case 2
+                        Return "Mode: Cool"
+                    Case 3
+                        Return "Mode: Auto"
+                    Case 4
+                        Return "Mode: Fan"
+                    Case 8
+                        Return "Mode: Fan Always On"
+                    Case Else
+                        Return "Unrecognized"
+                End Select
+            Case 113
+                Return "Cool Set Point: " & comm2 & " F"
+            Case 114
+                Return "Heat Set Point: " & comm2 & " F"
+            Case Else
+                Return "(" & comm1 & ") Unrecognized"
         End Select
     End Function
 End Module

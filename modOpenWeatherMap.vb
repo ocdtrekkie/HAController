@@ -20,12 +20,12 @@ Module modOpenWeatherMap
 
         If My.Settings.OpenWeatherMap_APIKey = "" Then
             My.Application.Log.WriteEntry("No OpenWeatherMap API key, asking for it")
-            My.Settings.OpenWeatherMap_APIKey = InputBox("Enter OpenWeatherMap API Key", "OpenWeatherMap API")
+            My.Settings.OpenWeatherMap_APIKey = InputBox("Enter OpenWeatherMap API Key. You can get an API key at http://openweathermap.org/appid by signing up for a free account.", "OpenWeatherMap API")
         End If
 
         If My.Settings.OpenWeatherMap_CityID = "" Then
             My.Application.Log.WriteEntry("No City ID set, asking for it")
-            My.Settings.OpenWeatherMap_CityID = InputBox("Enter City ID", "City ID")
+            My.Settings.OpenWeatherMap_CityID = InputBox("Enter City ID. You can look up your city at http://openweathermap.org/city and find the ID in the URL of the resulting page.", "City ID")
         End If
 
         Dim WeatherData As XmlDocument = New XmlDocument

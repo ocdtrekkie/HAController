@@ -8,7 +8,7 @@ Module modScheduler
     Dim schedFact As ISchedulerFactory = New StdSchedulerFactory()
 
     ' get a scheduler
-    Dim sched As IScheduler = schedFact.GetScheduler()
+    Public sched As IScheduler = schedFact.GetScheduler()
 
     Public Class ScheduleJob : Implements IJob
         Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
@@ -22,7 +22,7 @@ Module modScheduler
         sched.Start()
 
         ' construct job info
-        Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).WithIdentity("job1", "group1").Build()
+        Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).WithIdentity("job2", "group2").Build()
         ' construct trigger
 
         Dim tempTrigger As ITrigger = TriggerBuilder.Create().WithIdentity("Trigger1").StartNow().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18, 50)).Build()

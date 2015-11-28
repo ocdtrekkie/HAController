@@ -341,6 +341,8 @@
                     End Select
                     If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
+                    ElseIf FromAddress = My.Settings.Insteon_DoorSensorAddr And ToAddress = "0.0.1" Then
+                        strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
@@ -1145,7 +1147,22 @@
         End Select
     End Function
 
-    Function InsteonThermostatResponse(ByVal comm1 As Short, ByVal comm2 As Short)
+    Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte)
+        Select Case comm1
+            Case 17
+                If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
+                    My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus)
+                    modSpeech.Say("Intruder alert!")
+                End If
+                Return "Door Opened"
+            Case 19
+                Return "Door Closed"
+            Case Else
+                Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"
+        End Select
+    End Function
+
+    Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte)
         Select Case comm1
             Case 110
                 Return "Temperature: " & comm2 & " F"
@@ -1173,7 +1190,7 @@
             Case 114
                 Return "Heat Set Point: " & comm2 & " F"
             Case Else
-                Return "(" & comm1 & ") Unrecognized"
+                Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"
         End Select
     End Function
 End Module

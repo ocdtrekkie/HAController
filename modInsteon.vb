@@ -959,7 +959,11 @@
     End Sub
 
     Sub Unload()
-
+        If SerialPLM.IsOpen = True Then
+            My.Application.Log.WriteEntry("Closing serial connection")
+            SerialPLM.Close()
+        End If
+        SerialPLM.Dispose()
     End Sub
 
     Public Function InsteonNum(ByVal Address As String) As Short

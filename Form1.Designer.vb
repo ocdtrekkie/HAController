@@ -44,6 +44,9 @@ Partial Class frmMain
         Me.lblThermostat = New System.Windows.Forms.Label()
         Me.lblLight = New System.Windows.Forms.Label()
         Me.chkInsteonTempFan = New System.Windows.Forms.CheckBox()
+        Me.btnInsteonAlarmOn = New System.Windows.Forms.Button()
+        Me.btnInsteonAlarmOff = New System.Windows.Forms.Button()
+        Me.lblAlarm = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -248,11 +251,41 @@ Partial Class frmMain
         Me.chkInsteonTempFan.Text = "Fan ALWAYS"
         Me.chkInsteonTempFan.UseVisualStyleBackColor = True
         '
+        'btnInsteonAlarmOn
+        '
+        Me.btnInsteonAlarmOn.Location = New System.Drawing.Point(12, 221)
+        Me.btnInsteonAlarmOn.Name = "btnInsteonAlarmOn"
+        Me.btnInsteonAlarmOn.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonAlarmOn.TabIndex = 24
+        Me.btnInsteonAlarmOn.Text = "On"
+        Me.btnInsteonAlarmOn.UseVisualStyleBackColor = True
+        '
+        'btnInsteonAlarmOff
+        '
+        Me.btnInsteonAlarmOff.Location = New System.Drawing.Point(12, 250)
+        Me.btnInsteonAlarmOff.Name = "btnInsteonAlarmOff"
+        Me.btnInsteonAlarmOff.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonAlarmOff.TabIndex = 25
+        Me.btnInsteonAlarmOff.Text = "Off"
+        Me.btnInsteonAlarmOff.UseVisualStyleBackColor = True
+        '
+        'lblAlarm
+        '
+        Me.lblAlarm.AutoSize = True
+        Me.lblAlarm.Location = New System.Drawing.Point(0, 205)
+        Me.lblAlarm.Name = "lblAlarm"
+        Me.lblAlarm.Size = New System.Drawing.Size(74, 13)
+        Me.lblAlarm.TabIndex = 26
+        Me.lblAlarm.Text = "Alarm Controls"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 306)
+        Me.Controls.Add(Me.lblAlarm)
+        Me.Controls.Add(Me.btnInsteonAlarmOff)
+        Me.Controls.Add(Me.btnInsteonAlarmOn)
         Me.Controls.Add(Me.chkInsteonTempFan)
         Me.Controls.Add(Me.lblLight)
         Me.Controls.Add(Me.lblThermostat)
@@ -303,4 +336,7 @@ Partial Class frmMain
     Friend WithEvents lblThermostat As System.Windows.Forms.Label
     Friend WithEvents lblLight As System.Windows.Forms.Label
     Friend WithEvents chkInsteonTempFan As System.Windows.Forms.CheckBox
+    Friend WithEvents btnInsteonAlarmOn As System.Windows.Forms.Button
+    Friend WithEvents btnInsteonAlarmOff As System.Windows.Forms.Button
+    Friend WithEvents lblAlarm As System.Windows.Forms.Label
 End Class

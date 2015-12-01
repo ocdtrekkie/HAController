@@ -12,8 +12,10 @@ Module modScheduler
 
     Public Class ScheduleJob : Implements IJob
         Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+            Dim response As String = ""
             'write your schedule job
-            modSpeech.Say("The time is now 6:50")
+            modSpeech.Say("The time is now 6:44")
+            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 10)
         End Sub
     End Class
 
@@ -25,7 +27,7 @@ Module modScheduler
         Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).WithIdentity("job2", "group2").Build()
         ' construct trigger
 
-        Dim tempTrigger As ITrigger = TriggerBuilder.Create().WithIdentity("Trigger1").StartNow().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18, 50)).Build()
+        Dim tempTrigger As ITrigger = TriggerBuilder.Create().WithIdentity("Trigger1").StartNow().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18, 44)).Build()
         Dim trigger As ICronTrigger = DirectCast(tempTrigger, ICronTrigger)
 
         sched.ScheduleJob(job, trigger)

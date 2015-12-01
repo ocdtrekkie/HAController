@@ -120,8 +120,8 @@ Module modInsteon
         ' Shut it back off
         If Command1 = "On" And intSeconds > 0 Then
             My.Application.Log.WriteEntry("Scheduling automatic shut off of alarm in " & intSeconds.ToString & " seconds")
-            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("job1", "group1").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", 0).Build()
-            Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger1", "group1").StartAt(DateBuilder.FutureDate(5, IntervalUnit.Second)).Build()
+            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("job1", "group1").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
+            Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger1", "group1").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
 
             Try
                 modScheduler.sched.ScheduleJob(AlarmJob, AlarmTrigger)
@@ -1222,7 +1222,7 @@ Module modInsteon
             Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
             Dim response As String = ""
 
-            InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetIntValueFromString("Command1"), dataMap.GetIntValueFromString("intSeconds"))
+            InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetString("Command1"), CInt(dataMap.GetString("intSeconds")))
         End Sub
     End Class
 End Module

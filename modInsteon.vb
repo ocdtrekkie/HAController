@@ -1,4 +1,7 @@
-﻿Module modInsteon
+﻿Imports Quartz
+Imports Quartz.Impl
+
+Module modInsteon
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
 
     Structure InsteonDevice
@@ -15,7 +18,7 @@
     Public Insteon(200) As InsteonDevice
     Public NumInsteon As Short ' Number of assigned Insteon devices
 
-    Dim SerialPLM As System.IO.Ports.SerialPort
+    Public SerialPLM As System.IO.Ports.SerialPort
 
     Public PLM_Address As String
     Public PLM_LastX10Device As Byte
@@ -73,7 +76,7 @@
         End If
     End Sub
 
-    Sub InsteonAlarmControl(ByRef strAddress, ByRef ResponseMsg, ByVal Command1, Optional ByVal intSeconds = 0)
+    Sub InsteonAlarmControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intSeconds As Integer = 0)
         Dim comm1 As Short
         Dim comm2 As Short
         Dim data(7) As Byte
@@ -93,7 +96,7 @@
                 comm2 = 0
             Case "On"
                 comm1 = 17
-                comm2 = 0
+                comm2 = 255
             Case Else
                 My.Application.Log.WriteEntry("InsteonAlarmControl received invalid request", TraceEventType.Warning)
                 Exit Sub
@@ -113,9 +116,22 @@
             My.Application.Log.WriteException(Excep)
             ResponseMsg = "ERROR: " + Excep.Message
         End Try
+
+        ' Shut it back off
+        If Command1 = "On" And intSeconds > 0 Then
+            My.Application.Log.WriteEntry("Scheduling automatic shut off of alarm in " & intSeconds.ToString & " seconds")
+            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("job1", "group1").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
+            Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger1", "group1").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
+
+            Try
+                modScheduler.sched.ScheduleJob(AlarmJob, AlarmTrigger)
+            Catch QzExcep As Quartz.ObjectAlreadyExistsException
+                My.Application.Log.WriteException(QzExcep)
+            End Try
+        End If
     End Sub
 
-    Sub InsteonLightControl(ByVal strAddress, ByRef ResponseMsg, ByVal Command1, Optional ByVal intBrightness = 255)
+    Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Integer = 255)
         Dim comm1 As Short
         Dim comm2 As Short
         Dim data(7) As Byte
@@ -152,7 +168,7 @@
         End Try
     End Sub
 
-    Sub InsteonThermostatControl(ByVal strAddress, ByRef ResponseMsg, ByVal Command1, Optional ByVal intTemperature = 72)
+    Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Integer = 72)
         Dim comm1 As Short
         Dim comm2 As Short
         Dim data(21) As Byte
@@ -405,7 +421,7 @@
                             Case 128 ' 100 Broadcast message
                                 ' Button-press linking, etc. Just display a message.
                                 ' Message format: FromAddress, DevCat, SubCat, Firmware, Flags, Cmd1, Cmd2 (=Device Attributes)
-                                strTemp = Format(TimeOfDay) & " "
+                                strTemp = Format(Now) & " "
                                 If Command1 = 1 Then
                                     strTemp = strTemp & FromName & " broadcast 'Set Button Pressed'"
                                 Else
@@ -456,7 +472,7 @@
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
                                 Insteon(IAddress).LastGroup = Group
-                                strTemp = Format(TimeOfDay) & " "
+                                strTemp = Format(Now) & " "
                                 ' Write command to event log
                                 If Group > 0 Then
                                     strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1) & " (Group " & Format(Group) & ")"
@@ -475,7 +491,7 @@
                                 Insteon(IAddress).LastGroup = 0
                             Case 160, 224 ' 101 NAK direct message, 111 NAK group cleanup direct message
                                 ' Command received by another device but failed - display message in log
-                                strTemp = Format(TimeOfDay) & " " & FromAddress & " NAK to command " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")"
+                                strTemp = Format(Now) & " " & FromAddress & " NAK to command " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")"
                                 My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
@@ -608,7 +624,7 @@
                             ' Now actually process the event
                             ' Does it have a name?
                             'If DeviceName(X10Address) = X10Address Then HasName = False Else HasName = True
-                            My.Application.Log.WriteEntry(Format(TimeOfDay) & " " & X10Address & " " & X10Code, TraceEventType.Verbose)
+                            My.Application.Log.WriteEntry(Format(Now) & " " & X10Address & " " & X10Code, TraceEventType.Verbose)
                             'If LoggedIn And HasName Then frmHack.WriteWebtrix(Blue, VB6.Format(TimeOfDay) & " ")
                             ' Write command to event log
                             ' Handle incoming event
@@ -1155,8 +1171,11 @@
         Select Case comm1
             Case 17
                 If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
+                    Threading.Thread.Sleep(5000)
                     My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus)
                     modSpeech.Say("Intruder alert!")
+                    Dim response As String = ""
+                    InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 5)
                 End If
                 Return "Door Opened"
             Case 19
@@ -1197,4 +1216,14 @@
                 Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"
         End Select
     End Function
+
+    Public Class InsteonAlarmControlSchedule : Implements IJob
+        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+            My.Application.Log.WriteEntry("Executing scheduled InsteonAlarmControl")
+            Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
+            Dim response As String = ""
+
+            InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetString("Command1"), CInt(dataMap.GetString("intSeconds")))
+        End Sub
+    End Class
 End Module

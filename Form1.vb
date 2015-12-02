@@ -101,6 +101,16 @@
         End If
     End Sub
 
+    Private Sub btnInsteonAlarmOn_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOn.Click
+        My.Application.Log.WriteEntry("Turning alarm on")
+        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "On")
+    End Sub
+
+    Private Sub btnInsteonAlarmOff_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOff.Click
+        My.Application.Log.WriteEntry("Turning alarm off")
+        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "Off")
+    End Sub
+
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
         modInsteon.InsteonConnect(cmbComPort.SelectedItem.ToString, ResponseMsg)
         lblComConnected.Text = ResponseMsg

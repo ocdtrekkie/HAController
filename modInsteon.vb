@@ -1171,6 +1171,7 @@ Module modInsteon
         Select Case comm1
             Case 17
                 If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
+                    Threading.Thread.Sleep(5000)
                     My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus)
                     modSpeech.Say("Intruder alert!")
                     Dim response As String = ""

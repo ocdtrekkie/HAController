@@ -22,7 +22,7 @@ Module modPing
         If My.Settings.Ping_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
             Dim InternetCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckInternetConnectivity)).WithIdentity("job3", "group3").Build()
-            Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger3", "group3").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(5).RepeatForever()).Build()
+            Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger3", "group3").WithSimpleSchedule(Sub(x) x.WithIntervalInSeconds(60).RepeatForever()).Build()
 
             Try
                 modScheduler.sched.ScheduleJob(InternetCheckJob, InternetCheckTrigger)
@@ -38,7 +38,7 @@ Module modPing
 
     End Sub
 
-    Public Function Ping(ByVal host As String) As String
+    Public Function Ping(ByVal host As String, Optional ByVal repeat As Integer = 1) As String
         Try
             Dim a As New System.Net.NetworkInformation.Ping
             Dim b As System.Net.NetworkInformation.PingReply
@@ -49,7 +49,7 @@ Module modPing
             Dim data As String = "aaaaaaaaaaaaaaaa"
             Dim bt As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
             Dim i As Int16
-            For i = 1 To 4
+            For i = 1 To repeat
                 b = a.Send(host, 2000, bt, c)
                 If b.Status = Net.NetworkInformation.IPStatus.Success Then
                     txtlog += "Reply from " & host & " in " & b.RoundtripTime & " ms, ttl " & b.Options.Ttl & vbCrLf
@@ -74,7 +74,11 @@ Module modPing
             Dim response As String = ""
 
             response = Ping(My.Settings.Ping_InternetCheckAddress)
-            My.Application.Log.WriteEntry(response)
+            If response.Substring(0, 10) <> "Reply from" Then
+                My.Application.Log.WriteEntry(response, TraceEventType.Warning)
+            Else
+                My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
+            End If
         End Sub
     End Class
 End Module

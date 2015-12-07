@@ -90,6 +90,7 @@
     <Compile Include="modGlobal.vb" />
     <Compile Include="modInsteon.vb" />
     <Compile Include="modOpenWeatherMap.vb" />
+    <Compile Include="modPing.vb" />
     <Compile Include="modScheduler.vb" />
     <Compile Include="modSpeech.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

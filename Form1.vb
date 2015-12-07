@@ -14,8 +14,10 @@
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
 
-        My.Application.Log.WriteEntry("Loading scheduler module (experimental)")
+        My.Application.Log.WriteEntry("Loading scheduler module")
         modScheduler.Load()
+        My.Application.Log.WriteEntry("Loading ping module")
+        modPing.Load()
         My.Application.Log.WriteEntry("Loading Insteon module")
         modInsteon.Load()
         My.Application.Log.WriteEntry("Loading speech module")

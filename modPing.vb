@@ -1,4 +1,7 @@
-﻿Module modPing
+﻿Imports Quartz
+Imports Quartz.Impl
+
+Module modPing
     ' Credit for the ping module code goes to Dain Axel Muller from Planet Source Code. http://planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=4311&lngWId=10
 
     Sub Disable()
@@ -16,7 +19,19 @@
     End Sub
 
     Sub Load()
+        If My.Settings.Ping_Enable = True Then
+            My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
+            Dim InternetCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckInternetConnectivity)).WithIdentity("job3", "group3").Build()
+            Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger3", "group3").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(5).RepeatForever()).Build()
 
+            Try
+                modScheduler.sched.ScheduleJob(InternetCheckJob, InternetCheckTrigger)
+            Catch QzExcep As Quartz.ObjectAlreadyExistsException
+                My.Application.Log.WriteException(QzExcep)
+            End Try
+        Else
+            My.Application.Log.WriteEntry("Ping module is disabled, module not loaded")
+        End If
     End Sub
 
     Sub Unload()
@@ -52,4 +67,14 @@
             Return "Ping error"
         End Try
     End Function
+
+    Public Class CheckInternetConnectivity : Implements IJob
+        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+            My.Application.Log.WriteEntry("Checking Internet connectivity")
+            Dim response As String = ""
+
+            response = Ping(My.Settings.Ping_InternetCheckAddress)
+            My.Application.Log.WriteEntry(response)
+        End Sub
+    End Class
 End Module

@@ -53,13 +53,16 @@ Module modPing
                 For i = 1 To repeat
                     b = a.Send(host, 2000, bt, c)
                     If b.Status = Net.NetworkInformation.IPStatus.Success Then
-                        txtlog += "Reply from " & host & " in " & b.RoundtripTime & " ms, ttl " & b.Options.Ttl & vbCrLf
+                        txtlog += "Reply from " & host & " in " & b.RoundtripTime & " ms, ttl " & b.Options.Ttl
                     End If
                     If b.Status = Net.NetworkInformation.IPStatus.DestinationHostUnreachable Then
-                        txtlog += "Destination Host Unreachable" & vbCrLf
+                        txtlog += "Destination Host Unreachable"
                     End If
                     If b.Status = Net.NetworkInformation.IPStatus.TimedOut Then
-                        txtlog += "Reply timed out" & vbCrLf
+                        txtlog += "Reply timed out"
+                    End If
+                    If i <> repeat Then
+                        txtlog += vbCrLf
                     End If
                 Next i
                 Return txtlog

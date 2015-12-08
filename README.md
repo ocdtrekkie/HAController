@@ -5,6 +5,7 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 ## Modules ##
 
 * Form1 is basically meant to get factored out eventually in it's entirety.
+* modDatabase handles the SQLite database that will store persistent data about the system.
 * modGlobal will mostly just hang onto stuff that needs to be accessible to the whole program.
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 

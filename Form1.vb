@@ -4,6 +4,7 @@
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         ' If we don't unload the scheduler, the app does not finish
         modScheduler.Unload()
+        modDatabase.Unload()
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -14,6 +15,8 @@
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
 
+        My.Application.Log.WriteEntry("Loading database module")
+        modDatabase.Load()
         My.Application.Log.WriteEntry("Loading scheduler module")
         modScheduler.Load()
         My.Application.Log.WriteEntry("Loading ping module")

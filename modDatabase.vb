@@ -5,6 +5,13 @@
 Module modDatabase
     Dim conn As SQLiteConnection = New SQLiteConnection
 
+    Sub CreateDb()
+        Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
+
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS hac_devices(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT)"
+        cmd.ExecuteNonQuery()
+    End Sub
+
     Sub Load()
         Dim connstring As String = "URI=file:" + My.Settings.Database_FileURI
 
@@ -12,6 +19,7 @@ Module modDatabase
         Try
             My.Application.Log.WriteEntry("Connecting to database")
             conn.Open()
+            CreateDb()
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try

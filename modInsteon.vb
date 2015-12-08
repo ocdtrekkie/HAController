@@ -339,7 +339,9 @@ Module modInsteon
                     ' Check if FromAddress is in device database, if not add it (ToAddress will generally = PLM)
                     If InsteonNum(FromAddress) = 0 And FromAddress <> PLM_Address Then
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
-                        CheckDbForInsteon(FromAddress)
+                        If CheckDbForInsteon(FromAddress) = 0 Then
+                            AddInsteonDeviceDb(FromAddress)
+                        End If
                     End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -1038,16 +1040,33 @@ Module modInsteon
         End If
     End Function
 
+    Function AddInsteonDeviceDb(ByVal strAddress As String) As Integer
+        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
+        Dim result As Object = New Object
+
+        cmd.CommandText = "INSERT INTO INSTEON_DEVICES (Address) VALUES('" + strAddress + "')"
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        result = cmd.ExecuteScalar()
+
+        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + strAddress + "')"
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        result = cmd.ExecuteScalar()
+
+        Return 0
+    End Function
+
     Function CheckDbForInsteon(ByVal strAddress As String) As Integer
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
-        Dim result As String = ""
+        Dim result As Object = New Object
+        Dim resultInt As Integer = New Integer
 
         cmd.CommandText = "SELECT Id FROM INSTEON_DEVICES WHERE Address = """ + strAddress + """"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        result = cmd.ExecuteScalar()
         If result <> Nothing Then
-            result = CInt(cmd.ExecuteScalar().ToString)
-            My.Application.Log.WriteEntry(strAddress + " database ID is " + result)
-            Return result
+            resultInt = CInt(result.ToString)
+            My.Application.Log.WriteEntry(strAddress + " database ID is " + result.ToString)
+            Return resultInt
         Else
             My.Application.Log.WriteEntry(strAddress + " is not in the device database")
             Return 0

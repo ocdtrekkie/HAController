@@ -35,6 +35,7 @@ Module modInsteon
 
         ' Mirroring the InsteonDevice structure for now
         cmd.CommandText = "CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER)"
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         cmd.ExecuteNonQuery()
     End Sub
 
@@ -338,7 +339,7 @@ Module modInsteon
                     ' Check if FromAddress is in device database, if not add it (ToAddress will generally = PLM)
                     If InsteonNum(FromAddress) = 0 And FromAddress <> PLM_Address Then
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
-                        ' TODO: Make this: SortInsteon()
+                        CheckDbForInsteon(FromAddress)
                     End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -1037,7 +1038,23 @@ Module modInsteon
         End If
     End Function
 
-    Function InsteonCommandLookup(ByVal ICmd)
+    Function CheckDbForInsteon(ByVal strAddress As String) As Integer
+        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
+        Dim result As String = ""
+
+        cmd.CommandText = "SELECT Id FROM INSTEON_DEVICES WHERE Address = """ + strAddress + """"
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        If result <> Nothing Then
+            result = CInt(cmd.ExecuteScalar().ToString)
+            My.Application.Log.WriteEntry(strAddress + " database ID is " + result)
+            Return result
+        Else
+            My.Application.Log.WriteEntry(strAddress + " is not in the device database")
+            Return 0
+        End If
+    End Function
+
+    Function InsteonCommandLookup(ByVal ICmd) As String
         Select Case ICmd
             Case 3
                 Return "Product Data Request"
@@ -1178,7 +1195,7 @@ Module modInsteon
         End Select
     End Function
 
-    Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte)
+    Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 17
                 If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
@@ -1196,7 +1213,7 @@ Module modInsteon
         End Select
     End Function
 
-    Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte)
+    Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 110
                 Return "Temperature: " & comm2 & " F"

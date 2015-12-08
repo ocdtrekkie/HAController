@@ -3,12 +3,12 @@
 ' modDatabase cannot be disabled, Disable and Enable methods will be skipped
 
 Module modDatabase
-    Dim conn As SQLiteConnection = New SQLiteConnection
+    Public conn As SQLiteConnection = New SQLiteConnection
 
     Sub CreateDb()
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
 
-        cmd.CommandText = "CREATE TABLE IF NOT EXISTS hac_devices(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT)"
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT)"
         cmd.ExecuteNonQuery()
     End Sub
 

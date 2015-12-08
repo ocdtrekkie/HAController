@@ -1,5 +1,6 @@
 ﻿Imports Quartz
 Imports Quartz.Impl
+Imports System.Data.SQLite
 
 Module modInsteon
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
@@ -28,6 +29,14 @@ Module modInsteon
     Public x(1030) As Byte ' Serial data as it gets brought in
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
+
+    Sub CreateInsteonDb()
+        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
+
+        ' Mirroring the InsteonDevice structure for now
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER)"
+        cmd.ExecuteNonQuery()
+    End Sub
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading Insteon module")
@@ -233,6 +242,8 @@ Module modInsteon
         If My.Settings.Insteon_Enable = True Then
             SerialPLM = New System.IO.Ports.SerialPort
             AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
+
+            CreateInsteonDb()
         Else
             My.Application.Log.WriteEntry("Insteon module is disabled, module not loaded")
         End If

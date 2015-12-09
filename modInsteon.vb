@@ -1098,6 +1098,8 @@ Module modInsteon
         Select Case ICmd
             Case 3
                 Return "Product Data Request"
+            Case 6
+                Return "Success Report Broadcast"
             Case 9
                 Return "Enter Link Mode"
             Case 10

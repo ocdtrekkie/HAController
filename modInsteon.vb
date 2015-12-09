@@ -307,6 +307,7 @@ Module modInsteon
         Dim FromName As String
         Dim DataString As String
         Dim strTemp As String
+        Dim response As String
 
         If x_Start = x_LastWrite Then Exit Sub ' reached end of data, get out of sub
         ' x_Start = the last byte that was read and processed here
@@ -356,9 +357,10 @@ Module modInsteon
                     Flags = x(ms + 8)
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
-                    ' Check if FromAddress is in device database, if not add it (ToAddress will generally = PLM)
+                    ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
                     If CheckDbForInsteon(FromAddress) = 0 Then
-                        AddInsteonDeviceDb(FromAddress)
+                        Threading.Thread.Sleep(1000)
+                        InsteonProductDataRequest(strAddress, response)
                     End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -577,6 +579,8 @@ Module modInsteon
                                     strTemp = strTemp & Hex(x(ms + i)) & " "
                                 Next
                                 strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
+                                ' add this info to the database (TODO)
+                                AddInsteonDeviceDb(FromAddress)
                             Case 1 ' FX Username Response
                                 strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
                                 For i = 11 To 18
@@ -1060,7 +1064,6 @@ Module modInsteon
     Function AddInsteonDeviceDb(ByVal strAddress As String) As Object
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
         Dim result As Object = New Object
-        Dim response As String = ""
 
         cmd.CommandText = "INSERT INTO INSTEON_DEVICES (Address) VALUES('" + strAddress + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
@@ -1069,9 +1072,6 @@ Module modInsteon
         cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + strAddress + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         result = cmd.ExecuteScalar()
-
-        Threading.Thread.Sleep(3000)
-        InsteonProductDataRequest(strAddress, response)
 
         Return result
     End Function

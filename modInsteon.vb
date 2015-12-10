@@ -1268,14 +1268,32 @@ Module modInsteon
                 End Select
             Case 3
                 Select Case SubCat
+                    Case 1
+                        Return "2414S Serial PLC"
+                    Case 2
+                        Return "2414U Serial PLC USB"
+                    Case 5
+                        Return "2412S Serial PLM"
+                    Case 6
+                        Return "2411R IRLinc Receiver"
+                    Case 7
+                        Return "2411T IRLinc Transmitter"
+                    Case 11
+                        Return "2412U Serial PLM USB"
                     Case 17
                         Return "2413S Dual-Band Serial PLM"
+                    Case 19
+                        Return "2412UH Serial PLM USB for HouseLinc"
+                    Case 20
+                        Return "2412SH Serial PLM for HouseLinc"
                     Case 21
                         Return "2413U Dual-Band Serial PLM USB"
                     Case 25
                         Return "2413SH Dual-Band Serial PLM for HouseLinc"
                     Case 26
                         Return "2413UH Dual-Band Serial PLM USB for HouseLinc"
+                    Case 31
+                        Return "2448A7 USB Stick PLM"
                     Case 49
                         Return "2242-222 Insteon Hub"
                     Case 51
@@ -1304,6 +1322,8 @@ Module modInsteon
                 End Select
             Case 7
                 Select Case SubCat
+                    Case 0
+                        Return "2450 I/O Linc"
                     Case 26
                         Return "2867-222 Alert Module"
                     Case Else
@@ -1311,12 +1331,16 @@ Module modInsteon
                 End Select
             Case 16
                 Select Case SubCat
+                    Case 1
+                        Return "2842-222 Motion Sensor | 2420M Motion Sensor"
                     Case 2
                         Return "2843-222 Wireless Open/Close Sensor | 2421 TriggerLinc"
                     Case 6
                         Return "2843-422 Wireless Open/Close Sensor (EU)"
                     Case 7
                         Return "2843-522 Wireless Open/Close Sensor (AUS/NZ)"
+                    Case 8
+                        Return "2852-222 Water Leak Sensor"
                     Case 10
                         Return "2982-222 Smoke Bridge"
                     Case 17

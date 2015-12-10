@@ -1253,7 +1253,27 @@ Module modInsteon
                     Case 32
                         Return "2477D Dual-Band Dimmer Switch"
                     Case Else
-                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 2
+                Select Case SubCat
+                    Case 42
+                        Return "2477S Dual-Band On/Off Switch"
+                    Case 55
+                        Return "2635-222 On/Off Module"
+                    Case 57
+                        Return "2663-222 On/Off Outlet"
+                    Case Else
+                        Return "Unrecognized Appliance Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 3
+                Select Case SubCat
+                    Case 51
+                        Return "2245-222 Insteon Hub"
+                    Case 58
+                        Return "2243-222 Insteon Hub Pro"
+                    Case Else
+                        Return "Unrecognized Interface, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 5
                 Select Case SubCat
@@ -1261,18 +1281,39 @@ Module modInsteon
                         Return "2441ZTH Wireless Thermostat"
                     Case 11
                         Return "2441TH Thermostat"
+                    Case 15
+                        Return "2732-422 Thermostat (EU)"
+                    Case 16
+                        Return "2732-522 Thermostat (AUS/NZ)"
+                    Case 17
+                        Return "2732-432 Wireless Thermostat (EU)"
+                    Case 18
+                        Return "2732-532 Wireless Thermostat (AUS/NZ)"
                     Case Else
-                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Temperature Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 7
+                Select Case SubCat
+                    Case 26
+                        Return "2867-222 Alert Module"
+                    Case Else
+                        Return "Unrecognized, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 16
                 Select Case SubCat
                     Case 2
                         Return "2843-222 Wireless Open/Close Sensor | 2421 TriggerLinc"
+                    Case 6
+                        Return "2843-422 Wireless Open/Close Sensor (EU)"
+                    Case 7
+                        Return "2843-522 Wireless Open/Close Sensor (AUS/NZ)"
+                    Case 10
+                        Return "2982-222 Smoke Bridge"
                     Case Else
-                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Sensor, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case Else
-                Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
         End Select
     End Function
 

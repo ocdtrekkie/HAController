@@ -1246,6 +1246,36 @@ Module modInsteon
         End Select
     End Function
 
+    Function InsteonDeviceLookup(ByVal DevCat As Short, ByVal SubCat As Short) As String
+        Select Case DevCat
+            Case 1
+                Select Case SubCat
+                    Case 32
+                        Return "2477D Dual-Band Dimmer Switch"
+                    Case Else
+                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 5
+                Select Case SubCat
+                    Case 10
+                        Return "2441ZTH Wireless Thermostat"
+                    Case 11
+                        Return "2441TH Thermostat"
+                    Case Else
+                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 16
+                Select Case SubCat
+                    Case 2
+                        Return "2843-222 Wireless Open/Close Sensor | 2421 TriggerLinc"
+                    Case Else
+                        Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case Else
+                Return "Unrecognized DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+        End Select
+    End Function
+
     Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 17

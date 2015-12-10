@@ -8,7 +8,7 @@ Module modDatabase
     Sub CreateDb()
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
 
-        cmd.CommandText = "CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT)"
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT UNIQUE)"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         cmd.ExecuteNonQuery()
     End Sub

@@ -34,7 +34,7 @@ Module modInsteon
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
 
         ' Mirroring the InsteonDevice structure for now
-        cmd.CommandText = "CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER)"
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER, DevCat INTEGER, SubCat INTEGER, Firmware INTEGER)"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         cmd.ExecuteNonQuery()
     End Sub
@@ -307,7 +307,7 @@ Module modInsteon
         Dim FromName As String
         Dim DataString As String
         Dim strTemp As String
-        Dim response As String
+        Dim response As String = ""
 
         If x_Start = x_LastWrite Then Exit Sub ' reached end of data, get out of sub
         ' x_Start = the last byte that was read and processed here
@@ -360,7 +360,7 @@ Module modInsteon
                     ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
                     If CheckDbForInsteon(FromAddress) = 0 Then
                         Threading.Thread.Sleep(1000)
-                        InsteonProductDataRequest(strAddress, response)
+                        InsteonProductDataRequest(FromAddress, response)
                     End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -580,7 +580,7 @@ Module modInsteon
                                 Next
                                 strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
                                 ' add this info to the database (TODO)
-                                AddInsteonDeviceDb(FromAddress)
+                                AddInsteonDeviceDb(FromAddress, x(ms + 15), x(ms + 16), x(ms + 17))
                             Case 1 ' FX Username Response
                                 strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
                                 For i = 11 To 18
@@ -1061,17 +1061,26 @@ Module modInsteon
         End If
     End Function
 
-    Function AddInsteonDeviceDb(ByVal strAddress As String) As Object
+    Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As Object
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
         Dim result As Object = New Object
 
-        cmd.CommandText = "INSERT INTO INSTEON_DEVICES (Address) VALUES('" + strAddress + "')"
+        cmd.CommandText = "INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
-        result = cmd.ExecuteScalar()
+        Try
+            result = cmd.ExecuteScalar()
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
+
 
         cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + strAddress + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
-        result = cmd.ExecuteScalar()
+        Try
+            result = cmd.ExecuteScalar()
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
 
         Return result
     End Function

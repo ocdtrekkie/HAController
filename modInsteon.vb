@@ -1253,7 +1253,7 @@ Module modInsteon
                     Case 32
                         Return "2477D Dual-Band Dimmer Switch"
                     Case Else
-                        Return "Unrecognized, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Dimmer, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 2
                 Select Case SubCat
@@ -1268,8 +1268,18 @@ Module modInsteon
                 End Select
             Case 3
                 Select Case SubCat
+                    Case 17
+                        Return "2413S Dual-Band Serial PLM"
+                    Case 21
+                        Return "2413U Dual-Band Serial PLM USB"
+                    Case 25
+                        Return "2413SH Dual-Band Serial PLM for HouseLinc"
+                    Case 26
+                        Return "2413UH Dual-Band Serial PLM USB for HouseLinc"
+                    Case 49
+                        Return "2242-222 Insteon Hub"
                     Case 51
-                        Return "2245-222 Insteon Hub"
+                        Return "2245-222 Insteon Hub (2014)"
                     Case 58
                         Return "2243-222 Insteon Hub Pro"
                     Case Else
@@ -1297,7 +1307,7 @@ Module modInsteon
                     Case 26
                         Return "2867-222 Alert Module"
                     Case Else
-                        Return "Unrecognized, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 16
                 Select Case SubCat
@@ -1309,8 +1319,14 @@ Module modInsteon
                         Return "2843-522 Wireless Open/Close Sensor (AUS/NZ)"
                     Case 10
                         Return "2982-222 Smoke Bridge"
+                    Case 17
+                        Return "2845-222 Hidden Door Sensor"
+                    Case 20
+                        Return "2845-422 Hidden Door Sensor (EU)"
+                    Case 21
+                        Return "2845-522 Hidden Door Sensor (AUS/NZ)"
                     Case Else
-                        Return "Unrecognized Sensor, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Security/Safety Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case Else
                 Return "Unrecognized Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)

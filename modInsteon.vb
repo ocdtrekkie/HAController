@@ -1323,6 +1323,34 @@ Module modInsteon
                 End Select
             Case 2
                 Select Case SubCat
+                    Case 5
+                        Return "2486SWH8 KeypadLinc Relay - 8 Button"
+                    Case 7
+                        Return "2456ST3 TimerLinc"
+                    Case 8
+                        Return "2473S OutletLinc"
+                    Case 9
+                        Return "2456S3 ApplianceLinc"
+                    Case 10
+                        Return "2476S SwitchLinc Relay"
+                    Case 11
+                        Return "2876S Icon On/Off Switch"
+                    Case 12
+                        Return "2856S3 Icon Appliance Adapter"
+                    Case 13
+                        Return "2466S ToggleLinc Relay"
+                    Case 14
+                        Return "2476ST SwitchLinc Relay Countdown Timer"
+                    Case 15
+                        Return "2486SWH6 KeypadLinc On/Off Switch"
+                    Case 16
+                        Return "2475D In-LineLinc Relay"
+                    Case 17
+                        Return "EZSwitch30"
+                    Case 18
+                        Return "Icon SwitchLinc Relay In-Line Companion"
+                    Case 19
+                        Return "2676R-B Icon SwitchLinc Relay for Lixar/Bell Canada"
                     Case 42
                         Return "2477S Dual-Band On/Off Switch"
                     Case 55
@@ -1340,6 +1368,10 @@ Module modInsteon
                         Return "2414S Serial PLC"
                     Case 2
                         Return "2414U Serial PLC USB"
+                    Case 3
+                        Return "2814S Icon Serial PLC"
+                    Case 4
+                        Return "2814U Icon Serial PLC USB"
                     Case 5
                         Return "2412S Serial PLM"
                     Case 6
@@ -1348,6 +1380,10 @@ Module modInsteon
                         Return "2411T IRLinc Transmitter"
                     Case 11
                         Return "2412U Serial PLM USB"
+                    Case 13
+                        Return "EZX10RF X10 RF Wireless Sensor Receiver"
+                    Case 16
+                        Return "2412N SmartLinc Central Controller"
                     Case 17
                         Return "2413S Dual-Band Serial PLM"
                     Case 19
@@ -1370,6 +1406,13 @@ Module modInsteon
                         Return "2243-222 Insteon Hub Pro"
                     Case Else
                         Return "Unrecognized Interface, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 4
+                Select Case SubCat
+                    Case 0
+                        Return "EZRain Sprinkler Controller"
+                    Case Else
+                        Return "Unrecognized Irrigation Controller, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 5
                 Select Case SubCat

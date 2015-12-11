@@ -1249,8 +1249,73 @@ Module modInsteon
 
     Function InsteonDeviceLookup(ByVal DevCat As Short, ByVal SubCat As Short) As String
         Select Case DevCat
+            Case 0
+                Select Case SubCat
+                    Case 4
+                        Return "2430 ControLinc"
+                    Case 5
+                        Return "2440 RemoteLinc"
+                    Case 6
+                        Return "2830 Icon Tabletop Controller"
+                    Case 8
+                        Return "EZBridge/EZServer"
+                    Case 9
+                        Return "2442 SignaLinc RF Signal Enhancer"
+                    Case 10
+                        Return "Poolux LCD Controller"
+                    Case 11
+                        Return "2443 Access Point"
+                    Case 12
+                        Return "IES Color Touchscreen"
+                    Case 18
+                        Return "2342-222 Mini Remote - 8 Scene | 2444A2WH8 RemoteLinc 2"
+                    Case Else
+                        Return "Unrecognized Controller, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
             Case 1
                 Select Case SubCat
+                    Case 0
+                        Return "2456D3 LampLinc 2"
+                    Case 1
+                        Return "2476D SwitchLinc 2 Dimmer 600W"
+                    Case 2
+                        Return "2475D In-LineLinc Dimmer"
+                    Case 3
+                        Return "2876D Icon Switch Dimmer"
+                    Case 4
+                        Return "2476DH SwitchLinc 2 Dimmer 1000W"
+                    Case 5
+                        Return "2484DWH8 KeypadLinc Dimmer Countdown Timer"
+                    Case 6
+                        Return "2456D2 LampLinc 2-Pin"
+                    Case 7
+                        Return "2856D2 Icon LampLinc 2 2-Pin"
+                    Case 9
+                        Return "2486D KeypadLinc Dimmer"
+                    Case 10
+                        Return "2886D Icon In-Wall Controller"
+                    Case 12
+                        Return "2486DWH8 KeypadLinc Dimmer - 8 Button"
+                    Case 13
+                        Return "2454D SocketLinc"
+                    Case 14
+                        Return "2457D3 Dual-Band LampLinc Dimmer"
+                    Case 19
+                        Return "2676D-B Icon SwitchLinc Dimmer for Lixar/Bell Canada"
+                    Case 23
+                        Return "2466D ToggleLinc Dimmer"
+                    Case 24
+                        Return "2474D Icon SwitchLinc Dimmer In-Line Companion"
+                    Case 25
+                        Return "SwitchLinc 800W"
+                    Case 26
+                        Return "2475D2 In-LineLinc Dimmer with Sense"
+                    Case 27
+                        Return "2486DWH6 KeypadLinc Dimmer - 6 Button"
+                    Case 28
+                        Return "2486DWH8 KeypadLinc Dimmer - 8 Button"
+                    Case 29
+                        Return "2476D SwitchLinc Dimmer 1200W"
                     Case 32
                         Return "2477D Dual-Band Dimmer Switch"
                     Case Else
@@ -1308,6 +1373,10 @@ Module modInsteon
                 End Select
             Case 5
                 Select Case SubCat
+                    Case 1
+                        Return "EZTherm Thermostat"
+                    Case 3
+                        Return "2441V Thermostat Adapter for Venstar"
                     Case 10
                         Return "2441ZTH Wireless Thermostat"
                     Case 11
@@ -1327,10 +1396,33 @@ Module modInsteon
                 Select Case SubCat
                     Case 0
                         Return "2450 I/O Linc"
+                    Case 1
+                        Return "EZSns1W Sensor Module"
+                    Case 2
+                        Return "EZIO8T I/O Module"
+                    Case 3
+                        Return "EZIO2x4 I/O Module"
+                    Case 4
+                        Return "EZIO8SA I/O Module"
+                    Case 5
+                        Return "EZSnsRF RF Receiver"
+                    Case 6
+                        Return "EZSnsRF RF Interface"
+                    Case 7
+                        Return "EZIO6I I/O Module"
+                    Case 8
+                        Return "EZIO4O I/O Module"
                     Case 26
                         Return "2867-222 Alert Module"
                     Case Else
                         Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
+            Case 15
+                Select Case SubCat
+                    Case 6
+                        Return "2458A1 MorningLinc"
+                    Case Else
+                        Return "Unrecognized Access Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
             Case 16
                 Select Case SubCat

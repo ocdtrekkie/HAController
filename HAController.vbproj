@@ -107,6 +107,7 @@
     <Compile Include="modDatabase.vb" />
     <Compile Include="modGlobal.vb" />
     <Compile Include="modInsteon.vb" />
+    <Compile Include="modMail.vb" />
     <Compile Include="modOpenWeatherMap.vb" />
     <Compile Include="modPing.vb" />
     <Compile Include="modScheduler.vb" />

@@ -1064,6 +1064,7 @@ Module modInsteon
     Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As Object
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
         Dim result As Object = New Object
+        Dim model = InsteonDeviceLookup(DevCat, SubCat)
 
         cmd.CommandText = "INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
@@ -1074,7 +1075,7 @@ Module modInsteon
         End Try
 
 
-        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + strAddress + "')"
+        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         Try
             result = cmd.ExecuteScalar()

@@ -358,7 +358,7 @@ Module modInsteon
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
                     ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
-                    If CheckDbForInsteon(FromAddress) = 0 Then
+                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 Then
                         Threading.Thread.Sleep(1000)
                         InsteonProductDataRequest(FromAddress, response)
                     End If

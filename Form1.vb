@@ -28,6 +28,10 @@
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
+        My.Application.Log.WriteEntry("Loading mail module")
+        modMail.Load()
+
+        modMail.Send()
 
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)

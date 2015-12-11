@@ -140,6 +140,26 @@ Module modInsteon
             End Try
         End If
     End Sub
+	
+	Sub InsteonGetEngineVersion(ByVal strAddress As String, ByRef ResponseMsg As String)
+        Dim data(7) As Byte
+        Dim arrAddress() As String = strAddress.Split(".")
+
+        data(0) = 2 'all commands start with 2
+        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+        data(3) = Convert.ToInt32(arrAddress(1), 16)
+        data(4) = Convert.ToInt32(arrAddress(2), 16)
+        data(5) = 15 'flags
+        data(6) = 14
+        data(7) = 0
+        Try
+            SerialPLM.Write(data, 0, 8)
+        Catch Excep As System.InvalidOperationException
+            My.Application.Log.WriteException(Excep)
+            ResponseMsg = "ERROR: " + Excep.Message
+        End Try
+    End Sub
 
     Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Integer = 255)
         Dim comm1 As Short

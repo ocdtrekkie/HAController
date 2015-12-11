@@ -33,7 +33,7 @@ Module modMail
         oMsg.Body = "Test notification"
 
         Try
-            SmtpClient.Send(oMsg)
+            SmtpClient.SendAsync(oMsg, Nothing)
         Catch MailEx As SmtpException
             My.Application.Log.WriteException(MailEx)
         End Try

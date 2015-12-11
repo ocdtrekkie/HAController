@@ -2,6 +2,7 @@
     Dim ResponseMsg As String
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
         modInsteon.Unload()
         Threading.Thread.Sleep(3000) ' Let any remaining commands filter through
         modScheduler.Unload()

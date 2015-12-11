@@ -1262,6 +1262,8 @@ Module modInsteon
                         Return "2477S Dual-Band On/Off Switch"
                     Case 55
                         Return "2635-222 On/Off Module"
+                    Case 56
+                        Return "2634-222 Dual-Band Outdoor On/Off Module"
                     Case 57
                         Return "2663-222 On/Off Outlet"
                     Case Else

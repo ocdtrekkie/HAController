@@ -2,6 +2,7 @@
     Dim ResponseMsg As String
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
         modInsteon.Unload()
         Threading.Thread.Sleep(3000) ' Let any remaining commands filter through
         modScheduler.Unload()
@@ -28,6 +29,10 @@
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
+        'My.Application.Log.WriteEntry("Loading mail module")
+        'modMail.Load()
+
+        'modMail.Send()
 
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)

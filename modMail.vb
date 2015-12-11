@@ -23,6 +23,22 @@ Module modMail
         SmtpClient.Port = My.Settings.Mail_Port
     End Sub
 
+    Sub Send()
+        Dim oMsg As New MailMessage
+
+        oMsg.From = New MailAddress(My.Settings.Mail_From)
+        oMsg.To.Add(My.Settings.Mail_To)
+        oMsg.Subject = "Notification from HAController"
+        oMsg.IsBodyHtml = False
+        oMsg.Body = "Test notification"
+
+        Try
+            SmtpClient.SendAsync(oMsg, Nothing)
+        Catch MailEx As SmtpException
+            My.Application.Log.WriteException(MailEx)
+        End Try
+    End Sub
+
     Sub Unload()
 
     End Sub

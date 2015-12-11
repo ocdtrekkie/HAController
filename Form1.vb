@@ -3,6 +3,7 @@
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
+        Me.Hide()
         modInsteon.Unload()
         Threading.Thread.Sleep(3000) ' Let any remaining commands filter through
         modScheduler.Unload()
@@ -40,6 +41,11 @@
             modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
             lblComConnected.Text = ResponseMsg
         End If
+    End Sub
+
+    Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click
+        My.Application.Log.WriteEntry("Checking device " + txtAddress.Text)
+        modInsteon.InsteonGetEngineVersion(txtAddress.Text, lblCommandSent.Text)
     End Sub
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click

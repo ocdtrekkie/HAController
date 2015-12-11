@@ -47,6 +47,7 @@ Partial Class frmMain
         Me.btnInsteonAlarmOn = New System.Windows.Forms.Button()
         Me.btnInsteonAlarmOff = New System.Windows.Forms.Button()
         Me.lblAlarm = New System.Windows.Forms.Label()
+        Me.btnInsteonCheck = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -278,11 +279,21 @@ Partial Class frmMain
         Me.lblAlarm.TabIndex = 26
         Me.lblAlarm.Text = "Alarm Controls"
         '
+        'btnInsteonCheck
+        '
+        Me.btnInsteonCheck.Location = New System.Drawing.Point(104, 163)
+        Me.btnInsteonCheck.Name = "btnInsteonCheck"
+        Me.btnInsteonCheck.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonCheck.TabIndex = 27
+        Me.btnInsteonCheck.Text = "Check"
+        Me.btnInsteonCheck.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 306)
+        Me.Controls.Add(Me.btnInsteonCheck)
         Me.Controls.Add(Me.lblAlarm)
         Me.Controls.Add(Me.btnInsteonAlarmOff)
         Me.Controls.Add(Me.btnInsteonAlarmOn)
@@ -339,4 +350,5 @@ Partial Class frmMain
     Friend WithEvents btnInsteonAlarmOn As System.Windows.Forms.Button
     Friend WithEvents btnInsteonAlarmOff As System.Windows.Forms.Button
     Friend WithEvents lblAlarm As System.Windows.Forms.Label
+    Friend WithEvents btnInsteonCheck As System.Windows.Forms.Button
 End Class

@@ -140,8 +140,8 @@ Module modInsteon
             End Try
         End If
     End Sub
-	
-	Sub InsteonGetEngineVersion(ByVal strAddress As String, ByRef ResponseMsg As String)
+
+    Sub InsteonGetEngineVersion(ByVal strAddress As String, ByRef ResponseMsg As String)
         Dim data(7) As Byte
         Dim arrAddress() As String = strAddress.Split(".")
 
@@ -151,7 +151,7 @@ Module modInsteon
         data(3) = Convert.ToInt32(arrAddress(1), 16)
         data(4) = Convert.ToInt32(arrAddress(2), 16)
         data(5) = 15 'flags
-        data(6) = 14
+        data(6) = 13
         data(7) = 0
         Try
             SerialPLM.Write(data, 0, 8)
@@ -1134,7 +1134,7 @@ Module modInsteon
                 Return "Enter Link Mode"
             Case 10
                 Return "Enter Unlink Mode"
-            Case 14
+            Case 13
                 Return "Get INSTEON Engine Version"
             Case 15
                 Return "Ping"

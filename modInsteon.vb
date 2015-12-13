@@ -198,24 +198,45 @@ Module modInsteon
         End Try
     End Sub
 
-    Sub InsteonProductDataRequest(ByVal strAddress As String, ByRef ResponseMsg As String)
-        Dim data(7) As Byte
+    Sub InsteonProductDataRequest(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal EngineVersion As Short)
         Dim arrAddress() As String = strAddress.Split(".")
 
-        data(0) = 2 'all commands start with 2
-        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 15 'flags
-        data(6) = 3
-        data(7) = 0
-        Try
-            SerialPLM.Write(data, 0, 8)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
+        Select Case EngineVersion
+            Case 0 Or 1
+                Dim data(7) As Byte
+                data(0) = 2 'all commands start with 2
+                data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+                data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+                data(3) = Convert.ToInt32(arrAddress(1), 16)
+                data(4) = Convert.ToInt32(arrAddress(2), 16)
+                data(5) = 15 'flags
+                data(6) = 3
+                data(7) = 0
+                Try
+                    SerialPLM.Write(data, 0, 8)
+                Catch Excep As System.InvalidOperationException
+                    My.Application.Log.WriteException(Excep)
+                    ResponseMsg = "ERROR: " + Excep.Message
+                End Try
+            Case 2
+                Dim data(21) As Byte
+                data(0) = 2 'all commands start with 2
+                data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+                data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+                data(3) = Convert.ToInt32(arrAddress(1), 16)
+                data(4) = Convert.ToInt32(arrAddress(2), 16)
+                data(5) = 31 'flags
+                data(6) = 3
+                data(7) = 0
+                data(21) = (Not (data(6) + data(7))) + 1
+                Try
+                    SerialPLM.Write(data, 0, 22)
+                Catch Excep As System.InvalidOperationException
+                    My.Application.Log.WriteException(Excep)
+                    ResponseMsg = "ERROR: " + Excep.Message
+                End Try
+        End Select
+
     End Sub
 
     Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Integer = 72)
@@ -378,9 +399,9 @@ Module modInsteon
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
                     ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
-                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 Then
+                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 And Command1 <> 13 Then
                         Threading.Thread.Sleep(1000)
-                        InsteonProductDataRequest(FromAddress, response)
+                        InsteonGetEngineVersion(FromAddress, response)
                     End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -425,6 +446,10 @@ Module modInsteon
                         ' Not a NAK response, could be an ACK or a new message coming in
                         ' Either way, update the sending device
                         Select Case Command1
+                            Case 13
+                                My.Application.Log.WriteEntry("Device " + FromAddress + " has engine version of " + Hex(Command2))
+                                Threading.Thread.Sleep(1000)
+                                InsteonProductDataRequest(FromAddress, response, Command2)
                             Case 17, 18 ' On, Fast On
                                 Insteon(IAddress).Device_On = True
                                 If (Flags And 64) = 64 Then

@@ -210,7 +210,7 @@ Module modInsteon
                 data(3) = Convert.ToInt32(arrAddress(1), 16)
                 data(4) = Convert.ToInt32(arrAddress(2), 16)
                 data(5) = 15 'flags
-                data(6) = 3
+                data(6) = 3 ' Product Data Request
                 data(7) = 0
                 Try
                     SerialPLM.Write(data, 0, 8)
@@ -226,7 +226,7 @@ Module modInsteon
                 data(3) = Convert.ToInt32(arrAddress(1), 16)
                 data(4) = Convert.ToInt32(arrAddress(2), 16)
                 data(5) = 31 'flags
-                data(6) = 3
+                data(6) = 16 ' ID Request
                 data(7) = 0
                 data(21) = (Not (data(6) + data(7))) + 1
                 Try
@@ -399,7 +399,7 @@ Module modInsteon
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
                     ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
-                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 And Command1 <> 13 Then
+                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 And Command1 <> 13 And Command1 <> 16 Then
                         Threading.Thread.Sleep(1000)
                         InsteonGetEngineVersion(FromAddress, response)
                     End If

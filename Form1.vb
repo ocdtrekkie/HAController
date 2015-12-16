@@ -1,4 +1,6 @@
-﻿Public Class frmMain
+﻿Imports System.Data.SQLite
+
+Public Class frmMain
     Dim ResponseMsg As String
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -126,6 +128,21 @@
     Private Sub btnInsteonAlarmOff_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOff.Click
         My.Application.Log.WriteEntry("Turning alarm off")
         modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "Off")
+    End Sub
+
+    Private Sub btnAddIP_Click(sender As Object, e As EventArgs) Handles btnAddIP.Click
+        Dim inputField = InputBox("Specify the name, type of device, and IP address, separated by colons.", "Add IP Device", "")
+        Dim inputData() = inputField.Split(":")
+        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
+        Dim result As Object = New Object
+
+        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "')"
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        Try
+            result = cmd.ExecuteScalar()
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
     End Sub
 
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted

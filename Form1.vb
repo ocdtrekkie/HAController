@@ -131,12 +131,12 @@ Public Class frmMain
     End Sub
 
     Private Sub btnAddIP_Click(sender As Object, e As EventArgs) Handles btnAddIP.Click
-        Dim inputField = InputBox("Specify the name, type of device, and IP address, separated by colons.", "Add IP Device", "")
+        Dim inputField = InputBox("Specify the name, type of device, device model, and IP address, separated by colons.", "Add IP Device", "")
         Dim inputData() = inputField.Split(":")
         Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
         Dim result As Object = New Object
 
-        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "')"
+        cmd.CommandText = "INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "', '" + inputData(3) + "')"
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         Try
             result = cmd.ExecuteScalar()

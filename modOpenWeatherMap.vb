@@ -1,5 +1,4 @@
-﻿Imports System.Data.SQLite
-Imports System.Xml
+﻿Imports System.Xml
 
 Module modOpenWeatherMap
     Sub Disable()
@@ -48,16 +47,7 @@ Module modOpenWeatherMap
             My.Application.Log.WriteEntry(SpeechString)
             modSpeech.Say(SpeechString)
 
-            Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
-            Dim result As Object = New Object
-
-            cmd.CommandText = "INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ")"
-            My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
-            Try
-                result = cmd.ExecuteScalar()
-            Catch SQLiteExcep As SQLiteException
-                My.Application.Log.WriteException(SQLiteExcep)
-            End Try
+            modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ")")
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)
         End Try

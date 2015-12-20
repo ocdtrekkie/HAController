@@ -17,6 +17,19 @@ Module modDatabase
         cmd.ExecuteNonQuery()
     End Sub
 
+    Sub Execute(query As String)
+        Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
+        Dim result As Object = New Object
+
+        cmd.CommandText = query
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        Try
+            cmd.ExecuteNonQuery()
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
+    End Sub
+
     Sub Load()
         Dim connstring As String = "URI=file:" + My.Settings.Database_FileURI
 

@@ -31,12 +31,8 @@ Module modInsteon
     Public x_Start As Short ' Index of next byte of data to process in array
 
     Sub CreateInsteonDb()
-        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
-
         ' Mirroring the InsteonDevice structure for now
-        cmd.CommandText = "CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER, DevCat INTEGER, SubCat INTEGER, Firmware INTEGER)"
-        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
-        cmd.ExecuteNonQuery()
+        modDatabase.Execute("CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER, DevCat INTEGER, SubCat INTEGER, Firmware INTEGER)")
     End Sub
 
     Sub Disable()

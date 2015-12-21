@@ -1538,8 +1538,8 @@ Module modInsteon
     Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 110
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + comm2 + ")")
-                Return "Temperature: " & Int(comm2 / 2) & " F"
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + CStr(Int(comm2 / 2)) + ")")
+                Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"
             Case 111
                 Return "Humidity Level: " & comm2 & "%"
             Case 112

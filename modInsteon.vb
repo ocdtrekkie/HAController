@@ -30,7 +30,7 @@ Module modInsteon
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
 
-    Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As Object
+    Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short)
         Dim model = InsteonDeviceLookup(DevCat, SubCat)
 
         modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
@@ -1538,6 +1538,7 @@ Module modInsteon
     Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 110
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + comm2 + ")")
                 Return "Temperature: " & comm2 & " F"
             Case 111
                 Return "Humidity Level: " & comm2 & "%"

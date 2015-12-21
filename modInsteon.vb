@@ -30,6 +30,13 @@ Module modInsteon
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
     Public x_Start As Short ' Index of next byte of data to process in array
 
+    Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As Object
+        Dim model = InsteonDeviceLookup(DevCat, SubCat)
+
+        modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
+        modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')")
+    End Sub
+
     Sub CreateInsteonDb()
         ' Mirroring the InsteonDevice structure for now
         modDatabase.Execute("CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER, DevCat INTEGER, SubCat INTEGER, Firmware INTEGER)")
@@ -620,7 +627,6 @@ Module modInsteon
                                     strTemp = strTemp & Hex(x(ms + i)) & " "
                                 Next
                                 strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
-                                ' add this info to the database (TODO)
                                 AddInsteonDeviceDb(FromAddress, x(ms + 15), x(ms + 16), x(ms + 17))
                             Case 1 ' FX Username Response
                                 strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
@@ -1100,15 +1106,6 @@ Module modInsteon
         Else
             X10Device_from_PLM = -1
         End If
-    End Function
-
-    Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As Object
-        Dim model = InsteonDeviceLookup(DevCat, SubCat)
-
-        modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
-        modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')")
-
-        Return 0
     End Function
 
     Function CheckDbForInsteon(ByVal strAddress As String) As Integer

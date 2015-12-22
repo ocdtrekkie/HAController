@@ -1340,6 +1340,26 @@ Module modInsteon
                         Return "2476D SwitchLinc Dimmer 1200W"
                     Case 32
                         Return "2477D Dual-Band Dimmer Switch"
+                    Case 58
+                        Return "2672-222 LED Bulb 240V Edison"
+                    Case 59
+                        Return "2672-422 LED Bulb 240V Edison (EU)"
+                    Case 60
+                        Return "2672-522 LED Bulb 240V Edison (AUS/NZ)"
+                    Case 73
+                        Return "2674-222 LED Bulb PAR38 Edison"
+                    Case 74
+                        Return "2674-422 LED Bulb PAR38 Edison (EU)"
+                    Case 75
+                        Return "2674-522 LED Bulb PAR38 Edison (AUS/NZ)"
+                    Case 76
+                        Return "2672-432 LED Bulb 240V Bayonet (EU)"
+                    Case 77
+                        Return "2672-532 LED Bulb 240V Bayonet (AUS/NZ)"
+                    Case 78
+                        Return "2674-432 LED Bulb PAR38 Bayonet (EU)"
+                    Case 79
+                        Return "2674-532 LED Bulb PAR38 Bayonet (AUS/NZ)"
                     Case Else
                         Return "Unrecognized Dimmer, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select

@@ -1340,6 +1340,38 @@ Module modInsteon
                         Return "2476D SwitchLinc Dimmer 1200W"
                     Case 32
                         Return "2477D Dual-Band Dimmer Switch"
+                    Case 33
+                        Return "2472D Dual-Band OutletLinc Dimmer"
+                    Case 34
+                        Return "2457D2X LampLinc"
+                    Case 35
+                        Return "2457D2EZ Dual-Band LampLinc EZ"
+                    Case 36
+                        Return "2474DWH SwitchLinc 2-Wire Dimmer"
+                    Case 37
+                        Return "2475DA2 In-LineLinc 0-10VDC Dimmer/Dual-SwitchDB"
+                    Case 45
+                        Return "2477DH Dual-Band SwitchLinc Dimmer Switch 1000W"
+                    Case 46
+                        Return "2475F FanLinc"
+                    Case 48
+                        Return "2476D SwitchLinc Dimmer"
+                    Case 49
+                        Return "2478D Dual-Band SwitchLinc Dimmer 240V"
+                    Case 50
+                        Return "2475DA1 Dual-Band In-LineLinc Dimmer"
+                    Case 52
+                        Return "2452-222 DIN Rail Dimmer"
+                    Case 53
+                        Return "2442-222 Micro Dimmer"
+                    Case 54
+                        Return "2452-422 DIN Rail Dimmer (EU)"
+                    Case 55
+                        Return "2452-522 DIN Rail Dimmer (AUS/NZ)"
+                    Case 56
+                        Return "2442-422 Micro Dimmer (EU)"
+                    Case 57
+                        Return "2442-522 Micro Dimmer (AUS/NZ)"
                     Case 58
                         Return "2672-222 LED Bulb 240V Edison"
                     Case 59

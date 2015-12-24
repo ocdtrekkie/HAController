@@ -1543,10 +1543,16 @@ Module modInsteon
                 End Select
             Case 16
                 Select Case SubCat
+                    Case 0
+                        Return "First Alert ONELink RF to Insteon Bridge"
                     Case 1
                         Return "2842-222 Motion Sensor | 2420M Motion Sensor"
                     Case 2
                         Return "2843-222 Wireless Open/Close Sensor | 2421 TriggerLinc"
+                    Case 4
+                        Return "2842-422 Motion Sensor (EU)"
+                    Case 5
+                        Return "2842-522 Motion Sensor (AUS/NZ)"
                     Case 6
                         Return "2843-422 Wireless Open/Close Sensor (EU)"
                     Case 7

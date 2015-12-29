@@ -1,6 +1,5 @@
 ﻿Imports Quartz
 Imports Quartz.Impl
-Imports System.Data.SQLite
 
 Module modInsteon
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
@@ -1109,17 +1108,12 @@ Module modInsteon
     End Function
 
     Function CheckDbForInsteon(ByVal strAddress As String) As Integer
-        Dim cmd As SQLiteCommand = New SQLiteCommand(modDatabase.conn)
-        Dim result As Object = New Object
-        Dim resultInt As Integer = New Integer
+        Dim result As Integer = New Integer
 
-        cmd.CommandText = "SELECT Id FROM INSTEON_DEVICES WHERE Address = """ + strAddress + """"
-        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
-        result = cmd.ExecuteScalar()
-        If result <> Nothing Then
-            resultInt = CInt(result.ToString)
+        modDatabase.ExecuteScalar("SELECT Id FROM INSTEON_DEVICES WHERE Address = """ + strAddress + """", result)
+        If result <> 0 Then
             My.Application.Log.WriteEntry(strAddress + " database ID is " + result.ToString)
-            Return resultInt
+            Return result
         Else
             My.Application.Log.WriteEntry(strAddress + " is not in the device database")
             Return 0

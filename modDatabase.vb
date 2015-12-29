@@ -12,7 +12,6 @@ Module modDatabase
 
     Sub Execute(query As String)
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
-        Dim result As Object = New Object
 
         cmd.CommandText = query
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
@@ -21,6 +20,22 @@ Module modDatabase
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try
+    End Sub
+
+    Sub ExecuteScalar(query As String, ByRef result As Integer)
+        Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
+
+        cmd.CommandText = query
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        Try
+            result = cmd.ExecuteScalar()
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
+
+        If result = Nothing Then
+            result = 0
+        End If
     End Sub
 
     Sub Load()

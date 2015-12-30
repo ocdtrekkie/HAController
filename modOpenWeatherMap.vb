@@ -1,4 +1,6 @@
-﻿Imports System.Xml
+﻿Imports Quartz
+Imports Quartz.Impl
+Imports System.Xml
 
 Module modOpenWeatherMap
     Sub Disable()
@@ -59,8 +61,15 @@ Module modOpenWeatherMap
 
     Sub Load()
         If My.Settings.OpenWeatherMap_Enable = True Then
-            Dim WeatherThread As New Threading.Thread(AddressOf GatherWeatherData)
-            WeatherThread.Start()
+            My.Application.Log.WriteEntry("Scheduling automatic OpenWeatherMap checks")
+            Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("job4", "group4").Build()
+            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger4", "group4").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(60).RepeatForever()).Build()
+
+            Try
+                modScheduler.sched.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)
+            Catch QzExcep As Quartz.ObjectAlreadyExistsException
+                My.Application.Log.WriteException(QzExcep)
+            End Try
         Else
             My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")
         End If
@@ -69,4 +78,10 @@ Module modOpenWeatherMap
     Sub Unload()
 
     End Sub
+
+    Public Class WeatherUpdateSchedule : Implements IJob
+        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+            GatherWeatherData(True)
+        End Sub
+    End Class
 End Module

@@ -401,10 +401,10 @@ Module modInsteon
                     Command1 = x(ms + 9)
                     Command2 = x(ms + 10)
                     ' Check if FromAddress is in device database, if not request info (ToAddress will generally = PLM)
-                    If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 And Command1 <> 13 And Command1 <> 16 Then
-                        Threading.Thread.Sleep(1000)
-                        InsteonGetEngineVersion(FromAddress, response)
-                    End If
+                    'If CheckDbForInsteon(FromAddress) = 0 And Command1 <> 3 And Command1 <> 13 And Command1 <> 16 Then
+                    '    Threading.Thread.Sleep(1000)
+                    '    InsteonGetEngineVersion(FromAddress, response)
+                    'End If
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
                         strTemp = strTemp & " (PLM)"

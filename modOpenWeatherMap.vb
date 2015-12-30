@@ -15,7 +15,7 @@ Module modOpenWeatherMap
         Load()
     End Sub
 
-    Sub GatherWeatherData()
+    Sub GatherWeatherData(Optional ByVal Silent As Boolean = True)
         Dim SpeechString As String
 
         If My.Settings.OpenWeatherMap_APIKey = "" Then
@@ -39,13 +39,17 @@ Module modOpenWeatherMap
             Dim strWeather As String = WeatherNode.Attributes.GetNamedItem("value").Value
             SpeechString = "The current outside weather condition is " + strWeather
             My.Application.Log.WriteEntry(SpeechString)
-            modSpeech.Say(SpeechString)
+            If Silent = False Then
+                modSpeech.Say(SpeechString)
+            End If
 
             WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
             Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
             SpeechString = "The current outside temperature is " + CStr(Int(dblTemperature)) + " degrees Fahrenheit"
             My.Application.Log.WriteEntry(SpeechString)
-            modSpeech.Say(SpeechString)
+            If Silent = False Then
+                modSpeech.Say(SpeechString)
+            End If
 
             modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ")")
         Catch NetExcep As System.Net.WebException

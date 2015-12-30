@@ -152,4 +152,10 @@
         My.Settings.Global_LastHomeStatus = modGlobal.HomeStatus
         lblCurrentStatus.Text = modGlobal.HomeStatus
     End Sub
+
+    Private Sub btnCheckWeather_Click(sender As Object, e As EventArgs) Handles btnCheckWeather.Click
+        If My.Settings.OpenWeatherMap_Enable = True Then
+            modOpenWeatherMap.GatherWeatherData(False)
+        End If
+    End Sub
 End Class

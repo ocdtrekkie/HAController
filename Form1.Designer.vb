@@ -49,6 +49,7 @@ Partial Class frmMain
         Me.lblAlarm = New System.Windows.Forms.Label()
         Me.btnInsteonCheck = New System.Windows.Forms.Button()
         Me.btnAddIP = New System.Windows.Forms.Button()
+        Me.btnCheckWeather = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -298,11 +299,21 @@ Partial Class frmMain
         Me.btnAddIP.Text = "Add IP"
         Me.btnAddIP.UseVisualStyleBackColor = True
         '
+        'btnCheckWeather
+        '
+        Me.btnCheckWeather.Location = New System.Drawing.Point(68, 66)
+        Me.btnCheckWeather.Name = "btnCheckWeather"
+        Me.btnCheckWeather.Size = New System.Drawing.Size(104, 23)
+        Me.btnCheckWeather.TabIndex = 29
+        Me.btnCheckWeather.Text = "Check Weather"
+        Me.btnCheckWeather.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 306)
+        Me.Controls.Add(Me.btnCheckWeather)
         Me.Controls.Add(Me.btnAddIP)
         Me.Controls.Add(Me.btnInsteonCheck)
         Me.Controls.Add(Me.lblAlarm)
@@ -363,4 +374,5 @@ Partial Class frmMain
     Friend WithEvents lblAlarm As System.Windows.Forms.Label
     Friend WithEvents btnInsteonCheck As System.Windows.Forms.Button
     Friend WithEvents btnAddIP As System.Windows.Forms.Button
+    Friend WithEvents btnCheckWeather As System.Windows.Forms.Button
 End Class

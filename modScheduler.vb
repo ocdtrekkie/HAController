@@ -21,12 +21,13 @@ Module modScheduler
     End Class
 
     Sub Load()
-        Dim intHour As Integer = 18
-        Dim intMinute As Integer = 59
         My.Application.Log.WriteEntry("Starting scheduler")
         sched.Start()
 
+        ' TEMP WAKE ALARM CODE
         ' construct job info
+        Dim intHour As Integer = 6
+        Dim intMinute As Integer = 50
         Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).UsingJobData("intHour", CStr(intHour)).UsingJobData("intMinute", CStr(intMinute)).WithIdentity("job2", "group2").Build()
         ' construct trigger
 

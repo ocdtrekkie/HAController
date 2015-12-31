@@ -62,8 +62,8 @@ Module modOpenWeatherMap
     Sub Load()
         If My.Settings.OpenWeatherMap_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic OpenWeatherMap checks")
-            Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("job4", "group4").Build()
-            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("trigger4", "group4").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(60).RepeatForever()).Build()
+            Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("checkjob", "modopenweathermap").Build()
+            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(60).RepeatForever()).Build()
 
             Try
                 modScheduler.sched.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)

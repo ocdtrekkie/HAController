@@ -56,7 +56,11 @@ Module modOpenWeatherMap
             WeatherNode = WeatherData.SelectSingleNode("/current/humidity")
             Dim dblHumidity As Double = WeatherNode.Attributes.GetNamedItem("value").Value
 
-            modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + Now.ToString + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
+            WeatherNode = WeatherData.SelectSingleNode("/current/lastupdate")
+            Dim dteLastUpdate As DateTime = WeatherNode.Attributes.GetNamedItem("value").Value
+            dteLastUpdate = dteLastUpdate.AddHours(My.Settings.Global_TimeOffset)
+
+            modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)
         End Try

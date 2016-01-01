@@ -1593,6 +1593,7 @@ Module modInsteon
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + CStr(Int(comm2 / 2)) + ")")
                 Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"
             Case 111
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Humidity) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + CStr(comm2) + ")")
                 Return "Humidity Level: " & comm2 & "%"
             Case 112
                 Select Case comm2

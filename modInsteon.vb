@@ -1528,8 +1528,33 @@ Module modInsteon
                     Case Else
                         Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
+            Case 14
+                Select Case SubCat
+                    Case 0
+                        Return "318276I Somfy Drape Controller RF Bridge"
+                    Case 1
+                        Return "2444-222 Micro Open/Close Motor Control Module"
+                    Case 2
+                        Return "2444-422 Micro Open/Close Motor Control Module (EU)"
+                    Case 3
+                        Return "2444-522 Micro Open/Close Motor Control Module (AUS/NZ)"
+                    Case Else
+                        Return "Unrecognized Window Covering Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                End Select
             Case 15
                 Select Case SubCat
+                    Case 0
+                        Return "Weiland Doors Central Drive and Control"
+                    Case 1
+                        Return "Weiland Doors Secondary Central Drive"
+                    Case 2
+                        Return "Weiland Doors Assist Drive"
+                    Case 3
+                        Return "Weiland Doors Elevation Drive"
+                    Case 4
+                        Return "GarageHawk Garage Unit"
+                    Case 5
+                        Return "GarageHawk Remote Unit"
                     Case 6
                         Return "2458A1 MorningLinc"
                     Case Else

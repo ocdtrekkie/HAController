@@ -1503,6 +1503,8 @@ Module modInsteon
                     Case Else
                         Return "Unrecognized Temperature Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
+            Case 6
+                Return "Unrecognized Pool/Spa Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case 7
                 Select Case SubCat
                     Case 0
@@ -1528,6 +1530,16 @@ Module modInsteon
                     Case Else
                         Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
+            Case 8
+                Return "Unrecognized Home Entertainment Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 10
+                Return "Unrecognized Appliance Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)"
+            Case 11
+                Return "Unrecognized Plumbing Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 12
+                Return "Unrecognized Communication Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 13
+                Return "Unrecognized Computer Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case 14
                 Select Case SubCat
                     Case 0
@@ -1589,6 +1601,18 @@ Module modInsteon
                     Case Else
                         Return "Unrecognized Security/Safety Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
+            Case 17
+                Return "Unrecognized Surveillance Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 18
+                Return "Unrecognized Automotive Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 19
+                Return "Unrecognized Pet Care Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 20
+                Return "Unrecognized Toy, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 21
+                Return "Unrecognized Timekeeping Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+            Case 22
+                Return "Unrecognized Holiday Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case Else
                 Return "Unrecognized Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
         End Select

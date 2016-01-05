@@ -18,9 +18,13 @@ Module modMail
     End Sub
 
     Sub Load()
-        SmtpClient.EnableSsl = True
         SmtpClient.Host = My.Settings.Mail_Host
         SmtpClient.Port = My.Settings.Mail_Port
+        If SmtpClient.Port = 465 Then
+            SmtpClient.EnableSsl = True
+        Else
+            SmtpClient.EnableSsl = False
+        End If
     End Sub
 
     Sub Send()

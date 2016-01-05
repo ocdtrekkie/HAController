@@ -30,10 +30,12 @@ Module modInsteon
     Public x_Start As Short ' Index of next byte of data to process in array
 
     Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short)
-        Dim model = InsteonDeviceLookup(DevCat, SubCat)
+        If CheckDbForInsteon(strAddress) = 0 Then
+            Dim model = InsteonDeviceLookup(DevCat, SubCat)
 
-        modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
-        modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')")
+            modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
+            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')")
+        End If
     End Sub
 
     Sub CreateInsteonDb()
@@ -439,6 +441,11 @@ Module modInsteon
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+
+                    If Flags = 139 And (Command1 = 1 Or Command1 = 2) Then
+                        ' This is a 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
+                        AddInsteonDeviceDb(FromAddress, x(ms + 5), x(ms + 6), x(ms + 7))
+                    End If
 
                     ' Update the status of the sending device
                     IAddress = InsteonNum(FromAddress)  ' already checked to make sure it was in list
@@ -1122,6 +1129,10 @@ Module modInsteon
 
     Function InsteonCommandLookup(ByVal ICmd) As String
         Select Case ICmd
+            Case 1
+                Return "Product Request Data"
+            Case 2
+                Return "Product Request Data"
             Case 3
                 Return "Product Data Request"
             Case 6

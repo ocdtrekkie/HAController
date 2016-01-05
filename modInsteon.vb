@@ -1533,7 +1533,7 @@ Module modInsteon
             Case 8
                 Return "Unrecognized Home Entertainment Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case 10
-                Return "Unrecognized Appliance Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)"
+                Return "Unrecognized Appliance Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case 11
                 Return "Unrecognized Plumbing Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
             Case 12

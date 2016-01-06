@@ -25,6 +25,7 @@ Module modMail
         Else
             SmtpClient.EnableSsl = False
         End If
+        SmtpClient.Credentials = New System.Net.NetworkCredential(My.Settings.Mail_Username, My.Settings.Mail_Password)
     End Sub
 
     Sub Send()

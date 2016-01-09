@@ -437,7 +437,7 @@ Module modInsteon
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
                     ElseIf FromAddress = My.Settings.Insteon_DoorSensorAddr And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr And Flags = 203 Then ' TODO: Detect this by device model
+                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr And Flags = 203 And x(ms + 5) = 0 And x(ms + 6) = 0 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)

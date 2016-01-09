@@ -435,15 +435,17 @@ Module modInsteon
                     End Select
                     If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_DoorSensorAddr And ToAddress = "0.0.1" Then
+                    ElseIf FromAddress = My.Settings.Insteon_DoorSensorAddr And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
+                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr And Flags = 203 Then ' TODO: Detect this by device model
+                        strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
 
                     If Flags = 139 And (Command1 = 1 Or Command1 = 2) Then
-                        ' This is a 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
+                        ' This is a 0x01 or 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
                         AddInsteonDeviceDb(FromAddress, x(ms + 5), x(ms + 6), x(ms + 7))
                     End If
 
@@ -1633,7 +1635,7 @@ Module modInsteon
         Select Case comm1
             Case 17
                 If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
-                    My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus)
+                    My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus, TraceEventType.Warning)
                     modSpeech.Say("Intruder alert!")
                     Dim response As String = ""
                     Threading.Thread.Sleep(5000)
@@ -1644,6 +1646,43 @@ Module modInsteon
                 Return "Door Closed"
             Case Else
                 Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"
+        End Select
+    End Function
+
+    Function InsteonSmokeBridgeResponse(ByVal ToBit As Byte) As String
+        Select Case ToBit
+            Case 1
+                My.Application.Log.WriteEntry("ALERT: Smoke Detected!", TraceEventType.Warning)
+                modSpeech.Say("Smoke detected")
+                Dim response As String = ""
+                Threading.Thread.Sleep(3000)
+                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
+                Return "Smoke Detected"
+            Case 2
+                My.Application.Log.WriteEntry("ALERT: Carbon Monoxide Detected!", TraceEventType.Warning)
+                modSpeech.Say("Carbon monoxide detected")
+                Dim response As String = ""
+                Threading.Thread.Sleep(3000)
+                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
+                Return "Carbon Monoxide Detected"
+            Case 3
+                modSpeech.Say("Test of Smoke Bridge successful")
+                Return "Test Detected"
+            Case 4
+                Return "New or Unknown Message Detected"
+            Case 5
+                Return "All Clear Detected"
+            Case 6
+                My.Application.Log.WriteEntry("WARNING: Smoke Detector Low Battery", TraceEventType.Warning)
+                modSpeech.Say("Change smoke detector battery")
+                Return "Low Battery Detected"
+            Case 7
+                My.Application.Log.WriteEntry("WARNING: Smoke Detector Sensor Malfunction", TraceEventType.Warning)
+                Return "Sensor Malfunction Detected"
+            Case 10
+                Return "Heartbeat Detected"
+            Case Else
+                Return "New or Unknown Message Detected"
         End Select
     End Function
 

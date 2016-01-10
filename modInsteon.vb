@@ -435,7 +435,7 @@ Module modInsteon
                     End Select
                     If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_DoorSensorAddr And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
+                    ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr Or FromAddress = My.Settings.Insteon_BackDoorSensorAddr) And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
                     ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr And Flags = 203 And x(ms + 5) = 0 And x(ms + 6) = 0 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))

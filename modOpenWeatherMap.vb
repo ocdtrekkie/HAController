@@ -60,7 +60,14 @@ Module modOpenWeatherMap
             Dim dteLastUpdate As DateTime = WeatherNode.Attributes.GetNamedItem("value").Value
             dteLastUpdate = TimeZoneInfo.ConvertTimeFromUtc(dteLastUpdate, TimeZoneInfo.Local)
 
-            modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
+            Dim result As Integer = New Integer
+
+            modDatabase.ExecuteScalar("SELECT Id FROM ENVIRONMENT WHERE Date = """ + dteLastUpdate + """ AND Source = ""OWM""", result)
+            If result <> 0 Then
+                My.Application.Log.WriteEntry("Not entering duplicate OpenWeatherMap data")
+            Else
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
+            End If
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)
         End Try

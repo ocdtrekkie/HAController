@@ -311,6 +311,7 @@ Partial Class frmMain
         '
         'txtCommandBar
         '
+        Me.txtCommandBar.Enabled = False
         Me.txtCommandBar.Location = New System.Drawing.Point(12, 313)
         Me.txtCommandBar.Name = "txtCommandBar"
         Me.txtCommandBar.Size = New System.Drawing.Size(260, 20)

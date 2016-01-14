@@ -41,6 +41,8 @@
             modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
             lblComConnected.Text = ResponseMsg
         End If
+
+        txtCommandBar.Enabled = True
     End Sub
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click

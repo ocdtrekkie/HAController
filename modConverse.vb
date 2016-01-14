@@ -7,6 +7,32 @@
                 Case "bye", "exit", "quit", "shutdown"
                     modSpeech.Say("Goodbye")
                     frmMain.Close()
+                Case "disable"
+                    Select Case inputData(1)
+                        Case "insteon"
+                            modInsteon.Disable()
+                        Case "mail"
+                            modMail.Disable()
+                        Case "openweathermap"
+                            modOpenWeatherMap.Disable()
+                        Case "ping"
+                            modPing.Disable()
+                        Case "speech"
+                            modSpeech.Disable()
+                    End Select
+                Case "enable"
+                    Select Case inputData(1)
+                        Case "insteon"
+                            modInsteon.Enable()
+                        Case "mail"
+                            modMail.Enable()
+                        Case "openweathermap"
+                            modOpenWeatherMap.Enable()
+                        Case "ping"
+                            modPing.Enable()
+                        Case "speech"
+                            modSpeech.Enable()
+                    End Select
                 Case "greetings", "hello", "hi"
                     modSpeech.Say("Hello")
                 Case "what's"

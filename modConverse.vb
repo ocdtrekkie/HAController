@@ -4,7 +4,10 @@
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)
-                Case "hi"
+                Case "bye", "exit", "quit", "shutdown"
+                    modSpeech.Say("Goodbye")
+                    frmMain.Close()
+                Case "greetings", "hello", "hi"
                     modSpeech.Say("Hello")
                 Case "what's"
                     If inputData(1) = "the" And inputData(2) = "weather" Then

@@ -50,6 +50,7 @@ Partial Class frmMain
         Me.btnInsteonCheck = New System.Windows.Forms.Button()
         Me.btnAddIP = New System.Windows.Forms.Button()
         Me.btnCheckWeather = New System.Windows.Forms.Button()
+        Me.txtCommandBar = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -308,11 +309,19 @@ Partial Class frmMain
         Me.btnCheckWeather.Text = "Check Weather"
         Me.btnCheckWeather.UseVisualStyleBackColor = True
         '
+        'txtCommandBar
+        '
+        Me.txtCommandBar.Location = New System.Drawing.Point(12, 313)
+        Me.txtCommandBar.Name = "txtCommandBar"
+        Me.txtCommandBar.Size = New System.Drawing.Size(260, 20)
+        Me.txtCommandBar.TabIndex = 30
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 306)
+        Me.ClientSize = New System.Drawing.Size(284, 343)
+        Me.Controls.Add(Me.txtCommandBar)
         Me.Controls.Add(Me.btnCheckWeather)
         Me.Controls.Add(Me.btnAddIP)
         Me.Controls.Add(Me.btnInsteonCheck)
@@ -375,4 +384,5 @@ Partial Class frmMain
     Friend WithEvents btnInsteonCheck As System.Windows.Forms.Button
     Friend WithEvents btnAddIP As System.Windows.Forms.Button
     Friend WithEvents btnCheckWeather As System.Windows.Forms.Button
+    Friend WithEvents txtCommandBar As System.Windows.Forms.TextBox
 End Class

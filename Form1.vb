@@ -160,4 +160,15 @@
             modOpenWeatherMap.GatherWeatherData(False)
         End If
     End Sub
+
+    Private Sub txtCommandBar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyDown
+        Dim strCommandString As String
+
+        If e.KeyCode = Keys.Return Then
+            strCommandString = txtCommandBar.Text
+            txtCommandBar.Text = ""
+
+            modConverse.Interpet(strCommandString)
+        End If
+    End Sub
 End Class

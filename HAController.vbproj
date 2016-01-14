@@ -104,6 +104,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="modConverse.vb" />
     <Compile Include="modDatabase.vb" />
     <Compile Include="modGlobal.vb" />
     <Compile Include="modInsteon.vb" />

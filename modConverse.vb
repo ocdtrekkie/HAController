@@ -1,6 +1,9 @@
-﻿Module modConverse
+﻿' modConverse cannot be disabled and doesn't need to be loaded or unloaded
+
+Module modConverse
     Sub Interpet(ByVal strInputString As String)
         If strInputString <> "" Then
+            My.Application.Log.WriteEntry("Command received: " + strInputString)
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)

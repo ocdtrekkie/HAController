@@ -16,7 +16,7 @@ Module modScheduler
             Dim response As String = ""
             'write your schedule job
             modSpeech.Say("The time is now " & dataMap.GetString("intHour") & ":" & dataMap.GetString("intMinute"))
-            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 2)
+            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 4)
         End Sub
     End Class
 

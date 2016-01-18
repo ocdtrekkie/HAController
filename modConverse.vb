@@ -3,6 +3,7 @@
 Module modConverse
     Sub Interpet(ByVal strInputString As String)
         If strInputString <> "" Then
+            strInputString = strInputString.ToLower()
             My.Application.Log.WriteEntry("Command received: " + strInputString)
             Dim inputData() = strInputString.Split(" ")
 
@@ -40,8 +41,8 @@ Module modConverse
                     modSpeech.Say("Hello")
                 Case "set"
                     If inputData(1) = "status" And inputData(2) = "to" Then
-                        If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then ' TODO: Solve case problem here
-                            frmMain.SetHomeStatus(inputData(3))
+                        If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then
+                            frmMain.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                         End If
                     End If
                 Case "what's"

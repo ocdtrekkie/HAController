@@ -38,6 +38,12 @@ Module modConverse
                     End Select
                 Case "greetings", "hello", "hi"
                     modSpeech.Say("Hello")
+                Case "set"
+                    If inputData(1) = "status" And inputData(2) = "to" Then
+                        If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then ' TODO: Solve case problem here
+                            frmMain.SetHomeStatus(inputData(3))
+                        End If
+                    End If
                 Case "what's"
                     If inputData(1) = "the" And inputData(2) = "weather" Then
                         If My.Settings.OpenWeatherMap_Enable = True Then

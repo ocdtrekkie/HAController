@@ -148,7 +148,7 @@
         SetHomeStatus(cmbStatus.SelectedItem.ToString)
     End Sub
 
-    Private Sub SetHomeStatus(ByVal ChangeHomeStatus)
+    Public Sub SetHomeStatus(ByVal ChangeHomeStatus As String)
         ' TODO: This could probably use some sort of change countdown with the scheduler
         cmbStatus.Text = ChangeHomeStatus
         modGlobal.HomeStatus = ChangeHomeStatus

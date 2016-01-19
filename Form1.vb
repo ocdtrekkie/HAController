@@ -167,6 +167,8 @@
         Dim strCommandString As String
 
         If e.KeyCode = Keys.Return Then
+            e.SuppressKeyPress = True
+
             strCommandString = txtCommandBar.Text
             txtCommandBar.Text = ""
 

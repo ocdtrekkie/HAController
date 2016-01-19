@@ -105,10 +105,10 @@ Module modInsteon
         Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
-            Case "Off"
+            Case "Off", "off"
                 comm1 = 19
                 comm2 = 0
-            Case "On"
+            Case "On", "on"
                 comm1 = 17
                 comm2 = 255
             Case Else
@@ -172,13 +172,13 @@ Module modInsteon
         Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
-            Case "Beep"
+            Case "Beep", "beep"
                 comm1 = 48
                 comm2 = 0
-            Case "Off"
+            Case "Off", "off"
                 comm1 = 19
                 comm2 = 0
-            Case "On"
+            Case "On", "on"
                 comm1 = 17
                 comm2 = intBrightness
             Case Else
@@ -258,28 +258,28 @@ Module modInsteon
         Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
-            Case "Auto"
+            Case "Auto", "auto"
                 comm1 = 107
                 comm2 = 6
-            Case "Cool"
+            Case "Cool", "cool"
                 comm1 = 107
                 comm2 = 5
-            Case "Down"
+            Case "Down", "down"
                 comm1 = 105
                 comm2 = 2
-            Case "FanOff"
+            Case "FanOff", "fanoff"
                 comm1 = 107
                 comm2 = 8
-            Case "FanOn"
+            Case "FanOn", "fanon"
                 comm1 = 107
                 comm2 = 7
-            Case "Heat"
+            Case "Heat", "heat"
                 comm1 = 107
                 comm2 = 4
-            Case "Off"
+            Case "Off", "off"
                 comm1 = 107
                 comm2 = 9
-            Case "Up"
+            Case "Up", "up"
                 comm1 = 104
                 comm2 = 2
             Case Else

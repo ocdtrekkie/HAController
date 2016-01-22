@@ -54,9 +54,9 @@ Module modConverse
                     Dim response As String = ""
                     Select Case inputData(1)
                         Case "alarm"
-                            InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, inputData(2))
+                            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, inputData(2))
                         Case "thermostat"
-                            InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
+                            modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                     End Select
                 Case "what's"
                     If inputData(1) = "the" And inputData(2) = "weather" Then

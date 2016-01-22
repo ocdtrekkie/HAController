@@ -1,7 +1,8 @@
-﻿Imports System.Net.Mail
+﻿Imports System.Net
+Imports System.Net.Mail
 
 Module modMail
-    Public SmtpClient As SmtpClient = New SmtpClient
+    Public oClient As SmtpClient = New SmtpClient
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading mail module")
@@ -18,30 +19,40 @@ Module modMail
     End Sub
 
     Sub Load()
-        SmtpClient.Host = My.Settings.Mail_Host
-        SmtpClient.Port = My.Settings.Mail_Port
-        If SmtpClient.Port = 465 Then
-            SmtpClient.EnableSsl = True
+        If My.Settings.Mail_Enable = True Then
+            oClient.Host = My.Settings.Mail_Host
+            oClient.Port = My.Settings.Mail_Port
+            If oClient.Port = 465 Or oClient.Port = 587 Then
+                oClient.EnableSsl = True
+            Else
+                oClient.EnableSsl = False
+            End If
+            oClient.UseDefaultCredentials = False
+            oClient.Credentials = New System.Net.NetworkCredential(My.Settings.Mail_Username, My.Settings.Mail_Password)
+            oClient.DeliveryMethod = SmtpDeliveryMethod.Network
         Else
-            SmtpClient.EnableSsl = False
+            My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
         End If
-        SmtpClient.Credentials = New System.Net.NetworkCredential(My.Settings.Mail_Username, My.Settings.Mail_Password)
     End Sub
 
-    Sub Send()
-        Dim oMsg As New MailMessage
+    Sub Send(oSubj As String, oBody As String)
+        If My.Settings.Mail_Enable = True Then
+            Dim oMsg As New MailMessage()
 
-        oMsg.From = New MailAddress(My.Settings.Mail_From)
-        oMsg.To.Add(My.Settings.Mail_To)
-        oMsg.Subject = "Notification from HAController"
-        oMsg.IsBodyHtml = False
-        oMsg.Body = "Test notification"
+            oMsg.From = New MailAddress(My.Settings.Mail_From, "HAController")
+            oMsg.To.Add(New MailAddress(My.Settings.Mail_To))
+            oMsg.Subject = oSubj
+            oMsg.Priority = MailPriority.High
+            oMsg.IsBodyHtml = False
+            oMsg.Body = oBody
 
-        Try
-            SmtpClient.SendAsync(oMsg, Nothing)
-        Catch MailEx As SmtpException
-            My.Application.Log.WriteException(MailEx)
-        End Try
+            Try
+                oClient.SendAsync(oMsg, Nothing)
+                My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_From)
+            Catch MailEx As SmtpException
+                My.Application.Log.WriteException(MailEx)
+            End Try
+        End If
     End Sub
 
     Sub Unload()

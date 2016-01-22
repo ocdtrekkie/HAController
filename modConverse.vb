@@ -45,6 +45,11 @@ Module modConverse
                             frmMain.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                         End If
                     End If
+                Case "test"
+                    Select Case inputData(1)
+                        Case "notifications"
+                            modMail.Send("Test Notification", "Test Notification")
+                    End Select
                 Case "turn"
                     Dim response As String = ""
                     Select Case inputData(1)

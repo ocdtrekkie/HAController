@@ -1654,6 +1654,7 @@ Module modInsteon
             Case 1
                 My.Application.Log.WriteEntry("ALERT: Smoke Detected!", TraceEventType.Warning)
                 modSpeech.Say("Smoke detected")
+                modMail.Send("Smoke detected", "Smoke detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
                 InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
@@ -1661,12 +1662,14 @@ Module modInsteon
             Case 2
                 My.Application.Log.WriteEntry("ALERT: Carbon Monoxide Detected!", TraceEventType.Warning)
                 modSpeech.Say("Carbon monoxide detected")
+                modMail.Send("Carbon monoxide detected", "Carbon monoxide detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
                 InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
                 Return "Carbon Monoxide Detected"
             Case 3
                 modSpeech.Say("Test of Smoke Bridge successful")
+                modMail.Send("Test of Smoke Bridge successful", "Test of Smoke Bridge successful")
                 Return "Test Detected"
             Case 4
                 Return "New or Unknown Message Detected"

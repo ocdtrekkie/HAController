@@ -64,6 +64,26 @@ Module modConverse
                             modOpenWeatherMap.GatherWeatherData(False)
                         End If
                     End If
+                Case "would"
+                    If inputData(1) = "you" And inputData(2) = "kindly" Then
+                        ' "Would you kindly" is to make these commands less likely to accidentally trigger
+                        Select Case inputData(3)
+                            Case "reboot", "restart"
+                                If inputData(4) = "host" Then
+                                    modSpeech.Say("Initiating host reboot")
+                                    modMail.Send("Host reboot initiated", "Host reboot initiated")
+                                    System.Diagnostics.Process.Start("shutdown", "-r")
+                                    frmMain.Close()
+                                End If
+                            Case "shut"
+                                If inputData(4) = "down" And inputData(5) = "host" Then
+                                    modSpeech.Say("Initiating host shutdown")
+                                    modMail.Send("Host shutdown initiated", "Host shutdown initiated")
+                                    System.Diagnostics.Process.Start("shutdown", "-s")
+                                    frmMain.Close()
+                                End If
+                        End Select
+                    End If
             End Select
         End If
     End Sub

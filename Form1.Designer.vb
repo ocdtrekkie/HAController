@@ -60,7 +60,7 @@ Partial Class frmMain
         Me.cmbComPort.Location = New System.Drawing.Point(12, 12)
         Me.cmbComPort.Name = "cmbComPort"
         Me.cmbComPort.Size = New System.Drawing.Size(121, 21)
-        Me.cmbComPort.TabIndex = 0
+        Me.cmbComPort.TabIndex = 30
         '
         'lblComConnected
         '
@@ -315,7 +315,7 @@ Partial Class frmMain
         Me.txtCommandBar.Location = New System.Drawing.Point(12, 313)
         Me.txtCommandBar.Name = "txtCommandBar"
         Me.txtCommandBar.Size = New System.Drawing.Size(260, 20)
-        Me.txtCommandBar.TabIndex = 30
+        Me.txtCommandBar.TabIndex = 0
         '
         'frmMain
         '

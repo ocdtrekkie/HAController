@@ -83,8 +83,10 @@ Module modPing
             response = Ping(My.Settings.Ping_InternetCheckAddress)
             If response.Substring(0, 10) <> "Reply from" Then
                 My.Application.Log.WriteEntry(response, TraceEventType.Warning)
+                modGlobal.IsOnline = False
             Else
                 My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
+                modGlobal.IsOnline = True
             End If
         End Sub
     End Class

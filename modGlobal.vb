@@ -2,4 +2,5 @@
 
 Public Module modGlobal
     Public HomeStatus As String
+    Public IsOnline As String
 End Module

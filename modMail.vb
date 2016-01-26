@@ -48,7 +48,7 @@ Module modMail
 
             Try
                 oClient.SendAsync(oMsg, Nothing)
-                My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_From)
+                My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_To)
             Catch MailEx As SmtpException
                 My.Application.Log.WriteException(MailEx)
             End Try

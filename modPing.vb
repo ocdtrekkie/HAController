@@ -81,7 +81,7 @@ Module modPing
             Dim response As String = ""
 
             response = Ping(My.Settings.Ping_InternetCheckAddress)
-            If response.Substring(0, 10) <> "Reply from" Then
+            If response.Substring(0, 10) <> "Reply from" And response <> "Ping disabled" Then
                 My.Application.Log.WriteEntry(response, TraceEventType.Warning)
                 modGlobal.IsOnline = False
             Else

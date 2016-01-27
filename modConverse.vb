@@ -40,6 +40,12 @@ Module modConverse
                 Case "greetings", "hello", "hi"
                     modSpeech.Say("Hello")
                 Case "set"
+                    If inputData(1) = "online" And inputData(2) = "mode" Then
+                        modGlobal.IsOnline = True
+                    End If
+                    If inputData(1) = "offline" And inputData(2) = "mode" Then
+                        modGlobal.IsOnline = False
+                    End If
                     If inputData(1) = "status" And inputData(2) = "to" Then
                         If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then
                             frmMain.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))

@@ -70,6 +70,10 @@ Module modConverse
                             modOpenWeatherMap.GatherWeatherData(False)
                         End If
                     End If
+                Case "who"
+                    If inputData(1) = "are" And inputData(2) = "you" Then
+                        modSpeech.Say("I am " + My.Settings.Converse_BotName + ", a HAC interface, version " + My.Application.Info.Version.ToString)
+                    End If
                 Case "would"
                     If inputData(1) = "you" And inputData(2) = "kindly" Then
                         ' "Would you kindly" is to make these commands less likely to accidentally trigger

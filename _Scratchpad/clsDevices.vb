@@ -2,13 +2,28 @@
 
 'Basically, the code I've written so far is not particularly object-oriented around devices, because I wanted to be quickly comparable with a SQLite database.
 
-'I haven't decided if I want to change this or not, but the idea of treating devices like objects is appealing, so I wrote this draft spec.
+'I haven't decided if I want to change this or not, but the idea of treating devices like objects is appealing, so I wrote this draft spec. Basic concept is:
+
+'General properties
+'     Protocol properties/constructors/methods
+'          Specific control methods
+
+'HADevice
+'     HAInsteonDevice
+'          HAInsteonAlarm
+'          HAInsteonDimmer
+'          HAInsteonSwitch
+'          HAInsteonThermostat
+'     HAIPDevice
+'          HAIPCamera
 
 Class HADevice
     Public Property DeviceName As String
-    Public Property DeviceType As String
+    Public Property DeviceType As String 'Maybe make this an Enum: Controller, Switch, Sensor
+    Public Property DeviceUID As String
     Public Property Model As String
     Public Property Location As String
+    Public Property BehaviorGroup As String 'Maybe things like OuterDoorSensors or PublicAreaLights may be defined here
 End Class
 
 Class HAInsteonDevice
@@ -26,11 +41,13 @@ Class HAInsteonDevice
     Public Sub New(ByVal strAddress As String)
         'Validate Insteon address meets 00:00:00 format or throw ArgumentException here
         Me.InsteonAddress = strAddress
+        Me.DeviceUID = "insteon_" & strInsteonAddress
     End Sub
 
     Public Sub New(ByVal strInsteonAddress As String, ByVal intEngineVer As Integer, ByVal intDevCat As Integer, ByVal intSubCat As Integer, ByVal intFirmware As Integer)
         'Validate Insteon address meets 00:00:00 format or throw ArgumentException here
         Me.InsteonAddress = strInsteonAddress
+        Me.DeviceUID = "insteon_" & strInsteonAddress
         Me.EngineVer = intEngineVer
         Me.DevCat = intDevCat
         Me.SubCat = intSubCat
@@ -122,6 +139,16 @@ End Class
 Class HAIPDevice
     Inherits HADevice
     Public Property IPAddress As String
+    Public Property IPCommandPort As Integer 'This is the device's specific port to 'do things' over, depending on device type
+    Public Property AuthUsername As String
+    Public Property AuthPassword As String
+
+    Public Sub New(ByVal strIPAddress As String, ByVal Optional intIPCommandPort As Integer)
+        'Validate proper IPv4 or IPv6 address or throw ArgumentException here
+        Me.IPAddress = strIPAddress
+        Me.IPCommandPort = intIPCommandPort
+        Me.DeviceUID = "ip_" & strIPAddress & "_" & intIPCommandPort
+    End Sub
 End Class
 
 Class HAIPCamera

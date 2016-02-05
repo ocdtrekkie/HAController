@@ -44,10 +44,10 @@
     <Setting Name="Mail_Enable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Mail_Host" Type="System.String" Scope="User">
+    <Setting Name="Mail_SMTPHost" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Mail_Port" Type="System.String" Scope="User">
+    <Setting Name="Mail_SMTPPort" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Mail_To" Type="System.String" Scope="User">
@@ -73,6 +73,12 @@
     </Setting>
     <Setting Name="Converse_BotName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Sarah</Value>
+    </Setting>
+    <Setting Name="Mail_POPHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Mail_POPPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

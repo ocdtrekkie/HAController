@@ -224,24 +224,24 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Mail_Host() As String
+        Public Property Mail_SMTPHost() As String
             Get
-                Return CType(Me("Mail_Host"),String)
+                Return CType(Me("Mail_SMTPHost"),String)
             End Get
             Set
-                Me("Mail_Host") = value
+                Me("Mail_SMTPHost") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Mail_Port() As String
+        Public Property Mail_SMTPPort() As String
             Get
-                Return CType(Me("Mail_Port"),String)
+                Return CType(Me("Mail_SMTPPort"),String)
             End Get
             Set
-                Me("Mail_Port") = value
+                Me("Mail_SMTPPort") = value
             End Set
         End Property
         
@@ -338,6 +338,30 @@ Namespace My
             End Get
             Set
                 Me("Converse_BotName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Mail_POPHost() As String
+            Get
+                Return CType(Me("Mail_POPHost"),String)
+            End Get
+            Set
+                Me("Mail_POPHost") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Mail_POPPort() As String
+            Get
+                Return CType(Me("Mail_POPPort"),String)
+            End Get
+            Set
+                Me("Mail_POPPort") = value
             End Set
         End Property
     End Class

@@ -42,7 +42,7 @@
             lblComConnected.Text = ResponseMsg
         End If
         Stopwatch.Stop()
-        My.Application.Log.WriteEntry("Load cycle completed in " + Stopwatch.Elapsed.Milliseconds.ToString + " milliseconds")
+        My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 
         txtCommandBar.Enabled = True
     End Sub

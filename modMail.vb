@@ -20,6 +20,32 @@ Module modMail
 
     Sub Load()
         If My.Settings.Mail_Enable = True Then
+            If My.Settings.Mail_Host = "" Then
+                My.Application.Log.WriteEntry("No mail SMTP host set, asking for it")
+                My.Settings.Mail_Host = InputBox("Enter mail SMTP host.", "Mail Host")
+            End If
+
+            If My.Settings.Mail_Port = "" Then
+                My.Application.Log.WriteEntry("No mail SMTP port set, asking for it")
+                My.Settings.Mail_Port = InputBox("Enter mail SMTP port.", "Mail Port")
+            End If
+
+            If My.Settings.Mail_Username = "" Or My.Settings.Mail_From = "" Then
+                My.Application.Log.WriteEntry("No mail username set, asking for it")
+                My.Settings.Mail_Username = InputBox("Enter the email account the mail will come from.", "Mail Username")
+                My.Settings.Mail_From = My.Settings.Mail_Username
+            End If
+
+            If My.Settings.Mail_Password = "" Then
+                My.Application.Log.WriteEntry("No mail password set, asking for it")
+                My.Settings.Mail_Password = InputBox("Enter mail password. This is not a very secure password storage, do not store credentials to sensitive mail accounts here.", "Mail Password")
+            End If
+
+            If My.Settings.Mail_To = "" Then
+                My.Application.Log.WriteEntry("No mail to address set, asking for it")
+                My.Settings.Mail_To = InputBox("Enter the email account you want to send notifications to.", "Mail To")
+            End If
+
             oClient.Host = My.Settings.Mail_Host
             oClient.Port = My.Settings.Mail_Port
             If oClient.Port = 465 Or oClient.Port = 587 Then

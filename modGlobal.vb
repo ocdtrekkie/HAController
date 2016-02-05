@@ -2,5 +2,5 @@
 
 Public Module modGlobal
     Public HomeStatus As String
-    Public IsOnline As String
+    Public IsOnline As Boolean = True
 End Module

@@ -11,6 +11,8 @@
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim Stopwatch As New Stopwatch
+        Stopwatch.Start()
         My.Application.Log.WriteEntry("Main application form loaded")
 
         If My.Settings.Global_LastHomeStatus <> "" Then
@@ -39,6 +41,8 @@
             modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
             lblComConnected.Text = ResponseMsg
         End If
+        Stopwatch.Stop()
+        My.Application.Log.WriteEntry("Load cycle completed in " + Stopwatch.Elapsed.Milliseconds.ToString + " milliseconds")
 
         txtCommandBar.Enabled = True
     End Sub

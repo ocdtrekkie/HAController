@@ -20,14 +20,24 @@ Module modMail
 
     Sub Load()
         If My.Settings.Mail_Enable = True Then
+            If My.Settings.Mail_POPHost = "" Then
+                My.Application.Log.WriteEntry("No mail POP host set, asking for it")
+                My.Settings.Mail_POPHost = InputBox("Enter mail POP host.", "Mail POP Host")
+            End If
+
+            If My.Settings.Mail_POPPort = "" Then
+                My.Application.Log.WriteEntry("No mail POP port set, asking for it")
+                My.Settings.Mail_POPPort = InputBox("Enter mail POP port.", "Mail POP Port")
+            End If
+
             If My.Settings.Mail_SMTPHost = "" Then
                 My.Application.Log.WriteEntry("No mail SMTP host set, asking for it")
-                My.Settings.Mail_SMTPHost = InputBox("Enter mail SMTP host.", "Mail Host")
+                My.Settings.Mail_SMTPHost = InputBox("Enter mail SMTP host.", "Mail SMTP Host")
             End If
 
             If My.Settings.Mail_SMTPPort = "" Then
                 My.Application.Log.WriteEntry("No mail SMTP port set, asking for it")
-                My.Settings.Mail_SMTPPort = InputBox("Enter mail SMTP port.", "Mail Port")
+                My.Settings.Mail_SMTPPort = InputBox("Enter mail SMTP port.", "Mail SMTP Port")
             End If
 
             If My.Settings.Mail_Username = "" Or My.Settings.Mail_From = "" Then

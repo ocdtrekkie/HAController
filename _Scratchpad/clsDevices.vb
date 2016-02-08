@@ -16,6 +16,8 @@
 '          HAInsteonThermostat
 '     HAIPDevice
 '          HAIPCamera
+'     HAServiceDevice
+'          HAServiceOWM
 
 Class HADevice
     Public Property DeviceName As String
@@ -155,4 +157,21 @@ Class HAIPCamera
     Inherits HAIPDevice
     Public Property PTZCapable As Boolean
     Public Property IRCapable As Boolean
+End Class
+
+Class HAServiceDevice
+    Inherits HADevice
+    Public Property ConnectionString As String
+    Public Property AuthUsername As String
+    Public Property AuthPassword As String
+    Public Property AuthAPIKey As String
+End Class
+
+Class HAServiceOWM 'Not really a device, but a service we can treat like a virtual sensor
+    Inherits HAServiceDevice
+    Public Property CityCode As String
+    
+    Public Sub GetData()
+        'Retrieve weather info
+    End Sub
 End Class

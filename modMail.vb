@@ -71,6 +71,36 @@ Module modMail
         Load()
     End Sub
 
+    Sub GetEmails(ByVal Server_Command As String)
+        Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
+        Dim stream_Reader As StreamReader
+        Dim TxtLine As String = ""
+        Try
+            m_sslStream.Write(m_buffer, 0, m_buffer.Length)
+            stream_Reader = New StreamReader(m_sslStream)
+            Do While stream_Reader.Peek() <> -1
+                TxtLine += stream_Reader.ReadLine() & vbNewLine
+            Loop
+
+            My.Application.Log.WriteEntry("POP3: " & TxtLine)
+        Catch ex As Exception
+            My.Application.Log.WriteException(ex)
+        End Try
+    End Sub
+
+    Sub GetMessages(ByVal Num_Emails As Integer)
+        Dim List_Resp As String
+        Dim StrRetr As String
+        Dim I As Integer
+        For I = 1 To Num_Emails
+            List_Resp = Login(m_sslStream, "LIST " & I.ToString)
+            My.Application.Log.WriteEntry("POP3: " & List_Resp)
+
+            StrRetr = ("RETR " & I & vbCrLf)
+            GetEmails(StrRetr)
+        Next I
+    End Sub
+
     Sub Load()
         If My.Settings.Mail_Enable = True Then
             If My.Settings.Mail_POPHost = "" Then
@@ -121,6 +151,7 @@ Module modMail
             oClient.DeliveryMethod = SmtpDeliveryMethod.Network
 
             CheckMail()
+            'GetMessages(server_Stat(1))   This command currently dumps every email received into the log, which isn't super effective/useful.
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
         End If
@@ -147,7 +178,7 @@ Module modMail
     End Sub
 
     Sub Unload()
-
+        CloseServer()
     End Sub
 
     Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String

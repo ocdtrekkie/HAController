@@ -53,6 +53,7 @@ Module modMail
         End If
 
         GetMessages(server_Stat(1))
+        CloseServer()
     End Sub
 
     Sub CloseServer()
@@ -79,7 +80,8 @@ Module modMail
     Sub GetEmails(ByVal Server_Command As String)
         Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
         Dim stream_Reader As StreamReader
-        Dim TxtLine As String
+        Dim TxtLine, CmdRec, CmdID, ReSubj As String
+        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = ""
         Try
             m_sslStream.Write(m_buffer, 0, m_buffer.Length)
             stream_Reader = New StreamReader(m_sslStream)
@@ -87,19 +89,34 @@ Module modMail
                 TxtLine = stream_Reader.ReadLine()
 
                 If TxtLine.StartsWith("Received: ") Then
-                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                    CmdRec = String.Copy(TxtLine)
+                    My.Application.Log.WriteEntry("Command " & CmdRec)
                 End If
                 If TxtLine.StartsWith("Message-ID: ") Then
-                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                    CmdID = String.Copy(TxtLine)
+                    My.Application.Log.WriteEntry("Command " & CmdID)
                 End If
                 If TxtLine.StartsWith("Subject: ") Then
-                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                    CmdSubj = String.Copy(TxtLine)
+                    My.Application.Log.WriteEntry("Command " & CmdSubj)
                 End If
                 If TxtLine.StartsWith("From: ") Then
-                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                    CmdFrom = String.Copy(TxtLine)
+                    My.Application.Log.WriteEntry("Command " & CmdFrom)
+
+                    If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
+                        My.Application.Log.WriteEntry("Received email from authorized user")
+                        ReSubj = "Re: " & CmdSubj.Replace("Subject: ", "")
+                        Send(ReSubj, "Acknowledged")
+                    End If
                 End If
                 If TxtLine.StartsWith("To: ") Then
-                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                    CmdTo = String.Copy(TxtLine)
+                    My.Application.Log.WriteEntry("Command " & CmdTo)
+                End If
+
+                If CmdSubj <> "" And CmdFrom <> "" And CmdTo <> "" Then
+                    Exit Do
                 End If
             Loop
         Catch ex As Exception
@@ -156,6 +173,11 @@ Module modMail
             If My.Settings.Mail_To = "" Then
                 My.Application.Log.WriteEntry("No mail to address set, asking for it")
                 My.Settings.Mail_To = InputBox("Enter the email account you want to send notifications to.", "Mail To")
+            End If
+
+            If My.Settings.Mail_CmdWhitelist = "" Then
+                My.Application.Log.WriteEntry("No command whitelist set, asking for it")
+                My.Settings.Mail_CmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Mail Command Whitelist")
             End If
 
             oClient.Host = My.Settings.Mail_SMTPHost

@@ -364,6 +364,18 @@ Namespace My
                 Me("Mail_POPPort") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Mail_CmdWhitelist() As String
+            Get
+                Return CType(Me("Mail_CmdWhitelist"),String)
+            End Get
+            Set
+                Me("Mail_CmdWhitelist") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -1,4 +1,6 @@
-﻿Imports System.ComponentModel
+﻿Imports Quartz
+Imports Quartz.Impl
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
@@ -49,6 +51,8 @@ Module modMail
             My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
             ret_Val = 1
         End If
+
+        GetMessages(server_Stat(1))
     End Sub
 
     Sub CloseServer()
@@ -75,15 +79,29 @@ Module modMail
     Sub GetEmails(ByVal Server_Command As String)
         Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
         Dim stream_Reader As StreamReader
-        Dim TxtLine As String = ""
+        Dim TxtLine As String
         Try
             m_sslStream.Write(m_buffer, 0, m_buffer.Length)
             stream_Reader = New StreamReader(m_sslStream)
             Do While stream_Reader.Peek() <> -1
-                TxtLine += stream_Reader.ReadLine() & vbNewLine
-            Loop
+                TxtLine = stream_Reader.ReadLine()
 
-            My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                If TxtLine.StartsWith("Received: ") Then
+                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                End If
+                If TxtLine.StartsWith("Message-ID: ") Then
+                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                End If
+                If TxtLine.StartsWith("Subject: ") Then
+                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                End If
+                If TxtLine.StartsWith("From: ") Then
+                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                End If
+                If TxtLine.StartsWith("To: ") Then
+                    My.Application.Log.WriteEntry("POP3: " & TxtLine)
+                End If
+            Loop
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
         End Try
@@ -153,8 +171,15 @@ Module modMail
 
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
-            CheckMail()
-            'GetMessages(server_Stat(1))   This command currently dumps every email received into the log, which isn't super effective/useful.
+            My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
+            Dim MailCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckMailSchedule)).WithIdentity("checkjob", "modmail").Build()
+            Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(5).RepeatForever()).Build()
+
+            Try
+                modScheduler.sched.ScheduleJob(MailCheckJob, MailCheckTrigger)
+            Catch QzExcep As Quartz.ObjectAlreadyExistsException
+                My.Application.Log.WriteException(QzExcep)
+            End Try
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
         End If
@@ -202,4 +227,10 @@ Module modMail
         Server_Response = Read_Stream2.ReadLine()
         Return Server_Response
     End Function
+
+    Public Class CheckMailSchedule : Implements IJob
+        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+            CheckMail()
+        End Sub
+    End Class
 End Module

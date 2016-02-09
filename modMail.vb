@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
 Imports System.Net.Security
@@ -150,10 +151,25 @@ Module modMail
             oClient.Credentials = New System.Net.NetworkCredential(My.Settings.Mail_Username, My.Settings.Mail_Password)
             oClient.DeliveryMethod = SmtpDeliveryMethod.Network
 
+            AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
+
             CheckMail()
             'GetMessages(server_Stat(1))   This command currently dumps every email received into the log, which isn't super effective/useful.
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
+        End If
+    End Sub
+
+    Sub oClient_SendCompleted(sender As Object, e As AsyncCompletedEventArgs)
+        Dim token As String = CStr(e.UserState)
+
+        If e.Cancelled Then
+            My.Application.Log.WriteEntry(token & " Send cancelled")
+        End If
+        If e.Error IsNot Nothing Then
+            My.Application.Log.WriteException(e.Error)
+        Else
+            My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_To)
         End If
     End Sub
 
@@ -168,12 +184,8 @@ Module modMail
             oMsg.IsBodyHtml = False
             oMsg.Body = oBody
 
-            Try
-                oClient.SendAsync(oMsg, Nothing)
-                My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_To)
-            Catch MailEx As SmtpException
-                My.Application.Log.WriteException(MailEx)
-            End Try
+            Dim userState As String = "Send notification"
+            oClient.SendAsync(oMsg, userState)
         End If
     End Sub
 

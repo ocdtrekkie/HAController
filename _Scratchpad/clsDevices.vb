@@ -67,7 +67,7 @@ Class HAInsteonDevice
 End Class
 
 Class HAInsteonAlarm
-	Inherits HAInsteonDevice
+    Inherits HAInsteonDevice
 	
     Public Sub TurnOff()
         'Send off command
@@ -79,7 +79,7 @@ Class HAInsteonAlarm
 End Class
 
 Class HAInsteonDimmer
-	Inherits HAInsteonDevice
+    Inherits HAInsteonDevice
 	
     Public Sub TurnOff()
         'Send off command
@@ -91,7 +91,7 @@ Class HAInsteonDimmer
 End Class
 
 Class HAInsteonSwitch
-	Inherits HAInsteonDevice
+    Inherits HAInsteonDevice
 	
     Public Sub TurnOff()
         'Send off command
@@ -103,7 +103,7 @@ Class HAInsteonSwitch
 End Class
 
 Class HAInsteonThermostat
-	Inherits HAInsteonDevice
+    Inherits HAInsteonDevice
 	
     Public Sub Auto()
         'Send auto command
@@ -165,6 +165,7 @@ Class HAServiceDevice
     Public Property AuthUsername As String
     Public Property AuthPassword As String
     Public Property AuthAPIKey As String
+	'HAServiceDevice doesn't provide a constructor because child objects likely vary a lot
 End Class
 
 Class HAServiceOWM 'Not really a device, but a service we can treat like a virtual sensor
@@ -173,5 +174,12 @@ Class HAServiceOWM 'Not really a device, but a service we can treat like a virtu
     
     Public Sub GetData()
         'Retrieve weather info
+    End Sub
+	
+    Public Sub New(ByVal strAPIKey As String, ByVal strCityCode As String)
+        Me.ConnectionString = "http://api.openweathermap.org/data/2.5/weather?id=" & strCityCode & "&appid=" & strAPIKey & "&mode=xml&units=imperial"
+        Me.AuthAPIKey = strAPIKey
+        Me.CityCode = strCityCode
+        Me.DeviceUID = "openweathermap_" & strCityCode
     End Sub
 End Class

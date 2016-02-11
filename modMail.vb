@@ -103,12 +103,6 @@ Module modMail
                 If TxtLine.StartsWith("From: ") Then
                     CmdFrom = String.Copy(TxtLine)
                     My.Application.Log.WriteEntry("Command " & CmdFrom)
-
-                    If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
-                        My.Application.Log.WriteEntry("Received email from authorized user")
-                        ReSubj = "Re: " & CmdSubj.Replace("Subject: ", "")
-                        Send(ReSubj, "Acknowledged")
-                    End If
                 End If
                 If TxtLine.StartsWith("To: ") Then
                     CmdTo = String.Copy(TxtLine)
@@ -119,6 +113,12 @@ Module modMail
                     Exit Do
                 End If
             Loop
+
+            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
+                My.Application.Log.WriteEntry("Received email from authorized user")
+                ReSubj = "Re: " & CmdSubj.Replace("Subject: ", "")
+                Send(ReSubj, "Acknowledged")
+            End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
         End Try

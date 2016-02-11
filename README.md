@@ -13,6 +13,6 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 The following modules should function optionally:
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.
-* modMail handles sending email notifications.
+* modMail handles checking for commands sent by mail and sending email notifications.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.

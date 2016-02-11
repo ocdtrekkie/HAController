@@ -68,6 +68,11 @@ End Class
 
 Class HAInsteonAlarm
     Inherits HAInsteonDevice
+    Public Property IsMuted As Boolean
+    
+    Public Sub Mute()
+        Me.IsMuted = True
+    End Sub
 	
     Public Sub TurnOff()
         'Send off command
@@ -75,6 +80,10 @@ Class HAInsteonAlarm
 	
     Public Sub TurnOn()
         'Send on command
+    End Sub
+    
+    Public Sub Unmute()
+        Me.IsMuted = False
     End Sub
 End Class
 
@@ -155,8 +164,8 @@ End Class
 
 Class HAIPCamera
     Inherits HAIPDevice
-    Public Property PTZCapable As Boolean
-    Public Property IRCapable As Boolean
+    Public Property IsPTZCapable As Boolean
+    Public Property IsIRCapable As Boolean
 End Class
 
 Class HAServiceDevice

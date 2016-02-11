@@ -376,6 +376,18 @@ Namespace My
                 Me("Mail_CmdWhitelist") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Mail_CmdKey() As String
+            Get
+                Return CType(Me("Mail_CmdKey"),String)
+            End Get
+            Set
+                Me("Mail_CmdKey") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

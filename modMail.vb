@@ -114,10 +114,14 @@ Module modMail
                 End If
             Loop
 
-            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
-                My.Application.Log.WriteEntry("Received email from authorized user")
+            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist And CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
+                My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
                 ReSubj = "Re: " & CmdSubj.Replace("Subject: ", "")
                 Send(ReSubj, "Acknowledged")
+            ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
+                My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+            Else
+                My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
@@ -178,6 +182,11 @@ Module modMail
             If My.Settings.Mail_CmdWhitelist = "" Then
                 My.Application.Log.WriteEntry("No command whitelist set, asking for it")
                 My.Settings.Mail_CmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Mail Command Whitelist")
+            End If
+
+            If My.Settings.Mail_CmdKey = "" Then
+                My.Application.Log.WriteEntry("No command key set, asking for it")
+                My.Settings.Mail_CmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's service account.", "Mail Command Key")
             End If
 
             oClient.Host = My.Settings.Mail_SMTPHost

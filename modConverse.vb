@@ -1,7 +1,9 @@
 ﻿' modConverse cannot be disabled and doesn't need to be loaded or unloaded
 
 Module modConverse
-    Sub Interpet(ByVal strInputString As String)
+    Sub Interpet(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False)
+        Dim strCommandResponse As String = ""
+
         If strInputString <> "" Then
             strInputString = strInputString.ToLower()
             My.Application.Log.WriteEntry("Command received: " + strInputString)
@@ -9,7 +11,7 @@ Module modConverse
 
             Select Case inputData(0)
                 Case "bye", "exit", "quit", "shutdown"
-                    modSpeech.Say("Goodbye")
+                    strCommandResponse = "Goodbye"
                     frmMain.Close()
                 Case "check", "what's"
                     If inputData(1) = "the" And inputData(2) = "weather" Then
@@ -30,6 +32,7 @@ Module modConverse
                         Case "speech"
                             modSpeech.Disable()
                     End Select
+                    strCommandResponse = "Acknowledged"
                 Case "enable"
                     Select Case inputData(1)
                         Case "insteon"
@@ -43,24 +46,29 @@ Module modConverse
                         Case "speech"
                             modSpeech.Enable()
                     End Select
+                    strCommandResponse = "Acknowledged"
                 Case "greetings", "hello", "hi"
-                    modSpeech.Say("Hello")
+                    strCommandResponse = "Hello"
                 Case "set"
                     If inputData(1) = "online" And inputData(2) = "mode" Then
                         modGlobal.IsOnline = True
+                        strCommandResponse = "Acknowledged"
                     End If
                     If inputData(1) = "offline" And inputData(2) = "mode" Then
                         modGlobal.IsOnline = False
+                        strCommandResponse = "Acknowledged"
                     End If
                     If inputData(1) = "status" And inputData(2) = "to" Then
                         If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then
                             frmMain.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
+                            strCommandResponse = "Status set to " & inputData(3)
                         End If
                     End If
                 Case "test"
                     Select Case inputData(1)
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
+                            strCommandResponse = "Acknowledged"
                     End Select
                 Case "turn"
                     Dim response As String = ""
@@ -70,9 +78,10 @@ Module modConverse
                         Case "thermostat"
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                     End Select
+                    strCommandResponse = "Acknowledged"
                 Case "who"
                     If inputData(1) = "are" And inputData(2) = "you" Then
-                        modSpeech.Say("I am " + My.Settings.Converse_BotName + ", a HAC interface, version " + My.Application.Info.Version.ToString)
+                        strCommandResponse = "I am " & My.Settings.Converse_BotName & ", a HAC interface, version " & My.Application.Info.Version.ToString
                     End If
                 Case "would"
                     If inputData(1) = "you" And inputData(2) = "kindly" Then
@@ -80,14 +89,14 @@ Module modConverse
                         Select Case inputData(3)
                             Case "reboot", "restart"
                                 If inputData(4) = "host" Then
-                                    modSpeech.Say("Initiating host reboot")
+                                    strCommandResponse = "Initiating host reboot"
                                     modMail.Send("Host reboot initiated", "Host reboot initiated")
                                     System.Diagnostics.Process.Start("shutdown", "-r")
                                     frmMain.Close()
                                 End If
                             Case "shut"
                                 If inputData(4) = "down" And inputData(5) = "host" Then
-                                    modSpeech.Say("Initiating host shutdown")
+                                    strCommandResponse = "Initiating host shutdown"
                                     modMail.Send("Host shutdown initiated", "Host shutdown initiated")
                                     System.Diagnostics.Process.Start("shutdown", "-s")
                                     frmMain.Close()
@@ -95,6 +104,14 @@ Module modConverse
                         End Select
                     End If
             End Select
+
+            If strCommandResponse <> "" Then
+                My.Application.Log.WriteEntry("Command response: " & strCommandResponse)
+                modSpeech.Say(strCommandResponse)
+                If RemoteCommand = True Then
+                    modMail.Send("Re: " & strInputString, strCommandResponse)
+                End If
+            End If
         End If
     End Sub
 End Module

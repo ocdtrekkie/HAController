@@ -116,8 +116,8 @@ Module modMail
 
             If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist And CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
                 My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
-                ReSubj = "Re: " & CmdSubj.Replace("Subject: ", "")
-                Send(ReSubj, "Acknowledged")
+                ReSubj = CmdSubj.Replace("Subject: ", "")
+                modConverse.Interpet(ReSubj, True)
             ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
                 My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
             Else

@@ -11,6 +11,12 @@ Module modConverse
                 Case "bye", "exit", "quit", "shutdown"
                     modSpeech.Say("Goodbye")
                     frmMain.Close()
+                Case "check", "what's"
+                    If inputData(1) = "the" And inputData(2) = "weather" Then
+                        If My.Settings.OpenWeatherMap_Enable = True Then
+                            modOpenWeatherMap.GatherWeatherData(False)
+                        End If
+                    End If
                 Case "disable"
                     Select Case inputData(1)
                         Case "insteon"
@@ -64,12 +70,6 @@ Module modConverse
                         Case "thermostat"
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                     End Select
-                Case "what's"
-                    If inputData(1) = "the" And inputData(2) = "weather" Then
-                        If My.Settings.OpenWeatherMap_Enable = True Then
-                            modOpenWeatherMap.GatherWeatherData(False)
-                        End If
-                    End If
                 Case "who"
                     If inputData(1) = "are" And inputData(2) = "you" Then
                         modSpeech.Say("I am " + My.Settings.Converse_BotName + ", a HAC interface, version " + My.Application.Info.Version.ToString)

@@ -165,7 +165,7 @@ Module modMail
 
             If My.Settings.Mail_Username = "" Or My.Settings.Mail_From = "" Then
                 My.Application.Log.WriteEntry("No mail username set, asking for it")
-                My.Settings.Mail_Username = InputBox("Enter the email account the mail will come from.", "Mail Username")
+                My.Settings.Mail_Username = InputBox("Enter the full email address of the home automation controller's mail service account.", "Mail Username")
                 My.Settings.Mail_From = My.Settings.Mail_Username
             End If
 
@@ -186,7 +186,7 @@ Module modMail
 
             If My.Settings.Mail_CmdKey = "" Then
                 My.Application.Log.WriteEntry("No command key set, asking for it")
-                My.Settings.Mail_CmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's service account.", "Mail Command Key")
+                My.Settings.Mail_CmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's mail service account.", "Mail Command Key")
             End If
 
             oClient.Host = My.Settings.Mail_SMTPHost

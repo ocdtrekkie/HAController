@@ -49,6 +49,12 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "greetings", "hello", "hi"
                     strCommandResponse = "Hello"
+                Case "mute"
+                    Select Case inputData(1)
+                        Case "alarm"
+                            modInsteon.AlarmMuted = True
+                            strCommandResponse = "Alarm is now muted"
+                    End Select
                 Case "set"
                     If inputData(1) = "online" And inputData(2) = "mode" Then
                         modGlobal.IsOnline = True
@@ -79,6 +85,12 @@ Module modConverse
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                     End Select
                     strCommandResponse = "Acknowledged"
+                Case "unmute"
+                    Select Case inputData(1)
+                        Case "alarm"
+                            modInsteon.AlarmMuted = False
+                            strCommandResponse = "Alarm is now unmuted"
+                    End Select
                 Case "who"
                     If inputData(1) = "are" And inputData(2) = "you" Then
                         strCommandResponse = "I am " & My.Settings.Converse_BotName & ", a HAC interface, version " & My.Application.Info.Version.ToString

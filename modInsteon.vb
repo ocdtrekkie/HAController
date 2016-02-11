@@ -19,6 +19,7 @@ Module modInsteon
     Public NumInsteon As Short ' Number of assigned Insteon devices
 
     Public SerialPLM As System.IO.Ports.SerialPort
+    Public AlarmMuted As Boolean = False
 
     Public PLM_Address As String
     Public PLM_LastX10Device As Byte
@@ -109,8 +110,13 @@ Module modInsteon
                 comm1 = 19
                 comm2 = 0
             Case "On", "on"
-                comm1 = 17
-                comm2 = 255
+                If AlarmMuted = False Then
+                    comm1 = 17
+                    comm2 = 255
+                Else
+                    My.Application.Log.WriteEntry("Alarm is muted, will not sound", TraceEventType.Warning)
+                    Exit Sub 'TODO: Less janky logic here
+                End If
             Case Else
                 My.Application.Log.WriteEntry("InsteonAlarmControl received invalid request", TraceEventType.Warning)
                 Exit Sub

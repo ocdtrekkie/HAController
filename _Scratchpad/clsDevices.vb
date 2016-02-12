@@ -68,7 +68,7 @@ End Class
 
 Class HAInsteonAlarm
     Inherits HAInsteonDevice
-    Public Property IsMuted As Boolean
+    Public Property IsMuted As Boolean = False
     
     Public Sub Mute()
         Me.IsMuted = True
@@ -189,6 +189,10 @@ Class HAServiceOWM 'Not really a device, but a service we can treat like a virtu
         Me.ConnectionString = "http://api.openweathermap.org/data/2.5/weather?id=" & strCityCode & "&appid=" & strAPIKey & "&mode=xml&units=imperial"
         Me.AuthAPIKey = strAPIKey
         Me.CityCode = strCityCode
+        Me.Name = "OpenWeatherMap - " & strCityCode 'Update this one to city name on query
+        Me.Type = "Sensor" 'Virtual sensor
         Me.DeviceUID = "openweathermap_" & strCityCode
+        Me.Model = "OpenWeatherMap Data Service"
+        Me.Location = "Outdoor"
     End Sub
 End Class

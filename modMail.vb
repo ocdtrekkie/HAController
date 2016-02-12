@@ -23,6 +23,7 @@ Module modMail
     Private m_buffer() As Byte
     Private StatResp As String
     Private server_Stat(2) As String
+    Private smtpLock As New Object
 
     Sub CheckMail()
         If pClient.Connected = True Then
@@ -240,8 +241,9 @@ Module modMail
             oMsg.IsBodyHtml = False
             oMsg.Body = oBody
 
-            Dim userState As String = "Send notification"
-            oClient.SendAsync(oMsg, userState)
+            SyncLock smtpLock
+                oClient.Send(oMsg)
+            End SyncLock
         End If
     End Sub
 

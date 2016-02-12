@@ -47,9 +47,9 @@ Module modConverse
                             modSpeech.Enable()
                     End Select
                     strCommandResponse = "Acknowledged"
-                Case "greetings", "hello", "hi"
+                Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
-                Case "mute"
+                Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"
                             modInsteon.AlarmMuted = True

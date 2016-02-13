@@ -60,6 +60,9 @@ Module modConverse
                             modInsteon.AlarmMuted = True
                             strCommandResponse = "Alarm is now muted"
                     End Select
+                Case "say"
+                    strCommandResponse = strInputString.Replace("say ", "")
+                    modSpeech.Say(strCommandResponse)
                 Case "set"
                     If inputData(1) = "online" And inputData(2) = "mode" Then
                         modGlobal.IsOnline = True
@@ -124,9 +127,10 @@ Module modConverse
 
             If strCommandResponse <> "" Then
                 My.Application.Log.WriteEntry("Command response: " & strCommandResponse)
-                modSpeech.Say(strCommandResponse)
                 If RemoteCommand = True Then
                     modMail.Send("Re: " & strInputString, strCommandResponse)
+                Else
+                    modSpeech.Say(strCommandResponse)
                 End If
             End If
         End If

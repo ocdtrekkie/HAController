@@ -49,6 +49,11 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
+                Case "lock"
+                    If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
+                        System.Diagnostics.Process.Start("tsdiscon")
+                        strCommandResponse = "Acknowledged"
+                    End If
                 Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"

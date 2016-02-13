@@ -62,7 +62,9 @@ Module modConverse
                     End Select
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
-                    modSpeech.Say(strCommandResponse)
+                    If RemoteCommand = True Then
+                        modSpeech.Say(strCommandResponse)
+                    End If
                 Case "set"
                     If inputData(1) = "online" And inputData(2) = "mode" Then
                         modGlobal.IsOnline = True

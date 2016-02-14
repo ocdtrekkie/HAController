@@ -59,6 +59,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HidLibrary">
+      <HintPath>..\packages\hidlibrary.3.2.31.0\lib\HidLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz">
       <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
     </Reference>
@@ -106,6 +109,7 @@
     </Compile>
     <Compile Include="modConverse.vb" />
     <Compile Include="modDatabase.vb" />
+    <Compile Include="modDreamCheeky.vb" />
     <Compile Include="modGlobal.vb" />
     <Compile Include="modInsteon.vb" />
     <Compile Include="modMail.vb" />

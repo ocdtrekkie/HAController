@@ -13,12 +13,12 @@ Module modDreamCheeky
     Public Class HABigRedButton
         Public ReadOnly Property VendorID As Integer
             Get
-                Return 7476
+                Return 7476 '0x1D34
             End Get
         End Property
         Public ReadOnly Property DeviceID As Integer
             Get
-                Return 13
+                Return 13 '0x000D
             End Get
         End Property
         Private ReadOnly device As IHidDevice

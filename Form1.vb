@@ -161,7 +161,7 @@
 
     Private Sub btnCheckWeather_Click(sender As Object, e As EventArgs) Handles btnCheckWeather.Click
         If My.Settings.OpenWeatherMap_Enable = True Then
-            modOpenWeatherMap.GatherWeatherData(False)
+            modSpeech.Say(modOpenWeatherMap.GatherWeatherData())
         End If
     End Sub
 

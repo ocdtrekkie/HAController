@@ -16,7 +16,7 @@ Module modConverse
                 Case "check", "what's"
                     If inputData(1) = "the" And inputData(2) = "weather" Then
                         If My.Settings.OpenWeatherMap_Enable = True Then
-                            modOpenWeatherMap.GatherWeatherData(False)
+                            strCommandResponse = modOpenWeatherMap.GatherWeatherData()
                         End If
                     End If
                 Case "disable"

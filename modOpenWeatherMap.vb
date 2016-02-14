@@ -17,7 +17,7 @@ Module modOpenWeatherMap
         Load()
     End Sub
 
-    Sub GatherWeatherData(Optional ByVal Silent As Boolean = True)
+    Function GatherWeatherData() As String
         Dim SpeechString As String
 
         If My.Settings.OpenWeatherMap_APIKey = "" Then
@@ -40,18 +40,10 @@ Module modOpenWeatherMap
             WeatherNode = WeatherData.SelectSingleNode("/current/weather")
             Dim strWeather As String = WeatherNode.Attributes.GetNamedItem("value").Value
             SpeechString = "The current outside weather condition is " + strWeather
-            My.Application.Log.WriteEntry(SpeechString)
-            If Silent = False Then
-                modSpeech.Say(SpeechString)
-            End If
 
             WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
             Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
-            SpeechString = "The current outside temperature is " + CStr(Int(dblTemperature)) + " degrees Fahrenheit"
-            My.Application.Log.WriteEntry(SpeechString)
-            If Silent = False Then
-                modSpeech.Say(SpeechString)
-            End If
+            SpeechString = SpeechString & ". The current outside temperature is " + CStr(Int(dblTemperature)) & " degrees Fahrenheit."
 
             WeatherNode = WeatherData.SelectSingleNode("/current/humidity")
             Dim dblHumidity As Double = WeatherNode.Attributes.GetNamedItem("value").Value
@@ -59,6 +51,8 @@ Module modOpenWeatherMap
             WeatherNode = WeatherData.SelectSingleNode("/current/lastupdate")
             Dim dteLastUpdate As DateTime = WeatherNode.Attributes.GetNamedItem("value").Value
             dteLastUpdate = TimeZoneInfo.ConvertTimeFromUtc(dteLastUpdate, TimeZoneInfo.Local)
+
+            My.Application.Log.WriteEntry(SpeechString)
 
             Dim result As Integer = New Integer
 
@@ -68,10 +62,12 @@ Module modOpenWeatherMap
             Else
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
             End If
+
+            Return SpeechString
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)
         End Try
-    End Sub
+    End Function
 
     Sub Load()
         If My.Settings.OpenWeatherMap_Enable = True Then
@@ -95,7 +91,7 @@ Module modOpenWeatherMap
 
     Public Class WeatherUpdateSchedule : Implements IJob
         Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
-            GatherWeatherData(True)
+            GatherWeatherData()
         End Sub
     End Class
 End Module

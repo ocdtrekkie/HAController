@@ -196,3 +196,10 @@ Class HAServiceOWM 'Not really a device, but a service we can treat like a virtu
         Me.Location = "Outdoor"
     End Sub
 End Class
+
+Class HAUSBDevice
+    Inherits HADevice
+	Public Property VendorID As Integer
+	Public Property DeviceID As Integer
+	Public Property IsConnected As Boolean
+End Class

@@ -66,6 +66,8 @@ Module modOpenWeatherMap
             Return SpeechString
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)
+
+            Return "Error getting weather data"
         End Try
     End Function
 

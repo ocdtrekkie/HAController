@@ -5,6 +5,7 @@ Module modDreamCheeky
 
     Public Sub Load()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
+        My.Application.Log.WriteEntry("BigRedButton - Open")
         BigRedButton.Open()
 
         My.Application.Log.WriteEntry(BigRedButton.GetStatus.ToString())
@@ -25,6 +26,7 @@ Module modDreamCheeky
         Private ReadOnly StatusReport As Byte() = {0, 0, 0, 0, 0, 0, 0, 2}
 
         Public Sub Close()
+            My.Application.Log.WriteEntry("HABigRedButton - Close Device")
             device.CloseDevice()
         End Sub
 
@@ -33,6 +35,7 @@ Module modDreamCheeky
         End Sub
 
         Public Function GetStatus() As DeviceStatus
+            My.Application.Log.WriteEntry("HABigRedButton - Getting Status")
             If Not device.Write(StatusReport, 100) Then
                 Return DeviceStatus.Errored
             End If
@@ -47,6 +50,7 @@ Module modDreamCheeky
         End Function
 
         Public Sub New()
+            My.Application.Log.WriteEntry("HABigRedButton - Create Device")
             Dim hidEnumerator As HidEnumerator = New HidEnumerator
 
             device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
@@ -57,6 +61,7 @@ Module modDreamCheeky
         End Sub
 
         Public Sub Open()
+            My.Application.Log.WriteEntry("HABigRedButton - Open Device")
             device.OpenDevice()
         End Sub
     End Class

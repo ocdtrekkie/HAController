@@ -49,7 +49,7 @@ Module modDreamCheeky
             Me.DeviceName = "Big Red Button"
             Me.DeviceType = "Controller"
             Me.DeviceUID = "usb_0x1D34_0x000D"
-            Me.Model = "DreamCheeky Big Red Button"
+            Me.Model = "Dream Cheeky 902 Big Red Button"
             Me.VendorID = 7476 '0x1D34
             Me.DeviceID = 13 '0x000D
 

@@ -25,7 +25,9 @@ Module modDreamCheeky
         End Sub
 
         Public Sub Dispose()
-            Me.Close()
+            If Me.IsConnected = True Then
+                Me.Close()
+            End If
         End Sub
 
         Public Function GetStatus() As DeviceStatus

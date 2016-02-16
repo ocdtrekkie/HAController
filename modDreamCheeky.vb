@@ -10,6 +10,7 @@ Module modDreamCheeky
             BigRedButton.Open()
         Else
             My.Application.Log.WriteEntry("Big Red Button not found")
+            BigRedButton.Dispose()
         End If
     End Sub
 

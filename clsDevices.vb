@@ -1,6 +1,4 @@
-﻿Imports Microsoft.VisualBasic
-
-'Basically, the code I've written so far is not particularly object-oriented around devices, because I wanted to be quickly comparable with a SQLite database.
+﻿'Basically, the code I've written so far is not particularly object-oriented around devices, because I wanted to be quickly comparable with a SQLite database.
 
 'I haven't decided if I want to change this or not, but the idea of treating devices like objects is appealing, so I wrote this draft spec. Basic concept is:
 
@@ -18,6 +16,7 @@
 '          HAIPCamera
 '     HAServiceDevice
 '          HAServiceOWM
+'     HAUSBDevice
 
 Class HADevice
     Public Property DeviceName As String
@@ -43,7 +42,7 @@ Class HAInsteonDevice
     Public Sub New(ByVal strAddress As String)
         'Validate Insteon address meets 00:00:00 format or throw ArgumentException here
         Me.InsteonAddress = strAddress
-        Me.DeviceUID = "insteon_" & strInsteonAddress
+        Me.DeviceUID = "insteon_" & strAddress
     End Sub
 
     Public Sub New(ByVal strInsteonAddress As String, ByVal intEngineVer As Integer, ByVal intDevCat As Integer, ByVal intSubCat As Integer, ByVal intFirmware As Integer)
@@ -66,86 +65,86 @@ Class HAInsteonDevice
     End Sub
 End Class
 
-Class HAInsteonAlarm
-    Inherits HAInsteonDevice
-    Public Property IsMuted As Boolean = False
-    
-    Public Sub Mute()
-        Me.IsMuted = True
-    End Sub
-	
-    Public Sub TurnOff()
-        'Send off command
-    End Sub
-	
-    Public Sub TurnOn()
-        'Send on command
-    End Sub
-    
-    Public Sub Unmute()
-        Me.IsMuted = False
-    End Sub
-End Class
+'Class HAInsteonAlarm
+'    Inherits HAInsteonDevice
+'    Public Property IsMuted As Boolean = False
 
-Class HAInsteonDimmer
-    Inherits HAInsteonDevice
-	
-    Public Sub TurnOff()
-        'Send off command
-    End Sub
-	
-    Public Sub TurnOn(Optional ByVal intBrightness As Integer = 255)
-        'Send on command
-    End Sub
-End Class
+'    Public Sub Mute()
+'        Me.IsMuted = True
+'    End Sub
 
-Class HAInsteonSwitch
-    Inherits HAInsteonDevice
-	
-    Public Sub TurnOff()
-        'Send off command
-    End Sub
-	
-    Public Sub TurnOn()
-        'Send on command
-    End Sub
-End Class
+'    Public Sub TurnOff()
+'        'Send off command
+'    End Sub
 
-Class HAInsteonThermostat
-    Inherits HAInsteonDevice
-	
-    Public Sub Auto()
-        'Send auto command
-    End Sub
-	
-    Public Sub Cool()
-        'Send cool command
-    End Sub
-	
-    Public Sub Down()
-        'Send down command
-    End Sub
-	
-    Public Sub FanOff()
-        'Send fan off command
-    End Sub
-	
-    Public Sub FanOn()
-        'Send fan on command
-    End Sub
-	
-    Public Sub Heat()
-        'Send heat command
-    End Sub
-	
-    Public Sub TurnOff()
-        'Send off command
-    End Sub
-	
-    Public Sub Up()
-        'Send up command
-    End Sub
-End Class
+'    Public Sub TurnOn()
+'        'Send on command
+'    End Sub
+
+'    Public Sub Unmute()
+'        Me.IsMuted = False
+'    End Sub
+'End Class
+
+'Class HAInsteonDimmer
+'    Inherits HAInsteonDevice
+
+'    Public Sub TurnOff()
+'        'Send off command
+'    End Sub
+
+'    Public Sub TurnOn(Optional ByVal intBrightness As Integer = 255)
+'        'Send on command
+'    End Sub
+'End Class
+
+'Class HAInsteonSwitch
+'    Inherits HAInsteonDevice
+
+'    Public Sub TurnOff()
+'        'Send off command
+'    End Sub
+
+'    Public Sub TurnOn()
+'        'Send on command
+'    End Sub
+'End Class
+
+'Class HAInsteonThermostat
+'    Inherits HAInsteonDevice
+
+'    Public Sub Auto()
+'        'Send auto command
+'    End Sub
+
+'    Public Sub Cool()
+'        'Send cool command
+'    End Sub
+
+'    Public Sub Down()
+'        'Send down command
+'    End Sub
+
+'    Public Sub FanOff()
+'        'Send fan off command
+'    End Sub
+
+'    Public Sub FanOn()
+'        'Send fan on command
+'    End Sub
+
+'    Public Sub Heat()
+'        'Send heat command
+'    End Sub
+
+'    Public Sub TurnOff()
+'        'Send off command
+'    End Sub
+
+'    Public Sub Up()
+'        'Send up command
+'    End Sub
+'End Class
 
 Class HAIPDevice
     Inherits HADevice
@@ -154,7 +153,7 @@ Class HAIPDevice
     Public Property AuthUsername As String
     Public Property AuthPassword As String
 
-    Public Sub New(ByVal strIPAddress As String, ByVal Optional intIPCommandPort As Integer)
+    Public Sub New(ByVal strIPAddress As String, Optional ByVal intIPCommandPort As Integer = 80)
         'Validate proper IPv4 or IPv6 address or throw ArgumentException here
         Me.IPAddress = strIPAddress
         Me.IPCommandPort = intIPCommandPort
@@ -162,11 +161,11 @@ Class HAIPDevice
     End Sub
 End Class
 
-Class HAIPCamera
-    Inherits HAIPDevice
-    Public Property IsPTZCapable As Boolean
-    Public Property IsIRCapable As Boolean
-End Class
+'Class HAIPCamera
+'    Inherits HAIPDevice
+'    Public Property IsPTZCapable As Boolean
+'    Public Property IsIRCapable As Boolean
+'End Class
 
 Class HAServiceDevice
     Inherits HADevice
@@ -189,8 +188,8 @@ Class HAServiceOWM 'Not really a device, but a service we can treat like a virtu
         Me.ConnectionString = "http://api.openweathermap.org/data/2.5/weather?id=" & strCityCode & "&appid=" & strAPIKey & "&mode=xml&units=imperial"
         Me.AuthAPIKey = strAPIKey
         Me.CityCode = strCityCode
-        Me.Name = "OpenWeatherMap - " & strCityCode 'Update this one to city name on query
-        Me.Type = "Sensor" 'Virtual sensor
+        Me.DeviceName = "OpenWeatherMap - " & strCityCode 'Update this one to city name on query
+        Me.DeviceType = "Sensor" 'Virtual sensor
         Me.DeviceUID = "openweathermap_" & strCityCode
         Me.Model = "OpenWeatherMap Data Service"
         Me.Location = "Outdoor"
@@ -199,7 +198,7 @@ End Class
 
 Class HAUSBDevice
     Inherits HADevice
-	Public Property VendorID As Integer
-	Public Property DeviceID As Integer
-	Public Property IsConnected As Boolean
+    Public Property VendorID As Integer
+    Public Property DeviceID As Integer
+    Public Property IsConnected As Boolean
 End Class

@@ -5,23 +5,16 @@ Module modDreamCheeky
 
     Public Sub Load()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
-        My.Application.Log.WriteEntry("BigRedButton - Open")
-        BigRedButton.Open()
-
-        My.Application.Log.WriteEntry(BigRedButton.GetStatus.ToString())
+        If BigRedButton.IsConnected = True Then
+            My.Application.Log.WriteEntry("Big Red Button - Open")
+            BigRedButton.Open()
+        Else
+            My.Application.Log.WriteEntry("Big Red Button not found")
+        End If
     End Sub
 
     Public Class HABigRedButton
-        Public ReadOnly Property VendorID As Integer
-            Get
-                Return 7476 '0x1D34
-            End Get
-        End Property
-        Public ReadOnly Property DeviceID As Integer
-            Get
-                Return 13 '0x000D
-            End Get
-        End Property
+        Inherits HAUSBDevice
         Private ReadOnly device As IHidDevice
         Private ReadOnly StatusReport As Byte() = {0, 0, 0, 0, 0, 0, 0, 2}
 
@@ -50,13 +43,23 @@ Module modDreamCheeky
         End Function
 
         Public Sub New()
+            Me.DeviceName = "Big Red Button"
+            Me.DeviceType = "Controller"
+            Me.DeviceUID = "usb_0x1D34_0x000D"
+            Me.Model = "DreamCheeky Big Red Button"
+            Me.VendorID = 7476 '0x1D34
+            Me.DeviceID = 13 '0x000D
+
             My.Application.Log.WriteEntry("HABigRedButton - Create Device")
             Dim hidEnumerator As HidEnumerator = New HidEnumerator
 
             device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
 
             If device Is Nothing Then
-                Throw New InvalidOperationException("Device not found")
+                'Throw New InvalidOperationException("Device not found")
+                Me.IsConnected = False
+            Else
+                Me.IsConnected = True
             End If
         End Sub
 

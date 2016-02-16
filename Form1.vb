@@ -35,8 +35,8 @@
         My.Application.Log.WriteEntry("Loading mail module")
         modMail.Load()
 
-        'My.Application.Log.WriteEntry("Loading DreamCheeky module")
-        'modDreamCheeky.Load()
+        My.Application.Log.WriteEntry("Loading DreamCheeky module")
+        modDreamCheeky.Load()
 
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)

@@ -3,7 +3,7 @@
 Module modDreamCheeky
     'Heavily based on this Github project from mbenford: https://github.com/mbenford/dreamcheeky-big-red-button-dotnet
 
-    Public Sub Load()
+    Public Sub CreateButton()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
         If BigRedButton.IsConnected = True Then
             My.Application.Log.WriteEntry("Big Red Button - Open")

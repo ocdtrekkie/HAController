@@ -29,7 +29,7 @@ Module modDreamCheeky
             device.CloseDevice()
         End Sub
 
-        Public Sub Dispose()
+        Public Overloads Sub Dispose()
             If Me.IsConnected = True Then
                 Me.Close()
             End If
@@ -42,12 +42,11 @@ Module modDreamCheeky
             End If
 
             Dim data As HidDeviceData = device.Read(100)
-
             If data.Status <> HidDeviceData.ReadStatus.Success Then
                 Return DeviceStatus.Errored
             End If
 
-            Return CInt(data.Data(1))
+            Return DirectCast(CInt(data.Data(1)), DeviceStatus)
         End Function
 
         Public Sub New()

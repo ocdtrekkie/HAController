@@ -19,12 +19,17 @@
 '     HAUSBDevice
 
 Class HADevice
+    Implements IDisposable
     Public Property DeviceName As String
     Public Property DeviceType As String 'Maybe make this an Enum: Controller, Switch, Sensor
     Public Property DeviceUID As String
     Public Property Model As String
     Public Property Location As String
     Public Property BehaviorGroup As String 'Maybe things like OuterDoorSensors or PublicAreaLights may be defined here
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+
+    End Sub
 End Class
 
 Class HAInsteonDevice

@@ -108,14 +108,17 @@ Module modDreamCheeky
         End Sub
 
         Private Sub OnLidOpen()
+            My.Application.Log.WriteEntry("HABigRedButton - Lid Open")
             RaiseEvent LidOpen(Me, EventArgs.Empty)
         End Sub
 
         Private Sub OnLidClosed()
+            My.Application.Log.WriteEntry("HABigRedButton - Lid Closed")
             RaiseEvent LidClosed(Me, EventArgs.Empty)
         End Sub
 
         Private Sub OnButtonPressed()
+            My.Application.Log.WriteEntry("HABigRedButton - Button Pushed")
             RaiseEvent ButtonPressed(Me, EventArgs.Empty)
         End Sub
 

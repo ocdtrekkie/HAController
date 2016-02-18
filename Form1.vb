@@ -57,82 +57,82 @@
 
     Private Sub btnInsteonOn_Click(sender As Object, e As EventArgs) Handles btnInsteonOn.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "On")
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on")
     End Sub
 
     Private Sub btnInsteonOff_Click(sender As Object, e As EventArgs) Handles btnInsteonOff.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to Off")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "Off")
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "off")
     End Sub
 
     Private Sub btnInsteonBeep_Click(sender As Object, e As EventArgs) Handles btnInsteonBeep.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " instructed to Beep")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "Beep")
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "beep")
     End Sub
 
     Private Sub btnInsteonSoft_Click(sender As Object, e As EventArgs) Handles btnInsteonSoft.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Soft)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "On", 190)
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 190)
     End Sub
 
     Private Sub btnInsteonDim_Click(sender As Object, e As EventArgs) Handles btnInsteonDim.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Dim)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "On", 136)
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 136)
     End Sub
 
     Private Sub btnInsteonNite_Click(sender As Object, e As EventArgs) Handles btnInsteonNite.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Nite)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "On", 68)
+        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 68)
     End Sub
 
     Private Sub btnInsteonTempDown_Click(sender As Object, e As EventArgs) Handles btnInsteonTempDown.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " down one degree")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Down")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "down")
     End Sub
 
     Private Sub btnInsteonTempUp_Click(sender As Object, e As EventArgs) Handles btnInsteonTempUp.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " up one degree")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Up")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "up")
     End Sub
 
     Private Sub btnInsteonTempOff_Click(sender As Object, e As EventArgs) Handles btnInsteonTempOff.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Off")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Off")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "off")
     End Sub
 
     Private Sub btnInsteonTempAuto_Click(sender As Object, e As EventArgs) Handles btnInsteonTempAuto.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Auto")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Auto")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "auto")
     End Sub
 
     Private Sub btnInsteonTempHeat_Click(sender As Object, e As EventArgs) Handles btnInsteonTempHeat.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Heat")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Heat")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "heat")
     End Sub
 
     Private Sub btnInsteonTempCool_Click(sender As Object, e As EventArgs) Handles btnInsteonTempCool.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Cool")
-        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "Cool")
+        modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "cool")
     End Sub
 
     Private Sub chkInsteonTempFan_CheckedChanged(sender As Object, e As EventArgs) Handles chkInsteonTempFan.CheckedChanged
         If chkInsteonTempFan.Checked = False Then
             My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Fan Off")
-            modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "FanOff")
+            modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "fanoff")
         ElseIf chkInsteonTempFan.Checked = True Then
             My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " to Fan On")
-            modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "FanOn")
+            modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "fanon")
         End If
     End Sub
 
     Private Sub btnInsteonAlarmOn_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOn.Click
         My.Application.Log.WriteEntry("Turning alarm on")
-        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "On")
+        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "on")
     End Sub
 
     Private Sub btnInsteonAlarmOff_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOff.Click
         My.Application.Log.WriteEntry("Turning alarm off")
-        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "Off")
+        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "off")
     End Sub
 
     Private Sub btnAddIP_Click(sender As Object, e As EventArgs) Handles btnAddIP.Click

@@ -16,7 +16,7 @@ Module modScheduler
             Dim response As String = ""
             'write your schedule job
             modSpeech.Say("The time is now " & dataMap.GetString("intHour") & ":" & dataMap.GetString("intMinute"))
-            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 4)
+            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 4)
             Threading.Thread.Sleep(2000)
             modInsteon.InsteonLightControl(My.Settings.Insteon_WakeLightAddr, response, "on")
             ' Tested: Four seconds is EXACTLY enough to make you want to rip the BuzzLinc out of the wall, but too short to let you do so.

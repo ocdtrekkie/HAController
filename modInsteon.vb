@@ -1646,7 +1646,7 @@ Module modInsteon
                     modMail.Send("Intruder alert", "Intruder alert")
                     Dim response As String = ""
                     Threading.Thread.Sleep(5000)
-                    InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
+                    InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 30)
                 End If
                 Return "Door Opened"
             Case 19
@@ -1664,7 +1664,7 @@ Module modInsteon
                 modMail.Send("Smoke detected", "Smoke detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
-                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
+                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 30)
                 Return "Smoke Detected"
             Case 2
                 My.Application.Log.WriteEntry("ALERT: Carbon Monoxide Detected!", TraceEventType.Warning)
@@ -1672,7 +1672,7 @@ Module modInsteon
                 modMail.Send("Carbon monoxide detected", "Carbon monoxide detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
-                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "On", 30)
+                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 30)
                 Return "Carbon Monoxide Detected"
             Case 3
                 modSpeech.Say("Test of Smoke Bridge successful")

@@ -2,12 +2,17 @@
 
 Module modDreamCheeky
     'Heavily based on this Github project from mbenford: https://github.com/mbenford/dreamcheeky-big-red-button-dotnet
+    Dim BigRedButtonIndex As Integer
 
     Public Sub CreateButton()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
         If BigRedButton.IsConnected = True Then
             My.Application.Log.WriteEntry("Big Red Button - Open")
             BigRedButton.Open()
+
+            DeviceCollection.Add(BigRedButton)
+            BigRedButtonIndex = DeviceCollection.IndexOf(BigRedButton)
+            My.Application.Log.WriteEntry("Big Red Button has a device index of " & BigRedButtonIndex)
         Else
             My.Application.Log.WriteEntry("Big Red Button not found")
             BigRedButton.Dispose()

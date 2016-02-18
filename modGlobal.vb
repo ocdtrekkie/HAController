@@ -3,4 +3,6 @@
 Public Module modGlobal
     Public HomeStatus As String
     Public IsOnline As Boolean = True
+
+    Public DeviceCollection As New ArrayList
 End Module

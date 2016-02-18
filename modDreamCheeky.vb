@@ -2,6 +2,7 @@
 
 Module modDreamCheeky
     'Heavily based on this Github project from mbenford: https://github.com/mbenford/dreamcheeky-big-red-button-dotnet
+    'Significant adaption help provided via: http://codeconverter.sharpdevelop.net/SnippetConverter.aspx
     Dim BigRedButtonIndex As Integer
 
     Public Sub CreateButton()
@@ -22,11 +23,13 @@ Module modDreamCheeky
     Public Class HABigRedButton
         Inherits HAUSBDevice
         Private ReadOnly device As IHidDevice
+        Private thread As Threading.Thread
         Private ReadOnly StatusReport As Byte() = {0, 0, 0, 0, 0, 0, 0, 2}
+        Private IsTerminated As Boolean
 
         Public Sub Close()
             My.Application.Log.WriteEntry("HABigRedButton - Close Device")
-            device.CloseDevice()
+            [Stop]()
         End Sub
 
         Public Overloads Sub Dispose()
@@ -73,7 +76,52 @@ Module modDreamCheeky
         Public Sub Open()
             My.Application.Log.WriteEntry("HABigRedButton - Open Device")
             device.OpenDevice()
+            My.Application.Log.WriteEntry("HABigRedButton - Create Thread")
+            thread = New Threading.Thread(AddressOf ThreadCallback)
+            thread.Start()
         End Sub
+
+        Private Sub ThreadCallback()
+            Dim lastStatus = DeviceStatus.Unknown
+
+            While Not IsTerminated
+                Dim status As DeviceStatus = Me.GetStatus()
+                If status <> DeviceStatus.Errored Then
+                    If status = DeviceStatus.LidClosed AndAlso lastStatus = DeviceStatus.LidOpen Then
+                        OnLidClosed()
+                    ElseIf status = DeviceStatus.ButtonPressed AndAlso lastStatus <> DeviceStatus.ButtonPressed Then
+                        OnButtonPressed()
+                    ElseIf status = DeviceStatus.LidOpen AndAlso lastStatus = DeviceStatus.LidClosed Then
+                        OnLidOpen()
+                    End If
+
+                    lastStatus = status
+                End If
+                Threading.Thread.Sleep(100)
+            End While
+        End Sub
+
+        Public Sub [Stop]()
+            IsTerminated = True
+            thread.Join()
+            device.CloseDevice()
+        End Sub
+
+        Private Sub OnLidOpen()
+            RaiseEvent LidOpen(Me, EventArgs.Empty)
+        End Sub
+
+        Private Sub OnLidClosed()
+            RaiseEvent LidClosed(Me, EventArgs.Empty)
+        End Sub
+
+        Private Sub OnButtonPressed()
+            RaiseEvent ButtonPressed(Me, EventArgs.Empty)
+        End Sub
+
+        Public Event LidOpen As EventHandler
+        Public Event LidClosed As EventHandler
+        Public Event ButtonPressed As EventHandler
     End Class
 
     Public Enum DeviceStatus

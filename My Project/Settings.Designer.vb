@@ -388,6 +388,30 @@ Namespace My
                 Me("Mail_CmdKey") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Speech_SelectedVoice() As String
+            Get
+                Return CType(Me("Speech_SelectedVoice"),String)
+            End Get
+            Set
+                Me("Speech_SelectedVoice") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Female")>  _
+        Public Property Converse_BotGender() As String
+            Get
+                Return CType(Me("Converse_BotGender"),String)
+            End Get
+            Set
+                Me("Converse_BotGender") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

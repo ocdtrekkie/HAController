@@ -86,5 +86,11 @@
     <Setting Name="Mail_CmdKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Speech_SelectedVoice" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Converse_BotGender" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Female</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

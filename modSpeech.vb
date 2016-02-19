@@ -19,6 +19,14 @@
         If My.Settings.Speech_Enable = True Then
             synth = New Speech.Synthesis.SpeechSynthesizer
             synth.SetOutputToDefaultAudioDevice()
+            If My.Settings.Speech_SelectedVoice <> "" Then
+                synth.SelectVoice(My.Settings.Speech_SelectedVoice)
+            ElseIf My.Settings.Converse_BotGender = "Female" Then
+                synth.SelectVoiceByHints(Speech.Synthesis.VoiceGender.Female, Speech.Synthesis.VoiceAge.Adult)
+            ElseIf My.Settings.Converse_BotGender = "Male" Then
+                synth.SelectVoiceByHints(Speech.Synthesis.VoiceGender.Male, Speech.Synthesis.VoiceAge.Adult)
+            End If
+            My.Application.Log.WriteEntry("Voice selected: " & synth.Voice.Name)
         Else
             My.Application.Log.WriteEntry("Speech module is disabled, module not loaded")
         End If

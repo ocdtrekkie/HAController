@@ -47,7 +47,10 @@
         Dim strVoices = ""
 
         For i As Integer = 0 To arrVoices.Count - 1
-            strVoices = strVoices & arrVoices.Item(i).VoiceInfo.Name & ", "
+            strVoices = strVoices & arrVoices.Item(i).VoiceInfo.Name
+            If i < arrVoices.Count - 1 Then
+                strVoices = strVoices & ", "
+            End If
         Next
 
         Return strVoices

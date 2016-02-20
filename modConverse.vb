@@ -49,7 +49,7 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "get", "list"
                     If inputData(1) = "voices" Then
-                        strCommandResponse = modSpeech.GetVoices()
+                        strCommandResponse = "Available voices are " & modSpeech.GetVoices()
                     End If
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"

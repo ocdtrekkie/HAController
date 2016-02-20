@@ -41,4 +41,15 @@
     Sub Unload()
         synth.Dispose()
     End Sub
+
+    Function GetVoices() As String
+        Dim arrVoices As System.Collections.ObjectModel.ReadOnlyCollection(Of Speech.Synthesis.InstalledVoice) = synth.GetInstalledVoices
+        Dim strVoices = ""
+
+        For i As Integer = 0 To arrVoices.Count - 1
+            strVoices = strVoices & arrVoices.Item(i).VoiceInfo.Name & ", "
+        Next
+
+        Return strVoices
+    End Function
 End Module

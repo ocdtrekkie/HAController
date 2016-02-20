@@ -47,6 +47,10 @@ Module modConverse
                             modSpeech.Enable()
                     End Select
                     strCommandResponse = "Acknowledged"
+                Case "get", "list"
+                    If inputData(1) = "voices" Then
+                        strCommandResponse = modSpeech.GetVoices()
+                    End If
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
                 Case "lock"

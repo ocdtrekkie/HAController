@@ -152,30 +152,12 @@ Module modInsteon
     End Sub
 
     Sub InsteonGetEngineVersion(ByVal strAddress As String, ByRef ResponseMsg As String)
-        Dim data(7) As Byte
-        Dim arrAddress() As String = strAddress.Split(".")
-
-        data(0) = 2 'all commands start with 2
-        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 15 'flags
-        data(6) = 13
-        data(7) = 0
-        Try
-            SerialPLM.Write(data, 0, 8)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
+        InsteonSendStdCommand(strAddress, 13, 0)
     End Sub
 
     Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Integer = 255)
         Dim comm1 As Short
         Dim comm2 As Short
-        Dim data(7) As Byte
-        Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
             Case "Beep", "beep"
@@ -192,20 +174,7 @@ Module modInsteon
                 Exit Sub
         End Select
 
-        data(0) = 2 'all commands start with 2
-        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 15 'flags
-        data(6) = comm1
-        data(7) = comm2
-        Try
-            SerialPLM.Write(data, 0, 8)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
+        InsteonSendStdCommand(strAddress, comm1, comm2)
     End Sub
 
     Sub InsteonProductDataRequest(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal EngineVersion As Short)
@@ -289,9 +258,9 @@ Module modInsteon
     End Sub
 
     Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Integer = 72)
+        ' TODO: Apparently I don't use intTemperature. I should probably be able to set the temperature with this code.
         Dim comm1 As Short
         Dim comm2 As Short
-        Dim data(21) As Byte
 
         ' TODO: Yes, I'm currently ignoring strAddress here, this is terrible. I should do better.
         If My.Settings.Insteon_ThermostatAddr = "" Then
@@ -299,8 +268,6 @@ Module modInsteon
             My.Settings.Insteon_ThermostatAddr = InputBox("Enter Thermostat Address", "Thermostat")
         End If
         strAddress = My.Settings.Insteon_ThermostatAddr
-
-        Dim arrAddress() As String = strAddress.Split(".")
 
         Select Case Command1
             Case "Auto", "auto"
@@ -332,21 +299,7 @@ Module modInsteon
                 Exit Sub
         End Select
 
-        data(0) = 2 'all commands start with 2
-        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-        data(3) = Convert.ToInt32(arrAddress(1), 16)
-        data(4) = Convert.ToInt32(arrAddress(2), 16)
-        data(5) = 31 'flags
-        data(6) = comm1
-        data(7) = comm2
-        data(21) = (Not (data(6) + data(7))) + 1
-        Try
-            SerialPLM.Write(data, 0, 22)
-        Catch Excep As System.InvalidOperationException
-            My.Application.Log.WriteException(Excep)
-            ResponseMsg = "ERROR: " + Excep.Message
-        End Try
+        InsteonSendExtCommand(strAddress, comm1, comm2)
     End Sub
 
     Sub Load()

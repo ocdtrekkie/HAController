@@ -127,6 +127,32 @@ Module modDreamCheeky
         Public Event ButtonPressed As EventHandler
     End Class
 
+    Public Class HAWebMailNotifier
+        Inherits HAUSBDevice
+        Private ReadOnly device As IHidDevice
+
+        Public Sub New()
+            Me.DeviceName = "WebMail Notifier"
+            Me.DeviceType = "Display"
+            Me.DeviceUID = "usb_0x1D34_0x0004"
+            Me.Model = "Dream Cheeky 815 WebMail Notifier"
+            Me.VendorID = 7476 '0x1D34
+            Me.DeviceID = 4 '0x0004
+
+            My.Application.Log.WriteEntry("HAWebMailNotifier - Create Device")
+            Dim hidEnumerator As HidEnumerator = New HidEnumerator
+
+            device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
+
+            If device Is Nothing Then
+                'Throw New InvalidOperationException("Device not found")
+                Me.IsConnected = False
+            Else
+                Me.IsConnected = True
+            End If
+        End Sub
+    End Class
+
     Public Enum DeviceStatus
         Unknown = 0
         Errored = 1

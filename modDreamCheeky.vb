@@ -5,6 +5,7 @@ Module modDreamCheeky
     'And this one from MrRenaud: https://github.com/MrRenaud/DreamCheekyUSB
     'Significant adaption help provided via: http://codeconverter.sharpdevelop.net/SnippetConverter.aspx
     Dim BigRedButtonIndex As Integer
+    Dim WebMailNotifierIndex As Integer
 
     Public Sub CreateButton()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
@@ -18,6 +19,21 @@ Module modDreamCheeky
         Else
             My.Application.Log.WriteEntry("Big Red Button not found")
             BigRedButton.Dispose()
+        End If
+    End Sub
+
+    Public Sub CreateNotifier()
+        Dim WebMailNotifier As HAWebMailNotifier = New HAWebMailNotifier
+        If WebMailNotifier.IsConnected = True Then
+            My.Application.Log.WriteEntry("WebMail Notifier - Open")
+            WebMailNotifier.Open()
+
+            DeviceCollection.Add(WebMailNotifier)
+            WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
+            My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
+        Else
+            My.Application.Log.WriteEntry("WebMail Notifier not found")
+            WebMailNotifier.Dispose()
         End If
     End Sub
 
@@ -141,6 +157,17 @@ Module modDreamCheeky
         Private ReadOnly clrBlue As Byte() = {0, 0, 0, 255, 0, 0, 0, 31, 5}
         Private ReadOnly clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
 
+        Public Sub Close()
+            My.Application.Log.WriteEntry("HAWebMailNotifier - Close Device")
+            device.CloseDevice()
+        End Sub
+
+        Public Overloads Sub Dispose()
+            If Me.IsConnected = True Then
+                Me.Close()
+            End If
+        End Sub
+
         Public Sub New()
             Me.DeviceName = "WebMail Notifier"
             Me.DeviceType = "Display"
@@ -160,6 +187,11 @@ Module modDreamCheeky
             Else
                 Me.IsConnected = True
             End If
+        End Sub
+
+        Public Sub Open()
+            My.Application.Log.WriteEntry("HAWebMailNotifier - Open Device")
+            device.OpenDevice()
         End Sub
     End Class
 

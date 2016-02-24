@@ -2,6 +2,7 @@
 
 Module modDreamCheeky
     'Heavily based on this Github project from mbenford: https://github.com/mbenford/dreamcheeky-big-red-button-dotnet
+    'And this one from MrRenaud: https://github.com/MrRenaud/DreamCheekyUSB
     'Significant adaption help provided via: http://codeconverter.sharpdevelop.net/SnippetConverter.aspx
     Dim BigRedButtonIndex As Integer
 
@@ -130,6 +131,15 @@ Module modDreamCheeky
     Public Class HAWebMailNotifier
         Inherits HAUSBDevice
         Private ReadOnly device As IHidDevice
+        Private ReadOnly maxColorValue As Byte = 64 'Colors are capped at 64, so scale accordingly
+        Private ReadOnly init01 As Byte() = {0, 31, 2, 0, 95, 0, 0, 31, 3}
+        Private ReadOnly init02 As Byte() = {0, 0, 2, 0, 95, 0, 0, 31, 4}
+        Private ReadOnly init03 As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
+        Private ReadOnly init04 As Byte() = {0, 0, 0, 0, 0, 0, 0, 0, 1}
+        Private ReadOnly clrRed As Byte() = {0, 255, 0, 0, 0, 0, 0, 31, 5}
+        Private ReadOnly clrGreen As Byte() = {0, 0, 255, 0, 0, 0, 0, 31, 5}
+        Private ReadOnly clrBlue As Byte() = {0, 0, 0, 255, 0, 0, 0, 31, 5}
+        Private ReadOnly clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
 
         Public Sub New()
             Me.DeviceName = "WebMail Notifier"

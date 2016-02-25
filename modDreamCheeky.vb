@@ -31,6 +31,8 @@ Module modDreamCheeky
             DeviceCollection.Add(WebMailNotifier)
             WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
+
+            DeviceCollection(WebMailNotifierIndex).SetRGB(0, 255, 255) 'Test color to set the webmail notifer
         Else
             My.Application.Log.WriteEntry("WebMail Notifier not found")
             WebMailNotifier.Dispose()
@@ -156,6 +158,8 @@ Module modDreamCheeky
         Private ReadOnly clrGreen As Byte() = {0, 0, 255, 0, 0, 0, 0, 31, 5}
         Private ReadOnly clrBlue As Byte() = {0, 0, 0, 255, 0, 0, 0, 31, 5}
         Private ReadOnly clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
+        Private writeLock As New Object
+        Private IsInitialized As Boolean = False
 
         Public Sub Close()
             My.Application.Log.WriteEntry("HAWebMailNotifier - Close Device")
@@ -192,6 +196,66 @@ Module modDreamCheeky
         Public Sub Open()
             My.Application.Log.WriteEntry("HAWebMailNotifier - Open Device")
             device.OpenDevice()
+
+            SyncLock writeLock
+                My.Application.Log.WriteEntry("HAWebMailNotifier - Initialize Device")
+                device.Write(init01)
+                Threading.Thread.Sleep(100)
+                device.Write(init02)
+                Threading.Thread.Sleep(100)
+                device.Write(init03)
+                Threading.Thread.Sleep(100)
+                device.Write(init04)
+                Threading.Thread.Sleep(100)
+                Me.IsInitialized = True
+                My.Application.Log.WriteEntry("HAWebMailNotifier - Initialized")
+            End SyncLock
+        End Sub
+
+        Public Sub SetBlue()
+            If Me.IsInitialized = True Then
+                SyncLock writeLock
+                    device.Write(clrBlue)
+                End SyncLock
+            End If
+        End Sub
+
+        Public Sub SetGreen()
+            If Me.IsInitialized = True Then
+                SyncLock writeLock
+                    device.Write(clrGreen)
+                End SyncLock
+            End If
+        End Sub
+
+        Public Sub SetRed()
+            If Me.IsInitialized = True Then
+                SyncLock writeLock
+                    device.Write(clrRed)
+                End SyncLock
+            End If
+        End Sub
+
+        Public Sub SetRGB(bytRed As Short, bytGreen As Short, bytBlue As Short)
+            If Me.IsInitialized = True Then
+                bytRed = CByte(Math.Truncate((CSng(bytRed) / 255.0F) * maxColorValue))
+                bytGreen = CByte(Math.Truncate((CSng(bytGreen) / 255.0F) * maxColorValue))
+                bytBlue = CByte(Math.Truncate((CSng(bytBlue) / 255.0F) * maxColorValue))
+
+                Dim clrCustom As Byte() = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
+
+                SyncLock writeLock
+                    device.Write(clrCustom)
+                End SyncLock
+            End If
+        End Sub
+
+        Public Sub TurnOff()
+            If Me.IsInitialized = True Then
+                SyncLock writeLock
+                    device.Write(clrOff)
+                End SyncLock
+            End If
         End Sub
     End Class
 

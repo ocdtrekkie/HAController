@@ -33,6 +33,7 @@ Module modDreamCheeky
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
 
             DeviceCollection(WebMailNotifierIndex).SetColor("CornflowerBlue")
+            DeviceCollection(WebMailNotifierIndex).TurnOn()
         Else
             My.Application.Log.WriteEntry("WebMail Notifier not found")
             WebMailNotifier.Dispose()
@@ -158,6 +159,22 @@ Module modDreamCheeky
         Private writeLock As New Object
         Private IsInitialized As Boolean = False
 
+        Public Sub Blink(Optional ByVal Times As Integer = 1, Optional ByVal BlinkMS As Integer = 500)
+            If (Times <= 0 Or BlinkMS <= 0) Then
+                Throw New ArgumentOutOfRangeException("Cannot blink negative times or for negative duration")
+            End If
+
+            Dim i As Integer = 0
+
+            While i < Times
+                TurnOn()
+                Threading.Thread.Sleep(BlinkMS)
+                TurnOff()
+                Threading.Thread.Sleep(BlinkMS)
+                i = i + 1
+            End While
+        End Sub
+
         Public Sub Close()
             My.Application.Log.WriteEntry("WebMail Notifier - Close Device", TraceEventType.Verbose)
             device.CloseDevice()
@@ -167,6 +184,54 @@ Module modDreamCheeky
             If Me.IsConnected = True Then
                 Me.Close()
             End If
+        End Sub
+
+        Public Sub FadeIn(ByVal TotalMS As Integer)
+            If (TotalMS <= 0) Then
+                Throw New ArgumentOutOfRangeException("Cannot fade out negative length of time")
+            End If
+
+            Dim clrTemp As Byte()
+            Dim t As Integer = 0
+            Dim s As Integer = 35
+            Dim r As Double = 0
+            Dim bytRed, bytGreen, bytBlue As Byte
+
+            While t < TotalMS
+                Threading.Thread.Sleep(s)
+                r = CDbl(t) / CDbl(TotalMS)
+                bytRed = CByte(Me.Color.R * r)
+                bytGreen = CByte(Me.Color.G * r)
+                bytBlue = CByte(Me.Color.B * r)
+                clrTemp = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
+
+                Me.Write(clrTemp)
+                t += s
+            End While
+        End Sub
+
+        Public Sub FadeOut(ByVal TotalMS As Integer)
+            If (TotalMS <= 0) Then
+                Throw New ArgumentOutOfRangeException("Cannot fade out negative length of time")
+            End If
+
+            Dim clrTemp As Byte()
+            Dim t As Integer = 0
+            Dim s As Integer = 35
+            Dim r As Double = 0
+            Dim bytRed, bytGreen, bytBlue As Byte
+
+            While t < TotalMS
+                Threading.Thread.Sleep(s)
+                r = CDbl(t) / CDbl(TotalMS)
+                bytRed = CByte(Me.Color.R - (Me.Color.R * r))
+                bytGreen = CByte(Me.Color.G - (Me.Color.G * r))
+                bytBlue = CByte(Me.Color.B - (Me.Color.B * r))
+                clrTemp = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
+
+                Me.Write(clrTemp)
+                t += s
+            End While
         End Sub
 
         Public Sub New()
@@ -211,23 +276,16 @@ Module modDreamCheeky
         End Sub
 
         Public Sub SetColor(ByVal colColor As String)
-            'This sets the color and then turns on the light
             Me.Color = Drawing.Color.FromName(colColor)
             My.Application.Log.WriteEntry("WebMail Notifier color set to " & Me.Color.Name)
-
-            TurnOn()
         End Sub
 
         Public Sub SetRGB(bytRed As Byte, bytGreen As Byte, bytBlue As Byte)
-            'This sets the color and then turns on the light
             Me.Color = Drawing.Color.FromArgb(bytRed, bytGreen, bytBlue)
             My.Application.Log.WriteEntry("WebMail Notifier color set to " & bytRed & ", " & bytGreen & ", " & bytBlue)
-
-            TurnOn()
         End Sub
 
         Public Sub TurnOff()
-            'Call this to turn off the light entirely
             Dim clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
 
             Me.Write(clrOff)

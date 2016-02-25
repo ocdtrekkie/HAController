@@ -255,16 +255,16 @@ Module modDreamCheeky
 
             device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
 
-            Me.DevicePath = device.DevicePath
-            device.MonitorDeviceEvents = True
-
-            AddHandler device.Inserted, AddressOf device_Inserted
-            AddHandler device.Removed, AddressOf device_Removed
-
             If device Is Nothing Then
                 'Throw New InvalidOperationException("Device not found")
                 Me.IsConnected = False
             Else
+                Me.DevicePath = device.DevicePath
+                device.MonitorDeviceEvents = True
+
+                AddHandler device.Inserted, AddressOf device_Inserted
+                AddHandler device.Removed, AddressOf device_Removed
+
                 Me.IsConnected = True
                 Me.Open()
             End If

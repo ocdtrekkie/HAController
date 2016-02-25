@@ -79,7 +79,7 @@ Module modConverse
                         strCommandResponse = "Acknowledged"
                     End If
                     If inputData(1) = "status" And inputData(2) = "to" Then
-                        If inputData(3) = "off" Or inputData(3) = "home" Or inputData(3) = "away" Or inputData(3) = "guests" Then
+                        If inputData(3) = "off" Or inputData(3) = "stay" Or inputData(3) = "away" Or inputData(3) = "guests" Then
                             frmMain.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                             strCommandResponse = "Status set to " & inputData(3)
                         End If

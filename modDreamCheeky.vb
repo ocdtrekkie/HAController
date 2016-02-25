@@ -32,7 +32,7 @@ Module modDreamCheeky
             WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
 
-            DeviceCollection(WebMailNotifierIndex).SetRGB(0, 255, 255) 'Test color to set the webmail notifer
+            DeviceCollection(WebMailNotifierIndex).SetRGB(100, 149, 237) 'Test Cornflower Blue to set the webmail notifer
         Else
             My.Application.Log.WriteEntry("WebMail Notifier not found")
             WebMailNotifier.Dispose()
@@ -213,47 +213,34 @@ Module modDreamCheeky
         End Sub
 
         Public Sub SetBlue()
-            If Me.IsInitialized = True Then
-                SyncLock writeLock
-                    device.Write(clrBlue)
-                End SyncLock
-            End If
+            Me.Write(clrBlue)
         End Sub
 
         Public Sub SetGreen()
-            If Me.IsInitialized = True Then
-                SyncLock writeLock
-                    device.Write(clrGreen)
-                End SyncLock
-            End If
+            Me.Write(clrGreen)
         End Sub
 
         Public Sub SetRed()
-            If Me.IsInitialized = True Then
-                SyncLock writeLock
-                    device.Write(clrRed)
-                End SyncLock
-            End If
+            Me.Write(clrRed)
         End Sub
 
         Public Sub SetRGB(bytRed As Short, bytGreen As Short, bytBlue As Short)
-            If Me.IsInitialized = True Then
-                bytRed = CByte(Math.Truncate((CSng(bytRed) / 255.0F) * maxColorValue))
-                bytGreen = CByte(Math.Truncate((CSng(bytGreen) / 255.0F) * maxColorValue))
-                bytBlue = CByte(Math.Truncate((CSng(bytBlue) / 255.0F) * maxColorValue))
+            bytRed = CByte(Math.Truncate((CSng(bytRed) / 255.0F) * maxColorValue))
+            bytGreen = CByte(Math.Truncate((CSng(bytGreen) / 255.0F) * maxColorValue))
+            bytBlue = CByte(Math.Truncate((CSng(bytBlue) / 255.0F) * maxColorValue))
+            Dim clrCustom As Byte() = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
 
-                Dim clrCustom As Byte() = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
-
-                SyncLock writeLock
-                    device.Write(clrCustom)
-                End SyncLock
-            End If
+            Me.Write(clrCustom)
         End Sub
 
         Public Sub TurnOff()
+            Me.Write(clrOff)
+        End Sub
+
+        Private Sub Write(ByVal arrBytes As Byte())
             If Me.IsInitialized = True Then
                 SyncLock writeLock
-                    device.Write(clrOff)
+                    device.Write(arrBytes)
                 End SyncLock
             End If
         End Sub

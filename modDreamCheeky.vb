@@ -10,9 +10,6 @@ Module modDreamCheeky
     Public Sub CreateButton()
         Dim BigRedButton As HABigRedButton = New HABigRedButton
         If BigRedButton.IsConnected = True Then
-            My.Application.Log.WriteEntry("Big Red Button - Open")
-            BigRedButton.Open()
-
             DeviceCollection.Add(BigRedButton)
             BigRedButtonIndex = DeviceCollection.IndexOf(BigRedButton)
             My.Application.Log.WriteEntry("Big Red Button has a device index of " & BigRedButtonIndex)
@@ -25,9 +22,6 @@ Module modDreamCheeky
     Public Sub CreateNotifier()
         Dim WebMailNotifier As HAWebMailNotifier = New HAWebMailNotifier
         If WebMailNotifier.IsConnected = True Then
-            My.Application.Log.WriteEntry("WebMail Notifier - Open")
-            WebMailNotifier.Open()
-
             DeviceCollection.Add(WebMailNotifier)
             WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
@@ -90,6 +84,7 @@ Module modDreamCheeky
                 Me.IsConnected = False
             Else
                 Me.IsConnected = True
+                Me.Open()
             End If
         End Sub
 
@@ -271,6 +266,7 @@ Module modDreamCheeky
                 Me.IsConnected = False
             Else
                 Me.IsConnected = True
+                Me.Open()
             End If
         End Sub
 

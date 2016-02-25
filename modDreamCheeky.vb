@@ -32,7 +32,7 @@ Module modDreamCheeky
             WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
 
-            DeviceCollection(WebMailNotifierIndex).SetRGB(100, 149, 237) 'Test Cornflower Blue to set the webmail notifer
+            DeviceCollection(WebMailNotifierIndex).SetColor("CornflowerBlue")
         Else
             My.Application.Log.WriteEntry("WebMail Notifier not found")
             WebMailNotifier.Dispose()
@@ -148,21 +148,18 @@ Module modDreamCheeky
 
     Public Class HAWebMailNotifier
         Inherits HAUSBDevice
+        Public Property Color As Color
         Private ReadOnly device As IHidDevice
         Private ReadOnly maxColorValue As Byte = 64 'Colors are capped at 64, so scale accordingly
         Private ReadOnly init01 As Byte() = {0, 31, 2, 0, 95, 0, 0, 31, 3}
         Private ReadOnly init02 As Byte() = {0, 0, 2, 0, 95, 0, 0, 31, 4}
         Private ReadOnly init03 As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
         Private ReadOnly init04 As Byte() = {0, 0, 0, 0, 0, 0, 0, 0, 1}
-        Private ReadOnly clrRed As Byte() = {0, 255, 0, 0, 0, 0, 0, 31, 5}
-        Private ReadOnly clrGreen As Byte() = {0, 0, 255, 0, 0, 0, 0, 31, 5}
-        Private ReadOnly clrBlue As Byte() = {0, 0, 0, 255, 0, 0, 0, 31, 5}
-        Private ReadOnly clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
         Private writeLock As New Object
         Private IsInitialized As Boolean = False
 
         Public Sub Close()
-            My.Application.Log.WriteEntry("HAWebMailNotifier - Close Device")
+            My.Application.Log.WriteEntry("WebMail Notifier - Close Device", TraceEventType.Verbose)
             device.CloseDevice()
         End Sub
 
@@ -179,8 +176,9 @@ Module modDreamCheeky
             Me.Model = "Dream Cheeky 815 WebMail Notifier"
             Me.VendorID = 7476 '0x1D34
             Me.DeviceID = 4 '0x0004
+            Me.Color = Drawing.Color.White
 
-            My.Application.Log.WriteEntry("HAWebMailNotifier - Create Device")
+            My.Application.Log.WriteEntry("WebMail Notifier - Create Device")
             Dim hidEnumerator As HidEnumerator = New HidEnumerator
 
             device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
@@ -194,11 +192,11 @@ Module modDreamCheeky
         End Sub
 
         Public Sub Open()
-            My.Application.Log.WriteEntry("HAWebMailNotifier - Open Device")
+            My.Application.Log.WriteEntry("WebMail Notifier - Open Device", TraceEventType.Verbose)
             device.OpenDevice()
 
             SyncLock writeLock
-                My.Application.Log.WriteEntry("HAWebMailNotifier - Initialize Device")
+                My.Application.Log.WriteEntry("WebMail Notifier - Initialize Device", TraceEventType.Verbose)
                 device.Write(init01)
                 Threading.Thread.Sleep(100)
                 device.Write(init02)
@@ -208,33 +206,41 @@ Module modDreamCheeky
                 device.Write(init04)
                 Threading.Thread.Sleep(100)
                 Me.IsInitialized = True
-                My.Application.Log.WriteEntry("HAWebMailNotifier - Initialized")
+                My.Application.Log.WriteEntry("WebMail Notifier - Initialized", TraceEventType.Verbose)
             End SyncLock
         End Sub
 
-        Public Sub SetBlue()
-            Me.Write(clrBlue)
+        Public Sub SetColor(ByVal colColor As String)
+            'This sets the color and then turns on the light
+            Me.Color = Drawing.Color.FromName(colColor)
+            My.Application.Log.WriteEntry("WebMail Notifier color set to " & Me.Color.Name)
+
+            TurnOn()
         End Sub
 
-        Public Sub SetGreen()
-            Me.Write(clrGreen)
-        End Sub
+        Public Sub SetRGB(bytRed As Byte, bytGreen As Byte, bytBlue As Byte)
+            'This sets the color and then turns on the light
+            Me.Color = Drawing.Color.FromArgb(bytRed, bytGreen, bytBlue)
+            My.Application.Log.WriteEntry("WebMail Notifier color set to " & bytRed & ", " & bytGreen & ", " & bytBlue)
 
-        Public Sub SetRed()
-            Me.Write(clrRed)
-        End Sub
-
-        Public Sub SetRGB(bytRed As Short, bytGreen As Short, bytBlue As Short)
-            bytRed = CByte(Math.Truncate((CSng(bytRed) / 255.0F) * maxColorValue))
-            bytGreen = CByte(Math.Truncate((CSng(bytGreen) / 255.0F) * maxColorValue))
-            bytBlue = CByte(Math.Truncate((CSng(bytBlue) / 255.0F) * maxColorValue))
-            Dim clrCustom As Byte() = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
-
-            Me.Write(clrCustom)
+            TurnOn()
         End Sub
 
         Public Sub TurnOff()
+            'Call this to turn off the light entirely
+            Dim clrOff As Byte() = {0, 0, 0, 0, 0, 0, 0, 31, 5}
+
             Me.Write(clrOff)
+        End Sub
+
+        Public Sub TurnOn()
+            'Call this publicly to turn on the previously determined color
+            Dim bytRed As Byte = CByte(Math.Truncate((CSng(Color.R) / 255.0F) * maxColorValue))
+            Dim bytGreen As Byte = CByte(Math.Truncate((CSng(Color.G) / 255.0F) * maxColorValue))
+            Dim bytBlue As Byte = CByte(Math.Truncate((CSng(Color.B) / 255.0F) * maxColorValue))
+            Dim clrCustom As Byte() = {0, bytRed, bytGreen, bytBlue, 0, 0, 0, 31, 5}
+
+            Me.Write(clrCustom)
         End Sub
 
         Private Sub Write(ByVal arrBytes As Byte())

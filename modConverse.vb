@@ -105,6 +105,10 @@ Module modConverse
                             modInsteon.AlarmMuted = False
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
+                Case "when"
+                    If inputData(1) = "was" And inputData(2) = "the" And inputData(3) = "door" And inputData(4) = "last" And inputData(5) = "opened" Then
+                        strCommandResponse = "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
+                    End If
                 Case "who"
                     If inputData(1) = "are" And inputData(2) = "you" Then
                         strCommandResponse = "I am " & My.Settings.Converse_BotName & ", a HAC interface, version " & My.Application.Info.Version.ToString

@@ -412,6 +412,17 @@ Namespace My
                 Me("Converse_BotGender") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property Global_TimeDoorLastOpened() As Date
+            Get
+                Return CType(Me("Global_TimeDoorLastOpened"),Date)
+            End Get
+            Set
+                Me("Global_TimeDoorLastOpened") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -92,5 +92,8 @@
     <Setting Name="Converse_BotGender" Type="System.String" Scope="User">
       <Value Profile="(Default)">Female</Value>
     </Setting>
+    <Setting Name="Global_TimeDoorLastOpened" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1585,6 +1585,7 @@ Module modInsteon
     Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 17
+                My.Settings.Global_TimeDoorLastOpened = Now()
                 If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
                     My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus, TraceEventType.Warning)
                     modSpeech.Say("Intruder alert!")

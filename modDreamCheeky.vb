@@ -150,6 +150,7 @@ Module modDreamCheeky
     Public Class HAWebMailNotifier
         Inherits HAUSBDevice
         Public Property Color As Color
+        Public Property DevicePath As String
         Private ReadOnly device As IHidDevice
         Private ReadOnly maxColorValue As Byte = 64 'Colors are capped at 64, so scale accordingly
         Private ReadOnly init01 As Byte() = {0, 31, 2, 0, 95, 0, 0, 31, 3}
@@ -178,6 +179,17 @@ Module modDreamCheeky
         Public Sub Close()
             My.Application.Log.WriteEntry("WebMail Notifier - Close Device", TraceEventType.Verbose)
             device.CloseDevice()
+        End Sub
+
+        Private Sub device_Inserted()
+            My.Application.Log.WriteEntry("WebMail Notifier - Device Inserted")
+            Open()
+        End Sub
+
+        Private Sub device_Removed()
+            My.Application.Log.WriteEntry("WebMail Notifier - Device Unplugged", TraceEventType.Warning)
+            Me.IsConnected = False
+            Me.IsInitialized = False
         End Sub
 
         Public Overloads Sub Dispose()
@@ -247,6 +259,12 @@ Module modDreamCheeky
             Dim hidEnumerator As HidEnumerator = New HidEnumerator
 
             device = hidEnumerator.Enumerate(VendorID, DeviceID).FirstOrDefault()
+
+            Me.DevicePath = device.DevicePath
+            device.MonitorDeviceEvents = True
+
+            AddHandler device.Inserted, AddressOf device_Inserted
+            AddHandler device.Removed, AddressOf device_Removed
 
             If device Is Nothing Then
                 'Throw New InvalidOperationException("Device not found")

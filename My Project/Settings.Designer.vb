@@ -423,6 +423,18 @@ Namespace My
                 Me("Global_TimeDoorLastOpened") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property DreamCheeky_Enable() As Boolean
+            Get
+                Return CType(Me("DreamCheeky_Enable"),Boolean)
+            End Get
+            Set
+                Me("DreamCheeky_Enable") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

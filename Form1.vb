@@ -32,12 +32,10 @@
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
+        My.Application.Log.WriteEntry("Loading DreamCheeky module")
+        modDreamCheeky.Load()
         My.Application.Log.WriteEntry("Loading mail module")
         modMail.Load()
-
-        My.Application.Log.WriteEntry("Loading DreamCheeky module")
-        modDreamCheeky.CreateButton()
-        modDreamCheeky.CreateNotifier()
 
         modComputer.GetInfo()
 

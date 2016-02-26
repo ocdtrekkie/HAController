@@ -21,6 +21,8 @@ Module modConverse
                     End If
                 Case "disable"
                     Select Case inputData(1)
+                        Case "dreamcheeky"
+                            modDreamCheeky.Disable()
                         Case "insteon"
                             modInsteon.Disable()
                         Case "mail"
@@ -35,6 +37,8 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "enable"
                     Select Case inputData(1)
+                        Case "dreamcheeky"
+                            modDreamCheeky.Enable()
                         Case "insteon"
                             modInsteon.Enable()
                         Case "mail"

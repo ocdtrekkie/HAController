@@ -39,6 +39,8 @@
         modDreamCheeky.CreateButton()
         modDreamCheeky.CreateNotifier()
 
+        modComputer.GetInfo()
+
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)
             cmbComPort.Text = My.Settings.Insteon_LastGoodCOMPort

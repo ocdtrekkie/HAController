@@ -108,6 +108,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="modComputer.vb" />
     <Compile Include="modConverse.vb" />
     <Compile Include="modDatabase.vb" />
     <Compile Include="modDreamCheeky.vb" />

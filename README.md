@@ -11,6 +11,7 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
 The following modules should function optionally:
+* modComputer will have features for monitoring and controlling the local computer.
 * modDreamCheeky will support the Dream Cheeky Big Red Button and WebMail Notifier devices.
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.

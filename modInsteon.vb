@@ -1596,6 +1596,7 @@ Module modInsteon
                 End If
                 Return "Door Opened"
             Case 19
+                My.Settings.Global_TimeDoorLastOpened = Now()
                 Return "Door Closed"
             Case Else
                 Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"

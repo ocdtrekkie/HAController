@@ -18,6 +18,7 @@
 '          HAServiceOWM
 '     HAUSBDevice
 
+<Serializable()>
 Class HADevice
     Implements IDisposable
     Public Property DeviceName As String

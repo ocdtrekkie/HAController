@@ -169,6 +169,7 @@ Module modDreamCheeky
         Public Event ButtonPressed As EventHandler
     End Class
 
+    <Serializable()>
     Public Class HAWebMailNotifier
         Inherits HAUSBDevice
         Public Property Color As Color

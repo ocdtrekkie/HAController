@@ -11,7 +11,7 @@ Public Module modGlobal
 
     Sub SaveCollection()
         Dim targetFile As New FileStream("C:\HAC\DeviceCollection.xml", FileMode.Create)
-        Dim formatter As New XmlSerializer(GetType(HAWebMailNotifier))
+        Dim formatter As New XmlSerializer(DeviceCollection(0).GetType)
 
         formatter.Serialize(targetFile, DeviceCollection(0))
         targetFile.Close()

@@ -202,6 +202,7 @@ Class HAServiceOWM 'Not really a device, but a service we can treat like a virtu
     End Sub
 End Class
 
+<Serializable()>
 Class HAUSBDevice
     Inherits HADevice
     Public Property VendorID As Integer

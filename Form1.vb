@@ -5,7 +5,7 @@
         My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
         Me.Hide()
         modInsteon.Unload()
-        Threading.Thread.Sleep(3000) ' Let any remaining commands filter through
+        Threading.Thread.Sleep(1000) ' Let any remaining commands filter through
         modScheduler.Unload()
         modDatabase.Unload()
     End Sub

@@ -8,6 +8,11 @@
         Threading.Thread.Sleep(1000) ' Let any remaining commands filter through
         modScheduler.Unload()
         modDatabase.Unload()
+
+        If My.Settings.Global_Experimental = True Then
+            My.Application.Log.WriteEntry("EXPERIMENTAL: Attempting to save DeviceCollection")
+            SaveCollection()
+        End If
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load

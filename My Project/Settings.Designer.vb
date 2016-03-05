@@ -447,6 +447,18 @@ Namespace My
                 Me("Global_Experimental") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\HAC\HAClog.txt")>  _
+        Public Property Global_LogFileURI() As String
+            Get
+                Return CType(Me("Global_LogFileURI"),String)
+            End Get
+            Set
+                Me("Global_LogFileURI") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

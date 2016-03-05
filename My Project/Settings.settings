@@ -101,5 +101,8 @@
     <Setting Name="Global_Experimental" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Global_LogFileURI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\HAC\HAClog.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

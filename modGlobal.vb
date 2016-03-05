@@ -17,4 +17,13 @@ Public Module modGlobal
         targetFile.Close()
         formatter = Nothing
     End Sub
+
+    Function CheckLogFileSize()
+        Dim LogFile As New System.IO.FileInfo(My.Settings.Global_LogFileURI)
+        My.Application.Log.WriteEntry("Log file is " & LogFile.Length & " bytes")
+        If LogFile.Length > (50 * 1024 * 1024) Then
+            My.Application.Log.WriteEntry("Log file exceeds 50 MB, consider clearing", TraceEventType.Warning)
+        End If
+        Return LogFile.Length
+    End Function
 End Module

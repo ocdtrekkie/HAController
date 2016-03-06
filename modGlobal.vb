@@ -9,6 +9,25 @@ Public Module modGlobal
 
     Public DeviceCollection As New ArrayList
 
+    Sub LoadModules()
+        My.Application.Log.WriteEntry("Loading database module")
+        modDatabase.Load()
+        My.Application.Log.WriteEntry("Loading scheduler module")
+        modScheduler.Load()
+        My.Application.Log.WriteEntry("Loading ping module")
+        modPing.Load()
+        My.Application.Log.WriteEntry("Loading Insteon module")
+        modInsteon.Load()
+        My.Application.Log.WriteEntry("Loading speech module")
+        modSpeech.Load()
+        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
+        modOpenWeatherMap.Load()
+        My.Application.Log.WriteEntry("Loading DreamCheeky module")
+        modDreamCheeky.Load()
+        My.Application.Log.WriteEntry("Loading mail module")
+        modMail.Load()
+    End Sub
+
     Sub SaveCollection()
         Dim targetFile As New FileStream("C:\HAC\DeviceCollection.xml", FileMode.Create)
         Dim formatter As New XmlSerializer(DeviceCollection(0).GetType)
@@ -16,6 +35,12 @@ Public Module modGlobal
         formatter.Serialize(targetFile, DeviceCollection(0))
         targetFile.Close()
         formatter = Nothing
+    End Sub
+
+    Sub UnloadModules()
+        modInsteon.Unload()
+        modScheduler.Unload()
+        modDatabase.Unload()
     End Sub
 
     Function CheckLogFileSize()

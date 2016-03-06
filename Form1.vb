@@ -4,14 +4,11 @@
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
         Me.Hide()
-        modInsteon.Unload()
-        Threading.Thread.Sleep(1000) ' Let any remaining commands filter through
-        modScheduler.Unload()
-        modDatabase.Unload()
+        modGlobal.UnloadModules()
 
         If My.Settings.Global_Experimental = True Then
             My.Application.Log.WriteEntry("EXPERIMENTAL: Attempting to save DeviceCollection")
-            SaveCollection()
+            modGlobal.SaveCollection()
         End If
     End Sub
 
@@ -25,22 +22,7 @@
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
         End If
 
-        My.Application.Log.WriteEntry("Loading database module")
-        modDatabase.Load()
-        My.Application.Log.WriteEntry("Loading scheduler module")
-        modScheduler.Load()
-        My.Application.Log.WriteEntry("Loading ping module")
-        modPing.Load()
-        My.Application.Log.WriteEntry("Loading Insteon module")
-        modInsteon.Load()
-        My.Application.Log.WriteEntry("Loading speech module")
-        modSpeech.Load()
-        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
-        modOpenWeatherMap.Load()
-        My.Application.Log.WriteEntry("Loading DreamCheeky module")
-        modDreamCheeky.Load()
-        My.Application.Log.WriteEntry("Loading mail module")
-        modMail.Load()
+        modGlobal.LoadModules()
 
         modComputer.GetInfo()
         modGlobal.CheckLogFileSize()

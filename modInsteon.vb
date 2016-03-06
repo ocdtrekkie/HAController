@@ -1029,6 +1029,7 @@ Module modInsteon
             SerialPLM.Close()
         End If
         SerialPLM.Dispose()
+        Threading.Thread.Sleep(200)
     End Sub
 
     Public Function InsteonNum(ByVal Address As String) As Short

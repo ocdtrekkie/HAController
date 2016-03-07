@@ -79,18 +79,18 @@ Module modDreamCheeky
             End If
         End Sub
 
-        Public Function GetStatus() As DeviceStatus
+        Public Function GetStatus() As BigRedButtonDeviceStatus
             My.Application.Log.WriteEntry("HABigRedButton - Getting Status")
             If Not device.Write(StatusReport, 100) Then
-                Return DeviceStatus.Errored
+                Return BigRedButtonDeviceStatus.Errored
             End If
 
             Dim data As HidDeviceData = device.Read(100)
             If data.Status <> HidDeviceData.ReadStatus.Success Then
-                Return DeviceStatus.Errored
+                Return BigRedButtonDeviceStatus.Errored
             End If
 
-            Return DirectCast(CInt(data.Data(1)), DeviceStatus)
+            Return DirectCast(CInt(data.Data(1)), BigRedButtonDeviceStatus)
         End Function
 
         Public Sub New()
@@ -124,16 +124,16 @@ Module modDreamCheeky
         End Sub
 
         Private Sub ThreadCallback()
-            Dim lastStatus = DeviceStatus.Unknown
+            Dim lastStatus = BigRedButtonDeviceStatus.Unknown
 
             While Not IsTerminated
-                Dim status As DeviceStatus = Me.GetStatus()
-                If status <> DeviceStatus.Errored Then
-                    If status = DeviceStatus.LidClosed AndAlso lastStatus = DeviceStatus.LidOpen Then
+                Dim status As BigRedButtonDeviceStatus = Me.GetStatus()
+                If status <> BigRedButtonDeviceStatus.Errored Then
+                    If status = BigRedButtonDeviceStatus.LidClosed AndAlso lastStatus = BigRedButtonDeviceStatus.LidOpen Then
                         OnLidClosed()
-                    ElseIf status = DeviceStatus.ButtonPressed AndAlso lastStatus <> DeviceStatus.ButtonPressed Then
+                    ElseIf status = BigRedButtonDeviceStatus.ButtonPressed AndAlso lastStatus <> BigRedButtonDeviceStatus.ButtonPressed Then
                         OnButtonPressed()
-                    ElseIf status = DeviceStatus.LidOpen AndAlso lastStatus = DeviceStatus.LidClosed Then
+                    ElseIf status = BigRedButtonDeviceStatus.LidOpen AndAlso lastStatus = BigRedButtonDeviceStatus.LidClosed Then
                         OnLidOpen()
                     End If
 
@@ -352,7 +352,7 @@ Module modDreamCheeky
         End Sub
     End Class
 
-    Public Enum DeviceStatus
+    Public Enum BigRedButtonDeviceStatus
         Unknown = 0
         Errored = 1
         LidClosed = 21

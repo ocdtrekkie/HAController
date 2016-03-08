@@ -61,6 +61,10 @@ Module modConverse
                     If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
                         strCommandResponse = modComputer.LockScreen()
                     End If
+                Case "play"
+                    If inputData(1) = "list" Then
+                        modComputer.PlayPlaylist(inputData(2))
+                    End If
                 Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"

@@ -126,16 +126,12 @@ Module modConverse
                         Select Case inputData(3)
                             Case "reboot", "restart"
                                 If inputData(4) = "host" Then
-                                    strCommandResponse = "Initiating host reboot"
-                                    modMail.Send("Host reboot initiated", "Host reboot initiated")
-                                    System.Diagnostics.Process.Start("shutdown", "-r")
+                                    strCommandResponse = modComputer.RebootHost()
                                     frmMain.Close()
                                 End If
                             Case "shut"
                                 If inputData(4) = "down" And inputData(5) = "host" Then
-                                    strCommandResponse = "Initiating host shutdown"
-                                    modMail.Send("Host shutdown initiated", "Host shutdown initiated")
-                                    System.Diagnostics.Process.Start("shutdown", "-s")
+                                    strCommandResponse = modComputer.ShutdownHost()
                                     frmMain.Close()
                                 End If
                         End Select

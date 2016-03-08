@@ -43,4 +43,26 @@ Module modComputer
         System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", strSongFile)
         Return 0
     End Function
+
+    Function RebootHost()
+        Try
+            modMail.Send("Host reboot initiated", "Host reboot initiated")
+            System.Diagnostics.Process.Start("shutdown", "-r")
+            Return "Initiating host reboot"
+        Catch Win32Ex As System.ComponentModel.Win32Exception
+            My.Application.Log.WriteException(Win32Ex)
+            Return "Unable to initiate reboot"
+        End Try
+    End Function
+
+    Function ShutdownHost()
+        Try
+            modMail.Send("Host shutdown initiated", "Host shutdown initiated")
+            System.Diagnostics.Process.Start("shutdown", "-s")
+            Return "Initiating host shutdown"
+        Catch Win32Ex As System.ComponentModel.Win32Exception
+            My.Application.Log.WriteException(Win32Ex)
+            Return "Unable to initiate shutdown"
+        End Try
+    End Function
 End Module

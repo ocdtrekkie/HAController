@@ -95,6 +95,10 @@ Module modConverse
                             strCommandResponse = "Status set to " & inputData(3)
                         End If
                     End If
+                Case "stop"
+                    If inputData(1) = "music" Then
+                        modComputer.StopMusic()
+                    End If
                 Case "test"
                     Select Case inputData(1)
                         Case "notifications"

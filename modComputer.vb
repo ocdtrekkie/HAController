@@ -44,6 +44,13 @@ Module modComputer
         Return 0
     End Function
 
+    Function StopMusic() As String
+        For Each p As Process In Process.GetProcessesByName("wmplayer")
+            p.Kill()
+        Next
+        Return "Stopping music"
+    End Function
+
     Function RebootHost()
         Try
             modMail.Send("Host reboot initiated", "Host reboot initiated")

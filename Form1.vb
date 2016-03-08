@@ -36,6 +36,10 @@
         Stopwatch.Stop()
         My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 
+        If My.Settings.Global_CarMode = True Then
+            modSpeech.Say("System online")
+        End If
+
         txtCommandBar.Enabled = True
     End Sub
 

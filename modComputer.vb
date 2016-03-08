@@ -23,4 +23,14 @@ Module modComputer
         My.Application.Log.WriteEntry("Running Processes: " & ProcessList)
         Return ProcessList
     End Function
+
+    Function PlayPlaylist(strPlaylistName As String)
+        System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/Playlist " & strPlaylistName)
+        Return 0
+    End Function
+
+    Function PlaySong(strSongFile As String)
+        System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", strSongFile)
+        Return 0
+    End Function
 End Module

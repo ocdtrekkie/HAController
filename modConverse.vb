@@ -59,8 +59,7 @@ Module modConverse
                     strCommandResponse = "Hello"
                 Case "lock"
                     If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
-                        System.Diagnostics.Process.Start("tsdiscon")
-                        strCommandResponse = "Acknowledged"
+                        strCommandResponse = modComputer.LockScreen()
                     End If
                 Case "mute", "silence"
                     Select Case inputData(1)

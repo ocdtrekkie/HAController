@@ -24,6 +24,16 @@ Module modComputer
         Return ProcessList
     End Function
 
+    Function LockScreen()
+        Try
+            System.Diagnostics.Process.Start("tsdiscon.exe")
+            Return "Acknowledged"
+        Catch Win32Ex As System.ComponentModel.Win32Exception
+            My.Application.Log.WriteException(Win32Ex)
+            Return "Unable to lock screen"
+        End Try
+    End Function
+
     Function PlayPlaylist(strPlaylistName As String)
         System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/Playlist " & strPlaylistName)
         Return 0

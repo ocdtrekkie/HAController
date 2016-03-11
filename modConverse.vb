@@ -57,6 +57,12 @@ Module modConverse
                     End If
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
+                Case "link"
+                    If inputData(1) = "insteon" And inputData(2) = "address" Then
+                        Dim response As String = ""
+                        modInsteon.InsteonLinkI2CSDevice(inputData(3), response)
+                        strCommandResponse = "Linking"
+                    End If
                 Case "lock"
                     If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
                         strCommandResponse = modComputer.LockScreen()

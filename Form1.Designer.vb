@@ -351,6 +351,9 @@ Partial Class frmMain
         Me.Controls.Add(Me.txtAddress)
         Me.Controls.Add(Me.lblComConnected)
         Me.Controls.Add(Me.cmbComPort)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(300, 382)
+        Me.MinimumSize = New System.Drawing.Size(300, 382)
         Me.Name = "frmMain"
         Me.Text = "HA Controller"
         Me.ResumeLayout(False)

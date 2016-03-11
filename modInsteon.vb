@@ -252,6 +252,9 @@ Module modInsteon
             Case "Off", "off"
                 comm1 = 107
                 comm2 = 9
+            Case "Read", "read"
+                comm1 = 106
+                comm2 = 0
             Case "Up", "up"
                 comm1 = 104
                 comm2 = 2
@@ -393,6 +396,8 @@ Module modInsteon
                             strTemp = strTemp & " (NAK Group cleanup direct) "
                     End Select
                     If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
+                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
+                    ElseIf FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
                     ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr Or FromAddress = My.Settings.Insteon_BackDoorSensorAddr) And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
@@ -1654,6 +1659,10 @@ Module modInsteon
 
     Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
+            Case 106
+                ' TODO: Don't assume this info is temperature! It might not be! (But currently my code only requests it.)
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) + ")")
+                Return "Temperature: " & Int(comm2 / 2) & " F"
             Case 110
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToString + "', 'Insteon', 'Interior', " + CStr(Int(comm2 / 2)) + ")")
                 Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"

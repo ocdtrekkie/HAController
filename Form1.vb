@@ -17,6 +17,8 @@
         Stopwatch.Start()
         My.Application.Log.WriteEntry("Main application form loaded")
 
+        AddHandler My.Settings.PropertyChanged, AddressOf Settings_Changed
+
         If My.Settings.Global_LastHomeStatus <> "" Then
             My.Application.Log.WriteEntry("Found previous home status")
             SetHomeStatus(My.Settings.Global_LastHomeStatus)
@@ -146,13 +148,9 @@
         SetHomeStatus(cmbStatus.SelectedItem.ToString)
     End Sub
 
-    Public Sub SetHomeStatus(ByVal ChangeHomeStatus As String)
-        ' TODO: This could probably use some sort of change countdown with the scheduler
-        cmbStatus.Text = ChangeHomeStatus
-        modGlobal.HomeStatus = ChangeHomeStatus
-        My.Application.Log.WriteEntry("Home status changed to " + modGlobal.HomeStatus)
-        My.Settings.Global_LastHomeStatus = modGlobal.HomeStatus
-        lblCurrentStatus.Text = modGlobal.HomeStatus
+    Private Sub Settings_Changed()
+        cmbStatus.Text = My.Settings.Global_LastHomeStatus
+        lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
     End Sub
 
     Private Sub btnCheckWeather_Click(sender As Object, e As EventArgs) Handles btnCheckWeather.Click

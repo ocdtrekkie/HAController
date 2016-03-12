@@ -37,6 +37,13 @@ Public Module modGlobal
         formatter = Nothing
     End Sub
 
+    Sub SetHomeStatus(ByVal ChangeHomeStatus As String)
+        ' TODO: This could probably use some sort of change countdown with the scheduler
+        modGlobal.HomeStatus = ChangeHomeStatus
+        My.Application.Log.WriteEntry("Home status changed to " + HomeStatus)
+        My.Settings.Global_LastHomeStatus = HomeStatus
+    End Sub
+
     Sub UnloadModules()
         modInsteon.Unload()
         modScheduler.Unload()

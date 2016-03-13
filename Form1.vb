@@ -148,9 +148,16 @@
         SetHomeStatus(cmbStatus.SelectedItem.ToString)
     End Sub
 
+    Delegate Sub UpdateCallback()
+
     Private Sub Settings_Changed()
-        cmbStatus.Text = My.Settings.Global_LastHomeStatus
-        lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
+        If Me.InvokeRequired Then
+            Dim d As New UpdateCallback(AddressOf Settings_Changed)
+            Me.Invoke(d)
+        Else
+            cmbStatus.Text = My.Settings.Global_LastHomeStatus
+            lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
+        End If
     End Sub
 
     Private Sub btnCheckWeather_Click(sender As Object, e As EventArgs) Handles btnCheckWeather.Click

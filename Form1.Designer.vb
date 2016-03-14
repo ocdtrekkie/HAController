@@ -51,6 +51,8 @@ Partial Class frmMain
         Me.btnAddIP = New System.Windows.Forms.Button()
         Me.btnCheckWeather = New System.Windows.Forms.Button()
         Me.txtCommandBar = New System.Windows.Forms.TextBox()
+        Me.lblOutsideTemp = New System.Windows.Forms.Label()
+        Me.lblInsideTemp = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -317,11 +319,33 @@ Partial Class frmMain
         Me.txtCommandBar.Size = New System.Drawing.Size(260, 20)
         Me.txtCommandBar.TabIndex = 0
         '
+        'lblOutsideTemp
+        '
+        Me.lblOutsideTemp.AutoSize = True
+        Me.lblOutsideTemp.Location = New System.Drawing.Point(227, 66)
+        Me.lblOutsideTemp.Name = "lblOutsideTemp"
+        Me.lblOutsideTemp.Size = New System.Drawing.Size(28, 13)
+        Me.lblOutsideTemp.TabIndex = 31
+        Me.lblOutsideTemp.Text = "00 F"
+        Me.lblOutsideTemp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'lblInsideTemp
+        '
+        Me.lblInsideTemp.AutoSize = True
+        Me.lblInsideTemp.Location = New System.Drawing.Point(227, 53)
+        Me.lblInsideTemp.Name = "lblInsideTemp"
+        Me.lblInsideTemp.Size = New System.Drawing.Size(28, 13)
+        Me.lblInsideTemp.TabIndex = 32
+        Me.lblInsideTemp.Text = "00 F"
+        Me.lblInsideTemp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 343)
+        Me.Controls.Add(Me.lblInsideTemp)
+        Me.Controls.Add(Me.lblOutsideTemp)
         Me.Controls.Add(Me.txtCommandBar)
         Me.Controls.Add(Me.btnCheckWeather)
         Me.Controls.Add(Me.btnAddIP)
@@ -389,4 +413,6 @@ Partial Class frmMain
     Friend WithEvents btnAddIP As System.Windows.Forms.Button
     Friend WithEvents btnCheckWeather As System.Windows.Forms.Button
     Friend WithEvents txtCommandBar As System.Windows.Forms.TextBox
+    Friend WithEvents lblOutsideTemp As System.Windows.Forms.Label
+    Friend WithEvents lblInsideTemp As System.Windows.Forms.Label
 End Class

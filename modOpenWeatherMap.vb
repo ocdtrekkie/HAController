@@ -63,6 +63,8 @@ Module modOpenWeatherMap
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
             End If
 
+            My.Settings.Global_LastKnownOutsideTemp = Int(dblTemperature)
+
             Return SpeechString
         Catch NetExcep As System.Net.WebException
             My.Application.Log.WriteException(NetExcep)

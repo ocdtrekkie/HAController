@@ -471,6 +471,30 @@ Namespace My
                 Me("Global_CarMode") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Global_LastKnownOutsideTemp() As Integer
+            Get
+                Return CType(Me("Global_LastKnownOutsideTemp"),Integer)
+            End Get
+            Set
+                Me("Global_LastKnownOutsideTemp") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Global_LastKnownInsideTemp() As Integer
+            Get
+                Return CType(Me("Global_LastKnownInsideTemp"),Integer)
+            End Get
+            Set
+                Me("Global_LastKnownInsideTemp") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

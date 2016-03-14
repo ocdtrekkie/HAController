@@ -157,6 +157,8 @@
         Else
             cmbStatus.Text = My.Settings.Global_LastHomeStatus
             lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
+            lblInsideTemp.Text = My.Settings.Global_LastKnownInsideTemp & " F"
+            lblOutsideTemp.Text = My.Settings.Global_LastKnownOutsideTemp & " F"
         End If
     End Sub
 

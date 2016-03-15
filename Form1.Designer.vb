@@ -53,6 +53,9 @@ Partial Class frmMain
         Me.txtCommandBar = New System.Windows.Forms.TextBox()
         Me.lblOutsideTemp = New System.Windows.Forms.Label()
         Me.lblInsideTemp = New System.Windows.Forms.Label()
+        Me.lblInsideTempLabel = New System.Windows.Forms.Label()
+        Me.lblOutsideTempLabel = New System.Windows.Forms.Label()
+        Me.lblOutsideCondition = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -61,7 +64,7 @@ Partial Class frmMain
         Me.cmbComPort.Items.AddRange(New Object() {"COM1", "COM2", "COM3", "COM4", "COM5", "COM6"})
         Me.cmbComPort.Location = New System.Drawing.Point(12, 12)
         Me.cmbComPort.Name = "cmbComPort"
-        Me.cmbComPort.Size = New System.Drawing.Size(121, 21)
+        Me.cmbComPort.Size = New System.Drawing.Size(132, 21)
         Me.cmbComPort.TabIndex = 30
         '
         'lblComConnected
@@ -77,7 +80,7 @@ Partial Class frmMain
         '
         'txtAddress
         '
-        Me.txtAddress.Location = New System.Drawing.Point(101, 107)
+        Me.txtAddress.Location = New System.Drawing.Point(101, 136)
         Me.txtAddress.MaxLength = 8
         Me.txtAddress.Name = "txtAddress"
         Me.txtAddress.Size = New System.Drawing.Size(53, 20)
@@ -87,7 +90,7 @@ Partial Class frmMain
         'lblAddress
         '
         Me.lblAddress.AutoSize = True
-        Me.lblAddress.Location = New System.Drawing.Point(12, 110)
+        Me.lblAddress.Location = New System.Drawing.Point(12, 139)
         Me.lblAddress.Name = "lblAddress"
         Me.lblAddress.Size = New System.Drawing.Size(83, 13)
         Me.lblAddress.TabIndex = 3
@@ -97,14 +100,14 @@ Partial Class frmMain
         '
         Me.cmbStatus.FormattingEnabled = True
         Me.cmbStatus.Items.AddRange(New Object() {"Off", "Away", "Stay", "Guests"})
-        Me.cmbStatus.Location = New System.Drawing.Point(151, 12)
+        Me.cmbStatus.Location = New System.Drawing.Point(150, 12)
         Me.cmbStatus.Name = "cmbStatus"
-        Me.cmbStatus.Size = New System.Drawing.Size(121, 21)
+        Me.cmbStatus.Size = New System.Drawing.Size(139, 21)
         Me.cmbStatus.TabIndex = 2
         '
         'btnInsteonOn
         '
-        Me.btnInsteonOn.Location = New System.Drawing.Point(160, 105)
+        Me.btnInsteonOn.Location = New System.Drawing.Point(183, 134)
         Me.btnInsteonOn.Name = "btnInsteonOn"
         Me.btnInsteonOn.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonOn.TabIndex = 5
@@ -113,7 +116,7 @@ Partial Class frmMain
         '
         'btnInsteonOff
         '
-        Me.btnInsteonOff.Location = New System.Drawing.Point(216, 105)
+        Me.btnInsteonOff.Location = New System.Drawing.Point(239, 134)
         Me.btnInsteonOff.Name = "btnInsteonOff"
         Me.btnInsteonOff.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonOff.TabIndex = 6
@@ -122,7 +125,7 @@ Partial Class frmMain
         '
         'btnInsteonBeep
         '
-        Me.btnInsteonBeep.Location = New System.Drawing.Point(160, 134)
+        Me.btnInsteonBeep.Location = New System.Drawing.Point(71, 163)
         Me.btnInsteonBeep.Name = "btnInsteonBeep"
         Me.btnInsteonBeep.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonBeep.TabIndex = 7
@@ -132,7 +135,7 @@ Partial Class frmMain
         'lblCurrentStatus
         '
         Me.lblCurrentStatus.AutoSize = True
-        Me.lblCurrentStatus.Location = New System.Drawing.Point(151, 35)
+        Me.lblCurrentStatus.Location = New System.Drawing.Point(147, 36)
         Me.lblCurrentStatus.Name = "lblCurrentStatus"
         Me.lblCurrentStatus.Size = New System.Drawing.Size(21, 13)
         Me.lblCurrentStatus.TabIndex = 8
@@ -150,7 +153,7 @@ Partial Class frmMain
         '
         'btnInsteonSoft
         '
-        Me.btnInsteonSoft.Location = New System.Drawing.Point(216, 134)
+        Me.btnInsteonSoft.Location = New System.Drawing.Point(127, 163)
         Me.btnInsteonSoft.Name = "btnInsteonSoft"
         Me.btnInsteonSoft.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonSoft.TabIndex = 10
@@ -159,7 +162,7 @@ Partial Class frmMain
         '
         'btnInsteonDim
         '
-        Me.btnInsteonDim.Location = New System.Drawing.Point(160, 163)
+        Me.btnInsteonDim.Location = New System.Drawing.Point(183, 163)
         Me.btnInsteonDim.Name = "btnInsteonDim"
         Me.btnInsteonDim.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonDim.TabIndex = 11
@@ -168,7 +171,7 @@ Partial Class frmMain
         '
         'btnInsteonNite
         '
-        Me.btnInsteonNite.Location = New System.Drawing.Point(216, 163)
+        Me.btnInsteonNite.Location = New System.Drawing.Point(239, 163)
         Me.btnInsteonNite.Name = "btnInsteonNite"
         Me.btnInsteonNite.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonNite.TabIndex = 12
@@ -177,7 +180,7 @@ Partial Class frmMain
         '
         'btnInsteonTempDown
         '
-        Me.btnInsteonTempDown.Location = New System.Drawing.Point(216, 221)
+        Me.btnInsteonTempDown.Location = New System.Drawing.Point(239, 221)
         Me.btnInsteonTempDown.Name = "btnInsteonTempDown"
         Me.btnInsteonTempDown.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempDown.TabIndex = 15
@@ -186,7 +189,7 @@ Partial Class frmMain
         '
         'btnInsteonTempUp
         '
-        Me.btnInsteonTempUp.Location = New System.Drawing.Point(160, 221)
+        Me.btnInsteonTempUp.Location = New System.Drawing.Point(183, 221)
         Me.btnInsteonTempUp.Name = "btnInsteonTempUp"
         Me.btnInsteonTempUp.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempUp.TabIndex = 16
@@ -195,7 +198,7 @@ Partial Class frmMain
         '
         'btnInsteonTempOff
         '
-        Me.btnInsteonTempOff.Location = New System.Drawing.Point(104, 221)
+        Me.btnInsteonTempOff.Location = New System.Drawing.Point(127, 221)
         Me.btnInsteonTempOff.Name = "btnInsteonTempOff"
         Me.btnInsteonTempOff.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempOff.TabIndex = 17
@@ -204,7 +207,7 @@ Partial Class frmMain
         '
         'btnInsteonTempAuto
         '
-        Me.btnInsteonTempAuto.Location = New System.Drawing.Point(104, 250)
+        Me.btnInsteonTempAuto.Location = New System.Drawing.Point(127, 250)
         Me.btnInsteonTempAuto.Name = "btnInsteonTempAuto"
         Me.btnInsteonTempAuto.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempAuto.TabIndex = 18
@@ -213,7 +216,7 @@ Partial Class frmMain
         '
         'btnInsteonTempHeat
         '
-        Me.btnInsteonTempHeat.Location = New System.Drawing.Point(160, 250)
+        Me.btnInsteonTempHeat.Location = New System.Drawing.Point(183, 250)
         Me.btnInsteonTempHeat.Name = "btnInsteonTempHeat"
         Me.btnInsteonTempHeat.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempHeat.TabIndex = 19
@@ -222,7 +225,7 @@ Partial Class frmMain
         '
         'btnInsteonTempCool
         '
-        Me.btnInsteonTempCool.Location = New System.Drawing.Point(216, 250)
+        Me.btnInsteonTempCool.Location = New System.Drawing.Point(239, 250)
         Me.btnInsteonTempCool.Name = "btnInsteonTempCool"
         Me.btnInsteonTempCool.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempCool.TabIndex = 20
@@ -232,7 +235,7 @@ Partial Class frmMain
         'lblThermostat
         '
         Me.lblThermostat.AutoSize = True
-        Me.lblThermostat.Location = New System.Drawing.Point(134, 205)
+        Me.lblThermostat.Location = New System.Drawing.Point(157, 205)
         Me.lblThermostat.Name = "lblThermostat"
         Me.lblThermostat.Size = New System.Drawing.Size(101, 13)
         Me.lblThermostat.TabIndex = 21
@@ -241,7 +244,7 @@ Partial Class frmMain
         'lblLight
         '
         Me.lblLight.AutoSize = True
-        Me.lblLight.Location = New System.Drawing.Point(184, 89)
+        Me.lblLight.Location = New System.Drawing.Point(201, 118)
         Me.lblLight.Name = "lblLight"
         Me.lblLight.Size = New System.Drawing.Size(71, 13)
         Me.lblLight.TabIndex = 22
@@ -250,7 +253,7 @@ Partial Class frmMain
         'chkInsteonTempFan
         '
         Me.chkInsteonTempFan.AutoSize = True
-        Me.chkInsteonTempFan.Location = New System.Drawing.Point(174, 279)
+        Me.chkInsteonTempFan.Location = New System.Drawing.Point(197, 279)
         Me.chkInsteonTempFan.Name = "chkInsteonTempFan"
         Me.chkInsteonTempFan.Size = New System.Drawing.Size(92, 17)
         Me.chkInsteonTempFan.TabIndex = 23
@@ -286,7 +289,7 @@ Partial Class frmMain
         '
         'btnInsteonCheck
         '
-        Me.btnInsteonCheck.Location = New System.Drawing.Point(104, 163)
+        Me.btnInsteonCheck.Location = New System.Drawing.Point(12, 163)
         Me.btnInsteonCheck.Name = "btnInsteonCheck"
         Me.btnInsteonCheck.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonCheck.TabIndex = 27
@@ -295,7 +298,7 @@ Partial Class frmMain
         '
         'btnAddIP
         '
-        Me.btnAddIP.Location = New System.Drawing.Point(12, 66)
+        Me.btnAddIP.Location = New System.Drawing.Point(12, 96)
         Me.btnAddIP.Name = "btnAddIP"
         Me.btnAddIP.Size = New System.Drawing.Size(50, 23)
         Me.btnAddIP.TabIndex = 28
@@ -304,7 +307,7 @@ Partial Class frmMain
         '
         'btnCheckWeather
         '
-        Me.btnCheckWeather.Location = New System.Drawing.Point(68, 66)
+        Me.btnCheckWeather.Location = New System.Drawing.Point(71, 96)
         Me.btnCheckWeather.Name = "btnCheckWeather"
         Me.btnCheckWeather.Size = New System.Drawing.Size(104, 23)
         Me.btnCheckWeather.TabIndex = 29
@@ -316,15 +319,16 @@ Partial Class frmMain
         Me.txtCommandBar.Enabled = False
         Me.txtCommandBar.Location = New System.Drawing.Point(12, 313)
         Me.txtCommandBar.Name = "txtCommandBar"
-        Me.txtCommandBar.Size = New System.Drawing.Size(260, 20)
+        Me.txtCommandBar.Size = New System.Drawing.Size(277, 20)
         Me.txtCommandBar.TabIndex = 0
         '
         'lblOutsideTemp
         '
         Me.lblOutsideTemp.AutoSize = True
-        Me.lblOutsideTemp.Location = New System.Drawing.Point(227, 66)
+        Me.lblOutsideTemp.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOutsideTemp.Location = New System.Drawing.Point(186, 60)
         Me.lblOutsideTemp.Name = "lblOutsideTemp"
-        Me.lblOutsideTemp.Size = New System.Drawing.Size(28, 13)
+        Me.lblOutsideTemp.Size = New System.Drawing.Size(68, 31)
         Me.lblOutsideTemp.TabIndex = 31
         Me.lblOutsideTemp.Text = "00 F"
         Me.lblOutsideTemp.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -332,18 +336,48 @@ Partial Class frmMain
         'lblInsideTemp
         '
         Me.lblInsideTemp.AutoSize = True
-        Me.lblInsideTemp.Location = New System.Drawing.Point(227, 53)
+        Me.lblInsideTemp.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInsideTemp.Location = New System.Drawing.Point(56, 60)
         Me.lblInsideTemp.Name = "lblInsideTemp"
-        Me.lblInsideTemp.Size = New System.Drawing.Size(28, 13)
+        Me.lblInsideTemp.Size = New System.Drawing.Size(68, 31)
         Me.lblInsideTemp.TabIndex = 32
         Me.lblInsideTemp.Text = "00 F"
         Me.lblInsideTemp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'lblInsideTempLabel
+        '
+        Me.lblInsideTempLabel.AutoSize = True
+        Me.lblInsideTempLabel.Location = New System.Drawing.Point(12, 66)
+        Me.lblInsideTempLabel.Name = "lblInsideTempLabel"
+        Me.lblInsideTempLabel.Size = New System.Drawing.Size(38, 13)
+        Me.lblInsideTempLabel.TabIndex = 33
+        Me.lblInsideTempLabel.Text = "Inside:"
+        '
+        'lblOutsideTempLabel
+        '
+        Me.lblOutsideTempLabel.AutoSize = True
+        Me.lblOutsideTempLabel.Location = New System.Drawing.Point(134, 66)
+        Me.lblOutsideTempLabel.Name = "lblOutsideTempLabel"
+        Me.lblOutsideTempLabel.Size = New System.Drawing.Size(46, 13)
+        Me.lblOutsideTempLabel.TabIndex = 34
+        Me.lblOutsideTempLabel.Text = "Outside:"
+        '
+        'lblOutsideCondition
+        '
+        Me.lblOutsideCondition.Location = New System.Drawing.Point(189, 91)
+        Me.lblOutsideCondition.Name = "lblOutsideCondition"
+        Me.lblOutsideCondition.Size = New System.Drawing.Size(100, 13)
+        Me.lblOutsideCondition.TabIndex = 35
+        Me.lblOutsideCondition.Text = "Condition"
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 343)
+        Me.ClientSize = New System.Drawing.Size(304, 343)
+        Me.Controls.Add(Me.lblOutsideCondition)
+        Me.Controls.Add(Me.lblOutsideTempLabel)
+        Me.Controls.Add(Me.lblInsideTempLabel)
         Me.Controls.Add(Me.lblInsideTemp)
         Me.Controls.Add(Me.lblOutsideTemp)
         Me.Controls.Add(Me.txtCommandBar)
@@ -376,8 +410,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblComConnected)
         Me.Controls.Add(Me.cmbComPort)
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(300, 382)
-        Me.MinimumSize = New System.Drawing.Size(300, 382)
+        Me.MaximumSize = New System.Drawing.Size(320, 382)
+        Me.MinimumSize = New System.Drawing.Size(320, 382)
         Me.Name = "frmMain"
         Me.Text = "HA Controller"
         Me.ResumeLayout(False)
@@ -415,4 +449,7 @@ Partial Class frmMain
     Friend WithEvents txtCommandBar As System.Windows.Forms.TextBox
     Friend WithEvents lblOutsideTemp As System.Windows.Forms.Label
     Friend WithEvents lblInsideTemp As System.Windows.Forms.Label
+    Friend WithEvents lblInsideTempLabel As System.Windows.Forms.Label
+    Friend WithEvents lblOutsideTempLabel As System.Windows.Forms.Label
+    Friend WithEvents lblOutsideCondition As System.Windows.Forms.Label
 End Class

@@ -159,6 +159,7 @@
             lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
             lblInsideTemp.Text = My.Settings.Global_LastKnownInsideTemp & " F"
             lblOutsideTemp.Text = My.Settings.Global_LastKnownOutsideTemp & " F"
+            lblOutsideCondition.Text = StrConv(My.Settings.Global_LastKnownOutsideCondition, VbStrConv.ProperCase)
         End If
     End Sub
 

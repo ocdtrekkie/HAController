@@ -64,6 +64,7 @@ Module modOpenWeatherMap
             End If
 
             My.Settings.Global_LastKnownOutsideTemp = Int(dblTemperature)
+            My.Settings.Global_LastKnownOutsideCondition = strWeather
 
             Return SpeechString
         Catch NetExcep As System.Net.WebException

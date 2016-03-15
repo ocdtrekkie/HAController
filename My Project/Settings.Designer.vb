@@ -495,6 +495,18 @@ Namespace My
                 Me("Global_LastKnownInsideTemp") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Global_LastKnownOutsideCondition() As String
+            Get
+                Return CType(Me("Global_LastKnownOutsideCondition"),String)
+            End Get
+            Set
+                Me("Global_LastKnownOutsideCondition") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

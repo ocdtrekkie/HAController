@@ -35,6 +35,7 @@ Module modComputer
     End Function
 
     Function PlayPlaylist(strPlaylistName As String)
+        My.Settings.Computer_LastMusicPlaylist = strPlaylistName
         System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/Playlist " & strPlaylistName)
         Return 0
     End Function

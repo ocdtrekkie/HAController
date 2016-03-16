@@ -507,6 +507,18 @@ Namespace My
                 Me("Global_LastKnownOutsideCondition") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Computer_LastMusicPlaylist() As String
+            Get
+                Return CType(Me("Computer_LastMusicPlaylist"),String)
+            End Get
+            Set
+                Me("Computer_LastMusicPlaylist") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

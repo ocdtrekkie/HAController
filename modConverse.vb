@@ -68,9 +68,16 @@ Module modConverse
                         strCommandResponse = modComputer.LockScreen()
                     End If
                 Case "play"
-                    If inputData(1) = "list" Then
-                        modComputer.PlayPlaylist(inputData(2))
-                    End If
+                    Select inputData(1)
+                        Case "list"
+                            modComputer.PlayPlaylist(inputData(2))
+                        Case "music"
+                            modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                        Case "some"
+                            If inputData(2) = "music" Then
+                                modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                            End If
+                    End Select
                 Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"

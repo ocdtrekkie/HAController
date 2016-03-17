@@ -90,6 +90,18 @@ Module modInsteon
                 My.Settings.Insteon_LastGoodCOMPort = PortName
                 ResponseMsg = "Connected"
             End If
+
+            If My.Settings.Insteon_ThermostatAddr <> "" Then
+                My.Application.Log.WriteEntry("Scheduling automatic thermostat temperature checks")
+                Dim TCheckJob As IJobDetail = JobBuilder.Create(GetType(InsteonCheckTemperatureSchedule)).WithIdentity("tcheckjob", "modinsteon").Build()
+                Dim TCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("tchecktrigger", "modinsteon").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(20).RepeatForever()).Build()
+
+                Try
+                    modScheduler.sched.ScheduleJob(TCheckJob, TCheckTrigger)
+                Catch QzExcep As Quartz.ObjectAlreadyExistsException
+                    My.Application.Log.WriteException(QzExcep)
+                End Try
+            End If
         End If
     End Sub
 
@@ -1723,6 +1735,15 @@ Module modInsteon
             Dim response As String = ""
 
             InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetString("Command1"), CInt(dataMap.GetString("intSeconds")))
+        End Sub
+    End Class
+
+    Public Class InsteonCheckTemperatureSchedule : Implements IJob
+        Public Sub Execute(context As IJobExecutionContext) Implements IJob.Execute
+            My.Application.Log.WriteEntry("Executing scheduled InsteonCheckTemperature")
+            Dim response As String = ""
+
+            InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, "read")
         End Sub
     End Class
 End Module

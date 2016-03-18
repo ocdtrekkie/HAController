@@ -133,6 +133,29 @@ Module modConverse
                             modInsteon.AlarmMuted = False
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
+                Case "what"
+                    If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And inputData(4) = "time" And inputData(5) = "in" Then
+                        Dim strConvTimeZone As String
+                        Dim dteConvTimeZone As TimeZoneInfo
+                        Select Case inputData(6)
+                            Case "beijing", "china", "shanghai"
+                                strConvTimeZone = "China Standard Time"
+                            Case "iceland", "reykjavik"
+                                strConvTimeZone = "Greenwich Standard Time" ' No DST
+                            Case "london"
+                                strConvTimeZone = "GMT Standard Time" ' Has DST
+                            Case Else
+                                strConvTimeZone = "Unknown"
+                        End Select
+                        dteConvTimeZone = TimeZoneInfo.FindSystemTimeZoneById(strConvTimeZone)
+
+                        If strConvTimeZone <> "Unknown" Then
+                            Dim dteConvTime As DateTime = TimeZoneInfo.ConvertTime(Now(), dteConvTimeZone)
+                            strCommandResponse = "The current time in " & inputData(6) & " is " & dteConvTime.ToShortTimeString & " on " & dteConvTime.ToShortDateString
+                        Else
+                            strCommandResponse = "I don't know what time zone " & inputData(6) & " is in"
+                        End If
+                    End If
                 Case "when"
                     If inputData(1) = "was" And inputData(2) = "the" And inputData(3) = "door" And inputData(4) = "last" And inputData(5) = "opened" Then
                         strCommandResponse = "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString

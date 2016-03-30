@@ -134,7 +134,7 @@ Module modConverse
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
                 Case "what"
-                    If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And inputData(4) = "temperature" And inputData(5) = "inside" Then
+                    If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And ((inputData(4) = "temperature" And inputData(5) = "inside") Or (inputData(4) = "inside" And inputData(5) = "temperature")) Then
                         strCommandResponse = "The current temperature inside is " & My.Settings.Global_LastKnownInsideTemp & " degrees Fahrenheit"
                     End If
                     If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And inputData(4) = "time" And inputData(5) = "in" Then

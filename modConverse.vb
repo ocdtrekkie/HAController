@@ -5,20 +5,17 @@ Module modConverse
         Dim strCommandResponse As String = ""
 
         If strInputString <> "" Then
-            strInputString = strInputString.ToLower()
             My.Application.Log.WriteEntry("Command received: " + strInputString)
+            ' Clean string for easier reading
+            strInputString = strInputString.ToLower()
+            strInputString = strInputString.Replace("what does", "what's")
+            strInputString = strInputString.Replace("what is", "what's")
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)
                 Case "bye", "exit", "quit", "shutdown"
                     strCommandResponse = "Goodbye"
                     frmMain.Close()
-                Case "check", "what's"
-                    If inputData(1) = "the" And inputData(2) = "weather" Then
-                        If My.Settings.OpenWeatherMap_Enable = True Then
-                            strCommandResponse = modOpenWeatherMap.GatherWeatherData()
-                        End If
-                    End If
                 Case "disable"
                     Select Case inputData(1)
                         Case "dreamcheeky"
@@ -68,7 +65,7 @@ Module modConverse
                         strCommandResponse = modComputer.LockScreen()
                     End If
                 Case "play"
-                    Select inputData(1)
+                    Select Case inputData(1)
                         Case "list"
                             modComputer.PlayPlaylist(inputData(2))
                         Case "music"
@@ -133,31 +130,40 @@ Module modConverse
                             modInsteon.AlarmMuted = False
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
-                Case "what"
-                    If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And ((inputData(4) = "temperature" And inputData(5) = "inside") Or (inputData(4) = "inside" And inputData(5) = "temperature")) Then
-                        strCommandResponse = "The current temperature inside is " & My.Settings.Global_LastKnownInsideTemp & " degrees Fahrenheit"
-                    End If
-                    If inputData(1) = "is" And inputData(2) = "the" And inputData(3) = "current" And inputData(4) = "time" And inputData(5) = "in" Then
-                        Dim strConvTimeZone As String
-                        Dim dteConvTimeZone As TimeZoneInfo
-                        Select Case inputData(6)
-                            Case "beijing", "china", "shanghai"
-                                strConvTimeZone = "China Standard Time"
-                            Case "iceland", "reykjavik"
-                                strConvTimeZone = "Greenwich Standard Time" ' No DST
-                            Case "london"
-                                strConvTimeZone = "GMT Standard Time" ' Has DST
-                            Case Else
-                                strConvTimeZone = "Unknown"
-                        End Select
-                        dteConvTimeZone = TimeZoneInfo.FindSystemTimeZoneById(strConvTimeZone)
+                Case "what's"
+                    If inputData(1) = "the" Then
+                        Select Case inputData(2)
+                            Case "current"
+                                If ((inputData(3) = "temperature" And inputData(4) = "inside") Or (inputData(3) = "inside" And inputData(4) = "temperature")) Then
+                                    strCommandResponse = "The current temperature inside is " & My.Settings.Global_LastKnownInsideTemp & " degrees Fahrenheit"
+                                End If
+                                If inputData(3) = "time" And inputData(4) = "in" Then
+                                    Dim strConvTimeZone As String
+                                    Dim dteConvTimeZone As TimeZoneInfo
+                                    Select Case inputData(5)
+                                        Case "beijing", "china", "shanghai"
+                                            strConvTimeZone = "China Standard Time"
+                                        Case "iceland", "reykjavik"
+                                            strConvTimeZone = "Greenwich Standard Time" ' No DST
+                                        Case "london"
+                                            strConvTimeZone = "GMT Standard Time" ' Has DST
+                                        Case Else
+                                            strConvTimeZone = "Unknown"
+                                    End Select
+                                    dteConvTimeZone = TimeZoneInfo.FindSystemTimeZoneById(strConvTimeZone)
 
-                        If strConvTimeZone <> "Unknown" Then
-                            Dim dteConvTime As DateTime = TimeZoneInfo.ConvertTime(Now(), dteConvTimeZone)
-                            strCommandResponse = "The current time in " & inputData(6) & " is " & dteConvTime.ToShortTimeString & " on " & dteConvTime.ToShortDateString
-                        Else
-                            strCommandResponse = "I don't know what time zone " & inputData(6) & " is in"
-                        End If
+                                    If strConvTimeZone <> "Unknown" Then
+                                        Dim dteConvTime As DateTime = TimeZoneInfo.ConvertTime(Now(), dteConvTimeZone)
+                                        strCommandResponse = "The current time in " & inputData(5) & " is " & dteConvTime.ToShortTimeString & " on " & dteConvTime.ToShortDateString
+                                    Else
+                                        strCommandResponse = "I don't know what time zone " & inputData(5) & " is in"
+                                    End If
+                                End If
+                            Case "weather"
+                                If My.Settings.OpenWeatherMap_Enable = True Then
+                                    strCommandResponse = modOpenWeatherMap.GatherWeatherData()
+                                End If
+                        End Select
                     End If
                 Case "when"
                     If inputData(1) = "was" And inputData(2) = "the" And inputData(3) = "door" And inputData(4) = "last" And inputData(5) = "opened" Then

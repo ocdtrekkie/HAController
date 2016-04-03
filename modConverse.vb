@@ -68,11 +68,14 @@ Module modConverse
                     Select Case inputData(1)
                         Case "list"
                             modComputer.PlayPlaylist(inputData(2))
+                            strCommandResponse = "Playing " & inputData(2)
                         Case "music"
                             modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                            strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                         Case "some"
                             If inputData(2) = "music" Then
                                 modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                                strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                             End If
                     End Select
                 Case "mute", "silence"

@@ -108,6 +108,7 @@ Module modConverse
                 Case "stop"
                     If inputData(1) = "music" Then
                         modComputer.StopMusic()
+                        strCommandResponse = "Music stopped"
                     End If
                 Case "test"
                     Select Case inputData(1)
@@ -190,6 +191,10 @@ Module modConverse
                         End Select
                     End If
             End Select
+
+            If strCommandResponse = "" Then
+                strCommandResponse = "I'm sorry, I didn't understand your request"
+            End If
 
             If strCommandResponse <> "" Then
                 My.Application.Log.WriteEntry("Command response: " & strCommandResponse)

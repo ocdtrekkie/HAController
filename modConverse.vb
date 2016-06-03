@@ -64,6 +64,12 @@ Module modConverse
                     If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
                         strCommandResponse = modComputer.LockScreen()
                     End If
+                Case "mute", "silence"
+                    Select Case inputData(1)
+                        Case "alarm"
+                            modInsteon.AlarmMuted = True
+                            strCommandResponse = "Alarm is now muted"
+                    End Select
                 Case "play"
                     Select Case inputData(1)
                         Case "list"
@@ -78,12 +84,12 @@ Module modConverse
                                 strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                             End If
                     End Select
-                Case "mute", "silence"
-                    Select Case inputData(1)
-                        Case "alarm"
-                            modInsteon.AlarmMuted = True
-                            strCommandResponse = "Alarm is now muted"
-                    End Select
+                Case "remind"
+                    If inputData(1) = "me" And (inputData(2) = "about" Or inputData(2) = "to") Then
+                        Dim reminderString As String = strInputString.Replace("remind me", "Reminder")
+                        modMail.Send(reminderString, reminderString)
+                        strCommandResponse = "Acknowledged"
+                    End If
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
                     If RemoteCommand = True Then

@@ -119,5 +119,11 @@
     <Setting Name="Computer_LastMusicPlaylist" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Global_InsideTempHeatWarning" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">82</Value>
+    </Setting>
+    <Setting Name="Global_InsideTempColdWarning" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">66</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

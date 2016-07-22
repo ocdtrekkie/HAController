@@ -1702,6 +1702,14 @@ Module modInsteon
                 ' TODO: Don't assume this info is temperature! It might not be! (But currently my code only requests it.)
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                If My.Settings.Global_LastKnownInsideTemp >= My.Settings.Global_InsideTempHeatWarning Then
+                    My.Application.Log.WriteEntry("WARNING: Inside Temperature Heat Warning", TraceEventType.Warning)
+                    modMail.Send("Temperature Warning", "Last known inside temperature was " & My.Settings.Global_LastKnownInsideTemp & " F")
+                End If
+                If My.Settings.Global_LastKnownInsideTemp <= My.Settings.Global_InsideTempColdWarning Then
+                    My.Application.Log.WriteEntry("WARNING: Inside Temperature Cold Warning", TraceEventType.Warning)
+                    modMail.Send("Temperature Warning", "Last known inside temperature was " & My.Settings.Global_LastKnownInsideTemp & " F")
+                End If
                 Return "Temperature: " & Int(comm2 / 2) & " F"
             Case 110
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")

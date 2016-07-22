@@ -519,6 +519,30 @@ Namespace My
                 Me("Computer_LastMusicPlaylist") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("82")>  _
+        Public Property Global_InsideTempHeatWarning() As Integer
+            Get
+                Return CType(Me("Global_InsideTempHeatWarning"),Integer)
+            End Get
+            Set
+                Me("Global_InsideTempHeatWarning") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("66")>  _
+        Public Property Global_InsideTempColdWarning() As Integer
+            Get
+                Return CType(Me("Global_InsideTempColdWarning"),Integer)
+            End Get
+            Set
+                Me("Global_InsideTempColdWarning") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

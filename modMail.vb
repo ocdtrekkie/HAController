@@ -53,7 +53,9 @@ Module modMail
             ret_Val = 1
         End If
 
-        GetMessages(server_Stat(1))
+        If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
+            GetMessages(server_Stat(1))
+        End If
         CloseServer()
     End Sub
 

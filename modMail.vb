@@ -56,6 +56,8 @@ Module modMail
 
             If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
                 GetMessages(server_Stat(1))
+            Else
+                My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
             End If
         Catch SocketEx As System.Net.Sockets.SocketException
             My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")

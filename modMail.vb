@@ -26,36 +26,40 @@ Module modMail
     Private smtpLock As New Object
 
     Sub CheckMail()
-        If pClient.Connected = True Then
-            CloseServer()
-            pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-            ret_Val = 0
-            Exit Sub
-        Else
-            pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+        Try
+            If pClient.Connected = True Then
+                CloseServer()
+                pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+                ret_Val = 0
+                Exit Sub
+            Else
+                pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
 
-            NetworkS_tream = pClient.GetStream 'Read the stream
-            m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
-            m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
-            Read_Stream = New StreamReader(m_sslStream) 'Read the stream
-            StatResp = Read_Stream.ReadLine()
+                NetworkS_tream = pClient.GetStream 'Read the stream
+                m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
+                m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
+                Read_Stream = New StreamReader(m_sslStream) 'Read the stream
+                StatResp = Read_Stream.ReadLine()
 
-            StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
-            My.Application.Log.WriteEntry("POP3: " & StatResp)
-            StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
-            My.Application.Log.WriteEntry("POP3: " & StatResp)
-            StatResp = Login(m_sslStream, "STAT ")
-            My.Application.Log.WriteEntry("POP3: " & StatResp)
+                StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
+                My.Application.Log.WriteEntry("POP3: " & StatResp)
+                StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
+                My.Application.Log.WriteEntry("POP3: " & StatResp)
+                StatResp = Login(m_sslStream, "STAT ")
+                My.Application.Log.WriteEntry("POP3: " & StatResp)
 
-            'Get Messages count
-            server_Stat = StatResp.Split(" ")
-            My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
-            ret_Val = 1
-        End If
+                'Get Messages count
+                server_Stat = StatResp.Split(" ")
+                My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
+                ret_Val = 1
+            End If
 
-        If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
-            GetMessages(server_Stat(1))
-        End If
+            If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
+                GetMessages(server_Stat(1))
+            End If
+        Catch SocketEx As System.Net.Sockets.SocketException
+            My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+        End Try
         CloseServer()
     End Sub
 

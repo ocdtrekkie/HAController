@@ -59,10 +59,10 @@ Module modMail
             Else
                 My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
             End If
+            CloseServer()
         Catch SocketEx As System.Net.Sockets.SocketException
             My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
         End Try
-        CloseServer()
     End Sub
 
     Sub CloseServer()

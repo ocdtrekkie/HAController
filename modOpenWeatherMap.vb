@@ -71,6 +71,10 @@ Module modOpenWeatherMap
             My.Application.Log.WriteException(NetExcep)
 
             Return "Error getting weather data"
+        Catch XmlExcep As System.Xml.XmlException
+            My.Application.Log.WriteException(XmlExcep)
+
+            Return "Error parsing weather data"
         End Try
     End Function
 

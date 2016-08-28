@@ -62,6 +62,8 @@ Module modMail
             CloseServer()
         Catch SocketEx As System.Net.Sockets.SocketException
             My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+        Catch NullRefEx As System.NullReferenceException
+            My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
         End Try
     End Sub
 

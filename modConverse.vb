@@ -70,6 +70,10 @@ Module modConverse
                             modInsteon.AlarmMuted = True
                             strCommandResponse = "Alarm is now muted"
                     End Select
+                Case "peace"
+                    If inputData(1) = "and" And inputData(2) = "long" And inputData(3) = "life" Then
+                        strCommandResponse = "Live long and prosper"
+                    End If
                 Case "play"
                     Select Case inputData(1)
                         Case "list"

@@ -84,6 +84,11 @@ Module modConverse
                                 strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                             End If
                     End Select
+                Case "refer"
+                    If inputData(1) = "to" And inputData(2) = "yourself" And inputData(3) = "as" Then
+                        My.Settings.Converse_BotName = inputData(4)
+                        strCommandResponse = "My name is now " & My.Settings.Converse_BotName
+                    End If
                 Case "remind"
                     If inputData(1) = "me" And (inputData(2) = "about" Or inputData(2) = "to") Then
                         Dim reminderString As String = strInputString.Replace("remind me", "Reminder")

@@ -1068,12 +1068,14 @@ Module modInsteon
     End Sub
 
     Sub Unload()
-        If SerialPLM.IsOpen = True Then
-            My.Application.Log.WriteEntry("Closing serial connection")
-            SerialPLM.Close()
+        If SerialPLM IsNot Nothing Then
+            If SerialPLM.IsOpen = True Then
+                My.Application.Log.WriteEntry("Closing serial connection")
+                SerialPLM.Close()
+            End If
+            SerialPLM.Dispose()
+            Threading.Thread.Sleep(200)
         End If
-        SerialPLM.Dispose()
-        Threading.Thread.Sleep(200)
     End Sub
 
     Public Function InsteonNum(ByVal Address As String) As Short

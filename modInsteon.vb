@@ -1554,6 +1554,8 @@ Module modInsteon
                         Return "EZIO4O I/O Module"
                     Case 26
                         Return "2867-222 Alert Module"
+                    Case 30
+                        Return "2868-222 Siren"
                     Case Else
                         Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select

@@ -324,6 +324,15 @@ Module modInsteon
         End If
     End Sub
 
+    Sub NicknameInsteonDeviceDb(ByVal strAddress As String, ByVal strNickname As String)
+        If CheckDbForInsteon(strAddress) = 0 Then
+            My.Application.Log.WriteEntry("Cannot set nickname, Insteon address is unknown")
+        Else
+            'Update device with nickname
+            modDatabase.Execute("UPDATE DEVICES SET Name = '" + strNickname + "' WHERE Type = 'Insteon' AND Address = '" + strAddress + "'")
+        End If
+    End Sub
+
     Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)
         ' this is the serial port data received event on a secondary thread
         Dim PLMThread As New Threading.Thread(AddressOf PLM)

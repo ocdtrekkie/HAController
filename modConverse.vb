@@ -94,7 +94,9 @@ Module modConverse
                             My.Settings.Converse_BotName = inputData(4)
                             strCommandResponse = "My name is now " & My.Settings.Converse_BotName
                         ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True And inputData(3) = "as" Then
-                            strCommandResponse = "Okay, I will save this information" 'temp
+                            Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
+                            modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
+                            strCommandResponse = "Okay, I will save this information" 'TODO: This doesn't check for success
                         End If
                     End If
                 Case "remind"

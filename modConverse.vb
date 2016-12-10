@@ -147,6 +147,10 @@ Module modConverse
                             modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, inputData(2))
                         Case "thermostat"
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
+                        Case Else
+                            If modInsteon.IsInsteonAddress(inputData(1)) = True Then
+                                modInsteon.InsteonLightControl(inputData(1).ToUpper, response, inputData(2))
+                            End If
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "unmute"

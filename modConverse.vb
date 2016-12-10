@@ -89,9 +89,13 @@ Module modConverse
                             End If
                     End Select
                 Case "refer"
-                    If inputData(1) = "to" And inputData(2) = "yourself" And inputData(3) = "as" Then
-                        My.Settings.Converse_BotName = inputData(4)
-                        strCommandResponse = "My name is now " & My.Settings.Converse_BotName
+                    If inputData(1) = "to" Then
+                        If inputData(2) = "yourself" And inputData(3) = "as" Then
+                            My.Settings.Converse_BotName = inputData(4)
+                            strCommandResponse = "My name is now " & My.Settings.Converse_BotName
+                        ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True And inputData(3) = "as" Then
+                            strCommandResponse = "Okay, I will save this information" 'temp
+                        End If
                     End If
                 Case "remind"
                     If inputData(1) = "me" And (inputData(2) = "about" Or inputData(2) = "to") Then

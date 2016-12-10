@@ -1102,6 +1102,16 @@ Module modInsteon
         End If
     End Function
 
+    Public Function IsInsteonAddress(ByVal strAddress As String) As Boolean
+        If strAddress.Length = 8 Then
+            Dim arrAddress() As String = strAddress.Split(".")
+            If Convert.ToInt32(arrAddress(0), 16) + Convert.ToInt32(arrAddress(1), 16) + Convert.ToInt32(arrAddress(2), 16) > 0 Then
+                Return True
+            End If
+        End If
+        Return False
+    End Function
+
     Public Function X10House_from_PLM(ByVal Index As Byte) As Short
         Dim i As Short
         ' Given the MSB from the PLM, return the House (0-15). If not found, return -1.

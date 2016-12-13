@@ -338,7 +338,7 @@ Module modInsteon
             My.Application.Log.WriteEntry("Cannot set nickname, Insteon address is unknown")
         Else
             'Update device with nickname
-            modDatabase.Execute("UPDATE DEVICES SET Name = '" + strNickname + "' WHERE Type = 'Insteon' AND Address = '" + strAddress + "'")
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ + strNickname + """ WHERE Type = ""Insteon"" AND Address = """ + strAddress + """")
         End If
     End Sub
 
@@ -1174,7 +1174,7 @@ Module modInsteon
     Function GetInsteonAddressFromNickname(ByVal strNickname) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Insteon'", result)
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = """ + strNickname + """ AND Type = ""Insteon""", result)
         Return result
     End Function
 

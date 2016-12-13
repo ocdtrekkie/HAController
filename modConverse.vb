@@ -150,6 +150,15 @@ Module modConverse
                         Case Else
                             If modInsteon.IsInsteonAddress(inputData(1)) = True Then
                                 modInsteon.InsteonLightControl(inputData(1).ToUpper, response, inputData(2))
+                            Else
+                                'This loop gets the name after the turn word, but before the command word at the end
+                                Dim strNickname As String = inputData(1)
+                                Dim intLC As Integer = 2
+                                While intLC < (inputData.Length - 1)
+                                    strNickname = strNickname + " " + inputData(intLC)
+                                    intLC = intLC + 1
+                                End While
+                                modInsteon.InsteonLightControl(modInsteon.GetInsteonAddressFromNickname(strNickname), response, inputData(inputData.Length - 1))
                             End If
                     End Select
                     strCommandResponse = "Acknowledged"

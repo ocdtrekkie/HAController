@@ -1162,6 +1162,13 @@ Module modInsteon
         End If
     End Function
 
+    Function GetInsteonAddressFromNickname(ByVal strNickname) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "'", result)
+        Return result
+    End Function
+
     Function InsteonCommandLookup(ByVal ICmd) As String
         Select Case ICmd
             Case 1

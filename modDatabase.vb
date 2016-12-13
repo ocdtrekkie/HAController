@@ -29,7 +29,13 @@ Module modDatabase
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         Try
             Dim resultReader As SQLiteDataReader = cmd.ExecuteReader()
-            result = resultReader.GetString(0)
+            If resultReader.HasRows Then
+                resultReader.Read()
+                result = resultReader.GetString(0)
+            Else
+                My.Application.Log.WriteEntry("SQLite Reader has no rows", TraceEventType.Warning)
+                result = Nothing
+            End If
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try

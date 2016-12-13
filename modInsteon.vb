@@ -167,6 +167,15 @@ Module modInsteon
             Case "On", "on"
                 comm1 = 17
                 comm2 = intBrightness
+            Case "Soft", "soft"
+                comm1 = 17
+                comm2 = 190
+            Case "Dim", "dim"
+                comm1 = 17
+                comm2 = 136
+            Case "Nite", "nite"
+                comm1 = 17
+                comm2 = 68
             Case Else
                 My.Application.Log.WriteEntry("InsteonLightControl received invalid request", TraceEventType.Warning)
                 Exit Sub

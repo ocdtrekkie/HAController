@@ -1165,7 +1165,7 @@ Module modInsteon
     Function GetInsteonAddressFromNickname(ByVal strNickname) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "'", result)
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Insteon'", result)
         Return result
     End Function
 

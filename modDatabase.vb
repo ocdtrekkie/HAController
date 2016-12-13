@@ -32,6 +32,7 @@ Module modDatabase
             If resultReader.HasRows Then
                 resultReader.Read()
                 result = resultReader.GetString(0)
+                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + result)
             Else
                 My.Application.Log.WriteEntry("SQLite Reader has no rows", TraceEventType.Warning)
                 result = Nothing

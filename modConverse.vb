@@ -48,6 +48,15 @@ Module modConverse
                             modSpeech.Enable()
                     End Select
                     strCommandResponse = "Acknowledged"
+                Case "flip"
+                    If inputData(1) = "a" And inputData(2) = "coin" Then
+                        Dim intFlip As Integer = CInt(Int((2 * Rnd()) + 1))
+                        If intFlip = 1 Then
+                            strCommandResponse = "Heads"
+                        Else
+                            strCommandResponse = "Tails"
+                        End If
+                    End If
                 Case "get", "list"
                     If inputData(1) = "voices" Then
                         strCommandResponse = "Available voices are " & modSpeech.GetVoices()

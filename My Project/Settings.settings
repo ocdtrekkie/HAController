@@ -125,5 +125,8 @@
     <Setting Name="Global_InsideTempColdWarning" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">66</Value>
     </Setting>
+    <Setting Name="Random_RandomOrgAPIKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -117,6 +117,18 @@ Module modConverse
                         modMail.Send(reminderString, reminderString)
                         strCommandResponse = "Acknowledged"
                     End If
+                Case "roll"
+                    If inputData(1) = "a" Then
+                        Dim intMax As Integer = 0
+                        If inputData(2) = "die" Or inputData(2) = "dice" Then
+                            intMax = 6
+                        ElseIf inputData(2).Substring(0, 1) = "d" And CInt(inputData(2).Substring(1)) >= 2 Then
+                            intMax = CInt(inputData(2).Substring(1))
+                        End If
+                        If intMax > 0 Then
+                            strCommandResponse = modRandom.RandomInteger(intMax)
+                        End If
+                    End If
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
                     If RemoteCommand = True Then

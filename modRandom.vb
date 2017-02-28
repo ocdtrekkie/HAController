@@ -52,6 +52,7 @@
         randomResponseStream.Close()
         randomResponseRead.Close()
         My.Application.Log.WriteEntry("Response received: " + randomResponseJSON)
+        ' Currently only returns first numeral in answer, so only accurate for 1-9
         Dim intRandom As Integer = CInt(randomResponseJSON.Substring(45, 1))
         If intRandom >= 1 And intRandom <= intMax Then
             Return intRandom

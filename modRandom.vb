@@ -68,22 +68,22 @@ Module modRandom
         End If
     End Function
 
-    Public Class Random
+    Public Class RandomOrgResult
+        Public Property jsonrpc As String
+        Public Property result As RandomOrgResultResult
+        Public Property id As Integer
+    End Class
+
+    Public Class RandomOrgResultRandom
         Public Property data As Integer()
         Public Property completionTime As String
     End Class
 
-    Public Class Result
-        Public Property random As Random
+    Public Class RandomOrgResultResult
+        Public Property random As RandomOrgResultRandom
         Public Property bitsUsed As Integer
         Public Property bitsLeft As Integer
         Public Property requestsLeft As Integer
         Public Property advisoryDelay As Integer
-    End Class
-
-    Public Class RandomOrgResult
-        Public Property jsonrpc As String
-        Public Property result As Result
-        Public Property id As Integer
     End Class
 End Module

@@ -50,7 +50,7 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "flip"
                     If inputData(1) = "a" And inputData(2) = "coin" Then
-                        Dim intFlip As Integer = modRandom.BasicRandomInteger(2)
+                        Dim intFlip As Integer = modRandom.RandomInteger(2)
                         If intFlip = 1 Then
                             strCommandResponse = "Heads"
                         ElseIf intFlip = 2 Then
@@ -150,9 +150,6 @@ Module modConverse
                     Select Case inputData(1)
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
-                            strCommandResponse = "Acknowledged"
-                        Case "flip"
-                            Dim intFlip As Integer = modRandom.TrueRandomInteger(2)
                             strCommandResponse = "Acknowledged"
                     End Select
                 Case "turn"

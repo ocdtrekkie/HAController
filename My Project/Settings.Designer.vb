@@ -555,6 +555,18 @@ Namespace My
                 Me("Random_RandomOrgAPIKey") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Random_RandomOrgEnable() As Boolean
+            Get
+                Return CType(Me("Random_RandomOrgEnable"),Boolean)
+            End Get
+            Set
+                Me("Random_RandomOrgEnable") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

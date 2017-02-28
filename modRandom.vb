@@ -1,4 +1,6 @@
-﻿Module modRandom
+﻿Imports System.Web.Script.Serialization
+
+Module modRandom
     Function BasicRandomInteger(ByVal intMax As Integer)
         ' Returns random integer between 1 and intMax.
         Return CInt(Int((intMax * Rnd()) + 1))
@@ -37,6 +39,7 @@
         Dim requestBuffer As Byte() = System.Text.Encoding.UTF8.GetBytes(randomJSON)
         randomStream.Write(requestBuffer, 0, requestBuffer.Length)
         randomStream.Close()
+
         Dim randomResponse As System.Net.HttpWebResponse = randomRequest.GetResponse()
         Dim randomResponseStream As System.IO.Stream = randomResponse.GetResponseStream()
         Dim encode As System.Text.Encoding = System.Text.Encoding.GetEncoding("utf-8")
@@ -52,8 +55,11 @@
         randomResponseStream.Close()
         randomResponseRead.Close()
         My.Application.Log.WriteEntry("Response received: " + randomResponseJSON)
-        ' Currently only returns first numeral in answer, so only accurate for 1-9
-        Dim intRandom As Integer = CInt(randomResponseJSON.Substring(45, 1))
+
+        Dim json As New JavaScriptSerializer
+        Dim data As RandomOrgResult = json.Deserialize(Of RandomOrgResult)(randomResponseJSON)
+        Dim intRandom = CInt(data.result.random.data(0))
+
         If intRandom >= 1 And intRandom <= intMax Then
             Return intRandom
         Else
@@ -61,4 +67,23 @@
             Return 0
         End If
     End Function
+
+    Public Class Random
+        Public Property data As Integer()
+        Public Property completionTime As String
+    End Class
+
+    Public Class Result
+        Public Property random As Random
+        Public Property bitsUsed As Integer
+        Public Property bitsLeft As Integer
+        Public Property requestsLeft As Integer
+        Public Property advisoryDelay As Integer
+    End Class
+
+    Public Class RandomOrgResult
+        Public Property jsonrpc As String
+        Public Property result As Result
+        Public Property id As Integer
+    End Class
 End Module

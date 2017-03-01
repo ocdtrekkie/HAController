@@ -1,5 +1,7 @@
 ﻿Imports System.Web.Script.Serialization
 
+' modRandom cannot be disabled and doesn't need to be loaded or unloaded
+
 Module modRandom
     Function BasicRandomInteger(ByVal intMax As Integer)
         ' Returns random integer between 1 and intMax.

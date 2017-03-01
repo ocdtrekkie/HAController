@@ -5,13 +5,14 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 ## Modules ##
 
 * Form1 is basically meant to get factored out eventually in it's entirety.
+* modComputer will have features for monitoring and controlling the local computer.
 * modConverse is a cross between a command line interface and a conversation system.
 * modDatabase handles the SQLite database that will store persistent data about the system.
 * modGlobal will mostly just hang onto stuff that needs to be accessible to the whole program.
+* modRandom generates random numbers and can optionally query Random.org for true random results.
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
 The following modules should function optionally:
-* modComputer will have features for monitoring and controlling the local computer.
 * modDreamCheeky will support the Dream Cheeky Big Red Button and WebMail Notifier devices.
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.

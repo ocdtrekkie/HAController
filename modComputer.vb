@@ -1,5 +1,7 @@
 ﻿Imports System.Management
 
+' modRandom cannot be disabled and doesn't need to be loaded or unloaded
+
 Module modComputer
     Sub GetInfo()
         My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion)

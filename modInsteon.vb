@@ -218,6 +218,7 @@ Module modInsteon
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
                     Dim data(21) As Byte
+                    strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
                     Dim arrAddress() As String = strAddress.Split(".")
 
                     data(0) = 2 'all commands start with 2
@@ -249,6 +250,7 @@ Module modInsteon
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
                     Dim data(7) As Byte
+                    strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
                     Dim arrAddress() As String = strAddress.Split(".")
 
                     data(0) = 2 'all commands start with 2

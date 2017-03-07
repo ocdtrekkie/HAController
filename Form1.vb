@@ -1,10 +1,13 @@
 ﻿Public Class frmMain
     Dim ResponseMsg As String
+    Friend WithEvents SysTrayIcon As NotifyIcon
+    Friend WithEvents MenuItemExit As MenuItem
 
     Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         My.Application.Log.WriteEntry("Server shutdown begun, closing modules")
         Me.Hide()
         modGlobal.UnloadModules()
+        SysTrayIcon.Visible = False
 
         If My.Settings.Global_Experimental = True Then
             My.Application.Log.WriteEntry("EXPERIMENTAL: Attempting to save DeviceCollection")
@@ -19,10 +22,17 @@
 
         AddHandler My.Settings.PropertyChanged, AddressOf Settings_Changed
 
+        Dim SysTrayMenu = New ContextMenu
+        MenuItemExit = New MenuItem
+        MenuItemExit.Index = 0
+        MenuItemExit.Text = "E&xit"
+        SysTrayMenu.MenuItems.Add(MenuItemExit)
+
         Me.Icon = New Icon("assets\HAController.ico")
-        Dim SysTrayIcon = New NotifyIcon
+        SysTrayIcon = New NotifyIcon
         SysTrayIcon.Icon = Me.Icon
         SysTrayIcon.Text = "HAController"
+        SysTrayIcon.ContextMenu = SysTrayMenu
         SysTrayIcon.Visible = True
 
         If My.Settings.Global_LastHomeStatus <> "" Then
@@ -173,6 +183,14 @@
         If My.Settings.OpenWeatherMap_Enable = True Then
             modSpeech.Say(modOpenWeatherMap.GatherWeatherData())
         End If
+    End Sub
+
+    Private Sub MenuItemExit_Click(sender As Object, e As EventArgs) Handles MenuItemExit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub SysTrayIcon_DoubleClick(sender As Object, e As EventArgs) Handles SysTrayIcon.DoubleClick
+        Me.WindowState = FormWindowState.Normal
     End Sub
 
     Private Sub txtCommandBar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyDown

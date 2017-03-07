@@ -19,6 +19,12 @@
 
         AddHandler My.Settings.PropertyChanged, AddressOf Settings_Changed
 
+        Me.Icon = New Icon("assets\HAController.ico")
+        Dim SysTrayIcon = New NotifyIcon
+        SysTrayIcon.Icon = Me.Icon
+        SysTrayIcon.Text = "HAController"
+        SysTrayIcon.Visible = True
+
         If My.Settings.Global_LastHomeStatus <> "" Then
             My.Application.Log.WriteEntry("Found previous home status")
             SetHomeStatus(My.Settings.Global_LastHomeStatus)

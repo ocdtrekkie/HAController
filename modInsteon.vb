@@ -208,8 +208,7 @@ Module modInsteon
             Case 0 Or 1
                 InsteonSendStdCommand(strAddress, 3, 0)
             Case 2
-                ' I have no evidence this actually helps or works
-                InsteonSendExtCommand(strAddress, 16, 0)
+                InsteonSendStdCommand(strAddress, 16, 0)
         End Select
     End Sub
 

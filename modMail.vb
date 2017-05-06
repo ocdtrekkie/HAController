@@ -265,7 +265,16 @@ Module modMail
         Dim Read_Stream2 = New StreamReader(SslStrem)
         Server_Command = Server_Command + vbCrLf
         m_buffer = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
-        m_sslStream.Write(m_buffer, 0, m_buffer.Length)
+        Do
+            Try
+                m_sslStream.Write(m_buffer, 0, m_buffer.Length)
+                Exit Do
+            Catch IOExcep As System.IO.IOException
+                My.Application.Log.WriteException(IOExcep)
+                modMail.Send("Mail crash averted", "Mail crash averted") ' Remove this line later if this retry method actually works
+                Threading.Thread.Sleep(60000)
+            End Try
+        Loop
         Dim Server_Response As String
         Server_Response = Read_Stream2.ReadLine()
         Return Server_Response

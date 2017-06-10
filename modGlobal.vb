@@ -22,6 +22,8 @@ Public Module modGlobal
         modSpeech.Load()
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load()
+        My.Application.Log.WriteEntry("Loading Matrix LCD module")
+        modMatrixLCD.Load()
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load()
         My.Application.Log.WriteEntry("Loading mail module")

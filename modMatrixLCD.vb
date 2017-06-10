@@ -48,10 +48,7 @@
 
             My.Application.Log.WriteEntry("Matrix LCD - Create Device")
 
-            If SerialPort.IsOpen = True Then
-                My.Application.Log.WriteEntry("Closing serial connection")
-                SerialPort.Close()
-            End If
+            SerialPort = New System.IO.Ports.SerialPort
 
             If My.Settings.MatrixLCD_LastGoodCOMPort = "" Then
                 SerialPort.PortName = InputBox("Enter the COM port for a Matrix-compatible LCD.", "Matrix LCD")
@@ -75,6 +72,7 @@
 
             If SerialPort.IsOpen = True Then
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
+                Me.IsConnected = True
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
             End If
         End Sub
@@ -82,10 +80,10 @@
         Public Sub TestLCD()
             Dim data(4) As Byte
 
-            data(0) = "t"
-            data(1) = "e"
-            data(2) = "s"
-            data(3) = "t"
+            data(0) = 116
+            data(1) = 101
+            data(2) = 115
+            data(3) = 116
             Try
                 SerialPort.Write(data, 0, 4)
             Catch Excep As System.InvalidOperationException

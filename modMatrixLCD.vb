@@ -41,17 +41,61 @@
     Public Class HAMatrixLCD
         Inherits HASerialDevice
 
+        Public Sub Command(ByVal strCommand As String)
+            Dim invCommand As Boolean = False
+            Dim data(2) As Byte
+            data(0) = 254 '0xFE
+
+            Select Case strCommand
+                Case "AutoscrollOff"
+                    data(1) = 82 '0x52
+                Case "AutoscrollOn"
+                    data(1) = 81 '0x51
+                Case "BacklightOff"
+                    data(1) = 70 '0x46
+                Case "BacklightOn"
+                    data(1) = 66 '0x42
+                Case "BlockCursorOff"
+                    data(1) = 84 '0x54
+                Case "BlockCursorOn"
+                    data(1) = 83 '0x53
+                Case "Clear"
+                    data(1) = 88 '0x58
+                Case "CursorBack"
+                    data(1) = 76 '0x4C
+                Case "CursorForward"
+                    data(1) = 77 '0x4D
+                Case "CursorHome"
+                    data(1) = 72 '0x48
+                Case "UnderlineCursorOff"
+                    data(1) = 75 '0x4B
+                Case "UnderlineCursorOn"
+                    data(1) = 74 '0x4A
+                Case Else
+                    My.Application.Log.WriteEntry("Invalid Matrix LCD command", TraceEventType.Error)
+                    invCommand = True
+            End Select
+
+            If invCommand = False Then
+                Try
+                    SerialPort.Write(data, 0, 2)
+                Catch Excep As System.InvalidOperationException
+                    My.Application.Log.WriteException(Excep)
+                End Try
+            End If
+        End Sub
+
         Public Sub New()
             Me.DeviceName = "Matrix LCD"
             Me.DeviceType = "Display"
-            Me.Model = "Matrix LCD or compatible"
+            Me.Model = "Matrix Orbital LCD or compatible"
 
             My.Application.Log.WriteEntry("Matrix LCD - Create Device")
 
             SerialPort = New System.IO.Ports.SerialPort
 
             If My.Settings.MatrixLCD_LastGoodCOMPort = "" Then
-                SerialPort.PortName = InputBox("Enter the COM port for a Matrix-compatible LCD.", "Matrix LCD")
+                SerialPort.PortName = InputBox("Enter the COM port for a Matrix Orbital-compatible LCD.", "Matrix LCD")
             Else
                 SerialPort.PortName = My.Settings.MatrixLCD_LastGoodCOMPort
             End If
@@ -77,13 +121,31 @@
             End If
         End Sub
 
+        Public Sub SetColor(ByVal Red As Byte, ByVal Green As Byte, ByVal Blue As Byte)
+            Dim data(5) As Byte
+
+            data(1) = 254 '0xFE
+            data(2) = 208 '0xD0
+            data(3) = Red
+            data(4) = Green
+            data(5) = Blue
+            Try
+                SerialPort.Write(data, 0, 5)
+            Catch Excep As System.InvalidOperationException
+                My.Application.Log.WriteException(Excep)
+            End Try
+        End Sub
+
         Public Sub TestLCD()
+            Command("Clear")
+            SetColor(255, 0, 255)
+
             Dim data(4) As Byte
 
-            data(0) = 116
-            data(1) = 101
-            data(2) = 115
-            data(3) = 116
+            data(0) = 116 't
+            data(1) = 101 'e
+            data(2) = 115 's
+            data(3) = 116 't
             Try
                 SerialPort.Write(data, 0, 4)
             Catch Excep As System.InvalidOperationException

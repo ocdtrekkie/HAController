@@ -173,6 +173,14 @@ End Class
 '    Public Property IsIRCapable As Boolean
 'End Class
 
+Class HASerialDevice
+    Inherits HADevice
+    Public Property COMPort As String
+    Public Property BaudRate As Integer
+    Public Property IsConnected As Boolean
+    Public Property SerialPort As System.IO.Ports.SerialPort
+End Class
+
 Class HAServiceDevice
     Inherits HADevice
     Public Property ConnectionString As String

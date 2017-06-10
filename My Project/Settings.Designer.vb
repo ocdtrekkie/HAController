@@ -567,6 +567,30 @@ Namespace My
                 Me("Random_RandomOrgEnable") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property MatrixLCD_LastGoodCOMPort() As String
+            Get
+                Return CType(Me("MatrixLCD_LastGoodCOMPort"),String)
+            End Get
+            Set
+                Me("MatrixLCD_LastGoodCOMPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property MatrixLCD_Enable() As Boolean
+            Get
+                Return CType(Me("MatrixLCD_Enable"),Boolean)
+            End Get
+            Set
+                Me("MatrixLCD_Enable") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

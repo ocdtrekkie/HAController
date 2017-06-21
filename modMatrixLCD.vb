@@ -124,11 +124,11 @@
         Public Sub SetColor(ByVal Red As Byte, ByVal Green As Byte, ByVal Blue As Byte)
             Dim data(5) As Byte
 
-            data(1) = 254 '0xFE
-            data(2) = 208 '0xD0
-            data(3) = Red
-            data(4) = Green
-            data(5) = Blue
+            data(0) = 254 '0xFE
+            data(1) = 208 '0xD0
+            data(2) = Red
+            data(3) = Green
+            data(4) = Blue
             Try
                 SerialPort.Write(data, 0, 5)
             Catch Excep As System.InvalidOperationException
@@ -138,16 +138,20 @@
 
         Public Sub TestLCD()
             Command("Clear")
-            SetColor(255, 0, 255)
+            SetColor(0, 255, 255)
 
-            Dim data(4) As Byte
+            WriteString("hello world")
+        End Sub
 
-            data(0) = 116 't
-            data(1) = 101 'e
-            data(2) = 115 's
-            data(3) = 116 't
+        Public Sub WriteString(ByVal strInput As String)
+            Dim data(strInput.Length) As Byte
+
+            For i As Integer = 0 To strInput.Length - 1
+                data(i) = Asc(strInput(i))
+            Next
+
             Try
-                SerialPort.Write(data, 0, 4)
+                SerialPort.Write(data, 0, strInput.Length)
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try

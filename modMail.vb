@@ -262,23 +262,26 @@ Module modMail
     End Sub
 
     Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String
+        Dim justExit As Boolean = False
         Dim Read_Stream2 = New StreamReader(SslStrem)
         Server_Command = Server_Command + vbCrLf
         m_buffer = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
-        'Do
         Try
             m_sslStream.Write(m_buffer, 0, m_buffer.Length)
-            'Exit Do
         Catch IOExcep As System.IO.IOException
             My.Application.Log.WriteException(IOExcep)
             modMail.Send("Mail crash averted", "Mail crash averted") ' Remove this line later if this retry method actually works
+            justExit = True
             Threading.Thread.Sleep(600000)
             CheckMail()
         End Try
-        'Loop
-        Dim Server_Response As String
-        Server_Response = Read_Stream2.ReadLine()
-        Return Server_Response
+        If justExit = False Then
+            Dim Server_Response As String
+            Server_Response = Read_Stream2.ReadLine()
+            Return Server_Response
+        Else
+            Return "Dumped"
+        End If
     End Function
 
     Public Class CheckMailSchedule : Implements IJob

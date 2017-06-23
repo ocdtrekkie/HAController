@@ -89,6 +89,35 @@
             End If
         End Sub
 
+        Public Sub Command(ByVal strCommand As String, ByVal Value As Byte)
+            Dim invCommand As Boolean = False
+            Dim data(3) As Byte
+            data(0) = 254 '0xFE
+            data(2) = Value
+
+            Select Case strCommand
+                Case "Brightness"
+                    data(1) = 153 '0x99
+                Case "BrightnessSave"
+                    data(1) = 152 '0x98
+                Case "Contrast"
+                    data(1) = 80  '0x50
+                Case "ContrastSave"
+                    data(1) = 145 '0x91
+                Case Else
+                    My.Application.Log.WriteEntry("Invalid Matrix LCD command", TraceEventType.Error)
+                    invCommand = True
+            End Select
+
+            If invCommand = False Then
+                Try
+                    SerialPort.Write(data, 0, 3)
+                Catch Excep As System.InvalidOperationException
+                    My.Application.Log.WriteException(Excep)
+                End Try
+            End If
+        End Sub
+
         Public Sub New()
             Me.DeviceName = "Matrix LCD"
             Me.DeviceType = "Display"

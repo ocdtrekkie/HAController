@@ -17,5 +17,6 @@ The following modules should function optionally:
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
+* modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.

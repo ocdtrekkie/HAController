@@ -40,6 +40,10 @@
     <Serializable()>
     Public Class HAMatrixLCD
         Inherits HASerialDevice
+        Public Property Cols As Integer
+        Public Property Rows As Integer
+        Public Property BacklightColor As Color
+        Public Property WarningColor As Color
 
         Public Sub Command(ByVal strCommand As String)
             Dim invCommand As Boolean = False
@@ -89,6 +93,10 @@
             Me.DeviceName = "Matrix LCD"
             Me.DeviceType = "Display"
             Me.Model = "Matrix Orbital LCD or compatible"
+            Me.Cols = 16
+            Me.Rows = 2
+            Me.BacklightColor = Color.Aqua
+            Me.WarningColor = Color.Red
 
             My.Application.Log.WriteEntry("Matrix LCD - Create Device")
 
@@ -118,6 +126,8 @@
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
                 Me.IsConnected = True
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
+
+                SetColor(Me.BacklightColor)
             End If
         End Sub
 
@@ -134,6 +144,15 @@
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try
+        End Sub
+
+        Public Sub SetColor(ByVal NewColor As Color)
+            SetColor(NewColor.R, NewColor.G, NewColor.B)
+        End Sub
+
+        Public Sub SetColor(ByVal Name As String)
+            Dim NewColor As Color = Color.FromName(Name)
+            SetColor(NewColor.R, NewColor.G, NewColor.B)
         End Sub
 
         Public Sub TestLCD()

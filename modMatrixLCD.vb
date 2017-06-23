@@ -161,16 +161,17 @@
             End If
         End Sub
 
-        Public Sub SetColor(ByVal Red As Byte, ByVal Green As Byte, ByVal Blue As Byte)
+        Public Sub SetColor(ByVal bytRed As Byte, ByVal bytGreen As Byte, ByVal bytBlue As Byte)
             Dim data(5) As Byte
 
             data(0) = 254 '0xFE
             data(1) = 208 '0xD0
-            data(2) = Red
-            data(3) = Green
-            data(4) = Blue
+            data(2) = bytRed
+            data(3) = bytGreen
+            data(4) = bytBlue
             Try
                 SerialPort.Write(data, 0, 5)
+                My.Application.Log.WriteEntry("Matrix LCD color set to " & bytRed & ", " & bytGreen & ", " & bytBlue)
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try

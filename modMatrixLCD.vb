@@ -128,7 +128,7 @@
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
 
                 SetColor(Me.BacklightColor)
-                'SetSplash("HAController    Loading         ")
+                SetSplash("HAController    Loading         ")
             End If
         End Sub
 
@@ -157,6 +157,8 @@
         End Sub
 
         Public Sub SetSplash(ByVal strInput As String)
+            'TODO: Define by LCD size, fill rest of bytes with spaces automatically
+            'Space is 0x20 or 32
             Dim data(strInput.Length + 2) As Byte
 
             data(0) = 254 '0xFE
@@ -171,7 +173,6 @@
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try
-            Threading.Thread.Sleep(1000)
         End Sub
 
         Public Sub TestLCD()

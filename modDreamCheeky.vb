@@ -317,14 +317,19 @@ Module modDreamCheeky
             End SyncLock
         End Sub
 
-        Public Sub SetColor(ByVal colColor As String)
-            Me.Color = Drawing.Color.FromName(colColor)
+        Public Sub SetColor(ByVal bytRed As Byte, ByVal bytGreen As Byte, ByVal bytBlue As Byte)
+            Me.Color = Color.FromArgb(bytRed, bytGreen, bytBlue)
+            My.Application.Log.WriteEntry("WebMail Notifier color set to " & bytRed & ", " & bytGreen & ", " & bytBlue)
+        End Sub
+
+        Public Sub SetColor(ByVal NewColor As Color)
+            Me.Color = NewColor
             My.Application.Log.WriteEntry("WebMail Notifier color set to " & Me.Color.Name)
         End Sub
 
-        Public Sub SetRGB(bytRed As Byte, bytGreen As Byte, bytBlue As Byte)
-            Me.Color = Drawing.Color.FromArgb(bytRed, bytGreen, bytBlue)
-            My.Application.Log.WriteEntry("WebMail Notifier color set to " & bytRed & ", " & bytGreen & ", " & bytBlue)
+        Public Sub SetColor(ByVal colColor As String)
+            Me.Color = Color.FromName(colColor)
+            My.Application.Log.WriteEntry("WebMail Notifier color set to " & Me.Color.Name)
         End Sub
 
         Public Sub TurnOff()

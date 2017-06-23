@@ -128,6 +128,7 @@
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
 
                 SetColor(Me.BacklightColor)
+                'SetSplash("HAController    Loading         ")
             End If
         End Sub
 
@@ -153,6 +154,24 @@
         Public Sub SetColor(ByVal Name As String)
             Dim NewColor As Color = Color.FromName(Name)
             SetColor(NewColor.R, NewColor.G, NewColor.B)
+        End Sub
+
+        Public Sub SetSplash(ByVal strInput As String)
+            Dim data(strInput.Length + 2) As Byte
+
+            data(0) = 254 '0xFE
+            data(1) = 64  '0x40
+
+            For i As Integer = 0 To strInput.Length - 1
+                data(i + 2) = Asc(strInput(i))
+            Next
+
+            Try
+                SerialPort.Write(data, 0, strInput.Length + 2)
+            Catch Excep As System.InvalidOperationException
+                My.Application.Log.WriteException(Excep)
+            End Try
+            Threading.Thread.Sleep(1000)
         End Sub
 
         Public Sub TestLCD()

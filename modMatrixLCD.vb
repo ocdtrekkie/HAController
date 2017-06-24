@@ -45,6 +45,22 @@
         Public Property BacklightColor As Color
         Public Property WarningColor As Color
 
+        Public Sub Blink(Optional ByVal Times As Integer = 1, Optional ByVal BlinkMS As Integer = 500)
+            If (Times <= 0 Or BlinkMS <= 0) Then
+                Throw New ArgumentOutOfRangeException("Cannot blink negative times or for negative duration")
+            End If
+
+            Dim i As Integer = 0
+
+            While i < Times
+                TurnOff()
+                Threading.Thread.Sleep(BlinkMS)
+                TurnOn()
+                Threading.Thread.Sleep(BlinkMS)
+                i = i + 1
+            End While
+        End Sub
+
         Public Sub Command(ByVal strCommand As String)
             Dim invCommand As Boolean = False
             Dim data(2) As Byte
@@ -230,6 +246,7 @@
             SetColor(0, 255, 255)
 
             WriteString("hello world")
+            Blink(3)
         End Sub
 
         Public Sub TurnOff()

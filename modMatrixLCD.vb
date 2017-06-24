@@ -250,7 +250,6 @@
         End Sub
 
         Public Sub TurnOff()
-            Command("Clear")
             Command("BacklightOff")
         End Sub
 

@@ -186,6 +186,22 @@
             SetColor(NewColor.R, NewColor.G, NewColor.B)
         End Sub
 
+        Public Sub SetBright()
+            Command("Brightness", 255)
+        End Sub
+
+        Public Sub SetBrightness(ByVal Value As Byte)
+            Command("Brightness", Value)
+        End Sub
+
+        Public Sub SetDim()
+            Command("Brightness", 136)
+        End Sub
+
+        Public Sub SetNite()
+            Command("Brightness", 68)
+        End Sub
+
         Public Sub SetSplash(ByVal strInput As String)
             'TODO: Define by LCD size, fill rest of bytes with spaces automatically
             'Space is 0x20 or 32
@@ -205,11 +221,24 @@
             End Try
         End Sub
 
+        Public Sub SetSoft()
+            Command("Brightness", 190)
+        End Sub
+
         Public Sub TestLCD()
             Command("Clear")
             SetColor(0, 255, 255)
 
             WriteString("hello world")
+        End Sub
+
+        Public Sub TurnOff()
+            Command("Clear")
+            Command("BacklightOff")
+        End Sub
+
+        Public Sub TurnOn()
+            Command("BacklightOn")
         End Sub
 
         Public Sub WriteString(ByVal strInput As String)

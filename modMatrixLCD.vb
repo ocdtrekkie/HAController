@@ -73,8 +73,6 @@
                     data(1) = 81 '0x51
                 Case "BacklightOff"
                     data(1) = 70 '0x46
-                Case "BacklightOn"
-                    data(1) = 66 '0x42
                 Case "BlockCursorOff"
                     data(1) = 84 '0x54
                 Case "BlockCursorOn"
@@ -112,6 +110,8 @@
             data(2) = Value
 
             Select Case strCommand
+                Case "BacklightOn"
+                    data(1) = 66 '0x42
                 Case "Brightness"
                     data(1) = 153 '0x99
                 Case "BrightnessSave"
@@ -254,7 +254,7 @@
         End Sub
 
         Public Sub TurnOn()
-            Command("BacklightOn")
+            Command("BacklightOn", 0)
         End Sub
 
         Public Sub WriteString(ByVal strInput As String)

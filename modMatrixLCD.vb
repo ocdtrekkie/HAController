@@ -1,4 +1,5 @@
 ﻿Module modMatrixLCD
+    Dim MatrixLCDConnected As Boolean = False
     Dim MatrixLCDisplayIndex As Integer
 
     Sub Disable()
@@ -19,6 +20,7 @@
         If My.Settings.MatrixLCD_Enable = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = New HAMatrixLCD
             If MatrixLCDisplay.IsConnected = True Then
+                MatrixLCDConnected = True
                 DeviceCollection.Add(MatrixLCDisplay)
                 MatrixLCDisplayIndex = DeviceCollection.IndexOf(MatrixLCDisplay)
                 My.Application.Log.WriteEntry("Matrix LCD has a device index of " & MatrixLCDisplayIndex)
@@ -36,8 +38,8 @@
     End Sub
 
     Sub UpdateNowPlaying(ByVal strNowPlaying As String, ByVal strNowPlayingArtist As String)
-        Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
-        If MatrixLCDisplay.IsConnected = True Then
+        If MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
             MatrixLCDisplay.Command("Clear")
             If strNowPlaying.Length > MatrixLCDisplay.Cols Then
                 strNowPlaying = strNowPlaying.Substring(0, MatrixLCDisplay.Cols)

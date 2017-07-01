@@ -102,12 +102,12 @@ Module modConverse
                             modMusic.PlayPlaylist(inputData(2))
                             strCommandResponse = "Playing " & inputData(2)
                         Case "music"
-                            modMusic.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
-                            strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
+                            modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
+                            strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
                         Case "some"
                             If inputData(2) = "music" Then
-                                modMusic.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
-                                strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
+                                modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
+                                strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
                             End If
                     End Select
                 Case "previous"

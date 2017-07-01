@@ -49,6 +49,7 @@ Module modMusic
     End Sub
 
     Public Sub PlayPlaylist(ByVal strPlaylistName As String)
+        My.Settings.Music_LastPlaylist = strPlaylistName
         MusicPlayer.URL = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\Playlists\" + strPlaylistName + ".wpl"
         isPlaying = True
     End Sub

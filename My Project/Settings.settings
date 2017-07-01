@@ -116,7 +116,7 @@
     <Setting Name="Global_LastKnownOutsideCondition" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Computer_LastMusicPlaylist" Type="System.String" Scope="User">
+    <Setting Name="Music_LastPlaylist" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Global_InsideTempHeatWarning" Type="System.Int32" Scope="User">

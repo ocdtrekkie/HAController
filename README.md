@@ -18,5 +18,6 @@ The following modules should function optionally:
 * modOpenWeatherMap gathers weather data from an API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
 * modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
+* modMusic implements Windows Media Player to play music.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.

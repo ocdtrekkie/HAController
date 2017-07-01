@@ -28,6 +28,8 @@ Public Module modGlobal
         modDreamCheeky.Load()
         My.Application.Log.WriteEntry("Loading mail module")
         modMail.Load()
+        My.Application.Log.WriteEntry("Loading music module")
+        modMusic.Load()
     End Sub
 
     Sub SaveCollection()

@@ -1,6 +1,6 @@
 ﻿Imports System.Management
 
-' modRandom cannot be disabled and doesn't need to be loaded or unloaded
+' modComputer cannot be disabled and doesn't need to be loaded or unloaded
 
 Module modComputer
     Sub GetInfo()
@@ -34,24 +34,6 @@ Module modComputer
             My.Application.Log.WriteException(Win32Ex)
             Return "Unable to lock screen"
         End Try
-    End Function
-
-    Function PlayPlaylist(strPlaylistName As String)
-        My.Settings.Computer_LastMusicPlaylist = strPlaylistName
-        System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/Playlist " & strPlaylistName)
-        Return 0
-    End Function
-
-    Function PlaySong(strSongFile As String)
-        System.Diagnostics.Process.Start("C:\Program Files (x86)\Windows Media Player\wmplayer.exe", strSongFile)
-        Return 0
-    End Function
-
-    Function StopMusic() As String
-        For Each p As Process In Process.GetProcessesByName("wmplayer")
-            p.Kill()
-        Next
-        Return "Stopping music"
     End Function
 
     Function RebootHost()

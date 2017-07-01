@@ -86,6 +86,12 @@ Module modConverse
                             modInsteon.AlarmMuted = True
                             strCommandResponse = "Alarm is now muted"
                     End Select
+                Case "next"
+                    modMusic.PlayNext()
+                    strCommandResponse = " "
+                Case "pause"
+                    modMusic.PauseMusic()
+                    strCommandResponse = "Music paused"
                 Case "peace"
                     If inputData(1) = "and" And inputData(2) = "long" And inputData(3) = "life" Then
                         strCommandResponse = "Live long and prosper"
@@ -93,17 +99,20 @@ Module modConverse
                 Case "play"
                     Select Case inputData(1)
                         Case "list"
-                            modComputer.PlayPlaylist(inputData(2))
+                            modMusic.PlayPlaylist(inputData(2))
                             strCommandResponse = "Playing " & inputData(2)
                         Case "music"
-                            modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                            modMusic.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
                             strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                         Case "some"
                             If inputData(2) = "music" Then
-                                modComputer.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
+                                modMusic.PlayPlaylist(My.Settings.Computer_LastMusicPlaylist)
                                 strCommandResponse = "Playing " & My.Settings.Computer_LastMusicPlaylist
                             End If
                     End Select
+                Case "previous"
+                    modMusic.PlayPrevious()
+                    strCommandResponse = " "
                 Case "refer"
                     If inputData(1) = "to" Then
                         If inputData(2) = "yourself" And inputData(3) = "as" Then
@@ -121,6 +130,9 @@ Module modConverse
                         modMail.Send(reminderString, reminderString)
                         strCommandResponse = "Acknowledged"
                     End If
+                Case "resume"
+                    strCommandResponse = "Resuming music"
+                    modMusic.ResumeMusic()
                 Case "roll"
                     If inputData(1) = "a" Then
                         Dim intMax As Integer = 0
@@ -159,7 +171,7 @@ Module modConverse
                     End If
                 Case "stop"
                     If inputData(1) = "music" Then
-                        modComputer.StopMusic()
+                        modMusic.StopMusic()
                         strCommandResponse = "Music stopped"
                     End If
                 Case "test"

@@ -22,8 +22,6 @@
                 DeviceCollection.Add(MatrixLCDisplay)
                 MatrixLCDisplayIndex = DeviceCollection.IndexOf(MatrixLCDisplay)
                 My.Application.Log.WriteEntry("Matrix LCD has a device index of " & MatrixLCDisplayIndex)
-
-                MatrixLCDisplay.TestLCD()
             Else
                 My.Application.Log.WriteEntry("Matrix LCD not found")
                 MatrixLCDisplay.Dispose()
@@ -35,6 +33,26 @@
 
     Sub Unload()
         ' Dispose of device
+    End Sub
+
+    Sub UpdateNowPlaying(ByVal strNowPlaying As String, ByVal strNowPlayingArtist As String)
+        Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+        If MatrixLCDisplay.IsConnected = True Then
+            MatrixLCDisplay.Command("Clear")
+            If strNowPlaying.Length > MatrixLCDisplay.Cols Then
+                strNowPlaying = strNowPlaying.Substring(0, MatrixLCDisplay.Cols)
+            Else
+                Do While MatrixLCDisplay.Cols > strNowPlaying.Length
+                    ' Yes, I did this.
+                    strNowPlaying = strNowPlaying + " "
+                Loop
+            End If
+            MatrixLCDisplay.WriteString(strNowPlaying)
+            If strNowPlayingArtist.Length > MatrixLCDisplay.Cols Then
+                strNowPlayingArtist = strNowPlayingArtist.Substring(0, MatrixLCDisplay.Cols)
+            End If
+            MatrixLCDisplay.WriteString(strNowPlayingArtist)
+        End If
     End Sub
 
     <Serializable()>
@@ -175,6 +193,16 @@
                 SetColor(Me.BacklightColor)
                 SetSplash("HAController    Loading         ")
             End If
+        End Sub
+
+        Public Sub NewLine()
+            Dim data(1) As Byte
+            data(0) = 10 '0x0A
+            Try
+                SerialPort.Write(data, 0, 1)
+            Catch Excep As System.InvalidOperationException
+                My.Application.Log.WriteException(Excep)
+            End Try
         End Sub
 
         Public Sub SetColor(ByVal bytRed As Byte, ByVal bytGreen As Byte, ByVal bytBlue As Byte)

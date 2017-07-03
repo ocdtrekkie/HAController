@@ -68,6 +68,12 @@ Module modMusic
         End If
     End Sub
 
+    Public Sub SetVolume(ByVal intValue As Integer)
+        If isPlaying = True And intValue >= 0 And intValue <= 100 Then
+            MusicPlayer.settings.volume = intValue
+        End If
+    End Sub
+
     Public Sub StopMusic()
         If isPlaying = True Then
             MusicPlayer.controls.stop()

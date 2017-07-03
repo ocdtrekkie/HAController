@@ -168,6 +168,9 @@ Module modConverse
                             modGlobal.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                             strCommandResponse = "Status set to " & inputData(3)
                         End If
+                    ElseIf inputData(1) = "music" And inputData(2) = "volume" Then
+                        modMusic.SetVolume(Int(inputData(3)))
+                        strCommandResponse = " "
                     End If
                 Case "stop"
                     If inputData(1) = "music" Then

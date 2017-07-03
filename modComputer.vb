@@ -47,6 +47,11 @@ Module modComputer
         End Try
     End Function
 
+    Function RunScript(ByVal strScriptName As String) As String
+        System.Diagnostics.Process.Start("C:\HAC\scripts\" + strScriptName + ".bat")
+        Return "Running " + strScriptName
+    End Function
+
     Function ShutdownHost()
         Try
             modMail.Send("Host shutdown initiated", "Host shutdown initiated")

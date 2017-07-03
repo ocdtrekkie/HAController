@@ -145,6 +145,10 @@ Module modConverse
                             strCommandResponse = modRandom.RandomInteger(intMax)
                         End If
                     End If
+                Case "run"
+                    If inputData(1) = "script" Then
+                        strCommandResponse = modComputer.RunScript(inputData(2))
+                    End If
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
                     If RemoteCommand = True Then

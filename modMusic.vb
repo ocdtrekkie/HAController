@@ -14,6 +14,7 @@ Module modMusic
         MusicPlayer.settings.autoStart = True
         MusicPlayer.settings.setMode("loop", True)
         MusicPlayer.settings.setMode("shuffle", True)
+        MusicPlayer.settings.volume = My.Settings.Music_Volume
         MusicPlayer.uiMode = "invisible"
     End Sub
 
@@ -71,6 +72,7 @@ Module modMusic
     Public Sub SetVolume(ByVal intValue As Integer)
         If isPlaying = True And intValue >= 0 And intValue <= 100 Then
             MusicPlayer.settings.volume = intValue
+            My.Settings.Music_Volume = intValue
         End If
     End Sub
 

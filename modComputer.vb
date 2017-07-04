@@ -48,8 +48,18 @@ Module modComputer
     End Function
 
     Function RunScript(ByVal strScriptName As String) As String
-        System.Diagnostics.Process.Start("C:\HAC\scripts\" + strScriptName + ".bat")
-        Return "Running " + strScriptName
+        Dim strLettersPattern As String = "^[a-zA-Z]{1,25}$"
+        If System.Text.RegularExpressions.Regex.IsMatch(strScriptName, strLettersPattern) Then
+            Try
+                System.Diagnostics.Process.Start("C:\HAC\scripts\" + strScriptName + ".bat")
+                Return "Running " + strScriptName
+            Catch Win32Ex As System.ComponentModel.Win32Exception
+                My.Application.Log.WriteException(Win32Ex)
+                Return "Script not found"
+            End Try
+        Else
+            Return "Cannot run invalid script name"
+        End If
     End Function
 
     Function ShutdownHost()

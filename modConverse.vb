@@ -26,6 +26,8 @@ Module modConverse
                             modMail.Disable()
                         Case "matrixlcd"
                             modMatrixLCD.Disable()
+                        Case "music"
+                            modMusic.Disable()
                         Case "openweathermap"
                             modOpenWeatherMap.Disable()
                         Case "ping"
@@ -44,6 +46,8 @@ Module modConverse
                             modMail.Enable()
                         Case "matrixlcd"
                             modMatrixLCD.Enable()
+                        Case "music"
+                            modMusic.Enable()
                         Case "openweathermap"
                             modOpenWeatherMap.Enable()
                         Case "ping"

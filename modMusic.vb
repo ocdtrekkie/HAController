@@ -9,13 +9,31 @@ Module modMusic
     Dim strNowPlayingArtist As String
     Dim strPrevPlaying As String
 
+    Public Sub Disable()
+        My.Application.Log.WriteEntry("Unloading music module")
+        Unload()
+        My.Settings.Music_Enable = False
+        My.Application.Log.WriteEntry("Music module is disabled")
+    End Sub
+
+    Public Sub Enable()
+        My.Settings.Music_Enable = True
+        My.Application.Log.WriteEntry("Music module is enabled")
+        My.Application.Log.WriteEntry("Loading music module")
+        Load()
+    End Sub
+
     Public Sub Load()
-        MusicPlayer = New WMPLib.WindowsMediaPlayer
-        MusicPlayer.settings.autoStart = True
-        MusicPlayer.settings.setMode("loop", True)
-        MusicPlayer.settings.setMode("shuffle", True)
-        MusicPlayer.settings.volume = My.Settings.Music_Volume
-        MusicPlayer.uiMode = "invisible"
+        If My.Settings.Music_Enable = True Then
+            MusicPlayer = New WMPLib.WindowsMediaPlayer
+            MusicPlayer.settings.autoStart = True
+            MusicPlayer.settings.setMode("loop", True)
+            MusicPlayer.settings.setMode("shuffle", True)
+            MusicPlayer.settings.volume = My.Settings.Music_Volume
+            MusicPlayer.uiMode = "invisible"
+        Else
+            My.Application.Log.WriteEntry("Music module is disabled, module Not loaded")
+        End If
     End Sub
 
     Private Sub MusicPlayer_MediaError(ByVal pMediaObject As Object) Handles MusicPlayer.MediaError

@@ -603,6 +603,18 @@ Namespace My
                 Me("Music_Volume") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Music_Enable() As Boolean
+            Get
+                Return CType(Me("Music_Enable"),Boolean)
+            End Get
+            Set
+                Me("Music_Enable") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

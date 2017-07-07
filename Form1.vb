@@ -55,10 +55,19 @@
         My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 
         If My.Settings.Global_CarMode = True Then
+            EnableCarMode()
             modSpeech.Say("System online")
         End If
 
         txtCommandBar.Enabled = True
+    End Sub
+
+    Sub DisableCarMode()
+        Me.TopMost = False
+    End Sub
+
+    Sub EnableCarMode()
+        Me.TopMost = True
     End Sub
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click

@@ -18,6 +18,8 @@ Module modConverse
                     frmMain.Close()
                 Case "disable"
                     Select Case inputData(1)
+                        Case "carmode"
+                            frmMain.DisableCarMode()
                         Case "dreamcheeky"
                             modDreamCheeky.Disable()
                         Case "insteon"
@@ -38,6 +40,8 @@ Module modConverse
                     strCommandResponse = "Acknowledged"
                 Case "enable"
                     Select Case inputData(1)
+                        Case "carmode"
+                            frmMain.EnableCarMode()
                         Case "dreamcheeky"
                             modDreamCheeky.Enable()
                         Case "insteon"

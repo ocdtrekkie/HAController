@@ -114,7 +114,7 @@ Module modConverse
                                 strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
                             End If
                     End Select
-                Case "previous"
+                Case "prev", "previous"
                     modMusic.PlayPrevious()
                     strCommandResponse = " "
                 Case "refer"

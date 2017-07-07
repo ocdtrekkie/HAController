@@ -40,7 +40,7 @@
     Sub UpdateNowPlaying(ByVal strNowPlaying As String, ByVal strNowPlayingArtist As String)
         If MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
-            MatrixLCDisplay.Command("Clear")
+            MatrixLCDisplay.Clear()
             If strNowPlaying.Length > MatrixLCDisplay.Cols Then
                 strNowPlaying = strNowPlaying.Substring(0, MatrixLCDisplay.Cols)
             Else
@@ -79,6 +79,10 @@
                 Threading.Thread.Sleep(BlinkMS)
                 i = i + 1
             End While
+        End Sub
+
+        Public Sub Clear()
+            Command("Clear")
         End Sub
 
         Public Sub Command(ByVal strCommand As String)

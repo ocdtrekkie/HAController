@@ -205,4 +205,28 @@
             modConverse.Interpet(strCommandString)
         End If
     End Sub
+
+    Private Sub txtCommandBar_GotFocus(sender As Object, e As EventArgs) Handles txtCommandBar.GotFocus
+        If modMatrixLCD.MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            MatrixLCDisplay.Command("Clear")
+            MatrixLCDisplay.WriteString(">")
+        End If
+    End Sub
+
+    Private Sub txtCommandBar_LostFocus(sender As Object, e As EventArgs) Handles txtCommandBar.LostFocus
+        If modMatrixLCD.MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            MatrixLCDisplay.Command("Clear")
+            MatrixLCDisplay.WriteString("x")
+        End If
+    End Sub
+
+    Private Sub txtCommandBar_KeyUp(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyUp
+        If modMatrixLCD.MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            MatrixLCDisplay.Command("Clear")
+            MatrixLCDisplay.WriteString("> " + txtCommandBar.Text)
+        End If
+    End Sub
 End Class

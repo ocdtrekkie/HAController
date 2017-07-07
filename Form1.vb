@@ -1,4 +1,5 @@
 ﻿Public Class frmMain
+    Dim WithEvents tmrFocusTimer As Timer
     Dim ResponseMsg As String
     Friend WithEvents SysTrayIcon As NotifyIcon
     Friend WithEvents MenuItemExit As MenuItem
@@ -51,23 +52,28 @@
             modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
             lblComConnected.Text = ResponseMsg
         End If
-        Stopwatch.Stop()
-        My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 
         If My.Settings.Global_CarMode = True Then
             EnableCarMode()
             modSpeech.Say("System online")
         End If
 
+        Stopwatch.Stop()
+        My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
+
         txtCommandBar.Enabled = True
     End Sub
 
     Sub DisableCarMode()
         Me.TopMost = False
+        tmrFocusTimer.Dispose()
     End Sub
 
     Sub EnableCarMode()
         Me.TopMost = True
+        tmrFocusTimer = New Timer
+        tmrFocusTimer.Interval = 5000
+        tmrFocusTimer.Start()
     End Sub
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click
@@ -200,6 +206,10 @@
 
     Private Sub SysTrayIcon_DoubleClick(sender As Object, e As EventArgs) Handles SysTrayIcon.DoubleClick
         Me.WindowState = FormWindowState.Normal
+    End Sub
+
+    Private Sub tmrFocusTimer_Tick(sender As Object, e As EventArgs) Handles tmrFocusTimer.Tick
+        Me.Activate()
     End Sub
 
     Private Sub txtCommandBar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyDown

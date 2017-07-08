@@ -98,7 +98,7 @@ Public Module modGlobal
             End If
         Else
             My.Application.Log.WriteEntry("Application is not a ClickOnce application", TraceEventType.Warning)
-            Return "Application is not a ClickOne application"
+            Return "Application is not a ClickOnce application"
         End If
     End Function
 End Module

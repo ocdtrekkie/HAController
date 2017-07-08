@@ -227,6 +227,8 @@ Module modConverse
                             modInsteon.AlarmMuted = False
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
+                Case "update"
+                    strCommandResponse = modGlobal.ClickOnceUpdate()
                 Case "what's"
                     If inputData(1) = "the" Then
                         Select Case inputData(2)

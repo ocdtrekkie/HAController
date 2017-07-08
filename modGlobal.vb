@@ -62,4 +62,42 @@ Public Module modGlobal
         End If
         Return LogFile.Length
     End Function
+
+    Function ClickOnceUpdate() As String
+        Dim info As System.Deployment.Application.UpdateCheckInfo = Nothing
+
+        If (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) Then
+            Dim AD As System.Deployment.Application.ApplicationDeployment = System.Deployment.Application.ApplicationDeployment.CurrentDeployment
+
+            Try
+                info = AD.CheckForDetailedUpdate()
+            Catch DDEExcep As System.Deployment.Application.DeploymentDownloadException
+                My.Application.Log.WriteException(DDEExcep)
+                Return "Cannot download update at this time"
+            Catch IOEExcep As InvalidOperationException
+                My.Application.Log.WriteException(IOEExcep)
+                Return "Cannot be updated"
+            End Try
+
+            If (info.UpdateAvailable) Then
+                modSpeech.Say("Update found")
+                Try
+                    AD.Update()
+                Catch DDEExcep As System.Deployment.Application.DeploymentDownloadException
+                    My.Application.Log.WriteException(DDEExcep)
+                    Return "Cannot install update at this time"
+                End Try
+
+                modSpeech.Say("Restarting application")
+                Application.Restart()
+                Return "Restarting application"
+            Else
+                My.Application.Log.WriteEntry("No update available")
+                Return "No update available"
+            End If
+        Else
+            My.Application.Log.WriteEntry("Application is not a ClickOnce application", TraceEventType.Warning)
+            Return "Application is not a ClickOne application"
+        End If
+    End Function
 End Module

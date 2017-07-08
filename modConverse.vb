@@ -184,6 +184,10 @@ Module modConverse
                         modMusic.SetVolume(Int(inputData(3)))
                         strCommandResponse = " "
                     End If
+                Case "show"
+                    If inputData(1) = "version" Then
+                        strCommandResponse = My.Application.Info.Version.ToString
+                    End If
                 Case "stop"
                     If inputData(1) = "music" Then
                         modMusic.StopMusic()

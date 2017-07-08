@@ -89,8 +89,9 @@ Public Module modGlobal
                 End Try
 
                 modSpeech.Say("Restarting application")
+                Threading.Thread.Sleep(5000)
                 Application.Restart()
-                Return "Restarting application"
+                Return " "
             Else
                 My.Application.Log.WriteEntry("No update available")
                 Return "No update available"

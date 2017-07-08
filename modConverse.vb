@@ -228,7 +228,9 @@ Module modConverse
                             strCommandResponse = "Alarm is now unmuted"
                     End Select
                 Case "update"
-                    strCommandResponse = modGlobal.ClickOnceUpdate()
+                    If inputData(1) = "now" Then
+                        strCommandResponse = modGlobal.ClickOnceUpdate()
+                    End If
                 Case "what's"
                     If inputData(1) = "the" Then
                         Select Case inputData(2)

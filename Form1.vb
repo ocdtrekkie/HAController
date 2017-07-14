@@ -54,6 +54,7 @@
         End If
 
         If My.Settings.Global_CarMode = True Then
+            My.Application.Log.WriteEntry("Enabling car mode")
             EnableCarMode()
             modSpeech.Say("System online")
         End If
@@ -212,19 +213,6 @@
         Me.Activate()
     End Sub
 
-    Private Sub txtCommandBar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyDown
-        Dim strCommandString As String
-
-        If e.KeyCode = Keys.Return Then
-            e.SuppressKeyPress = True
-
-            strCommandString = txtCommandBar.Text
-            txtCommandBar.Text = ""
-
-            modConverse.Interpet(strCommandString)
-        End If
-    End Sub
-
     Private Sub txtCommandBar_GotFocus(sender As Object, e As EventArgs) Handles txtCommandBar.GotFocus
         If modMatrixLCD.MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
@@ -242,10 +230,23 @@
     End Sub
 
     Private Sub txtCommandBar_KeyUp(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyUp
+        Dim strCommandString As String
+
+        If e.KeyCode = Keys.Return Then
+            e.SuppressKeyPress = True
+
+            strCommandString = txtCommandBar.Text
+            txtCommandBar.Text = ""
+        End If
+
         If modMatrixLCD.MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
             MatrixLCDisplay.Clear()
             MatrixLCDisplay.WriteString("> " + txtCommandBar.Text)
+        End If
+
+        If e.KeyCode = Keys.Return Then
+            modConverse.Interpet(strCommandString)
         End If
     End Sub
 End Class

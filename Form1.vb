@@ -68,6 +68,7 @@
     Sub DisableCarMode()
         Me.TopMost = False
         tmrFocusTimer.Dispose()
+        My.Settings.Global_CarMode = False
     End Sub
 
     Sub EnableCarMode()
@@ -75,6 +76,7 @@
         tmrFocusTimer = New Timer
         tmrFocusTimer.Interval = 5000
         tmrFocusTimer.Start()
+        My.Settings.Global_CarMode = True
     End Sub
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click

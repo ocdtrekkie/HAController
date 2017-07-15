@@ -155,6 +155,7 @@
     <Compile Include="modDatabase.vb" />
     <Compile Include="modDreamCheeky.vb" />
     <Compile Include="modGlobal.vb" />
+    <Compile Include="modGPS.vb" />
     <Compile Include="modInsteon.vb" />
     <Compile Include="modMail.vb" />
     <Compile Include="modOpenWeatherMap.vb" />

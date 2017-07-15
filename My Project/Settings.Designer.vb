@@ -615,6 +615,30 @@ Namespace My
                 Me("Music_Enable") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GPS_Enable() As Boolean
+            Get
+                Return CType(Me("GPS_Enable"),Boolean)
+            End Get
+            Set
+                Me("GPS_Enable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property GPS_LastGoodCOMPort() As String
+            Get
+                Return CType(Me("GPS_LastGoodCOMPort"),String)
+            End Get
+            Set
+                Me("GPS_LastGoodCOMPort") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

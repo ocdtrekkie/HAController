@@ -22,6 +22,8 @@ Module modConverse
                             frmMain.DisableCarMode()
                         Case "dreamcheeky"
                             modDreamCheeky.Disable()
+                        Case "gps"
+                            modGPS.Disable()
                         Case "insteon"
                             modInsteon.Disable()
                         Case "mail"
@@ -44,6 +46,8 @@ Module modConverse
                             frmMain.EnableCarMode()
                         Case "dreamcheeky"
                             modDreamCheeky.Enable()
+                        Case "gps"
+                            modGPS.Enable()
                         Case "insteon"
                             modInsteon.Enable()
                         Case "mail"

@@ -14,6 +14,7 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 
 The following modules should function optionally:
 * modDreamCheeky will support the Dream Cheeky Big Red Button and WebMail Notifier devices.
+* modGPS will collect location data from NMEA-compatible GPS receivers.
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.

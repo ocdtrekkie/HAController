@@ -125,6 +125,13 @@ Module modConverse
                 Case "prev", "previous"
                     modMusic.PlayPrevious()
                     strCommandResponse = " "
+                Case "pursuit"
+                    If inputData(1) = "mode" Then
+                        If My.Settings.Global_CarMode = True And modMatrixLCD.MatrixLCDConnected = True Then
+                            modGlobal.DeviceCollection(modMatrixLCD.MatrixLCDisplayIndex).SetColor(Color.Red)
+                            strCommandResponse = "Entering pursuit mode"
+                        End If
+                    End If
                 Case "refer"
                     If inputData(1) = "to" Then
                         If inputData(2) = "yourself" And inputData(3) = "as" Then

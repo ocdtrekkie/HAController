@@ -84,6 +84,11 @@ Module modMusic
         End If
     End Sub
 
+    Public Sub PlaySong(ByVal strSongName As String)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getByName(strSongName)
+        isPlaying = True
+    End Sub
+
     Public Sub ResumeMusic()
         If isPaused = True Then
             MusicPlayer.controls.play()

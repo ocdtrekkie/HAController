@@ -125,6 +125,10 @@ Module modConverse
                                 modMusic.PlayArtist(searchString)
                                 strCommandResponse = "Playing some " & searchString
                             End If
+                        Case Else
+                            Dim searchString As String = strInputString.Replace("play ", "")
+                            modMusic.PlaySong(searchString)
+                            strCommandResponse = "Playing " & searchString
                     End Select
                 Case "prev", "previous"
                     modMusic.PlayPrevious()

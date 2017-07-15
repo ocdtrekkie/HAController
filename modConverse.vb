@@ -120,6 +120,10 @@ Module modConverse
                             If inputData(2) = "music" Then
                                 modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
                                 strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
+                            Else
+                                Dim searchString As String = strInputString.Replace("play some ", "")
+                                modMusic.PlayArtist(searchString)
+                                strCommandResponse = "Playing some " & searchString
                             End If
                     End Select
                 Case "prev", "previous"

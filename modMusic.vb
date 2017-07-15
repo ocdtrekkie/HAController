@@ -61,6 +61,11 @@ Module modMusic
         End If
     End Sub
 
+    Public Sub PlayArtist(ByVal strArtistName As String)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getByAuthor(strArtistName)
+        isPlaying = True
+    End Sub
+
     Public Sub PlayNext()
         If isPlaying = True Then
             MusicPlayer.controls.next()

@@ -10,12 +10,16 @@ These are devices the code has been tested to work with.
 * 2421 - TriggerLinc _(same as 2843-222)_
 * 2441TH - Thermostat
 * 2450 - I/O Linc **as "BuzzLinc"**
+* 2450 - I/O Linc **as Garage Door & Status Kit (74551)[1]
 * 2477D - SwitchLinc Dual-Band Dimmer Switch
 * 2477S - SwitchLinc Dual-Band On/Off Switch
+* 2672-222 - LED Bulb 240V Edison
 * 2843-222 - Open/Close Sensor _(same as 2421)_
 * 2867-222 - Alert Module
 * 2868-222 - Siren
 * 2982-222 - Smoke Bridge
+
+[1] You may need to use HouseLinc to set the I/O Linc into Momentary B mode.
 
 ### USB Devices ###
 

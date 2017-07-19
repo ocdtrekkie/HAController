@@ -235,8 +235,6 @@
         Dim strCommandString As String
 
         If e.KeyCode = Keys.Return Then
-            e.SuppressKeyPress = True
-
             strCommandString = txtCommandBar.Text
             txtCommandBar.Text = ""
         End If
@@ -249,6 +247,12 @@
 
         If e.KeyCode = Keys.Return Then
             modConverse.Interpet(strCommandString)
+        End If
+    End Sub
+
+    Private Sub txtCommandBar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyDown
+        If e.KeyCode = Keys.Return Then
+            e.SuppressKeyPress = True
         End If
     End Sub
 End Class

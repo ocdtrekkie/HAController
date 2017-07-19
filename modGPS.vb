@@ -80,7 +80,21 @@
 
         Private Sub DataReceivedHandler(sernder As Object, e As IO.Ports.SerialDataReceivedEventArgs)
             Dim strInputData As String = SerialPort.ReadLine()
-            My.Application.Log.WriteEntry("GPS: " + strInputData)
+
+            If strInputData.Substring(0, 6) = "$GPRMC" Then
+                Dim inputData() = strInputData.Split(",")
+                If inputData(2) = "A" Then
+                    Dim dblLatitude As Double = CDbl(inputData(3) / 100)
+                    Dim dblLongitude As Double = CDbl(inputData(5) / 100)
+                    ' Not currently accurate, GPS format is in degrees not decimals.
+                    ' Latitude: DDMM.MMMM - Longitude: DDDMM.MMMM
+                    ' N and E are +, S and W are -
+                    ' inputData(1) is HHMMSS in UTC
+                    ' inputData(7) is DDMMYY
+                    ' inputData(6) is the speed in knots
+                    My.Application.Log.WriteEntry("GPS: " + CStr(dblLatitude) + inputData(4) + " " + CStr(dblLongitude) + inputData(6))
+                End If
+            End If
         End Sub
     End Class
 End Module

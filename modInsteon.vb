@@ -841,6 +841,7 @@ Module modInsteon
                     strTemp = strTemp & " Group: " & Hex(x(ms + 3)) & " ID: " & FromAddress & " DevCat: " & Hex(x(ms + 7)) & " SubCat: " & Hex(x(ms + 8)) & " Firmware: " & Hex(x(ms + 9))
                     If x(ms + 9) = 255 Then strTemp = strTemp & " (all newer devices = FF)"
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    AddInsteonDeviceDb(FromAddress, x(ms + 7), x(ms + 8), x(ms + 9))
                 End If
             Case 87 ' 0x057 ALL-Link record response - 8 bytes of data
                 MessageEnd = ms + 9

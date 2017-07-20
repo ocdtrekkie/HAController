@@ -86,7 +86,6 @@
                 If inputData(2) = "A" Then
                     ' inputData(1) is HHMMSS in UTC
                     ' inputData(7) is DDMMYY
-                    ' inputData(6) is the speed in knots
                     Dim dblLatitude As Double = CDbl(inputData(3).Substring(0, 2)) + (CDbl(inputData(3).Substring(2, 7)) / 60)
                     If inputData(4) = "S" Then
                         dblLatitude = dblLatitude * -1
@@ -95,6 +94,8 @@
                     If inputData(6) = "W" Then
                         dblLongitude = dblLongitude * -1
                     End If
+                    Dim dblSpeed As Double = CDbl(inputData(6)) 'knots
+                    modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now + "', " + dblLatitude + ", " + dblLongitude + ", " + dblSpeed + ")")
                     My.Application.Log.WriteEntry("GPS: " + CStr(dblLatitude) + ", " + CStr(dblLongitude))
                 End If
             End If

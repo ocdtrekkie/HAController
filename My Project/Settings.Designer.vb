@@ -642,7 +642,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
         Public Property GPS_RateLimit() As Integer
             Get
                 Return CType(Me("GPS_RateLimit"),Integer)

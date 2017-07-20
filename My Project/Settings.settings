@@ -150,7 +150,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="GPS_RateLimit" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

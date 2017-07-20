@@ -639,6 +639,18 @@ Namespace My
                 Me("GPS_LastGoodCOMPort") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property GPS_RateLimit() As Integer
+            Get
+                Return CType(Me("GPS_RateLimit"),Integer)
+            End Get
+            Set
+                Me("GPS_RateLimit") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

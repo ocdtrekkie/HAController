@@ -50,8 +50,9 @@
                 Loop
             End If
             MatrixLCDisplay.WriteString(strNowPlaying)
-            If strNowPlayingArtist.Length > MatrixLCDisplay.Cols Then
+            If strNowPlayingArtist.Length >= MatrixLCDisplay.Cols Then
                 strNowPlayingArtist = strNowPlayingArtist.Substring(0, MatrixLCDisplay.Cols)
+                MatrixLCDisplay.SetAutoscrollOff()
             End If
             MatrixLCDisplay.WriteString(strNowPlayingArtist)
         End If
@@ -211,6 +212,22 @@
             End Try
         End Sub
 
+        Public Sub SetAutoscrollOff()
+            Command("AutoscrollOff")
+        End Sub
+
+        Public Sub SetAutoscrollOn()
+            Command("AutoscrollOn")
+        End Sub
+
+        Public Sub SetBright()
+            Command("Brightness", 255)
+        End Sub
+
+        Public Sub SetBrightness(ByVal Value As Byte)
+            Command("Brightness", Value)
+        End Sub
+
         Public Sub SetColor(ByVal bytRed As Byte, ByVal bytGreen As Byte, ByVal bytBlue As Byte)
             Dim data(5) As Byte
 
@@ -234,14 +251,6 @@
         Public Sub SetColor(ByVal Name As String)
             Dim NewColor As Color = Color.FromName(Name)
             SetColor(NewColor.R, NewColor.G, NewColor.B)
-        End Sub
-
-        Public Sub SetBright()
-            Command("Brightness", 255)
-        End Sub
-
-        Public Sub SetBrightness(ByVal Value As Byte)
-            Command("Brightness", Value)
         End Sub
 
         Public Sub SetDim()

@@ -241,6 +241,9 @@
 
         If modMatrixLCD.MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            If txtCommandBar.Text.Length > (MatrixLCDisplay.Cols * 2 - 2) Then
+                MatrixLCDisplay.SetAutoscrollOn()
+            End If
             MatrixLCDisplay.Clear()
             MatrixLCDisplay.WriteString("> " + txtCommandBar.Text)
         End If

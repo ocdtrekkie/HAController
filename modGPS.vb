@@ -33,12 +33,22 @@
     End Sub
 
     Sub Unload()
-        'Dispose of device
+        If GPSReceiverConnected = True Then
+            DeviceCollection(GPSReceiverIndex).Dispose()
+            GPSReceiverConnected = False
+        End If
     End Sub
 
     <Serializable()>
     Public Class HAGPSDevice
         Inherits HASerialDevice
+
+        Public Overloads Sub Dispose()
+            If Me.IsConnected = True Then
+                Me.IsConnected = False
+                SerialPort.Close()
+            End If
+        End Sub
 
         Public Sub New()
             Me.DeviceName = "GPS Receiver"

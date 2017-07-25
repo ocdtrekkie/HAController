@@ -54,6 +54,9 @@ Module modOpenWeatherMap
             WeatherNode = WeatherData.SelectSingleNode("/current/humidity")
             Dim dblHumidity As Double = WeatherNode.Attributes.GetNamedItem("value").Value
 
+            WeatherNode = WeatherData.SelectSingleNode("/current/city")
+            Dim strCityName As String = WeatherNode.Attributes.GetNamedItem("name").Value
+
             WeatherNode = WeatherData.SelectSingleNode("/current/lastupdate")
             Dim dteLastUpdate As DateTime = WeatherNode.Attributes.GetNamedItem("value").Value
             dteLastUpdate = TimeZoneInfo.ConvertTimeFromUtc(dteLastUpdate, TimeZoneInfo.Local)
@@ -66,7 +69,7 @@ Module modOpenWeatherMap
             If result <> 0 Then
                 My.Application.Log.WriteEntry("Not entering duplicate OpenWeatherMap data")
             Else
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', 'Local', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate + "', 'OWM', '" + strCityName + "', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
             End If
 
             My.Settings.Global_LastKnownOutsideTemp = Int(dblTemperature)

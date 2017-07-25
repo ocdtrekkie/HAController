@@ -1,4 +1,6 @@
 ﻿Module modGPS
+    Public CurrentLatitude As Double = 0
+    Public CurrentLongitude As Double = 0
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
 
@@ -116,10 +118,12 @@
                         If inputData(4) = "S" Then
                             dblLatitude = dblLatitude * -1
                         End If
+                        CurrentLatitude = dblLatitude
                         Dim dblLongitude As Double = CDbl(inputData(5).Substring(0, 3)) + (CDbl(inputData(5).Substring(3, 7)) / 60)
                         If inputData(6) = "W" Then
                             dblLongitude = dblLongitude * -1
                         End If
+                        CurrentLongitude = dblLongitude
                         Dim dblSpeed As Double = CDbl(inputData(7)) 'knots
                         modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
                     End If

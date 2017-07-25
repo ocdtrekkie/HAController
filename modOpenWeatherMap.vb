@@ -19,20 +19,26 @@ Module modOpenWeatherMap
 
     Function GatherWeatherData() As String
         Dim SpeechString As String
+        Dim WeatherRequestString As String
 
         If My.Settings.OpenWeatherMap_APIKey = "" Then
             My.Application.Log.WriteEntry("No OpenWeatherMap API key, asking for it")
             My.Settings.OpenWeatherMap_APIKey = InputBox("Enter OpenWeatherMap API Key. You can get an API key at http://openweathermap.org/appid by signing up for a free account.", "OpenWeatherMap API")
         End If
 
-        If My.Settings.OpenWeatherMap_CityID = "" Then
+        If My.Settings.GPS_Enable = False And My.Settings.OpenWeatherMap_CityID = "" Then
             My.Application.Log.WriteEntry("No City ID set, asking for it")
             My.Settings.OpenWeatherMap_CityID = InputBox("Enter City ID. You can look up your city at http://openweathermap.org/city and find the ID in the URL of the resulting page.", "City ID")
         End If
 
         Dim WeatherData As XmlDocument = New XmlDocument
         Dim WeatherNode As XmlNode
-        Dim WeatherRequestString As String = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.OpenWeatherMap_CityID + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
+        If My.Settings.GPS_Enable = True And modGPS.CurrentLatitude <> 0 And modGPS.CurrentLongitude <> 0 Then
+            WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?lat=" + CStr(modGPS.CurrentLatitude) + "&lon=" + CStr(modGPS.CurrentLongitude) + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
+        Else
+            WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.OpenWeatherMap_CityID + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
+        End If
+
         My.Application.Log.WriteEntry("Requesting OpenWeatherMap data")
         Try
             WeatherData.Load(WeatherRequestString)

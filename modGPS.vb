@@ -104,25 +104,29 @@
         End Sub
 
         Private Sub DataReceivedHandler(sernder As Object, e As IO.Ports.SerialDataReceivedEventArgs)
-            Dim strInputData As String = SerialPort.ReadLine()
+            Try
+                Dim strInputData As String = SerialPort.ReadLine()
 
-            If strInputData.Substring(0, 6) = "$GPRMC" Then
-                Dim inputData() = strInputData.Split(",")
-                If inputData(2) = "A" And inputData(1) Mod My.Settings.GPS_RateLimit = 0 Then
-                    ' inputData(1) is HHMMSS in UTC
-                    ' inputData(9) is DDMMYY
-                    Dim dblLatitude As Double = CDbl(inputData(3).Substring(0, 2)) + (CDbl(inputData(3).Substring(2, 7)) / 60)
-                    If inputData(4) = "S" Then
-                        dblLatitude = dblLatitude * -1
+                If strInputData.Substring(0, 6) = "$GPRMC" Then
+                    Dim inputData() = strInputData.Split(",")
+                    If inputData(2) = "A" And inputData(1) Mod My.Settings.GPS_RateLimit = 0 Then
+                        ' inputData(1) is HHMMSS in UTC
+                        ' inputData(9) is DDMMYY
+                        Dim dblLatitude As Double = CDbl(inputData(3).Substring(0, 2)) + (CDbl(inputData(3).Substring(2, 7)) / 60)
+                        If inputData(4) = "S" Then
+                            dblLatitude = dblLatitude * -1
+                        End If
+                        Dim dblLongitude As Double = CDbl(inputData(5).Substring(0, 3)) + (CDbl(inputData(5).Substring(3, 7)) / 60)
+                        If inputData(6) = "W" Then
+                            dblLongitude = dblLongitude * -1
+                        End If
+                        Dim dblSpeed As Double = CDbl(inputData(7)) 'knots
+                        modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
                     End If
-                    Dim dblLongitude As Double = CDbl(inputData(5).Substring(0, 3)) + (CDbl(inputData(5).Substring(3, 7)) / 60)
-                    If inputData(6) = "W" Then
-                        dblLongitude = dblLongitude * -1
-                    End If
-                    Dim dblSpeed As Double = CDbl(inputData(7)) 'knots
-                    modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
                 End If
-            End If
+            Catch IOExcep As System.IO.IOException
+                My.Application.Log.WriteException(IOExcep)
+            End Try
         End Sub
     End Class
 End Module

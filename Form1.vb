@@ -21,6 +21,12 @@
         Stopwatch.Start()
         My.Application.Log.WriteEntry("Main application form loaded")
 
+        If My.Settings.Global_UpgradeRequired = True Then
+            My.Settings.Upgrade()
+            My.Settings.Global_UpgradeRequired = False
+            My.Settings.Save()
+        End If
+
         AddHandler My.Settings.PropertyChanged, AddressOf Settings_Changed
 
         Dim SysTrayMenu = New ContextMenu
@@ -189,6 +195,7 @@
             Dim d As New UpdateCallback(AddressOf Settings_Changed)
             Me.Invoke(d)
         Else
+            My.Settings.Save()
             cmbStatus.Text = My.Settings.Global_LastHomeStatus
             lblCurrentStatus.Text = My.Settings.Global_LastHomeStatus
             lblInsideTemp.Text = My.Settings.Global_LastKnownInsideTemp & " F"

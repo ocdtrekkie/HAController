@@ -651,6 +651,18 @@ Namespace My
                 Me("GPS_RateLimit") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Global_UpgradeRequired() As Boolean
+            Get
+                Return CType(Me("Global_UpgradeRequired"),Boolean)
+            End Get
+            Set
+                Me("Global_UpgradeRequired") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

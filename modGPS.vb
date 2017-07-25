@@ -1,5 +1,5 @@
 ﻿Module modGPS
-    Public GPSReceiverConnected As Boolean = False
+    Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
 
     Sub Disable()
@@ -18,7 +18,7 @@
 
     Sub Load()
         If My.Settings.GPS_Enable = True Then
-            Dim GPSReceiver As HAGPSDevice = New HAGPSDevice
+            GPSReceiver = New HAGPSDevice
             If GPSReceiver.IsConnected = True Then
                 DeviceCollection.Add(GPSReceiver)
                 GPSReceiverIndex = DeviceCollection.IndexOf(GPSReceiver)
@@ -33,9 +33,9 @@
     End Sub
 
     Sub Unload()
-        If GPSReceiverConnected = True Then
-            DeviceCollection(GPSReceiverIndex).Dispose()
-            GPSReceiverConnected = False
+        If GPSReceiver IsNot Nothing Then
+            GPSReceiver.Dispose()
+            Threading.Thread.Sleep(200)
         End If
     End Sub
 
@@ -58,7 +58,10 @@
         Public Overloads Sub Dispose()
             If Me.IsConnected = True Then
                 Me.IsConnected = False
-                SerialPort.Close()
+                If SerialPort.IsOpen = True Then
+                    SerialPort.Close()
+                End If
+                SerialPort.Dispose()
             End If
         End Sub
 

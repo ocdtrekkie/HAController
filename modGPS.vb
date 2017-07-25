@@ -39,6 +39,18 @@
         End If
     End Sub
 
+    Function SetRateLimit(Optional ByVal intRate As Integer = 1) As String
+        If intRate > 1 Then
+            My.Settings.GPS_RateLimit = intRate
+            Return "GPS rate limited to " + CStr(My.Settings.GPS_RateLimit) + " seconds"
+        ElseIf intRate = 1 Then
+            My.Settings.GPS_RateLimit = intRate
+            Return "GPS rate limit removed"
+        Else
+            Return "GPS rate limit cannot be less than one"
+        End If
+    End Function
+
     <Serializable()>
     Public Class HAGPSDevice
         Inherits HASerialDevice

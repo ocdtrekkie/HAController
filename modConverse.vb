@@ -80,6 +80,20 @@ Module modConverse
                     If inputData(1) = "voices" Then
                         strCommandResponse = "Available voices are " & modSpeech.GetVoices()
                     End If
+                Case "gps"
+                    If inputData(1) = "disable" Then
+                        modGPS.Disable()
+                        strCommandResponse = "Acknowledged"
+                    ElseIf inputData(1) = "enable" Then
+                        modGPS.Enable()
+                        strCommandResponse = "Acknowledged"
+                    ElseIf inputData(1) = "rate" And inputData(2) = "limit" Then
+                        If IsNumeric(inputData(3)) Then
+                            strCommandResponse = modGPS.SetRateLimit(CInt(inputData(3)))
+                        ElseIf inputData(3) = "reset" Then
+                            strCommandResponse = modGPS.SetRateLimit()
+                        End If
+                    End If
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
                 Case "link"

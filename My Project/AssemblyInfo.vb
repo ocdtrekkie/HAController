@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("HAController")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Jacob Weisz")> 
-<Assembly: AssemblyProduct("HAController")> 
-<Assembly: AssemblyCopyright("Copyright ©  2015 Jacob Weisz")> 
+<Assembly: AssemblyProduct("HAController")>
+<Assembly: AssemblyCopyright("Copyright ©  2015-2017 Jacob Weisz")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("4dcead5b-269e-4799-b12d-e4f131e85429")> 
+<Assembly: Guid("4dcead5b-269e-4799-b12d-e4f131e85429")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("1.0.0.7")>
+<Assembly: AssemblyFileVersion("1.0.0.7")>

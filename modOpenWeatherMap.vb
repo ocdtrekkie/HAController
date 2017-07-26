@@ -33,7 +33,7 @@ Module modOpenWeatherMap
 
         Dim WeatherData As XmlDocument = New XmlDocument
         Dim WeatherNode As XmlNode
-        If My.Settings.GPS_Enable = True And modGPS.CurrentLatitude <> 0 And modGPS.CurrentLongitude <> 0 Then
+        If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
             WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?lat=" + CStr(modGPS.CurrentLatitude) + "&lon=" + CStr(modGPS.CurrentLongitude) + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
         Else
             WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.OpenWeatherMap_CityID + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
@@ -91,7 +91,7 @@ Module modOpenWeatherMap
         If My.Settings.OpenWeatherMap_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic OpenWeatherMap checks")
             Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("checkjob", "modopenweathermap").Build()
-            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(60).RepeatForever()).Build()
+            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(10).RepeatForever()).Build()
 
             Try
                 modScheduler.sched.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)

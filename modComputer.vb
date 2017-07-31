@@ -3,6 +3,22 @@
 ' modComputer cannot be disabled and doesn't need to be loaded or unloaded
 
 Module modComputer
+    Sub DisableStartup()
+        My.Application.Log.WriteEntry("Removing run on system startup registry key")
+        Dim regKey As Microsoft.Win32.RegistryKey
+        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
+        regKey.DeleteValue(Application.ProductName, False)
+        regKey.Close()
+    End Sub
+
+    Sub EnableStartup()
+        My.Application.Log.WriteEntry("Adding registry key to run on system startup")
+        Dim regKey As Microsoft.Win32.RegistryKey
+        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
+        regKey.SetValue(Application.ProductName, """" & Application.ExecutablePath & """")
+        regKey.Close()
+    End Sub
+
     Sub GetInfo()
         My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion)
         My.Application.Log.WriteEntry("Computer Name: " & My.Computer.Name)

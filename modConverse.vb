@@ -38,6 +38,8 @@ Module modConverse
                             modPing.Disable()
                         Case "speech"
                             modSpeech.Disable()
+                        Case "startup"
+                            modComputer.DisableStartup()
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "enable"
@@ -62,6 +64,8 @@ Module modConverse
                             modPing.Enable()
                         Case "speech"
                             modSpeech.Enable()
+                        Case "startup"
+                            modComputer.EnableStartup()
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "flip"

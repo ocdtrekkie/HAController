@@ -5,6 +5,7 @@
 Module modRandom
     Function BasicRandomInteger(ByVal intMax As Integer)
         ' Returns random integer between 1 and intMax.
+        Randomize()
         Return CInt(Int((intMax * Rnd()) + 1))
     End Function
 

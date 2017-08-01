@@ -22,6 +22,7 @@
         My.Application.Log.WriteEntry("Main application form loaded")
 
         If My.Settings.Global_UpgradeRequired = True Then
+            My.Application.Log.WriteEntry("Upgrade required, importing settings from previous release")
             My.Settings.Upgrade()
             My.Settings.Global_UpgradeRequired = False
             My.Settings.Save()

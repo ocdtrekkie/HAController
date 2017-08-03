@@ -222,6 +222,7 @@
 
     Private Sub tmrFocusTimer_Tick(sender As Object, e As EventArgs) Handles tmrFocusTimer.Tick
         Me.Activate()
+        txtCommandBar.Select()
     End Sub
 
     Private Sub txtCommandBar_GotFocus(sender As Object, e As EventArgs) Handles txtCommandBar.GotFocus

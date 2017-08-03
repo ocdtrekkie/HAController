@@ -36,7 +36,7 @@
         MenuItemExit.Text = "E&xit"
         SysTrayMenu.MenuItems.Add(MenuItemExit)
 
-        Me.Icon = New Icon("assets\HAController.ico")
+        Me.Icon = New Icon(Application.StartupPath & "\assets\HAController.ico")
         SysTrayIcon = New NotifyIcon
         SysTrayIcon.Icon = Me.Icon
         SysTrayIcon.Text = "HAController"

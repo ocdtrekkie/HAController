@@ -70,6 +70,7 @@
         My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 
         txtCommandBar.Enabled = True
+        txtCommandBar.Select()
     End Sub
 
     Sub DisableCarMode()

@@ -51,6 +51,7 @@ Public Module modGlobal
     End Sub
 
     Sub UnloadModules()
+        modMusic.Unload()
         modGPS.Unload()
         modInsteon.Unload()
         modScheduler.Unload()

@@ -118,6 +118,8 @@ Module modMusic
     End Sub
 
     Public Sub Unload()
-
+        If MusicPlayer IsNot Nothing Then
+            MusicPlayer.close()
+        End If
     End Sub
 End Module

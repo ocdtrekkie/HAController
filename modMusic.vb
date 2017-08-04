@@ -62,7 +62,10 @@ Module modMusic
     End Sub
 
     Public Sub PlayArtist(ByVal strArtistName As String)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getByAuthor(strArtistName)
+        Dim oQuery As Object
+        oQuery = MusicPlayer.mediaCollection.createQuery()
+        oQuery.AddCondition("Author", "Contains", strArtistName)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
         isPlaying = True
     End Sub
 
@@ -85,7 +88,10 @@ Module modMusic
     End Sub
 
     Public Sub PlaySong(ByVal strSongName As String)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getByName(strSongName)
+        Dim oQuery As Object
+        oQuery = MusicPlayer.mediaCollection.createQuery()
+        oQuery.AddCondition("Title", "Contains", strSongName)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
         isPlaying = True
     End Sub
 

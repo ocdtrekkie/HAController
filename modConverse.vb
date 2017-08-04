@@ -281,6 +281,8 @@ Module modConverse
                                     Select Case inputData(5)
                                         Case "beijing", "china", "shanghai"
                                             strConvTimeZone = "China Standard Time"
+                                        Case "brussels", "copenhagen", "madrid", "paris"
+                                            strConvTimeZone = "Romance Standard Time"
                                         Case "iceland", "reykjavik"
                                             strConvTimeZone = "Greenwich Standard Time" ' No DST
                                         Case "london"

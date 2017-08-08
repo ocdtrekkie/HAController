@@ -187,7 +187,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8.8.8.8")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("4.2.2.2")>  _
         Public Property Ping_InternetCheckAddress() As String
             Get
                 Return CType(Me("Ping_InternetCheckAddress"),String)

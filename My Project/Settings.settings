@@ -36,7 +36,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Ping_InternetCheckAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8.8.8.8</Value>
+      <Value Profile="(Default)">4.2.2.2</Value>
     </Setting>
     <Setting Name="Speech_Enable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

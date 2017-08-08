@@ -32,9 +32,13 @@
         End If
     End Sub
 
-    Sub Say(ByVal TextToSpeak As String)
+    Sub Say(ByVal strTextToSpeak As String, Optional ByVal isAsync As Boolean = True)
         If My.Settings.Speech_Enable = True Then
-            synth.SpeakAsync(TextToSpeak)
+            If isAsync = True Then
+                synth.SpeakAsync(strTextToSpeak)
+            Else
+                synth.Speak(strTextToSpeak)
+            End If
         End If
     End Sub
 

@@ -32,6 +32,8 @@ Public Module modGlobal
         modMail.Load()
         My.Application.Log.WriteEntry("Loading music module")
         modMusic.Load()
+        My.Application.Log.WriteEntry("Loading computer module")
+        modComputer.Load()
     End Sub
 
     Sub SaveCollection()

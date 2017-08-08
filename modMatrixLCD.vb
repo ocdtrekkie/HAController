@@ -33,6 +33,17 @@
         End If
     End Sub
 
+    Sub ShowNotification(ByVal strNotification As String)
+        If MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+            MatrixLCDisplay.Clear()
+            If strNotification.Length > MatrixLCDisplay.Cols Then
+                strNotification.Substring(0, MatrixLCDisplay.Cols)
+            End If
+            MatrixLCDisplay.WriteString(strNotification)
+        End If
+    End Sub
+
     Sub Unload()
         ' Dispose of device
     End Sub

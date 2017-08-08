@@ -49,8 +49,6 @@
         End If
 
         modGlobal.LoadModules()
-
-        modComputer.GetInfo()
         modGlobal.CheckLogFileSize()
 
         If My.Settings.Insteon_LastGoodCOMPort <> "" Then
@@ -77,6 +75,7 @@
         Me.TopMost = False
         tmrFocusTimer.Dispose()
         My.Settings.Global_CarMode = False
+        RemoveHandler Net.NetworkInformation.NetworkChange.NetworkAddressChanged, AddressOf modComputer.AddressChangedCallback
     End Sub
 
     Sub EnableCarMode()
@@ -85,6 +84,7 @@
         tmrFocusTimer.Interval = 5000
         tmrFocusTimer.Start()
         My.Settings.Global_CarMode = True
+        AddHandler Net.NetworkInformation.NetworkChange.NetworkAddressChanged, AddressOf modComputer.AddressChangedCallback
     End Sub
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click

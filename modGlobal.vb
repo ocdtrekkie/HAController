@@ -70,6 +70,7 @@ Public Module modGlobal
     End Function
 
     Function ClickOnceUpdate() As String
+        ' HAController isn't fully functional in ClickOnce mode, this will almost never run
         Dim info As System.Deployment.Application.UpdateCheckInfo = Nothing
 
         If (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) Then
@@ -86,7 +87,7 @@ Public Module modGlobal
             End Try
 
             If (info.UpdateAvailable) Then
-                modSpeech.Say("Update found")
+                modSpeech.Say("Update found", False)
                 Try
                     AD.Update()
                 Catch DDEExcep As System.Deployment.Application.DeploymentDownloadException
@@ -94,8 +95,7 @@ Public Module modGlobal
                     Return "Cannot install update at this time"
                 End Try
 
-                modSpeech.Say("Restarting application")
-                Threading.Thread.Sleep(5000)
+                modSpeech.Say("Restarting application", False)
                 Application.Restart()
                 Return " "
             Else

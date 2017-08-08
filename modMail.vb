@@ -273,7 +273,6 @@ Module modMail
             modMail.Send("Mail crash averted", "Mail crash averted") ' Remove this line later if this retry method actually works
             justExit = True
             Threading.Thread.Sleep(600000)
-            CheckMail()
         End Try
         If justExit = False Then
             Dim Server_Response As String

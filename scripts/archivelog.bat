@@ -15,7 +15,8 @@ set datestamp=%YYYY%%MM%%DD%
 set timestamp=%HH%%Min%%Sec%
 set fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%
 
-ren "C:\HAC\HAClog.txt" "HAClog_%fullstamp%.txt"
+md "C:\HAC\archive"
+move "C:\HAC\HAClog.txt" "C:\HAC\archive\HAClog_%fullstamp%.txt"
 
 cd C:\HAC
 C:\HAC\HAController.exe

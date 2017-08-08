@@ -209,7 +209,15 @@
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
 
                 SetColor(Me.BacklightColor)
-                SetSplash("HAController    Loading         ")
+                Dim strSplashString = "HAController"
+                Do While strSplashString.Length < Cols
+                    strSplashString = strSplashString + " "
+                Loop
+                strSplashString = strSplashString + My.Application.Info.Version.ToString
+                Do While strSplashString.Length < (Cols * 2)
+                    strSplashString = strSplashString + " "
+                Loop
+                SetSplash(strSplashString)
             End If
         End Sub
 

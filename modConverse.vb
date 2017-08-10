@@ -110,6 +110,20 @@ Module modConverse
                     If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
                         strCommandResponse = modComputer.LockScreen()
                     End If
+                Case "matrixlcd"
+                    Select Case inputData(1)
+                        Case "bright"
+                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetBright()
+                        Case "brightness"
+                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetBrightness(inputData(2))
+                        Case "dim"
+                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetDim()
+                        Case "nite"
+                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetNite()
+                        Case "soft"
+                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetSoft()
+                    End Select
+                    strCommandResponse = " "
                 Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"

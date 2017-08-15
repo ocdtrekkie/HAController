@@ -237,6 +237,9 @@ Module modConverse
                     End If
                 Case "show"
                     If inputData(1) = "version" Then
+                        If modMatrixLCD.MatrixLCDConnected = True Then
+                            modMatrixLCD.ShowNotification(My.Application.Info.Version.ToString)
+                        End If
                         strCommandResponse = My.Application.Info.Version.ToString
                     End If
                 Case "stop"

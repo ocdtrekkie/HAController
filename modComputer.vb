@@ -40,10 +40,11 @@ Module modComputer
         Dim NetworkInterface As Net.NetworkInformation.NetworkInterface
         For Each NetworkInterface In NetworkInterfaces
             If NetworkInterface.NetworkInterfaceType.ToString = "Wireless80211" Then
-                My.Application.Log.WriteEntry("Wi-Fi " & NetworkInterface.OperationalStatus.ToString)
-
+                Dim strWirelessStatus As String = "Wi-Fi " & NetworkInterface.OperationalStatus.ToString
+                My.Application.Log.WriteEntry(strWirelessStatus)
+                modSpeech.Say(strWirelessStatus)
                 If modMatrixLCD.MatrixLCDConnected = True Then
-                    modMatrixLCD.ShowNotification("Wi-Fi " & NetworkInterface.OperationalStatus.ToString)
+                    modMatrixLCD.ShowNotification(strWirelessStatus)
                 End If
             End If
         Next

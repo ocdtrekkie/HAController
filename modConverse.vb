@@ -236,11 +236,18 @@ Module modConverse
                         strCommandResponse = " "
                     End If
                 Case "show"
-                    If inputData(1) = "version" Then
-                        If modMatrixLCD.MatrixLCDConnected = True Then
-                            modMatrixLCD.ShowNotification(My.Application.Info.Version.ToString)
-                        End If
-                        strCommandResponse = My.Application.Info.Version.ToString
+                    Select Case inputData(1)
+                        Case "gps"
+                            If My.Settings.GPS_Enable = True Then
+                                strCommandResponse = modGPS.CurrentLatitude.ToString.Substring(0, 7) & ", " & modGPS.CurrentLongitude.ToString.Substring(0, 7)
+                            Else
+                                strCommandResponse = "Unavailable"
+                            End If
+                        Case "version"
+                            strCommandResponse = My.Application.Info.Version.ToString
+                    End Select
+                    If modMatrixLCD.MatrixLCDConnected = True Then
+                        modMatrixLCD.ShowNotification(strCommandResponse)
                     End If
                 Case "stop"
                     If inputData(1) = "music" Then

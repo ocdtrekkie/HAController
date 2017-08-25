@@ -19,6 +19,7 @@ set fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%
 md "C:\HAC\archive"
 copy "C:\HAC\HACdb.sqlite" "C:\HAC\archive\HACdb_%fullstamp%.sqlite"
 
+powershell -c echo `a
 cd C:\HAC
 C:\HAC\HAController.exe
 exit

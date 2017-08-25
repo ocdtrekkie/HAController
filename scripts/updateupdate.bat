@@ -3,4 +3,5 @@ C:\HAC\scripts\7z.exe x -aoa -oC:\HAC\scripts\temp C:\HAC\scripts\updateupdate.z
 del /q C:\HAC\scripts\updateupdate.zip
 robocopy C:\HAC\scripts\temp C:\HAC\scripts /E
 rmdir /s /q C:\HAC\scripts\temp
+powershell -c echo `a
 exit

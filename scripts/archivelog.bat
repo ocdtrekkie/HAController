@@ -19,6 +19,7 @@ set fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%
 md "C:\HAC\archive"
 move "C:\HAC\HAClog.txt" "C:\HAC\archive\HAClog_%fullstamp%.txt"
 
+powershell -c echo `a
 cd C:\HAC
 C:\HAC\HAController.exe
 exit

@@ -243,12 +243,11 @@ Module modConverse
                             Else
                                 strCommandResponse = "Unavailable"
                             End If
+                            modMatrixLCD.ShowNotification("GPS Coordinates:", strCommandResponse)
                         Case "version"
                             strCommandResponse = My.Application.Info.Version.ToString
+                            modMatrixLCD.ShowNotification("HAController", strCommandResponse)
                     End Select
-                    If modMatrixLCD.MatrixLCDConnected = True Then
-                        modMatrixLCD.ShowNotification(strCommandResponse)
-                    End If
                 Case "stop"
                     If inputData(1) = "music" Then
                         modMusic.StopMusic()

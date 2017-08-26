@@ -262,8 +262,8 @@ Module modConverse
                 Case "turn"
                     Dim response As String = ""
                     Select Case inputData(1)
-                        Case "alarm"
-                            modInsteon.InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, inputData(2))
+                        Case "alarm", "siren"
+                            modInsteon.InsteonAlarmControl(modInsteon.GetInsteonAddressFromNickname(inputData(1)), response, inputData(2))
                         Case "thermostat"
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                         Case Else

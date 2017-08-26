@@ -53,6 +53,7 @@ Public Module modGlobal
     End Sub
 
     Sub UnloadModules()
+        modMatrixLCD.Unload()
         modMusic.Unload()
         modGPS.Unload()
         modInsteon.Unload()

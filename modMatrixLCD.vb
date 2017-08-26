@@ -197,10 +197,9 @@
             Try
                 My.Application.Log.WriteEntry("Trying to connect on port " + SerialPort.PortName)
                 SerialPort.Open()
-            Catch IOExcep As System.IO.IOException
-                My.Application.Log.WriteException(IOExcep)
-            Catch UnauthExcep As System.UnauthorizedAccessException
-                My.Application.Log.WriteException(UnauthExcep)
+            Catch Excep As Exception When TypeOf Excep Is System.IO.IOException OrElse TypeOf Excep Is System.UnauthorizedAccessException
+                My.Application.Log.WriteException(Excep)
+                modSpeech.Say("Unable to connect to Matrix LCD")
             End Try
 
             If SerialPort.IsOpen = True Then

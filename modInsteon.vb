@@ -130,8 +130,8 @@ Module modInsteon
 
         ' Shut it back off
         If (Command1 = "On" Or Command1 = "on") And intSeconds > 0 Then
-            My.Application.Log.WriteEntry("Scheduling automatic shut off of alarm in " & intSeconds.ToString & " seconds")
-            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("alarmjob", "modinsteon").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
+            My.Application.Log.WriteEntry("Scheduling automatic shut off of " & strAddress & " in " & intSeconds.ToString & " seconds")
+            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("alarmjob " & strAddress, "modinsteon").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
             Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("alarmtrigger", "modinsteon").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
 
             Try
@@ -1687,7 +1687,8 @@ Module modInsteon
                     modMail.Send("Intruder alert", "Intruder alert")
                     Dim response As String = ""
                     Threading.Thread.Sleep(5000)
-                    InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 30)
+                    InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 30)
+                    InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 30)
                 End If
                 Return "Door Opened"
             Case 19
@@ -1706,7 +1707,8 @@ Module modInsteon
                 modMail.Send("Smoke detected", "Smoke detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
-                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 180)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 180)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 180)
                 Return "Smoke Detected"
             Case 2
                 My.Application.Log.WriteEntry("ALERT: Carbon Monoxide Detected!", TraceEventType.Warning)
@@ -1714,7 +1716,8 @@ Module modInsteon
                 modMail.Send("Carbon monoxide detected", "Carbon monoxide detected")
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
-                InsteonAlarmControl(My.Settings.Insteon_AlarmAddr, response, "on", 180)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 180)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 180)
                 Return "Carbon Monoxide Detected"
             Case 3
                 modSpeech.Say("Test of Smoke Bridge successful")

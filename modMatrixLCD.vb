@@ -33,40 +33,31 @@
         End If
     End Sub
 
-    Sub ShowNotification(ByVal strNotification As String)
+    Sub ShowNotification(ByVal strLine1 As String, Optional ByVal strLine2 As String = "")
         If MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
             MatrixLCDisplay.Clear()
-            If strNotification.Length > MatrixLCDisplay.Cols Then
-                strNotification.Substring(0, MatrixLCDisplay.Cols)
+            If strLine1.Length > MatrixLCDisplay.Cols Then
+                strLine1 = strLine1.Substring(0, MatrixLCDisplay.Cols)
+            ElseIf strLine2 <> "" Then
+                Do While MatrixLCDisplay.Cols > strLine1.Length
+                    'Yes, I did this.
+                    strLine1 = strLine1 + " "
+                Loop
             End If
-            MatrixLCDisplay.WriteString(strNotification)
+            MatrixLCDisplay.WriteString(strLine1)
+            If strLine2.Length >= MatrixLCDisplay.Cols Then
+                strLine2 = strLine2.Substring(0, MatrixLCDisplay.Cols)
+                MatrixLCDisplay.SetAutoscrollOff()
+            End If
+            If strLine2 <> "" Then
+                MatrixLCDisplay.WriteString(strLine2)
+            End If
         End If
     End Sub
 
     Sub Unload()
         ' Dispose of device
-    End Sub
-
-    Sub UpdateNowPlaying(ByVal strNowPlaying As String, ByVal strNowPlayingArtist As String)
-        If MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
-            MatrixLCDisplay.Clear()
-            If strNowPlaying.Length > MatrixLCDisplay.Cols Then
-                strNowPlaying = strNowPlaying.Substring(0, MatrixLCDisplay.Cols)
-            Else
-                Do While MatrixLCDisplay.Cols > strNowPlaying.Length
-                    ' Yes, I did this.
-                    strNowPlaying = strNowPlaying + " "
-                Loop
-            End If
-            MatrixLCDisplay.WriteString(strNowPlaying)
-            If strNowPlayingArtist.Length >= MatrixLCDisplay.Cols Then
-                strNowPlayingArtist = strNowPlayingArtist.Substring(0, MatrixLCDisplay.Cols)
-                MatrixLCDisplay.SetAutoscrollOff()
-            End If
-            MatrixLCDisplay.WriteString(strNowPlayingArtist)
-        End If
     End Sub
 
     <Serializable()>

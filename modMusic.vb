@@ -48,7 +48,7 @@ Module modMusic
             My.Application.Log.WriteEntry("Now playing " + strNowPlaying + " by " + strNowPlayingArtist)
 
             If My.Settings.MatrixLCD_Enable = True Then
-                modMatrixLCD.UpdateNowPlaying(strNowPlaying, strNowPlayingArtist)
+                modMatrixLCD.ShowNotification(strNowPlaying, strNowPlayingArtist)
             End If
         End If
     End Sub

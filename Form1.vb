@@ -102,26 +102,6 @@
         modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "off")
     End Sub
 
-    Private Sub btnInsteonBeep_Click(sender As Object, e As EventArgs) Handles btnInsteonBeep.Click
-        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " instructed to Beep")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "beep")
-    End Sub
-
-    Private Sub btnInsteonSoft_Click(sender As Object, e As EventArgs) Handles btnInsteonSoft.Click
-        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Soft)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 190)
-    End Sub
-
-    Private Sub btnInsteonDim_Click(sender As Object, e As EventArgs) Handles btnInsteonDim.Click
-        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Dim)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 136)
-    End Sub
-
-    Private Sub btnInsteonNite_Click(sender As Object, e As EventArgs) Handles btnInsteonNite.Click
-        My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " set to On (Nite)")
-        modInsteon.InsteonLightControl(txtAddress.Text, lblCommandSent.Text, "on", 68)
-    End Sub
-
     Private Sub btnInsteonTempDown_Click(sender As Object, e As EventArgs) Handles btnInsteonTempDown.Click
         My.Application.Log.WriteEntry("Setting device " + txtAddress.Text + " down one degree")
         modInsteon.InsteonThermostatControl(txtAddress.Text, lblCommandSent.Text, "down")

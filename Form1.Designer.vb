@@ -29,12 +29,8 @@ Partial Class frmMain
         Me.cmbStatus = New System.Windows.Forms.ComboBox()
         Me.btnInsteonOn = New System.Windows.Forms.Button()
         Me.btnInsteonOff = New System.Windows.Forms.Button()
-        Me.btnInsteonBeep = New System.Windows.Forms.Button()
         Me.lblCurrentStatus = New System.Windows.Forms.Label()
         Me.lblCommandSent = New System.Windows.Forms.Label()
-        Me.btnInsteonSoft = New System.Windows.Forms.Button()
-        Me.btnInsteonDim = New System.Windows.Forms.Button()
-        Me.btnInsteonNite = New System.Windows.Forms.Button()
         Me.btnInsteonTempDown = New System.Windows.Forms.Button()
         Me.btnInsteonTempUp = New System.Windows.Forms.Button()
         Me.btnInsteonTempOff = New System.Windows.Forms.Button()
@@ -42,7 +38,6 @@ Partial Class frmMain
         Me.btnInsteonTempHeat = New System.Windows.Forms.Button()
         Me.btnInsteonTempCool = New System.Windows.Forms.Button()
         Me.lblThermostat = New System.Windows.Forms.Label()
-        Me.lblLight = New System.Windows.Forms.Label()
         Me.chkInsteonTempFan = New System.Windows.Forms.CheckBox()
         Me.btnInsteonAlarmOn = New System.Windows.Forms.Button()
         Me.btnInsteonAlarmOff = New System.Windows.Forms.Button()
@@ -80,7 +75,7 @@ Partial Class frmMain
         '
         'txtAddress
         '
-        Me.txtAddress.Location = New System.Drawing.Point(101, 136)
+        Me.txtAddress.Location = New System.Drawing.Point(87, 136)
         Me.txtAddress.MaxLength = 8
         Me.txtAddress.Name = "txtAddress"
         Me.txtAddress.Size = New System.Drawing.Size(53, 20)
@@ -90,7 +85,7 @@ Partial Class frmMain
         'lblAddress
         '
         Me.lblAddress.AutoSize = True
-        Me.lblAddress.Location = New System.Drawing.Point(12, 139)
+        Me.lblAddress.Location = New System.Drawing.Point(2, 139)
         Me.lblAddress.Name = "lblAddress"
         Me.lblAddress.Size = New System.Drawing.Size(83, 13)
         Me.lblAddress.TabIndex = 3
@@ -107,30 +102,21 @@ Partial Class frmMain
         '
         'btnInsteonOn
         '
-        Me.btnInsteonOn.Location = New System.Drawing.Point(183, 134)
+        Me.btnInsteonOn.Location = New System.Drawing.Point(146, 134)
         Me.btnInsteonOn.Name = "btnInsteonOn"
-        Me.btnInsteonOn.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonOn.Size = New System.Drawing.Size(41, 23)
         Me.btnInsteonOn.TabIndex = 5
         Me.btnInsteonOn.Text = "On"
         Me.btnInsteonOn.UseVisualStyleBackColor = True
         '
         'btnInsteonOff
         '
-        Me.btnInsteonOff.Location = New System.Drawing.Point(239, 134)
+        Me.btnInsteonOff.Location = New System.Drawing.Point(192, 134)
         Me.btnInsteonOff.Name = "btnInsteonOff"
-        Me.btnInsteonOff.Size = New System.Drawing.Size(50, 23)
+        Me.btnInsteonOff.Size = New System.Drawing.Size(41, 23)
         Me.btnInsteonOff.TabIndex = 6
         Me.btnInsteonOff.Text = "Off"
         Me.btnInsteonOff.UseVisualStyleBackColor = True
-        '
-        'btnInsteonBeep
-        '
-        Me.btnInsteonBeep.Location = New System.Drawing.Point(71, 163)
-        Me.btnInsteonBeep.Name = "btnInsteonBeep"
-        Me.btnInsteonBeep.Size = New System.Drawing.Size(50, 23)
-        Me.btnInsteonBeep.TabIndex = 7
-        Me.btnInsteonBeep.Text = "Beep"
-        Me.btnInsteonBeep.UseVisualStyleBackColor = True
         '
         'lblCurrentStatus
         '
@@ -151,36 +137,9 @@ Partial Class frmMain
         Me.lblCommandSent.Size = New System.Drawing.Size(0, 13)
         Me.lblCommandSent.TabIndex = 9
         '
-        'btnInsteonSoft
-        '
-        Me.btnInsteonSoft.Location = New System.Drawing.Point(127, 163)
-        Me.btnInsteonSoft.Name = "btnInsteonSoft"
-        Me.btnInsteonSoft.Size = New System.Drawing.Size(50, 23)
-        Me.btnInsteonSoft.TabIndex = 10
-        Me.btnInsteonSoft.Text = "Soft"
-        Me.btnInsteonSoft.UseVisualStyleBackColor = True
-        '
-        'btnInsteonDim
-        '
-        Me.btnInsteonDim.Location = New System.Drawing.Point(183, 163)
-        Me.btnInsteonDim.Name = "btnInsteonDim"
-        Me.btnInsteonDim.Size = New System.Drawing.Size(50, 23)
-        Me.btnInsteonDim.TabIndex = 11
-        Me.btnInsteonDim.Text = "Dim"
-        Me.btnInsteonDim.UseVisualStyleBackColor = True
-        '
-        'btnInsteonNite
-        '
-        Me.btnInsteonNite.Location = New System.Drawing.Point(239, 163)
-        Me.btnInsteonNite.Name = "btnInsteonNite"
-        Me.btnInsteonNite.Size = New System.Drawing.Size(50, 23)
-        Me.btnInsteonNite.TabIndex = 12
-        Me.btnInsteonNite.Text = "Nite"
-        Me.btnInsteonNite.UseVisualStyleBackColor = True
-        '
         'btnInsteonTempDown
         '
-        Me.btnInsteonTempDown.Location = New System.Drawing.Point(239, 221)
+        Me.btnInsteonTempDown.Location = New System.Drawing.Point(239, 183)
         Me.btnInsteonTempDown.Name = "btnInsteonTempDown"
         Me.btnInsteonTempDown.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempDown.TabIndex = 15
@@ -189,7 +148,7 @@ Partial Class frmMain
         '
         'btnInsteonTempUp
         '
-        Me.btnInsteonTempUp.Location = New System.Drawing.Point(183, 221)
+        Me.btnInsteonTempUp.Location = New System.Drawing.Point(183, 183)
         Me.btnInsteonTempUp.Name = "btnInsteonTempUp"
         Me.btnInsteonTempUp.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempUp.TabIndex = 16
@@ -198,7 +157,7 @@ Partial Class frmMain
         '
         'btnInsteonTempOff
         '
-        Me.btnInsteonTempOff.Location = New System.Drawing.Point(127, 221)
+        Me.btnInsteonTempOff.Location = New System.Drawing.Point(127, 183)
         Me.btnInsteonTempOff.Name = "btnInsteonTempOff"
         Me.btnInsteonTempOff.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempOff.TabIndex = 17
@@ -207,7 +166,7 @@ Partial Class frmMain
         '
         'btnInsteonTempAuto
         '
-        Me.btnInsteonTempAuto.Location = New System.Drawing.Point(127, 250)
+        Me.btnInsteonTempAuto.Location = New System.Drawing.Point(127, 212)
         Me.btnInsteonTempAuto.Name = "btnInsteonTempAuto"
         Me.btnInsteonTempAuto.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempAuto.TabIndex = 18
@@ -216,7 +175,7 @@ Partial Class frmMain
         '
         'btnInsteonTempHeat
         '
-        Me.btnInsteonTempHeat.Location = New System.Drawing.Point(183, 250)
+        Me.btnInsteonTempHeat.Location = New System.Drawing.Point(183, 212)
         Me.btnInsteonTempHeat.Name = "btnInsteonTempHeat"
         Me.btnInsteonTempHeat.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempHeat.TabIndex = 19
@@ -225,7 +184,7 @@ Partial Class frmMain
         '
         'btnInsteonTempCool
         '
-        Me.btnInsteonTempCool.Location = New System.Drawing.Point(239, 250)
+        Me.btnInsteonTempCool.Location = New System.Drawing.Point(239, 212)
         Me.btnInsteonTempCool.Name = "btnInsteonTempCool"
         Me.btnInsteonTempCool.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonTempCool.TabIndex = 20
@@ -235,25 +194,16 @@ Partial Class frmMain
         'lblThermostat
         '
         Me.lblThermostat.AutoSize = True
-        Me.lblThermostat.Location = New System.Drawing.Point(157, 205)
+        Me.lblThermostat.Location = New System.Drawing.Point(157, 167)
         Me.lblThermostat.Name = "lblThermostat"
         Me.lblThermostat.Size = New System.Drawing.Size(101, 13)
         Me.lblThermostat.TabIndex = 21
         Me.lblThermostat.Text = "Thermostat Controls"
         '
-        'lblLight
-        '
-        Me.lblLight.AutoSize = True
-        Me.lblLight.Location = New System.Drawing.Point(201, 118)
-        Me.lblLight.Name = "lblLight"
-        Me.lblLight.Size = New System.Drawing.Size(71, 13)
-        Me.lblLight.TabIndex = 22
-        Me.lblLight.Text = "Light Controls"
-        '
         'chkInsteonTempFan
         '
         Me.chkInsteonTempFan.AutoSize = True
-        Me.chkInsteonTempFan.Location = New System.Drawing.Point(197, 279)
+        Me.chkInsteonTempFan.Location = New System.Drawing.Point(197, 241)
         Me.chkInsteonTempFan.Name = "chkInsteonTempFan"
         Me.chkInsteonTempFan.Size = New System.Drawing.Size(92, 17)
         Me.chkInsteonTempFan.TabIndex = 23
@@ -262,7 +212,7 @@ Partial Class frmMain
         '
         'btnInsteonAlarmOn
         '
-        Me.btnInsteonAlarmOn.Location = New System.Drawing.Point(12, 221)
+        Me.btnInsteonAlarmOn.Location = New System.Drawing.Point(12, 183)
         Me.btnInsteonAlarmOn.Name = "btnInsteonAlarmOn"
         Me.btnInsteonAlarmOn.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonAlarmOn.TabIndex = 24
@@ -271,7 +221,7 @@ Partial Class frmMain
         '
         'btnInsteonAlarmOff
         '
-        Me.btnInsteonAlarmOff.Location = New System.Drawing.Point(12, 250)
+        Me.btnInsteonAlarmOff.Location = New System.Drawing.Point(12, 212)
         Me.btnInsteonAlarmOff.Name = "btnInsteonAlarmOff"
         Me.btnInsteonAlarmOff.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonAlarmOff.TabIndex = 25
@@ -281,7 +231,7 @@ Partial Class frmMain
         'lblAlarm
         '
         Me.lblAlarm.AutoSize = True
-        Me.lblAlarm.Location = New System.Drawing.Point(0, 205)
+        Me.lblAlarm.Location = New System.Drawing.Point(0, 167)
         Me.lblAlarm.Name = "lblAlarm"
         Me.lblAlarm.Size = New System.Drawing.Size(74, 13)
         Me.lblAlarm.TabIndex = 26
@@ -289,7 +239,7 @@ Partial Class frmMain
         '
         'btnInsteonCheck
         '
-        Me.btnInsteonCheck.Location = New System.Drawing.Point(12, 163)
+        Me.btnInsteonCheck.Location = New System.Drawing.Point(239, 134)
         Me.btnInsteonCheck.Name = "btnInsteonCheck"
         Me.btnInsteonCheck.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonCheck.TabIndex = 27
@@ -317,7 +267,7 @@ Partial Class frmMain
         'txtCommandBar
         '
         Me.txtCommandBar.Enabled = False
-        Me.txtCommandBar.Location = New System.Drawing.Point(12, 313)
+        Me.txtCommandBar.Location = New System.Drawing.Point(12, 269)
         Me.txtCommandBar.Name = "txtCommandBar"
         Me.txtCommandBar.Size = New System.Drawing.Size(277, 20)
         Me.txtCommandBar.TabIndex = 0
@@ -374,7 +324,7 @@ Partial Class frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(304, 343)
+        Me.ClientSize = New System.Drawing.Size(304, 301)
         Me.Controls.Add(Me.lblOutsideCondition)
         Me.Controls.Add(Me.lblOutsideTempLabel)
         Me.Controls.Add(Me.lblInsideTempLabel)
@@ -388,7 +338,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.btnInsteonAlarmOff)
         Me.Controls.Add(Me.btnInsteonAlarmOn)
         Me.Controls.Add(Me.chkInsteonTempFan)
-        Me.Controls.Add(Me.lblLight)
         Me.Controls.Add(Me.lblThermostat)
         Me.Controls.Add(Me.btnInsteonTempCool)
         Me.Controls.Add(Me.btnInsteonTempHeat)
@@ -396,12 +345,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.btnInsteonTempOff)
         Me.Controls.Add(Me.btnInsteonTempUp)
         Me.Controls.Add(Me.btnInsteonTempDown)
-        Me.Controls.Add(Me.btnInsteonNite)
-        Me.Controls.Add(Me.btnInsteonDim)
-        Me.Controls.Add(Me.btnInsteonSoft)
         Me.Controls.Add(Me.lblCommandSent)
         Me.Controls.Add(Me.lblCurrentStatus)
-        Me.Controls.Add(Me.btnInsteonBeep)
         Me.Controls.Add(Me.btnInsteonOff)
         Me.Controls.Add(Me.btnInsteonOn)
         Me.Controls.Add(Me.cmbStatus)
@@ -410,8 +355,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblComConnected)
         Me.Controls.Add(Me.cmbComPort)
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(320, 382)
-        Me.MinimumSize = New System.Drawing.Size(320, 382)
+        Me.MaximumSize = New System.Drawing.Size(320, 340)
+        Me.MinimumSize = New System.Drawing.Size(320, 340)
         Me.Name = "frmMain"
         Me.Text = "HA Controller"
         Me.ResumeLayout(False)
@@ -425,12 +370,8 @@ Partial Class frmMain
     Friend WithEvents cmbStatus As System.Windows.Forms.ComboBox
     Friend WithEvents btnInsteonOn As System.Windows.Forms.Button
     Friend WithEvents btnInsteonOff As System.Windows.Forms.Button
-    Friend WithEvents btnInsteonBeep As System.Windows.Forms.Button
     Friend WithEvents lblCurrentStatus As System.Windows.Forms.Label
     Friend WithEvents lblCommandSent As System.Windows.Forms.Label
-    Friend WithEvents btnInsteonSoft As System.Windows.Forms.Button
-    Friend WithEvents btnInsteonDim As System.Windows.Forms.Button
-    Friend WithEvents btnInsteonNite As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempDown As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempUp As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempOff As System.Windows.Forms.Button
@@ -438,7 +379,6 @@ Partial Class frmMain
     Friend WithEvents btnInsteonTempHeat As System.Windows.Forms.Button
     Friend WithEvents btnInsteonTempCool As System.Windows.Forms.Button
     Friend WithEvents lblThermostat As System.Windows.Forms.Label
-    Friend WithEvents lblLight As System.Windows.Forms.Label
     Friend WithEvents chkInsteonTempFan As System.Windows.Forms.CheckBox
     Friend WithEvents btnInsteonAlarmOn As System.Windows.Forms.Button
     Friend WithEvents btnInsteonAlarmOff As System.Windows.Forms.Button

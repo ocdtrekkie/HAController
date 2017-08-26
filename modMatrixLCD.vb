@@ -57,7 +57,10 @@
     End Sub
 
     Sub Unload()
-        ' Dispose of device
+        If MatrixLCDConnected = True Then
+            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+            MatrixLCDisplay.Dispose()
+        End If
     End Sub
 
     <Serializable()>

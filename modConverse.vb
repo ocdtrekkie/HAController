@@ -143,15 +143,12 @@ Module modConverse
                 Case "play"
                     Select Case inputData(1)
                         Case "list"
-                            modMusic.PlayPlaylist(inputData(2))
-                            strCommandResponse = "Playing " & inputData(2)
+                            strCommandResponse = modMusic.PlayPlaylist(inputData(2))
                         Case "music"
-                            modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
-                            strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
+                            strCommandResponse = modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
                         Case "some"
                             If inputData(2) = "music" Then
-                                modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
-                                strCommandResponse = "Playing " & My.Settings.Music_LastPlaylist
+                                strCommandResponse = modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
                             Else
                                 Dim searchString As String = strInputString.Replace("play some ", "")
                                 modMusic.PlayArtist(searchString)

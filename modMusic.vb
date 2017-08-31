@@ -72,11 +72,17 @@ Module modMusic
         End If
     End Sub
 
-    Public Sub PlayPlaylist(ByVal strPlaylistName As String)
+    Public Function PlayPlaylist(ByVal strPlaylistName As String) As String
         My.Settings.Music_LastPlaylist = strPlaylistName
-        MusicPlayer.currentPlaylist = MusicPlayer.playlistCollection.getByName(strPlaylistName).Item(0)
-        isPlaying = True
-    End Sub
+        Try
+            MusicPlayer.currentPlaylist = MusicPlayer.playlistCollection.getByName(strPlaylistName).Item(0)
+            isPlaying = True
+            Return "Playing " + strPlaylistName
+        Catch ArgExcep As System.ArgumentException
+            My.Application.Log.WriteException(ArgExcep)
+            Return "Unable to locate playlist"
+        End Try
+    End Function
 
     Public Sub PlayPrevious()
         If isPlaying = True Then

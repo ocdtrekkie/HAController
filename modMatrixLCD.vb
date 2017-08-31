@@ -211,6 +211,12 @@
                     strSplashString = strSplashString + " "
                 Loop
                 SetSplash(strSplashString)
+
+                If Date.Now.Hour >= 7 And Date.Now.Hour < 19 Then
+                    SetBrightness(255)
+                Else
+                    SetBrightness(10)
+                End If
             End If
         End Sub
 

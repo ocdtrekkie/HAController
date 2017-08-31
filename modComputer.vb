@@ -42,7 +42,6 @@ Module modComputer
             If NetworkInterface.NetworkInterfaceType.ToString = "Wireless80211" Then
                 Dim strWirelessStatus As String = "Wi-Fi " & NetworkInterface.OperationalStatus.ToString
                 My.Application.Log.WriteEntry(strWirelessStatus)
-                modSpeech.Say(strWirelessStatus) 'TODO: Make this happen only once.
                 modMatrixLCD.ShowNotification(strWirelessStatus)
                 End If
         Next

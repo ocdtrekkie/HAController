@@ -353,7 +353,7 @@ Module modConverse
                 strCommandResponse = "I'm sorry, I didn't understand your request"
             End If
 
-            If strCommandResponse <> "" Then
+            If strCommandResponse <> " " Then
                 My.Application.Log.WriteEntry("Command response: " & strCommandResponse)
                 If RemoteCommand = True Then
                     modMail.Send("Re: " & strInputString, strCommandResponse)

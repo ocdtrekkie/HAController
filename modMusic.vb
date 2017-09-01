@@ -58,13 +58,19 @@ Module modMusic
         End If
     End Sub
 
-    Public Sub PlayArtist(ByVal strArtistName As String)
+    Public Function PlayArtist(ByVal strArtistName As String) As String
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Author", "Contains", strArtistName)
         MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
-        isPlaying = True
-    End Sub
+        If MusicPlayer.currentPlaylist.count > 0 Then
+            isPlaying = True
+            Return "Playing some " + strArtistName
+        Else
+            isPlaying = False
+            Return "No results for that artist"
+        End If
+    End Function
 
     Public Sub PlayNext()
         If isPlaying = True Then
@@ -79,6 +85,7 @@ Module modMusic
             isPlaying = True
             Return "Playing " + strPlaylistName
         Catch ArgExcep As System.ArgumentException
+            isPlaying = False
             My.Application.Log.WriteException(ArgExcep)
             Return "Unable to locate playlist"
         End Try
@@ -90,13 +97,19 @@ Module modMusic
         End If
     End Sub
 
-    Public Sub PlaySong(ByVal strSongName As String)
+    Public Function PlaySong(ByVal strSongName As String) As String
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Title", "Contains", strSongName)
         MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
-        isPlaying = True
-    End Sub
+        If MusicPlayer.currentPlaylist.count > 0 Then
+            isPlaying = True
+            Return "Playing " + strSongName
+        Else
+            isPlaying = False
+            Return "No results for that song"
+        End If
+    End Function
 
     Public Sub ResumeMusic()
         If isPaused = True Then

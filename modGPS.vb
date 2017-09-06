@@ -125,7 +125,7 @@
                         End If
                         CurrentLongitude = dblLongitude
                         Dim dblSpeed As Double = CDbl(inputData(7)) 'knots
-                        modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
+                        modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now.ToUniversalTime.ToString("u") + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
                     End If
                 End If
             Catch IOExcep As System.IO.IOException

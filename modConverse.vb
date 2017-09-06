@@ -333,7 +333,7 @@ Module modConverse
                     End If
                 Case "where"
                     If inputData(1) = "am" And inputData(2) = "i" Then
-                        If My.Settings.GPS_Enable = True And My.Settings.MapQuest_Enable = True Then
+                        If My.Settings.GPS_Enable = True And My.Settings.MapQuest_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
                             strCommandResponse = modMapQuest.GetLocation(modGPS.CurrentLatitude, modGPS.CurrentLongitude)
                         Else
                             strCommandResponse = "Unavailable"

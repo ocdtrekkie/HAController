@@ -1748,7 +1748,7 @@ Module modInsteon
         Select Case comm1
             Case 106
                 ' TODO: Don't assume this info is temperature! It might not be! (But currently my code only requests it.)
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
                 If My.Settings.Global_LastKnownInsideTemp >= My.Settings.Global_InsideTempHeatWarning Then
                     My.Application.Log.WriteEntry("WARNING: Inside Temperature Heat Warning", TraceEventType.Warning)
@@ -1760,11 +1760,11 @@ Module modInsteon
                 End If
                 Return "Temperature: " & Int(comm2 / 2) & " F"
             Case 110
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
                 Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"
             Case 111
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Humidity) VALUES('" & Now & "', 'Insteon', 'Interior', " & CStr(comm2) & ")")
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Humidity) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(comm2) & ")")
                 Return "Humidity Level: " & comm2 & "%"
             Case 112
                 Select Case comm2

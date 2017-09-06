@@ -26,6 +26,8 @@ Public Module modGlobal
         modMatrixLCD.Load()
         My.Application.Log.WriteEntry("Loading GPS module")
         modGPS.Load()
+        My.Application.Log.WriteEntry("Loading MapQuest module")
+        modMapQuest.Load()
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load()
         My.Application.Log.WriteEntry("Loading mail module")

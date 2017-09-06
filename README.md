@@ -18,6 +18,7 @@ The following modules should function optionally:
 * modInsteon will handle Insteon and X10 home automation devices.
 * modOpenWeatherMap gathers weather data from an API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
+* modMapQuest uses the MapQuest API to get location information.
 * modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
 * modMusic implements Windows Media Player to play music.
 * modPing handles checks for the Internet and other devices on the network.

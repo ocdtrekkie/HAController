@@ -28,6 +28,8 @@ Module modConverse
                             modInsteon.Disable()
                         Case "mail"
                             modMail.Disable()
+                        Case "mapquest"
+                            modMapQuest.Disable()
                         Case "matrixlcd"
                             modMatrixLCD.Disable()
                         Case "music"
@@ -54,6 +56,8 @@ Module modConverse
                             modInsteon.Enable()
                         Case "mail"
                             modMail.Enable()
+                        Case "mapquest"
+                            modMapQuest.Enable()
                         Case "matrixlcd"
                             modMatrixLCD.Enable()
                         Case "music"
@@ -326,6 +330,15 @@ Module modConverse
                 Case "when"
                     If inputData(1) = "was" And inputData(2) = "the" And inputData(3) = "door" And inputData(4) = "last" And inputData(5) = "opened" Then
                         strCommandResponse = "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
+                    End If
+                Case "where"
+                    If inputData(1) = "am" And inputData(2) = "i" Then
+                        If My.Settings.GPS_Enable = True And My.Settings.MapQuest_Enable = True Then
+                            strCommandResponse = modMapQuest.GetLocation(modGPS.CurrentLatitude, modGPS.CurrentLongitude)
+                        Else
+                            strCommandResponse = "Unavailable"
+                        End If
+                        modMatrixLCD.ShowNotification("Location:", strCommandResponse)
                     End If
                 Case "who"
                     If inputData(1) = "are" And inputData(2) = "you" Then

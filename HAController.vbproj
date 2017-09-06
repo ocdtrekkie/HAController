@@ -156,6 +156,7 @@
     <Compile Include="modGPS.vb" />
     <Compile Include="modInsteon.vb" />
     <Compile Include="modMail.vb" />
+    <Compile Include="modMapQuest.vb" />
     <Compile Include="modOpenWeatherMap.vb" />
     <Compile Include="modPing.vb" />
     <Compile Include="modRandom.vb" />

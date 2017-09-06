@@ -20,18 +20,24 @@ Module modMapQuest
             Dim LocationRequestString As String
             Dim LocationData As XmlDocument = New XmlDocument
             Dim LocationNode As XmlNode
-            LocationRequestString = "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + My.Settings.MapQuest_APIKey + "&location=" + CStr(dblLatitude) + "," + CStr(dblLongitude) + "&includeRoadMetadata=true&includeNearestIntersection=true&outFormat=xml"
+            LocationRequestString = "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + My.Settings.MapQuest_APIKey + "&location=" + CStr(dblLatitude) + "," + CStr(dblLongitude) + "&outFormat=xml"
 
             My.Application.Log.WriteEntry("Requesting MapQuest data")
 
             Try
                 LocationData.Load(LocationRequestString)
 
-                LocationNode = LocationData.SelectSingleNode("/response/results/result/locations/location/street")
-                Dim strStreetName As String = LocationNode.InnerText
-                My.Application.Log.WriteEntry(strStreetName)
+                LocationNode = LocationData.SelectSingleNode("/response/results/result/locations/location/geocodeQuality")
+                Dim strGeocodeQuality As String = LocationNode.InnerText
 
-                Return strStreetName
+                If strGeocodeQuality = "ADDRESS" Or strGeocodeQuality = "STREET" Then
+                    LocationNode = LocationData.SelectSingleNode("/response/results/result/locations/location/street")
+                    Dim strStreetName As String = LocationNode.InnerText
+                    Return strStreetName
+                Else
+                    My.Application.Log.WriteEntry("Geocode quality available: " + strGeocodeQuality)
+                    Return "Poor quality result"
+                End If
             Catch NetExcep As System.Net.WebException
                 My.Application.Log.WriteException(NetExcep)
 

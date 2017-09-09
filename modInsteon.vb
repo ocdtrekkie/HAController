@@ -1657,6 +1657,8 @@ Module modInsteon
                         Return "2845-422 Hidden Door Sensor (EU)"
                     Case 21
                         Return "2845-522 Hidden Door Sensor (AUS/NZ)"
+                    Case 22
+                        Return "2844-222 Motion Sensor II"
                     Case Else
                         Return "Unrecognized Security/Safety Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select

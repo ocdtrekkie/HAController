@@ -177,23 +177,23 @@ Module modInsteon
         InsteonSendStdCommand(strAddress, comm1, comm2)
     End Sub
 
-    Sub InsteonLinkI2CSDevice(ByVal strAddress As String, ByRef ResponseMsg As String)
+    Sub InsteonLinkI2CSDevice(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal intLinkType As Integer)
         SyncLock serialLock
             Dim data(4) As Byte
 
             data(0) = 2
             data(1) = 100 '0x64
-            data(2) = 1
+            data(2) = intLinkType
             data(3) = 1
             Try
                 SerialPLM.Write(data, 0, 4)
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try
-
-            Threading.Thread.Sleep(500)
-            InsteonSendExtCommand(strAddress, 9, 1)
         End SyncLock
+
+        Threading.Thread.Sleep(500)
+        InsteonSendExtCommand(strAddress, 9, 1)
     End Sub
 
     Sub InsteonProductDataRequest(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal EngineVersion As Short)

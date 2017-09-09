@@ -107,7 +107,7 @@ Module modConverse
                 Case "link"
                     If inputData(1) = "insteon" And inputData(2) = "address" Then
                         Dim response As String = ""
-                        modInsteon.InsteonLinkI2CSDevice(inputData(3), response)
+                        modInsteon.InsteonLinkI2CSDevice(inputData(3), response, inputData(4))
                         strCommandResponse = "Linking"
                     End If
                 Case "lock"

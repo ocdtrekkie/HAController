@@ -79,10 +79,10 @@ Module modMusic
     End Sub
 
     Public Function PlayPlaylist(ByVal strPlaylistName As String) As String
-        My.Settings.Music_LastPlaylist = strPlaylistName
         Try
             MusicPlayer.currentPlaylist = MusicPlayer.playlistCollection.getByName(strPlaylistName).Item(0)
             isPlaying = True
+            My.Settings.Music_LastPlaylist = strPlaylistName
             Return "Playing " + strPlaylistName
         Catch ArgExcep As System.ArgumentException
             isPlaying = False

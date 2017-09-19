@@ -25,6 +25,21 @@ Module modMapQuest
 
             My.Application.Log.WriteEntry("Requesting MapQuest data")
 
+            Try
+                DirectionsData.Load(DirectionsRequestString)
+
+                DirectionsNodeList = DirectionsData.SelectNodes("/response/route/legs/leg/maneuvers/maneuver")
+                My.Application.Log.WriteEntry("Maneuvers: " + CStr(DirectionsNodeList.Count))
+            Catch NetExcep As System.Net.WebException
+                My.Application.Log.WriteException(NetExcep)
+
+                Return "Error getting navigation data"
+            Catch XmlExcep As System.Xml.XmlException
+                My.Application.Log.WriteException(XmlExcep)
+
+                Return "Error parsing nevigation data"
+            End Try
+
             Return "Result"
         Else
             My.Application.Log.WriteEntry("MapQuest module is disabled")

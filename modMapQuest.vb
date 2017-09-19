@@ -15,12 +15,12 @@ Module modMapQuest
         Load()
     End Sub
 
-    Function GetDirections(ByVal dblLatitude As Double, ByVal dblLongitude As Double, ByVal strDestination As String) As String
+    Function GetDirections(ByVal strOrigin As String, ByVal strDestination As String) As String
         If My.Settings.MapQuest_Enable = True Then
             Dim DirectionsRequestString As String
             Dim DirectionsData As XmlDocument = New XmlDocument
             Dim DirectionsNodeList As XmlNodeList
-            DirectionsRequestString = "http://www.mapquestapi.com/directions/v2/route?key=" + My.Settings.MapQuest_APIKey + "&from=" + CStr(dblLatitude) + "," + CStr(dblLongitude) + "&to=" + System.Net.WebUtility.UrlEncode(strDestination) + "&outFormat=xml"
+            DirectionsRequestString = "http://www.mapquestapi.com/directions/v2/route?key=" + My.Settings.MapQuest_APIKey + "&from=" + System.Net.WebUtility.UrlEncode(strOrigin) + "&to=" + System.Net.WebUtility.UrlEncode(strDestination) + "&outFormat=xml"
             My.Application.Log.WriteEntry("Request string: " + DirectionsRequestString)
 
             My.Application.Log.WriteEntry("Requesting MapQuest data")

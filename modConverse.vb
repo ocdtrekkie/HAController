@@ -89,7 +89,11 @@ Module modConverse
                         Case "directions"
                             If inputData(2) = "to" Then
                                 Dim strDestination As String = strInputString.Replace("get directions to", "")
-                                strCommandResponse = modMapQuest.GetDirections(modGPS.CurrentLatitude, modGPS.CurrentLongitude, strDestination)
+                                If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+                                    strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), strDestination)
+                                Else
+                                    strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, strDestination)
+                                End If
                             End If
                         Case "voices"
                             strCommandResponse = "Available voices are " & modSpeech.GetVoices()

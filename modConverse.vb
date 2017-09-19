@@ -84,10 +84,16 @@ Module modConverse
                             strCommandResponse = "Invalid coin flip"
                         End If
                     End If
-                Case "get", "list"
-                    If inputData(1) = "voices" Then
-                        strCommandResponse = "Available voices are " & modSpeech.GetVoices()
-                    End If
+                Case "get"
+                    Select Case inputData(1)
+                        Case "directions"
+                            If inputData(2) = "to" Then
+                                Dim strDestination As String = strInputString.Replace("get directions to", "")
+                                strCommandResponse = modMapQuest.GetDirections(modGPS.CurrentLatitude, modGPS.CurrentLongitude, strDestination)
+                            End If
+                        Case "voices"
+                            strCommandResponse = "Available voices are " & modSpeech.GetVoices()
+                    End Select
                 Case "gps"
                     If inputData(1) = "disable" Then
                         modGPS.Disable()

@@ -20,6 +20,7 @@ Module modMapQuest
             Dim DirectionsRequestString As String
             Dim DirectionsData As XmlDocument = New XmlDocument
             Dim DirectionsNodeList As XmlNodeList
+            Dim DirectionsNode As XmlNode
             DirectionsRequestString = "http://www.mapquestapi.com/directions/v2/route?key=" + My.Settings.MapQuest_APIKey + "&from=" + System.Net.WebUtility.UrlEncode(strOrigin) + "&to=" + System.Net.WebUtility.UrlEncode(strDestination) + "&outFormat=xml"
             My.Application.Log.WriteEntry("Request string: " + DirectionsRequestString)
 
@@ -29,7 +30,15 @@ Module modMapQuest
                 DirectionsData.Load(DirectionsRequestString)
 
                 DirectionsNodeList = DirectionsData.SelectNodes("/response/route/legs/leg/maneuvers/maneuver")
-                My.Application.Log.WriteEntry("Maneuvers: " + CStr(DirectionsNodeList.Count))
+                modGPS.DirectionsListSize = DirectionsNodeList.Count
+                ReDim modGPS.DirectionsNarrative(DirectionsListSize)
+
+                For Each DirectionsNode In DirectionsNodeList
+                    My.Application.Log.WriteEntry(DirectionsNode.Item("narrative").InnerText())
+                    modGPS.DirectionsNarrative(CInt(DirectionsNode.Item("index").InnerText())) = DirectionsNode.Item("narrative").InnerText()
+                Next
+
+                modGPS.isNavigating = True
             Catch NetExcep As System.Net.WebException
                 My.Application.Log.WriteException(NetExcep)
 
@@ -40,7 +49,7 @@ Module modMapQuest
                 Return "Error parsing nevigation data"
             End Try
 
-            Return "Result"
+            Return "Engaging navigation mode"
         Else
             My.Application.Log.WriteEntry("MapQuest module is disabled")
             Return "Disabled"

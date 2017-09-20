@@ -145,8 +145,13 @@ Module modConverse
                             strCommandResponse = "Alarm is now muted"
                     End Select
                 Case "next"
-                    modMusic.PlayNext()
-                    strCommandResponse = " "
+                    If modGPS.isNavigating = True And modGPS.DirectionsCurrentIndex < modGPS.DirectionsListSize Then
+                        modGPS.DirectionsCurrentIndex = modGPS.DirectionsCurrentIndex + 1
+                        strCommandResponse = modGPS.DirectionsNarrative(modGPS.DirectionsCurrentIndex)
+                    Else
+                        modMusic.PlayNext()
+                        strCommandResponse = " "
+                    End If
                 Case "pause"
                     modMusic.PauseMusic()
                     strCommandResponse = "Music paused"
@@ -172,8 +177,13 @@ Module modConverse
                             strCommandResponse = modMusic.PlaySong(searchString)
                     End Select
                 Case "prev", "previous"
-                    modMusic.PlayPrevious()
-                    strCommandResponse = " "
+                    If modGPS.isNavigating = True And modGPS.DirectionsCurrentIndex > 0 Then
+                        modGPS.DirectionsCurrentIndex = modGPS.DirectionsCurrentIndex - 1
+                        strCommandResponse = modGPS.DirectionsNarrative(modGPS.DirectionsCurrentIndex)
+                    Else
+                        modMusic.PlayPrevious()
+                        strCommandResponse = " "
+                    End If
                 Case "pursuit"
                     If inputData(1) = "mode" Then
                         If My.Settings.Global_CarMode = True And modMatrixLCD.MatrixLCDConnected = True Then
@@ -197,6 +207,11 @@ Module modConverse
                         Dim reminderString As String = strInputString.Replace("remind me", "Reminder")
                         modMail.Send(reminderString, reminderString)
                         strCommandResponse = "Acknowledged"
+                    End If
+                Case "rep", "repeat"
+                    If modGPS.isNavigating = True Then
+                        strCommandResponse = modGPS.DirectionsNarrative(modGPS.DirectionsCurrentIndex)
+                        'TODO: Else should restart the currently playing song.
                     End If
                 Case "resume"
                     strCommandResponse = "Resuming music"

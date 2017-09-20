@@ -1,8 +1,12 @@
 ﻿Module modGPS
     Public CurrentLatitude As Double = 0
     Public CurrentLongitude As Double = 0
+    Public DirectionsCurrentIndex As Integer = 0
+    Public DirectionsListSize As Integer = 0
+    Public DirectionsNarrative() As String
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
+    Public isNavigating As Boolean
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading GPS module")

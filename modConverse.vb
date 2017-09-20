@@ -273,10 +273,14 @@ Module modConverse
                             modMatrixLCD.ShowNotification("HAController", strCommandResponse)
                     End Select
                 Case "stop"
-                    If inputData(1) = "music" Then
-                        modMusic.StopMusic()
-                        strCommandResponse = "Music stopped"
-                    End If
+                    Select Case inputData(1)
+                        Case "music"
+                            modMusic.StopMusic()
+                            strCommandResponse = "Music stopped"
+                        Case "navigation"
+                            modGPS.isNavigating = False
+                            strCommandResponse = "Navigation stopped"
+                    End Select
                 Case "test"
                     Select Case inputData(1)
                         Case "notifications"

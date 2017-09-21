@@ -2,6 +2,7 @@
     Public CurrentLatitude As Double = 0
     Public CurrentLongitude As Double = 0
     Public DirectionsCurrentIndex As Integer = 0
+    Public DirectionsDestination As String
     Public DirectionsListSize As Integer = 0
     Public DirectionsNarrative() As String
     Public GPSReceiver As HAGPSDevice

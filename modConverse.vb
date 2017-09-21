@@ -88,11 +88,11 @@ Module modConverse
                     Select Case inputData(1)
                         Case "directions"
                             If inputData(2) = "to" Then
-                                Dim strDestination As String = strInputString.Replace("get directions to", "")
+                                modGPS.DirectionsDestination = strInputString.Replace("get directions to", "")
                                 If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
-                                    strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), strDestination)
+                                    strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
                                 Else
-                                    strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, strDestination)
+                                    strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
                                 End If
                             End If
                         Case "voices"
@@ -190,6 +190,12 @@ Module modConverse
                             modGlobal.DeviceCollection(modMatrixLCD.MatrixLCDisplayIndex).SetColor(Color.Red)
                             strCommandResponse = "Entering pursuit mode"
                         End If
+                    End If
+                Case "recalc", "recalculate"
+                    If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+                        strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
+                    Else
+                        strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
                     End If
                 Case "refer"
                     If inputData(1) = "to" Then

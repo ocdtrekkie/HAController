@@ -222,7 +222,15 @@
     End Sub
 
     Private Sub txtCommandBar_KeyUp(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyUp
-        Dim strCommandString As String
+        Dim strCommandString As String = ""
+
+        If e.KeyCode = Keys.Up Then
+            txtCommandBar.Text = modConverse.strLastRequest
+        End If
+
+        If e.KeyCode = Keys.Down Then
+            txtCommandBar.Text = ""
+        End If
 
         If e.KeyCode = Keys.Return Then
             strCommandString = txtCommandBar.Text

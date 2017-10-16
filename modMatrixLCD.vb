@@ -217,6 +217,7 @@
                 Else
                     SetBrightness(10)
                 End If
+                SetContrast(200)
             End If
         End Sub
 
@@ -269,6 +270,10 @@
         Public Sub SetColor(ByVal Name As String)
             Dim NewColor As Color = Color.FromName(Name)
             SetColor(NewColor.R, NewColor.G, NewColor.B)
+        End Sub
+
+        Public Sub SetContrast(ByVal Value As Byte)
+            Command("Contrast", Value)
         End Sub
 
         Public Sub SetDim()

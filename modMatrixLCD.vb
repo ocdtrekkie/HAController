@@ -202,6 +202,7 @@
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
 
                 SetColor(Me.BacklightColor)
+                SetSize(Me.Cols, Me.Rows)
                 Dim strSplashString = "HAController"
                 Do While strSplashString.Length < Cols
                     strSplashString = strSplashString + " "
@@ -282,6 +283,21 @@
 
         Public Sub SetNite()
             Command("Brightness", 68)
+        End Sub
+
+        Public Sub SetSize(ByVal Length As Integer, ByVal Height As Integer)
+            Dim data(4) As Byte
+
+            data(0) = 254 '0xFE
+            data(1) = 209 '0xD1
+            data(2) = CByte(Length)
+            data(3) = CByte(Height)
+
+            Try
+                SerialPort.Write(data, 0, 4)
+            Catch Excep As System.InvalidOperationException
+                My.Application.Log.WriteException(Excep)
+            End Try
         End Sub
 
         Public Sub SetSplash(ByVal strInput As String)

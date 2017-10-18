@@ -1,4 +1,5 @@
 ﻿Module modGPS
+    Public Const KnotsToMPH As Double = 1.15077945
     Public CurrentLatitude As Double = 0
     Public CurrentLongitude As Double = 0
     Public DirectionsCurrentIndex As Integer = 0

@@ -334,7 +334,7 @@ Module modConverse
                             Dim result As String = ""
 
                             modDatabase.ExecuteReader("SELECT Speed FROM LOCATION WHERE Date > " + Now.ToUniversalTime.AddMinutes(CDbl(inputData(8)) * -1).ToString("u") + " ORDER BY Speed DESC LIMIT 1", result)
-                            strCommandResponse = "The highest speed was " + CStr(Math.Round(CDbl(result) * 1.1518, 1))
+                            strCommandResponse = "The highest speed was " + CStr(Math.Round(CDbl(result) * modGPS.KnotsToMPH, 1)) + " mph"
                         Else
                             strCommandResponse = "Unavailable"
                         End If

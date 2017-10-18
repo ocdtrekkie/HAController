@@ -328,6 +328,17 @@ Module modConverse
                     If inputData(1) = "now" Then
                         strCommandResponse = modGlobal.ClickOnceUpdate()
                     End If
+                Case "what"
+                    If inputData(1) = "was" And inputData(2) = "my" And inputData(3) = "highest" And inputData(4) = "speed" And inputData(5) = "in" And inputData(6) = "the" And inputData(7) = "last" And inputData(9) = "minutes" Then
+                        If My.Settings.GPS_Enable = True Then
+                            Dim result As String = ""
+
+                            modDatabase.ExecuteReader("SELECT Speed FROM LOCATION WHERE Date > " + Now.ToUniversalTime.AddMinutes(CDbl(inputData(8)) * -1).ToString("u") + " ORDER BY Speed DESC LIMIT 1", result)
+                            strCommandResponse = "The highest speed was " + CStr(Math.Round(CDbl(result) * 1.1518, 1))
+                        Else
+                            strCommandResponse = "Unavailable"
+                        End If
+                    End If
                 Case "what's"
                     If inputData(1) = "the" Then
                         Select Case inputData(2)

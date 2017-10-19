@@ -43,6 +43,26 @@ Module modDatabase
         End Try
     End Sub
 
+    Sub ExecuteReal(query As String, ByRef result As Double)
+        Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
+
+        cmd.CommandText = query
+        My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
+        Try
+            Dim resultReader As SQLiteDataReader = cmd.ExecuteReader()
+            If resultReader.HasRows Then
+                resultReader.Read()
+                result = resultReader.GetDouble(0)
+                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + CStr(result))
+            Else
+                My.Application.Log.WriteEntry("SQLite Reader has no rows", TraceEventType.Warning)
+                result = Nothing
+            End If
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+        End Try
+    End Sub
+
     Sub ExecuteScalar(query As String, ByRef result As Integer)
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
 

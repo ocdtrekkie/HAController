@@ -331,10 +331,10 @@ Module modConverse
                 Case "what"
                     If inputData(1) = "was" And inputData(2) = "my" And inputData(3) = "highest" And inputData(4) = "speed" And inputData(5) = "in" And inputData(6) = "the" And inputData(7) = "last" And inputData(9) = "minutes" Then
                         If My.Settings.GPS_Enable = True Then
-                            Dim result As String = ""
+                            Dim result As Double
 
-                            modDatabase.ExecuteReader("SELECT Speed FROM LOCATION WHERE Date > " + Now.ToUniversalTime.AddMinutes(CDbl(inputData(8)) * -1).ToString("u") + " ORDER BY Speed DESC LIMIT 1", result)
-                            strCommandResponse = "The highest speed was " + CStr(Math.Round(CDbl(result) * modGPS.KnotsToMPH, 1)) + " mph"
+                            modDatabase.ExecuteReal("SELECT Speed FROM LOCATION WHERE Date > """ + Now.ToUniversalTime.AddMinutes(CDbl(inputData(8)) * -1).ToString("u") + """ ORDER BY Speed DESC LIMIT 1", result)
+                            strCommandResponse = "The highest speed was " + CStr(Math.Round(result * modGPS.KnotsToMPH, 1)) + " mph"
                         Else
                             strCommandResponse = "Unavailable"
                         End If

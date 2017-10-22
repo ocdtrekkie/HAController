@@ -268,7 +268,7 @@ Module modConverse
                         modMusic.SetVolume(Int(inputData(3)))
                         strCommandResponse = " "
                     End If
-                Case "show"
+                Case "sh", "show"
                     Select Case inputData(1)
                         Case "gps"
                             If My.Settings.GPS_Enable = True Then
@@ -277,7 +277,7 @@ Module modConverse
                                 strCommandResponse = "Unavailable"
                             End If
                             modMatrixLCD.ShowNotification("GPS Coordinates:", strCommandResponse)
-                        Case "version"
+                        Case "ver", "version"
                             strCommandResponse = My.Application.Info.Version.ToString
                             modMatrixLCD.ShowNotification("HAController", strCommandResponse)
                     End Select
@@ -286,7 +286,7 @@ Module modConverse
                         Case "music"
                             modMusic.StopMusic()
                             strCommandResponse = "Music stopped"
-                        Case "navigation"
+                        Case "nav", "navigation"
                             modGPS.isNavigating = False
                             strCommandResponse = "Navigation stopped"
                     End Select

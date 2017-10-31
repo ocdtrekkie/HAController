@@ -3,6 +3,8 @@
 ' modComputer cannot be disabled and doesn't need to be unloaded
 
 Module modComputer
+    Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
+
     Sub DisableStartup()
         My.Application.Log.WriteEntry("Removing run on system startup registry key")
         Dim regKey As Microsoft.Win32.RegistryKey
@@ -43,7 +45,7 @@ Module modComputer
                 Dim strWirelessStatus As String = "Wi-Fi " & NetworkInterface.OperationalStatus.ToString
                 My.Application.Log.WriteEntry(strWirelessStatus)
                 modMatrixLCD.ShowNotification(strWirelessStatus)
-                End If
+            End If
         Next
     End Sub
 
@@ -57,7 +59,7 @@ Module modComputer
         Return ProcessList
     End Function
 
-    Function LockScreen()
+    Function LockScreen() As String
         Try
             System.Diagnostics.Process.Start("tsdiscon.exe")
             Return "Acknowledged"
@@ -67,7 +69,7 @@ Module modComputer
         End Try
     End Function
 
-    Function RebootHost()
+    Function RebootHost() As String
         Try
             modMail.Send("Host reboot initiated", "Host reboot initiated")
             System.Diagnostics.Process.Start("shutdown", "-r")
@@ -75,6 +77,17 @@ Module modComputer
         Catch Win32Ex As System.ComponentModel.Win32Exception
             My.Application.Log.WriteException(Win32Ex)
             Return "Unable to initiate reboot"
+        End Try
+    End Function
+
+    Function RecordAudio() As String
+        Try
+            mciSendString("open new Type waveaudio Alias recsound", "", 0, 0)
+            mciSendString("record recsound", "", 0, 0)
+            Return "Recording"
+        Catch ex As Exception
+            My.Application.Log.WriteException(ex)
+            Return "Failed to record"
         End Try
     End Function
 
@@ -93,7 +106,7 @@ Module modComputer
         End If
     End Function
 
-    Function ShutdownHost()
+    Function ShutdownHost() As String
         Try
             modMail.Send("Host shutdown initiated", "Host shutdown initiated")
             System.Diagnostics.Process.Start("shutdown", "-s")
@@ -101,6 +114,19 @@ Module modComputer
         Catch Win32Ex As System.ComponentModel.Win32Exception
             My.Application.Log.WriteException(Win32Ex)
             Return "Unable to initiate shutdown"
+        End Try
+    End Function
+
+    Function StopRecordingAudio() As String
+        Try
+            Dim strFileName As String = "c:\hac\archive\audio_" + Now.ToUniversalTime.ToString("yyyy-MM-dd_HH_mm_ss") + ".wav"
+            My.Application.Log.WriteEntry("Saving recording as " + strFileName)
+            mciSendString("save recsound " + strFileName, "", 0, 0)
+            mciSendString("close recsound", "", 0, 0)
+            Return "Recording stopped"
+        Catch ex As Exception
+            My.Application.Log.WriteException(ex)
+            Return "Failed to stop recording"
         End Try
     End Function
 End Module

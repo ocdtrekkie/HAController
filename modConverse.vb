@@ -200,6 +200,10 @@ Module modConverse
                     Else
                         strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
                     End If
+                Case "record"
+                    If inputData(1) = "audio" Then
+                        strCommandResponse = modComputer.RecordAudio()
+                    End If
                 Case "refer"
                     If inputData(1) = "to" Then
                         If inputData(2) = "yourself" And inputData(3) = "as" Then
@@ -289,6 +293,8 @@ Module modConverse
                         Case "nav", "navigation"
                             modGPS.isNavigating = False
                             strCommandResponse = "Navigation stopped"
+                        Case "recording"
+                            strCommandResponse = modComputer.StopRecordingAudio()
                     End Select
                 Case "test"
                     Select Case inputData(1)

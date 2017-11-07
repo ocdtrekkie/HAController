@@ -162,11 +162,11 @@ Module modConverse
                     If inputData(1) = "and" And inputData(2) = "long" And inputData(3) = "life" Then
                         strCommandResponse = "Live long and prosper"
                     End If
-                Case "play"
+                Case "pl", "play"
                     Select Case inputData(1)
-                        Case "list"
+                        Case "li", "list"
                             strCommandResponse = modMusic.PlayPlaylist(inputData(2))
-                        Case "music"
+                        Case "mu", "mus", "music"
                             strCommandResponse = modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
                         Case "some"
                             If inputData(2) = "music" Then

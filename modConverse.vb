@@ -176,8 +176,13 @@ Module modConverse
                                 strCommandResponse = modMusic.PlayArtist(searchString)
                             End If
                         Case Else
-                            Dim searchString As String = strInputString.Replace("play ", "")
-                            strCommandResponse = modMusic.PlaySong(searchString)
+                            If inputData(1) = "songs" And inputData(2) = "from" Then
+                                Dim searchString As String = strInputString.Replace("play songs from ", "")
+                                strCommandResponse = modMusic.PlayAlbum(searchString)
+                            Else
+                                Dim searchString As String = strInputString.Replace("play ", "")
+                                strCommandResponse = modMusic.PlaySong(searchString)
+                            End If
                     End Select
                 Case "prev", "previous"
                     If modGPS.isNavigating = True And modGPS.DirectionsCurrentIndex > 0 Then

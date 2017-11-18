@@ -58,6 +58,20 @@ Module modMusic
         End If
     End Sub
 
+    Public Function PlayAlbum(ByVal strAlbumName As String) As String
+        Dim oQuery As Object
+        oQuery = MusicPlayer.mediaCollection.createQuery()
+        oQuery.AddCondition("Album", "Contains", strAlbumName)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        If MusicPlayer.currentPlaylist.count > 0 Then
+            isPlaying = True
+            Return "Playing songs from " + strAlbumName
+        Else
+            isPlaying = False
+            Return "No results for that album"
+        End If
+    End Function
+
     Public Function PlayArtist(ByVal strArtistName As String) As String
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()

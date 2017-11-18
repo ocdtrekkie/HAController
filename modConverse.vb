@@ -199,15 +199,15 @@ Module modConverse
                             strCommandResponse = "Entering pursuit mode"
                         End If
                     End If
+                Case "rec", "record"
+                    If inputData(1) = "aud" Or inputData(1) = "audio" Then
+                        strCommandResponse = modComputer.RecordAudio()
+                    End If
                 Case "recalc", "recalculate"
                     If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
                         strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
                     Else
                         strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
-                    End If
-                Case "record"
-                    If inputData(1) = "audio" Then
-                        strCommandResponse = modComputer.RecordAudio()
                     End If
                 Case "refer"
                     If inputData(1) = "to" Then
@@ -292,13 +292,13 @@ Module modConverse
                     End Select
                 Case "stop"
                     Select Case inputData(1)
-                        Case "music"
+                        Case "mus", "music"
                             modMusic.StopMusic()
                             strCommandResponse = "Music stopped"
                         Case "nav", "navigation"
                             modGPS.isNavigating = False
                             strCommandResponse = "Navigation stopped"
-                        Case "recording"
+                        Case "rec", "recording"
                             strCommandResponse = modComputer.StopRecordingAudio()
                     End Select
                 Case "test"

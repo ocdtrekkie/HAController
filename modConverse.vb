@@ -162,6 +162,15 @@ Module modConverse
                     If inputData(1) = "and" And inputData(2) = "long" And inputData(3) = "life" Then
                         strCommandResponse = "Live long and prosper"
                     End If
+                Case "pin"
+                    If My.Settings.GPS_Enable = True Then
+                        Dim strPinName As String = strInputString.Replace("pin ", "")
+                        ' TODO: Sanitize pin name
+                        modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', " + strPinName + "', '" + CStr(modGPS.CurrentLatitude) + ", " + CStr(modGPS.CurrentLongitude) + "')")
+                        strCommandResponse = strPinName + " added to your places"
+                    Else
+                        strCommandResponse = "Unavailable"
+                    End If
                 Case "pl", "play"
                     Select Case inputData(1)
                         Case "li", "list"

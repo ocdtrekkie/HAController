@@ -1,9 +1,11 @@
 ﻿Imports System.Management
 
-' modComputer cannot be disabled and doesn't need to be unloaded
+' modComputer cannot be disabled
 
 Module modComputer
     Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
+
+    Dim isRecording As Boolean = False
 
     Sub DisableStartup()
         My.Application.Log.WriteEntry("Removing run on system startup registry key")
@@ -35,6 +37,12 @@ Module modComputer
 
     Sub Load()
         GetInfo()
+    End Sub
+
+    Sub Unload()
+        If isRecording = True Then
+            StopRecordingAudio()
+        End If
     End Sub
 
     Sub AddressChangedCallback(sender As Object, e As EventArgs)
@@ -84,6 +92,7 @@ Module modComputer
         Try
             mciSendString("open new Type waveaudio Alias recsound", "", 0, 0)
             mciSendString("record recsound", "", 0, 0)
+            isRecording = True
             Return "Recording"
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
@@ -119,11 +128,16 @@ Module modComputer
 
     Function StopRecordingAudio() As String
         Try
-            Dim strFileName As String = "c:\hac\archive\audio_" + Now.ToUniversalTime.ToString("yyyy-MM-dd_HH_mm_ss") + ".wav"
-            My.Application.Log.WriteEntry("Saving recording as " + strFileName)
-            mciSendString("save recsound " + strFileName, "", 0, 0)
-            mciSendString("close recsound", "", 0, 0)
-            Return "Recording stopped"
+            If isRecording = True Then
+                Dim strFileName As String = "c:\hac\archive\audio_" + Now.ToUniversalTime.ToString("yyyy-MM-dd_HH_mm_ss") + ".wav"
+                My.Application.Log.WriteEntry("Saving recording as " + strFileName)
+                mciSendString("save recsound " + strFileName, "", 0, 0)
+                mciSendString("close recsound", "", 0, 0)
+                isRecording = False
+                Return "Recording stopped"
+            Else
+                Return "Not currently recording"
+            End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
             Return "Failed to stop recording"

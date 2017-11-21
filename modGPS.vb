@@ -47,6 +47,21 @@
         End If
     End Sub
 
+    Function PinLocation(ByVal strPinName As String) As String
+        Dim strLettersPattern As String = "^[a-zA-Z ]{1,25}$"
+        If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+            strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
+            If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
+                modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', " + strPinName + "', '" + CStr(CurrentLatitude) + ", " + CStr(CurrentLongitude) + "')")
+                Return strPinName + " added to your places"
+            Else
+                Return "Invalid pin name"
+            End If
+        Else
+            Return "Unavailable"
+        End If
+    End Function
+
     Function SetRateLimit(Optional ByVal intRate As Integer = 1) As String
         If intRate > 1 Then
             My.Settings.GPS_RateLimit = intRate

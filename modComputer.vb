@@ -5,7 +5,8 @@
 Module modComputer
     Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
 
-    Dim isRecordingAudio As Boolean = False
+    Public isRecordingAudio As Boolean = False
+    Public isRecordingVideo As Boolean = False
 
     Sub DisableStartup()
         My.Application.Log.WriteEntry("Removing run on system startup registry key")
@@ -102,8 +103,9 @@ Module modComputer
 
     Function RecordVideo() As String
         ' Launches iSpy if it is not running, manually starts recording if detection isn't on
-        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "record")
-        Return "Recording requested"
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "commands ""record""")
+        isRecordingVideo = True
+        Return "Recording"
     End Function
 
     Function RunScript(ByVal strScriptName As String) As String
@@ -132,6 +134,12 @@ Module modComputer
         End Try
     End Function
 
+    Function ShutdownVideo() As String
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "commands ""shutdown""")
+        isRecordingVideo = False
+        Return "Video server shutdown requested"
+    End Function
+
     Function StopRecordingAudio() As String
         Try
             If isRecordingAudio = True Then
@@ -151,13 +159,13 @@ Module modComputer
     End Function
 
     Function StopRecordingVideo() As String
-        ' We don't want recordstop here because that may not do the job if detection is on
-        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "shutdown")
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "commands ""recordstop""")
+        isRecordingVideo = False
         Return "Recording stopped"
     End Function
 
     Function TakeSnapshot() As String
-        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "snapshot")
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "commands ""snapshot""")
         Return "Snapshot requested"
     End Function
 End Module

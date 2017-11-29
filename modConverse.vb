@@ -303,7 +303,7 @@ Module modConverse
                     End Select
                 Case "shut", "shutdown"
                     If inputData(inputData.Length - 1) = "video" Then
-                        strCommandResponse = modComputer.StopRecordingVideo()
+                        strCommandResponse = modComputer.ShutdownVideo()
                     Else
                         strCommandResponse = "Greater elevation required to shut down host"
                     End If
@@ -318,7 +318,12 @@ Module modConverse
                             modGPS.isNavigating = False
                             strCommandResponse = "Navigation stopped"
                         Case "rec", "recording"
-                            strCommandResponse = modComputer.StopRecordingAudio()
+                            If modComputer.isRecordingVideo = True Then
+                                strCommandResponse = modComputer.StopRecordingVideo()
+                            End If
+                            If modComputer.isRecordingAudio = True Then
+                                strCommandResponse = modComputer.StopRecordingAudio()
+                            End If
                     End Select
                 Case "test"
                     Select Case inputData(1)

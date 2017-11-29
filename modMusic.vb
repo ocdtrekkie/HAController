@@ -86,6 +86,20 @@ Module modMusic
         End If
     End Function
 
+    Public Function PlayGenre(ByVal strGenre As String) As String
+        Dim oQuery As Object
+        oQuery = MusicPlayer.mediaCollection.createQuery()
+        oQuery.AddCondition("Genre", "Contains", strGenre)
+        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        If MusicPlayer.currentPlaylist.count > 0 Then
+            isPlaying = True
+            Return "Playing some " + strGenre + " music"
+        Else
+            isPlaying = False
+            Return "No results for that genre"
+        End If
+    End Function
+
     Public Sub PlayNext()
         If isPlaying = True Then
             MusicPlayer.controls.next()

@@ -174,6 +174,9 @@ Module modConverse
                         Case "some"
                             If inputData(2) = "music" Then
                                 strCommandResponse = modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
+                            ElseIf inputData(inputData.Length - 1) = "music" Then
+                                ' Won't trigger on "play some music" or cause an error on one word artists
+                                strCommandResponse = modMusic.PlayGenre(inputData(2))
                             Else
                                 Dim searchString As String = strInputString.Replace("play some ", "")
                                 strCommandResponse = modMusic.PlayArtist(searchString)

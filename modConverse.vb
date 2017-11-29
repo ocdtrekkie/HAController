@@ -16,7 +16,7 @@ Module modConverse
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)
-                Case "bye", "exit", "quit", "shutdown"
+                Case "bye", "exit", "quit"
                     strCommandResponse = "Goodbye"
                     frmMain.Close()
                 Case "disable"

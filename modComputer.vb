@@ -100,6 +100,12 @@ Module modComputer
         End Try
     End Function
 
+    Function RecordVideo() As String
+        ' Launches iSpy if it is not running, manually starts recording if detection isn't on
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "record")
+        Return "Recording requested"
+    End Function
+
     Function RunScript(ByVal strScriptName As String) As String
         Dim strLettersPattern As String = "^[a-zA-Z]{1,25}$"
         If System.Text.RegularExpressions.Regex.IsMatch(strScriptName, strLettersPattern) Then
@@ -142,5 +148,16 @@ Module modComputer
             My.Application.Log.WriteException(ex)
             Return "Failed to stop recording"
         End Try
+    End Function
+
+    Function StopRecordingVideo() As String
+        ' We don't want recordstop here because that may not do the job if detection is on
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "shutdown")
+        Return "Recording stopped"
+    End Function
+
+    Function TakeSnapshot() As String
+        System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "snapshot")
+        Return "Snapshot requested"
     End Function
 End Module

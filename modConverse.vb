@@ -205,10 +205,15 @@ Module modConverse
                             strCommandResponse = "Entering pursuit mode"
                         End If
                     End If
+                Case "reboot", "restart"
+                    strCommandResponse = "Greater elevation required to reboot host"
                 Case "rec", "record"
-                    If inputData(1) = "aud" Or inputData(1) = "audio" Then
-                        strCommandResponse = modComputer.RecordAudio()
-                    End If
+                    Select Case inputData(1)
+                        Case "aud", "audio"
+                            strCommandResponse = modComputer.RecordAudio()
+                        Case "vid", "video"
+                            strCommandResponse = modComputer.RecordVideo()
+                    End Select
                 Case "recalc", "recalculate"
                     If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
                         strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
@@ -296,6 +301,14 @@ Module modConverse
                             strCommandResponse = My.Application.Info.Version.ToString
                             modMatrixLCD.ShowNotification("HAController", strCommandResponse)
                     End Select
+                Case "shut", "shutdown"
+                    If inputData(inputData.Length - 1) = "video" Then
+                        strCommandResponse = modComputer.StopRecordingVideo()
+                    Else
+                        strCommandResponse = "Greater elevation required to shut down host"
+                    End If
+                Case "snapshot"
+                    strCommandResponse = modComputer.TakeSnapshot()
                 Case "stop"
                     Select Case inputData(1)
                         Case "mus", "music"

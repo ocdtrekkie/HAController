@@ -364,7 +364,10 @@ Module modConverse
                         strCommandResponse = modGlobal.ClickOnceUpdate()
                     End If
                 Case "what"
-                    If inputData(1) = "was" And inputData(2) = "my" And inputData(3) = "highest" And inputData(4) = "speed" And inputData(5) = "in" And inputData(6) = "the" And inputData(7) = "last" And inputData(9) = "minutes" Then
+                    If inputData(1) = "do" And inputData(2) = "you" And inputData(3) = "do" Then
+                        strCommandResponse = "I drink and I know things"
+                    End If
+                    If inputData(1) = "was" And (inputData(2) = "my" Or inputData(2) = "the") And (inputData(3) = "fastest" Or inputData(3) = "highest") And inputData(4) = "speed" And inputData(5) = "in" And inputData(6) = "the" And (inputData(7) = "last" Or inputData(7) = "previous") And inputData(9) = "minutes" Then
                         If My.Settings.GPS_Enable = True Then
                             Dim result As Double
 

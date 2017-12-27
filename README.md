@@ -23,3 +23,4 @@ The following modules should function optionally:
 * modMusic implements Windows Media Player to play music.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
+* modWolframAlpha can request general knowledge from Wolfram Alpha's API.

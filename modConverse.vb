@@ -16,6 +16,11 @@ Module modConverse
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)
+                Case "ask"
+                    If inputData(1) = "wolfram" Then
+                        Dim strQuestion As String = strInputString.Replace("ask wolfram ", "")
+                        strCommandResponse = modWolframAlpha.SpokenQuery(strQuestion)
+                    End If
                 Case "bye", "exit", "quit"
                     strCommandResponse = "Goodbye"
                     frmMain.Close()
@@ -45,6 +50,8 @@ Module modConverse
                             modSpeech.Disable()
                         Case "startup"
                             modComputer.DisableStartup()
+                        Case "wolframalpha"
+                            modWolframAlpha.Disable()
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "enable"
@@ -73,6 +80,8 @@ Module modConverse
                             modSpeech.Enable()
                         Case "startup"
                             modComputer.EnableStartup()
+                        Case "wolframalpha"
+                            modWolframAlpha.Enable()
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "flip"

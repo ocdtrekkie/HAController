@@ -28,6 +28,8 @@ Public Module modGlobal
         modGPS.Load()
         My.Application.Log.WriteEntry("Loading MapQuest module")
         modMapQuest.Load()
+        My.Application.Log.WriteEntry("Loading WolframAlpha module")
+        modWolframAlpha.Load()
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load()
         My.Application.Log.WriteEntry("Loading mail module")

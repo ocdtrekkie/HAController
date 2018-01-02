@@ -32,10 +32,18 @@ Module modMapQuest
                 DirectionsNodeList = DirectionsData.SelectNodes("/response/route/legs/leg/maneuvers/maneuver")
                 modGPS.DirectionsListSize = DirectionsNodeList.Count
                 ReDim modGPS.DirectionsNarrative(DirectionsListSize)
+                ReDim modGPS.DirectionsLatitudeList(DirectionsListSize)
+                ReDim modGPS.DirectionsLongitudeList(DirectionsListSize)
 
                 For Each DirectionsNode In DirectionsNodeList
                     My.Application.Log.WriteEntry(DirectionsNode.Item("narrative").InnerText())
                     modGPS.DirectionsNarrative(CInt(DirectionsNode.Item("index").InnerText())) = DirectionsNode.Item("narrative").InnerText()
+                    If DirectionsNode.Item("startPoint").HasChildNodes = True Then
+                        ' The last maneuver has no "startPoint", so we only populate these fields if the startPoint exists.
+                        modGPS.DirectionsLatitudeList(CInt(DirectionsNode.Item("index").InnerText())) = CDbl(DirectionsNode.Item("startPoint").Item("lat").InnerText())
+                        modGPS.DirectionsLongitudeList(CInt(DirectionsNode.Item("index").InnerText())) = CDbl(DirectionsNode.Item("startPoint").Item("lng").InnerText())
+                    End If
+                    My.Application.Log.WriteEntry(modGPS.DirectionsLatitudeList(CInt(DirectionsNode.Item("index").InnerText())) & ", " & modGPS.DirectionsLongitudeList(CInt(DirectionsNode.Item("index").InnerText())), TraceEventType.Verbose)
                 Next
 
                 If modGPS.isNavigating = True Then

@@ -6,6 +6,8 @@
     Public DirectionsDestination As String
     Public DirectionsListSize As Integer = 0
     Public DirectionsNarrative() As String
+    Public DirectionsLatitudeList() As Double
+    Public DirectionsLongitudeList() As Double
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
     Public isNavigating As Boolean

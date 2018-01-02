@@ -13,6 +13,7 @@
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
     Public isNavigating As Boolean
+    Dim strLettersPattern As String = "^[a-zA-Z ]{1,25}$"
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading GPS module")
@@ -68,7 +69,6 @@
     End Function
 
     Function PinLocation(ByVal strPinName As String) As String
-        Dim strLettersPattern As String = "^[a-zA-Z ]{1,25}$"
         If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
             If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
@@ -79,6 +79,23 @@
             End If
         Else
             Return "Unavailable"
+        End If
+    End Function
+
+    Function ReplacePinnedLocation(ByVal strDestination As String) As String
+        ' Returns location as stored in PLACES table if it is pinned, otherwise returns original destination
+        Dim result As String = ""
+        Dim strDestinationStripped As String = strDestination.Replace("'", "")
+        If System.Text.RegularExpressions.Regex.IsMatch(strDestinationStripped, strLettersPattern) Then
+            modDatabase.ExecuteReader("SELECT Location FROM PLACES WHERE Name = """ + strDestinationStripped + """ LIMIT 1", result)
+            My.Application.Log.WriteEntry("Pinned location lookup result: " & result)
+            If result = "" Then
+                Return strDestination
+            Else
+                Return result
+            End If
+        Else
+            Return strDestination
         End If
     End Function
 

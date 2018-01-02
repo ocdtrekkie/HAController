@@ -100,7 +100,8 @@ Module modConverse
                     Select Case inputData(1)
                         Case "directions"
                             If inputData(2) = "to" Then
-                                modGPS.DirectionsDestination = strInputString.Replace("get directions to", "")
+                                modGPS.DirectionsDestination = strInputString.Replace("get directions to ", "")
+                                modGPS.DirectionsDestination = modGPS.ReplacePinnedLocation(modGPS.DirectionsDestination)
                                 If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
                                     strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
                                 Else

@@ -1,5 +1,7 @@
 ﻿Module modGPS
     Public Const KnotsToMPH As Double = 1.15077945
+    Public Const RadiusEarthKM As Double = 6371.23
+    Public Const RadiusEarthMI As Double = 3958.899
     Public CurrentLatitude As Double = 0
     Public CurrentLongitude As Double = 0
     Public DirectionsCurrentIndex As Integer = 0
@@ -49,6 +51,22 @@
         End If
     End Sub
 
+    Function CalculateDistance(ByVal LatA As Double, ByVal LonA As Double, ByVal LatB As Double, ByVal LonB As Double, Optional IsMetric As Boolean = False) As Double
+        ' Haversine formula implemented based on https://rosettacode.org/wiki/Haversine_formula#C.23
+        Dim dLat As Double = ToRadians(LatB - LatA)
+        Dim dLon As Double = ToRadians(LonB - LonA)
+        LatA = ToRadians(LatA)
+        LatB = ToRadians(LatB)
+
+        Dim A As Double = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(LatA) * Math.Cos(LatB)
+        Dim C As Double = 2 * Math.Asin(Math.Sqrt(A))
+        If IsMetric = True Then
+            Return RadiusEarthKM * C
+        Else
+            Return RadiusEarthMI * C
+        End If
+    End Function
+
     Function PinLocation(ByVal strPinName As String) As String
         Dim strLettersPattern As String = "^[a-zA-Z ]{1,25}$"
         If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
@@ -74,6 +92,10 @@
         Else
             Return "GPS rate limit cannot be less than one"
         End If
+    End Function
+
+    Function ToRadians(ByVal Angle As Double) As Double
+        Return Math.PI * Angle / 180.0
     End Function
 
     <Serializable()>
@@ -149,6 +171,11 @@
                         CurrentLongitude = dblLongitude
                         Dim dblSpeed As Double = CDbl(inputData(7)) 'knots
                         modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now.ToUniversalTime.ToString("u") + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
+
+                        If isNavigating = True Then
+                            Dim dblDistanceToNext As Double = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
+                            My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(dblDistanceToNext) & " miles")
+                        End If
                     ElseIf RateLimitCheck(inputData(1)) = False And My.Settings.GPS_RateLimit = 0 Then
                         ' If GPS rate limit is 0, this will log the failures that were causing an intermittent app crash
                         My.Application.Log.WriteEntry("Decode failed: " & strInputData, TraceEventType.Warning)

@@ -192,7 +192,7 @@ Module modConverse
                                 strCommandResponse = modMusic.PlayArtist(searchString)
                             End If
                         Case Else
-                            If inputData(1) = "songs" And inputData(2) = "from" Then
+                            If inputData(1) = "songs" AndAlso inputData(2) = "from" Then
                                 Dim searchString As String = strInputString.Replace("play songs from ", "")
                                 strCommandResponse = modMusic.PlayAlbum(searchString)
                             Else

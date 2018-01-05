@@ -129,7 +129,7 @@ Module modInsteon
         InsteonSendStdCommand(strAddress, comm1, comm2)
 
         ' Shut it back off
-        If (Command1 = "On" Or Command1 = "on") And intSeconds > 0 Then
+        If (Command1 = "On" OrElse Command1 = "on") AndAlso intSeconds > 0 Then
             My.Application.Log.WriteEntry("Scheduling automatic shut off of " & strAddress & " in " & intSeconds.ToString & " seconds")
             Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("alarmjob " & strAddress, "modinsteon").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
             Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("alarmtrigger", "modinsteon").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
@@ -198,7 +198,7 @@ Module modInsteon
 
     Sub InsteonProductDataRequest(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal EngineVersion As Short)
         Select Case EngineVersion
-            Case 0 Or 1
+            Case 0, 1
                 InsteonSendStdCommand(strAddress, 3, 0)
             Case 2
                 InsteonSendStdCommand(strAddress, 16, 0)
@@ -454,20 +454,20 @@ Module modInsteon
                         Case 224 ' 111 NAK group cleanup direct message
                             strTemp = strTemp & " (NAK Group cleanup direct) "
                     End Select
-                    If FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 > 109 Then ' TODO: Detect this by device model
+                    If FromAddress = My.Settings.Insteon_ThermostatAddr AndAlso Command1 > 109 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_ThermostatAddr And Command1 = 106 Then ' TODO: Detect this by device model
+                    ElseIf FromAddress = My.Settings.Insteon_ThermostatAddr AndAlso Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
-                    ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr Or FromAddress = My.Settings.Insteon_BackDoorSensorAddr) And ToAddress = "0.0.1" Then ' TODO: Detect this by device model
+                    ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr OrElse FromAddress = My.Settings.Insteon_BackDoorSensorAddr) AndAlso ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr And Flags = 203 And x(ms + 5) = 0 And x(ms + 6) = 0 Then ' TODO: Detect this by device model
+                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
 
-                    If Flags = 139 And (Command1 = 1 Or Command1 = 2) Then
+                    If Flags = 139 AndAlso (Command1 = 1 OrElse Command1 = 2) Then
                         ' This is a 0x01 or 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
                         AddInsteonDeviceDb(FromAddress, x(ms + 5), x(ms + 6), x(ms + 7))
                     End If
@@ -1683,7 +1683,7 @@ Module modInsteon
         Select Case comm1
             Case 17
                 My.Settings.Global_TimeDoorLastOpened = Now()
-                If modGlobal.HomeStatus = "Away" Or modGlobal.HomeStatus = "Stay" Then
+                If modGlobal.HomeStatus = "Away" OrElse modGlobal.HomeStatus = "Stay" Then
                     My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus, TraceEventType.Warning)
                     modSpeech.Say("Intruder alert!")
                     modMail.Send("Intruder alert", "Intruder alert")

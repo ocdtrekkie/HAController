@@ -69,7 +69,7 @@
     End Function
 
     Function PinLocation(ByVal strPinName As String) As String
-        If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+        If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
             If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
                 modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strPinName + "', '" + CStr(CurrentLatitude) + "," + CStr(CurrentLongitude) + "')")
@@ -173,7 +173,7 @@
 
                 If strInputData.Substring(0, 6) = "$GPRMC" Then
                     Dim inputData() = strInputData.Split(",")
-                    If inputData(2) = "A" And RateLimitCheck(inputData(1)) Then
+                    If inputData(2) = "A" AndAlso RateLimitCheck(inputData(1)) Then
                         ' inputData(1) is HHMMSS in UTC
                         ' inputData(9) is DDMMYY
                         Dim dblLatitude As Double = CDbl(inputData(3).Substring(0, 2)) + (CDbl(inputData(3).Substring(2, 7)) / 60)
@@ -193,7 +193,7 @@
                             Dim dblDistanceToNext As Double = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
                             My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(dblDistanceToNext) & " miles")
                         End If
-                    ElseIf RateLimitCheck(inputData(1)) = False And My.Settings.GPS_RateLimit = 0 Then
+                    ElseIf My.Settings.GPS_RateLimit = 0 AndAlso RateLimitCheck(inputData(1)) = False Then
                         ' If GPS rate limit is 0, this will log the failures that were causing an intermittent app crash
                         My.Application.Log.WriteEntry("Decode failed: " & strInputData, TraceEventType.Warning)
                     End If

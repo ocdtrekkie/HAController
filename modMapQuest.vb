@@ -82,7 +82,7 @@ Module modMapQuest
                 LocationNode = LocationData.SelectSingleNode("/response/results/result/locations/location/geocodeQuality")
                 Dim strGeocodeQuality As String = LocationNode.InnerText
 
-                If strGeocodeQuality = "ADDRESS" Or strGeocodeQuality = "STREET" Then
+                If strGeocodeQuality = "ADDRESS" OrElse strGeocodeQuality = "STREET" Then
                     LocationNode = LocationData.SelectSingleNode("/response/results/result/locations/location/street")
                     Dim strStreetName As String = LocationNode.InnerText
                     Return strStreetName

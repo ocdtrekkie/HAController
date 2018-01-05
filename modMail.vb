@@ -120,12 +120,12 @@ Module modMail
                     My.Application.Log.WriteEntry("Command " & CmdTo)
                 End If
 
-                If CmdSubj <> "" And CmdFrom <> "" And CmdTo <> "" Then
+                If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" Then
                     Exit Do
                 End If
             Loop
 
-            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist And CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
+            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist AndAlso CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
                 My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
                 ReSubj = CmdSubj.Replace("Subject: ", "")
                 modConverse.Interpet(ReSubj, True)
@@ -174,7 +174,7 @@ Module modMail
                 My.Settings.Mail_SMTPPort = InputBox("Enter mail SMTP port.", "Mail SMTP Port")
             End If
 
-            If My.Settings.Mail_Username = "" Or My.Settings.Mail_From = "" Then
+            If My.Settings.Mail_Username = "" OrElse My.Settings.Mail_From = "" Then
                 My.Application.Log.WriteEntry("No mail username set, asking for it")
                 My.Settings.Mail_Username = InputBox("Enter the full email address of the home automation controller's mail service account.", "Mail Username")
                 My.Settings.Mail_From = My.Settings.Mail_Username
@@ -202,7 +202,7 @@ Module modMail
 
             oClient.Host = My.Settings.Mail_SMTPHost
             oClient.Port = My.Settings.Mail_SMTPPort
-            If oClient.Port = 465 Or oClient.Port = 587 Then
+            If oClient.Port = 465 OrElse oClient.Port = 587 Then
                 oClient.EnableSsl = True
             Else
                 oClient.EnableSsl = False

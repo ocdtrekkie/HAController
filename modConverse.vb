@@ -85,7 +85,7 @@ Module modConverse
                     End Select
                     strCommandResponse = "Acknowledged"
                 Case "flip"
-                    If inputData(1) = "a" And inputData(2) = "coin" Then
+                    If inputData(1) = "a" AndAlso inputData(2) = "coin" Then
                         Dim intFlip As Integer = modRandom.RandomInteger(2)
                         If intFlip = 1 Then
                             strCommandResponse = "Heads"
@@ -102,7 +102,7 @@ Module modConverse
                             If inputData(2) = "to" Then
                                 modGPS.DirectionsDestination = strInputString.Replace("get directions to ", "")
                                 modGPS.DirectionsDestination = modGPS.ReplacePinnedLocation(modGPS.DirectionsDestination)
-                                If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+                                If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
                                     strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
                                 Else
                                     strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
@@ -118,7 +118,7 @@ Module modConverse
                     ElseIf inputData(1) = "enable" Then
                         modGPS.Enable()
                         strCommandResponse = "Acknowledged"
-                    ElseIf inputData(1) = "rate" And inputData(2) = "limit" Then
+                    ElseIf inputData(1) = "rate" AndAlso inputData(2) = "limit" Then
                         If IsNumeric(inputData(3)) Then
                             strCommandResponse = modGPS.SetRateLimit(CInt(inputData(3)))
                         ElseIf inputData(3) = "reset" Then
@@ -128,13 +128,13 @@ Module modConverse
                 Case "greetings", "hello", "hey", "hi"
                     strCommandResponse = "Hello"
                 Case "link"
-                    If inputData(1) = "insteon" And inputData(2) = "address" Then
+                    If inputData(1) = "insteon" AndAlso inputData(2) = "address" Then
                         Dim response As String = ""
                         modInsteon.InsteonLinkI2CSDevice(inputData(3), response, inputData(4))
                         strCommandResponse = "Linking"
                     End If
                 Case "lock"
-                    If inputData(1) = "my" And (inputData(2) = "computer" Or inputData(2) = "screen") Then
+                    If inputData(1) = "my" AndAlso (inputData(2) = "computer" OrElse inputData(2) = "screen") Then
                         strCommandResponse = modComputer.LockScreen()
                     End If
                 Case "matrixlcd"
@@ -158,7 +158,7 @@ Module modConverse
                             strCommandResponse = "Alarm is now muted"
                     End Select
                 Case "next"
-                    If modGPS.isNavigating = True And modGPS.DirectionsCurrentIndex < modGPS.DirectionsListSize Then
+                    If modGPS.isNavigating = True AndAlso modGPS.DirectionsCurrentIndex < modGPS.DirectionsListSize Then
                         modGPS.DirectionsCurrentIndex = modGPS.DirectionsCurrentIndex + 1
                         strCommandResponse = modGPS.DirectionsNarrative(modGPS.DirectionsCurrentIndex)
                     Else
@@ -169,7 +169,7 @@ Module modConverse
                     modMusic.PauseMusic()
                     strCommandResponse = "Music paused"
                 Case "peace"
-                    If inputData(1) = "and" And inputData(2) = "long" And inputData(3) = "life" Then
+                    If inputData(1) = "and" AndAlso inputData(2) = "long" AndAlso inputData(3) = "life" Then
                         strCommandResponse = "Live long and prosper"
                     End If
                 Case "pin"
@@ -201,7 +201,7 @@ Module modConverse
                             End If
                     End Select
                 Case "prev", "previous"
-                    If modGPS.isNavigating = True And modGPS.DirectionsCurrentIndex > 0 Then
+                    If modGPS.isNavigating = True AndAlso modGPS.DirectionsCurrentIndex > 0 Then
                         modGPS.DirectionsCurrentIndex = modGPS.DirectionsCurrentIndex - 1
                         strCommandResponse = modGPS.DirectionsNarrative(modGPS.DirectionsCurrentIndex)
                     Else
@@ -210,7 +210,7 @@ Module modConverse
                     End If
                 Case "pursuit"
                     If inputData(1) = "mode" Then
-                        If My.Settings.Global_CarMode = True And modMatrixLCD.MatrixLCDConnected = True Then
+                        If My.Settings.Global_CarMode = True AndAlso modMatrixLCD.MatrixLCDConnected = True Then
                             modGlobal.DeviceCollection(modMatrixLCD.MatrixLCDisplayIndex).SetColor(Color.Red)
                             strCommandResponse = "Entering pursuit mode"
                         End If
@@ -225,24 +225,24 @@ Module modConverse
                             strCommandResponse = modComputer.RecordVideo()
                     End Select
                 Case "recalc", "recalculate"
-                    If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+                    If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
                         strCommandResponse = modMapQuest.GetDirections(CStr(modGPS.CurrentLatitude) + "," + CStr(modGPS.CurrentLongitude), modGPS.DirectionsDestination)
                     Else
                         strCommandResponse = modMapQuest.GetDirections(My.Settings.GPS_DefaultAddress, modGPS.DirectionsDestination)
                     End If
                 Case "refer"
                     If inputData(1) = "to" Then
-                        If inputData(2) = "yourself" And inputData(3) = "as" Then
+                        If inputData(2) = "yourself" AndAlso inputData(3) = "as" Then
                             My.Settings.Converse_BotName = inputData(4)
                             strCommandResponse = "My name is now " & My.Settings.Converse_BotName
-                        ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True And inputData(3) = "as" Then
+                        ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True AndAlso inputData(3) = "as" Then
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
                             modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
                             strCommandResponse = "Okay, I will save this information" 'TODO: This doesn't check for success
                         End If
                     End If
                 Case "remind"
-                    If inputData(1) = "me" And (inputData(2) = "about" Or inputData(2) = "to") Then
+                    If inputData(1) = "me" AndAlso (inputData(2) = "about" OrElse inputData(2) = "to") Then
                         Dim reminderString As String = strInputString.Replace("remind me", "Reminder")
                         modMail.Send(reminderString, reminderString)
                         strCommandResponse = "Acknowledged"
@@ -258,9 +258,9 @@ Module modConverse
                 Case "roll"
                     If inputData(1) = "a" Then
                         Dim intMax As Integer = 0
-                        If inputData(2) = "die" Or inputData(2) = "dice" Then
+                        If inputData(2) = "die" OrElse inputData(2) = "dice" Then
                             intMax = 6
-                        ElseIf inputData(2).Substring(0, 1) = "d" And CInt(inputData(2).Substring(1)) >= 2 Then
+                        ElseIf inputData(2).Substring(0, 1) = "d" AndAlso CInt(inputData(2).Substring(1)) >= 2 Then
                             intMax = CInt(inputData(2).Substring(1))
                         End If
                         If intMax > 0 Then
@@ -277,24 +277,24 @@ Module modConverse
                         modSpeech.Say(strCommandResponse)
                     End If
                 Case "set"
-                    If inputData(1) = "experimental" And inputData(2) = "mode" Then
+                    If inputData(1) = "experimental" AndAlso inputData(2) = "mode" Then
                         If inputData(3) = "on" Then
                             My.Settings.Global_Experimental = True
                         ElseIf inputData(3) = "off" Then
                             My.Settings.Global_Experimental = False
                         End If
-                    ElseIf inputData(1) = "online" And inputData(2) = "mode" Then
+                    ElseIf inputData(1) = "online" AndAlso inputData(2) = "mode" Then
                         modGlobal.IsOnline = True
                         strCommandResponse = "Acknowledged"
-                    ElseIf inputData(1) = "offline" And inputData(2) = "mode" Then
+                    ElseIf inputData(1) = "offline" AndAlso inputData(2) = "mode" Then
                         modGlobal.IsOnline = False
                         strCommandResponse = "Acknowledged"
-                    ElseIf inputData(1) = "status" And inputData(2) = "to" Then
-                        If inputData(3) = "off" Or inputData(3) = "stay" Or inputData(3) = "away" Or inputData(3) = "guests" Then
+                    ElseIf inputData(1) = "status" AndAlso inputData(2) = "to" Then
+                        If inputData(3) = "off" OrElse inputData(3) = "stay" OrElse inputData(3) = "away" OrElse inputData(3) = "guests" Then
                             modGlobal.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                             strCommandResponse = "Status set to " & inputData(3)
                         End If
-                    ElseIf inputData(1) = "music" And inputData(2) = "volume" Then
+                    ElseIf inputData(1) = "music" AndAlso inputData(2) = "volume" AndAlso IsNumeric(inputData(3)) Then
                         modMusic.SetVolume(Int(inputData(3)))
                         strCommandResponse = " "
                     End If
@@ -374,10 +374,10 @@ Module modConverse
                         strCommandResponse = modGlobal.ClickOnceUpdate()
                     End If
                 Case "what"
-                    If inputData(1) = "do" And inputData(2) = "you" And inputData(3) = "do" Then
+                    If inputData(1) = "do" AndAlso inputData(2) = "you" AndAlso inputData(3) = "do" Then
                         strCommandResponse = "I drink and I know things"
                     End If
-                    If inputData(1) = "was" And (inputData(2) = "my" Or inputData(2) = "the") And (inputData(3) = "fastest" Or inputData(3) = "highest") And inputData(4) = "speed" And inputData(5) = "in" And inputData(6) = "the" And (inputData(7) = "last" Or inputData(7) = "previous") And inputData(9) = "minutes" Then
+                    If inputData(1) = "was" AndAlso (inputData(2) = "my" OrElse inputData(2) = "the") AndAlso (inputData(3) = "fastest" OrElse inputData(3) = "highest") AndAlso inputData(4) = "speed" AndAlso inputData(5) = "in" AndAlso inputData(6) = "the" AndAlso (inputData(7) = "last" OrElse inputData(7) = "previous") AndAlso IsNumeric(inputData(8)) AndAlso inputData(9) = "minutes" Then
                         If My.Settings.GPS_Enable = True Then
                             Dim result As Double
 
@@ -393,10 +393,10 @@ Module modConverse
                     If inputData(1) = "the" Then
                         Select Case inputData(2)
                             Case "current"
-                                If ((inputData(3) = "temperature" And inputData(4) = "inside") Or (inputData(3) = "inside" And inputData(4) = "temperature")) Then
+                                If ((inputData(3) = "temperature" AndAlso inputData(4) = "inside") OrElse (inputData(3) = "inside" AndAlso inputData(4) = "temperature")) Then
                                     strCommandResponse = "The current temperature inside is " & My.Settings.Global_LastKnownInsideTemp & " degrees Fahrenheit"
                                 End If
-                                If inputData(3) = "time" And inputData(4) = "in" Then
+                                If inputData(3) = "time" AndAlso inputData(4) = "in" Then
                                     Dim strConvTimeZone As String
                                     Dim dteConvTimeZone As TimeZoneInfo
                                     Select Case inputData(5)
@@ -427,12 +427,12 @@ Module modConverse
                         End Select
                     End If
                 Case "when"
-                    If inputData(1) = "was" And inputData(2) = "the" And inputData(3) = "door" And inputData(4) = "last" And inputData(5) = "opened" Then
+                    If inputData(1) = "was" AndAlso inputData(2) = "the" AndAlso inputData(3) = "door" AndAlso inputData(4) = "last" AndAlso inputData(5) = "opened" Then
                         strCommandResponse = "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
                     End If
                 Case "where"
-                    If inputData(1) = "am" And inputData(2) = "i" Then
-                        If My.Settings.GPS_Enable = True And My.Settings.MapQuest_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+                    If inputData(1) = "am" AndAlso inputData(2) = "i" Then
+                        If My.Settings.GPS_Enable = True AndAlso My.Settings.MapQuest_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
                             strCommandResponse = modMapQuest.GetLocation(modGPS.CurrentLatitude, modGPS.CurrentLongitude)
                         Else
                             strCommandResponse = "Unavailable"
@@ -440,11 +440,11 @@ Module modConverse
                         modMatrixLCD.ShowNotification("Location:", strCommandResponse)
                     End If
                 Case "who"
-                    If inputData(1) = "are" And inputData(2) = "you" Then
+                    If inputData(1) = "are" AndAlso inputData(2) = "you" Then
                         strCommandResponse = "I am " & My.Settings.Converse_BotName & ", a HAC interface, version " & My.Application.Info.Version.ToString
                     End If
                 Case "would"
-                    If inputData(1) = "you" And inputData(2) = "kindly" Then
+                    If inputData(1) = "you" AndAlso inputData(2) = "kindly" Then
                         ' "Would you kindly" is to make these commands less likely to accidentally trigger
                         Select Case inputData(3)
                             Case "reboot", "restart"

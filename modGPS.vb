@@ -69,7 +69,7 @@
     End Function
 
     Function PinLocation(ByVal strPinName As String) As String
-        If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+        If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
             If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
                 modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strPinName + "', '" + CStr(CurrentLatitude) + "," + CStr(CurrentLongitude) + "')")

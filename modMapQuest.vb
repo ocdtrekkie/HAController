@@ -46,12 +46,8 @@ Module modMapQuest
                     My.Application.Log.WriteEntry(modGPS.DirectionsLatitudeList(CInt(DirectionsNode.Item("index").InnerText())) & ", " & modGPS.DirectionsLongitudeList(CInt(DirectionsNode.Item("index").InnerText())), TraceEventType.Verbose)
                 Next
 
-                If modGPS.isNavigating = True Then
-                    Return "Recalculating"
-                Else
-                    modGPS.isNavigating = True
-                    Return "Engaging navigation mode"
-                End If
+                isNavigating = True
+                Return modGPS.DirectionsNarrative(0)
             Catch NetExcep As System.Net.WebException
                 My.Application.Log.WriteException(NetExcep)
 
@@ -59,7 +55,7 @@ Module modMapQuest
             Catch XmlExcep As System.Xml.XmlException
                 My.Application.Log.WriteException(XmlExcep)
 
-                Return "Error parsing nevigation data"
+                Return "Error parsing navigation data"
             End Try
         Else
             My.Application.Log.WriteEntry("MapQuest module is disabled")

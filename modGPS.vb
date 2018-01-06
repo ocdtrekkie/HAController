@@ -173,7 +173,7 @@
 
                 If strInputData.Substring(0, 6) = "$GPRMC" Then
                     Dim inputData() = strInputData.Split(",")
-                    If inputData(2) = "A" AndAlso RateLimitCheck(inputData(1)) Then
+                    If inputData(2) = "A" AndAlso IsNumeric(inputData(1)) AndAlso (My.Settings.GPS_RateLimit = 0 OrElse inputData(1) Mod My.Settings.GPS_RateLimit = 0) Then
                         ' inputData(1) is HHMMSS in UTC
                         ' inputData(9) is DDMMYY
                         Dim dblLatitude As Double = CDbl(inputData(3).Substring(0, 2)) + (CDbl(inputData(3).Substring(2, 7)) / 60)
@@ -193,25 +193,11 @@
                             Dim dblDistanceToNext As Double = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
                             My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(dblDistanceToNext) & " miles")
                         End If
-                    ElseIf My.Settings.GPS_RateLimit = 0 AndAlso RateLimitCheck(inputData(1)) = False Then
-                        ' If GPS rate limit is 0, this will log the failures that were causing an intermittent app crash
-                        My.Application.Log.WriteEntry("Decode failed: " & strInputData, TraceEventType.Warning)
                     End If
                 End If
             Catch IOExcep As System.IO.IOException
                 My.Application.Log.WriteException(IOExcep)
             End Try
         End Sub
-
-        Private Function RateLimitCheck(ByVal strStamp As String) As Boolean
-            Try
-                If strStamp Mod My.Settings.GPS_RateLimit = 0 Then
-                    Return True
-                Else Return False
-                End If
-            Catch InCastExcep As System.InvalidCastException
-                Return False
-            End Try
-        End Function
     End Class
 End Module

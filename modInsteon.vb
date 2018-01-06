@@ -469,6 +469,7 @@ Module modInsteon
 
                     If Flags = 139 AndAlso (Command1 = 1 OrElse Command1 = 2) Then
                         ' This is a 0x01 or 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
+                        My.Application.Log.WriteEntry("ADD CASE 4", TraceEventType.Verbose)
                         AddInsteonDeviceDb(FromAddress, x(ms + 5), x(ms + 6), x(ms + 7))
                     End If
 
@@ -658,6 +659,7 @@ Module modInsteon
                                     strTemp = strTemp & Hex(x(ms + i)) & " "
                                 Next
                                 strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
+                                My.Application.Log.WriteEntry("ADD CASE 1", TraceEventType.Verbose)
                                 AddInsteonDeviceDb(FromAddress, x(ms + 15), x(ms + 16), x(ms + 17))
                             Case 1 ' FX Username Response
                                 strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
@@ -834,6 +836,7 @@ Module modInsteon
                     strTemp = strTemp & " Group: " & Hex(x(ms + 3)) & " ID: " & FromAddress & " DevCat: " & Hex(x(ms + 7)) & " SubCat: " & Hex(x(ms + 8)) & " Firmware: " & Hex(x(ms + 9))
                     If x(ms + 9) = 255 Then strTemp = strTemp & " (all newer devices = FF)"
                     My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry("ADD CASE 2", TraceEventType.Verbose)
                     AddInsteonDeviceDb(FromAddress, x(ms + 7), x(ms + 8), x(ms + 9))
                 End If
             Case 87 ' 0x057 ALL-Link record response - 8 bytes of data
@@ -844,6 +847,7 @@ Module modInsteon
                     FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     ' Check if FromAddress is in device database, if not add it
                     If InsteonNum(FromAddress) = 0 Then
+                        My.Application.Log.WriteEntry("ADD CASE 3", TraceEventType.Verbose)
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
                         ' TODO: Make this: SortInsteon()
                     End If

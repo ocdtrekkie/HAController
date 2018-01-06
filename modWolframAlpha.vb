@@ -14,11 +14,9 @@
     End Sub
 
     Sub Load()
-        If My.Settings.WolframAlpha_Enable = True Then
-            If My.Settings.WolframAlpha_APIKey = "" Then
-                My.Application.Log.WriteEntry("No WolframAlpha API key, asking for it")
-                My.Settings.WolframAlpha_APIKey = InputBox("Enter WolframAlpha API Key. You can get an API key at https://developer.wolframalpha.com by signing up for a free account.", "WolframAlpha API")
-            End If
+        If My.Settings.WolframAlpha_Enable = True AndAlso My.Settings.WolframAlpha_APIKey = "" Then
+            My.Application.Log.WriteEntry("No WolframAlpha API key, asking for it")
+            My.Settings.WolframAlpha_APIKey = InputBox("Enter WolframAlpha API Key. You can get an API key at https://developer.wolframalpha.com by signing up for a free account.", "WolframAlpha API")
         Else
             My.Application.Log.WriteEntry("WolframAlpha module is disabled, module not loaded")
         End If

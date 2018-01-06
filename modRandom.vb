@@ -12,7 +12,7 @@ Module modRandom
     Function RandomInteger(ByVal intMax As Integer)
         ' Returns random integer between 1 and intMax. Attempts to use Random.org if allowed and online.
         Dim intRandom As Integer = 0
-        If My.Settings.Random_RandomOrgEnable = True And modGlobal.IsOnline = True Then
+        If modGlobal.IsOnline = True AndAlso My.Settings.Random_RandomOrgEnable = True Then
             My.Application.Log.WriteEntry("Contacting Random.org for random result.")
             intRandom = TrueRandomInteger(intMax)
             If intRandom = 0 Then
@@ -27,7 +27,7 @@ Module modRandom
     End Function
 
     Function TrueRandomInteger(ByVal intMax As Integer)
-        If My.Settings.Random_RandomOrgAPIKey = "00000000-0000-0000-0000-000000000000" Or My.Settings.Random_RandomOrgAPIKey = "" Then
+        If My.Settings.Random_RandomOrgAPIKey = "00000000-0000-0000-0000-000000000000" OrElse My.Settings.Random_RandomOrgAPIKey = "" Then
             My.Application.Log.WriteEntry("No Random.Org API key, asking for it")
             My.Settings.Random_RandomOrgAPIKey = InputBox("Enter Random.Org API Key. You can get an API key at https://api.random.org/api-keys/beta by entering your email address.", "Random.org API")
         End If
@@ -63,7 +63,7 @@ Module modRandom
         Dim data As RandomOrgResult = json.Deserialize(Of RandomOrgResult)(randomResponseJSON)
         Dim intRandom = CInt(data.result.random.data(0))
 
-        If intRandom >= 1 And intRandom <= intMax Then
+        If intRandom >= 1 AndAlso intRandom <= intMax Then
             Return intRandom
         Else
             My.Application.Log.WriteEntry("Invalid random result", TraceEventType.Warning)

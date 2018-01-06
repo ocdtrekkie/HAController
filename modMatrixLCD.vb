@@ -72,7 +72,7 @@
         Public Property WarningColor As Color
 
         Public Sub Blink(Optional ByVal Times As Integer = 1, Optional ByVal BlinkMS As Integer = 500)
-            If (Times <= 0 Or BlinkMS <= 0) Then
+            If (Times <= 0 OrElse BlinkMS <= 0) Then
                 Throw New ArgumentOutOfRangeException("Cannot blink negative times or for negative duration")
             End If
 
@@ -213,7 +213,7 @@
                 Loop
                 SetSplash(strSplashString)
 
-                If Date.Now.Hour >= 7 And Date.Now.Hour < 19 Then
+                If Date.Now.Hour >= 7 AndAlso Date.Now.Hour < 19 Then
                     SetBrightness(255)
                 Else
                     SetBrightness(10)

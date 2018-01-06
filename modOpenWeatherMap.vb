@@ -22,14 +22,14 @@ Module modOpenWeatherMap
             Dim SpeechString As String
             Dim WeatherRequestString As String
 
-            If My.Settings.GPS_Enable = False And My.Settings.OpenWeatherMap_CityID = "" Then
+            If My.Settings.GPS_Enable = False AndAlso My.Settings.OpenWeatherMap_CityID = "" Then
                 My.Application.Log.WriteEntry("No City ID set, asking for it")
                 My.Settings.OpenWeatherMap_CityID = InputBox("Enter City ID. You can look up your city at http://openweathermap.org/city and find the ID in the URL of the resulting page.", "City ID")
             End If
 
             Dim WeatherData As XmlDocument = New XmlDocument
             Dim WeatherNode As XmlNode
-            If My.Settings.GPS_Enable = True And (modGPS.CurrentLatitude <> 0 Or modGPS.CurrentLongitude <> 0) Then
+            If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
                 WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?lat=" + CStr(modGPS.CurrentLatitude) + "&lon=" + CStr(modGPS.CurrentLongitude) + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"
             Else
                 WeatherRequestString = "http://api.openweathermap.org/data/2.5/weather?id=" + My.Settings.OpenWeatherMap_CityID + "&appid=" + My.Settings.OpenWeatherMap_APIKey + "&mode=xml&units=imperial"

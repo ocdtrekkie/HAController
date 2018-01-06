@@ -148,7 +148,7 @@ Module modMusic
     End Sub
 
     Public Sub SetVolume(ByVal intValue As Integer)
-        If isPlaying = True And intValue >= 0 And intValue <= 100 Then
+        If isPlaying = True AndAlso intValue >= 0 AndAlso intValue <= 100 Then
             MusicPlayer.settings.volume = intValue
             My.Settings.Music_Volume = intValue
         End If

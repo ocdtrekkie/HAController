@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Jacob Weisz")> 
 <Assembly: AssemblyProduct("HAController")>
-<Assembly: AssemblyCopyright("Copyright ©  2015-2017 Jacob Weisz")>
+<Assembly: AssemblyCopyright("Copyright ©  2015-2018 Jacob Weisz")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.24")>
-<Assembly: AssemblyFileVersion("1.0.0.24")>
+<Assembly: AssemblyVersion("1.0.0.25")>
+<Assembly: AssemblyFileVersion("1.0.0.25")>

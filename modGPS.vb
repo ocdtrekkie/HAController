@@ -52,6 +52,15 @@
         End If
     End Sub
 
+    ''' <summary>
+    ''' This function returns the distance between GPS coordinates A and B on a spherical Earth.
+    ''' </summary>
+    ''' <param name="LatA">Latitude of point A</param>
+    ''' <param name="LonA">Longitude of point A</param>
+    ''' <param name="LatB">Latitude of point B</param>
+    ''' <param name="LonB">Longitude of point B</param>
+    ''' <param name="IsMetric">Return kilometers if true, return miles if false</param>
+    ''' <returns>Distance between two points in either kilometers or miles</returns>
     Function CalculateDistance(ByVal LatA As Double, ByVal LonA As Double, ByVal LatB As Double, ByVal LonB As Double, Optional IsMetric As Boolean = False) As Double
         ' Haversine formula implemented based on https://rosettacode.org/wiki/Haversine_formula#C.23
         Dim dLat As Double = ToRadians(LatB - LatA)
@@ -68,6 +77,11 @@
         End If
     End Function
 
+    ''' <summary>
+    ''' This function adds the current location to the PLACES table with the name given.
+    ''' </summary>
+    ''' <param name="strPinName">Name to refer to current location</param>
+    ''' <returns>Result of pinning attempt</returns>
     Function PinLocation(ByVal strPinName As String) As String
         If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
@@ -82,8 +96,12 @@
         End If
     End Function
 
+    ''' <summary>
+    ''' This function returns the location stored in the PLACES table if it is pinned, otherwise returns the original destination.
+    ''' </summary>
+    ''' <param name="strDestination">Destination to look for</param>
+    ''' <returns>Destination found or original query</returns>
     Function ReplacePinnedLocation(ByVal strDestination As String) As String
-        ' Returns location as stored in PLACES table if it is pinned, otherwise returns original destination
         Dim result As String = ""
         Dim strDestinationStripped As String = strDestination.Replace("'", "")
         If System.Text.RegularExpressions.Regex.IsMatch(strDestinationStripped, strLettersPattern) Then
@@ -99,6 +117,11 @@
         End If
     End Function
 
+    ''' <summary>
+    ''' This function sets how often (in seconds), GPS data should be acted upon.
+    ''' </summary>
+    ''' <param name="intRate">Rate in seconds</param>
+    ''' <returns>Result of rate limit set</returns>
     Function SetRateLimit(Optional ByVal intRate As Integer = 1) As String
         If intRate > 1 Then
             My.Settings.GPS_RateLimit = intRate
@@ -111,6 +134,11 @@
         End If
     End Function
 
+    ''' <summary>
+    ''' This function converts degrees to radians.
+    ''' </summary>
+    ''' <param name="Angle">Angle in degrees</param>
+    ''' <returns>Angle in radians</returns>
     Function ToRadians(ByVal Angle As Double) As Double
         Return Math.PI * Angle / 180.0
     End Function

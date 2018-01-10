@@ -1119,6 +1119,11 @@ Module modInsteon
         End If
     End Function
 
+    ''' <summary>
+    ''' Returns true if input is a proper Insteon address.
+    ''' </summary>
+    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
+    ''' <returns>True if formatted correctly, false otherwise</returns>
     Public Function IsInsteonAddress(ByVal strAddress As String) As Boolean
         If strAddress.Length = 8 Then
             Dim arrAddress() As String = strAddress.Split(".")
@@ -1157,6 +1162,11 @@ Module modInsteon
         End If
     End Function
 
+    ''' <summary>
+    ''' This function returns the database ID of an Insteon device in the INSTEON_DEVICES table.
+    ''' </summary>
+    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
+    ''' <returns>Result index or 0 for no result</returns>
     Function CheckDbForInsteon(ByVal strAddress As String) As Integer
         Dim result As Integer = New Integer
 
@@ -1170,6 +1180,11 @@ Module modInsteon
         End If
     End Function
 
+    ''' <summary>
+    ''' This function returns the Insteon address of a given device nickname.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of device to look for</param>
+    ''' <returns>Insteon address in XX.XX.XX format</returns>
     Function GetInsteonAddressFromNickname(ByVal strNickname) As String
         Dim result As String = ""
 
@@ -1177,6 +1192,11 @@ Module modInsteon
         Return result
     End Function
 
+    ''' <summary>
+    ''' This function returns the description of an Insteon command.
+    ''' </summary>
+    ''' <param name="ICmd">Integer or short of command</param>
+    ''' <returns>Description of Insteon command</returns>
     Function InsteonCommandLookup(ByVal ICmd) As String
         Select Case ICmd
             Case 1
@@ -1324,6 +1344,12 @@ Module modInsteon
         End Select
     End Function
 
+    ''' <summary>
+    ''' This function returns the name of an Insteon module based on it's device identifiers.
+    ''' </summary>
+    ''' <param name="DevCat">Device category</param>
+    ''' <param name="SubCat">Device subcategory</param>
+    ''' <returns>Model and name of Insteon device</returns>
     Function InsteonDeviceLookup(ByVal DevCat As Short, ByVal SubCat As Short) As String
         Select Case DevCat
             Case 0
@@ -1683,6 +1709,12 @@ Module modInsteon
         End Select
     End Function
 
+    ''' <summary>
+    ''' This function takes notification actions regarding a door sensor sending a message.
+    ''' </summary>
+    ''' <param name="comm1"></param>
+    ''' <param name="comm2"></param>
+    ''' <returns>Text definition of what happened</returns>
     Function InsteonDoorSensorResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Select Case comm1
             Case 17
@@ -1705,6 +1737,11 @@ Module modInsteon
         End Select
     End Function
 
+    ''' <summary>
+    ''' This function takes notification actions regarding the Smoke Bridge module sending a message.
+    ''' </summary>
+    ''' <param name="ToBit">Byte representing message received</param>
+    ''' <returns>Text defintion of what happened</returns>
     Function InsteonSmokeBridgeResponse(ByVal ToBit As Byte) As String
         Select Case ToBit
             Case 1

@@ -119,6 +119,17 @@ Public Module modGlobal
                 If My.Application.Info.Version.Revision.ToString = strLatestVersion Then
                     Return "No update available"
                 Else
+                    Try
+                        modSpeech.Say("Downloading update", False)
+                        My.Computer.Network.DownloadFile("https://hac.jacobweisz.com/dl/update.zip", "C:\HAC\scripts\update.zip")
+
+                        My.Application.Log.WriteEntry("Decompressing update", TraceEventType.Information)
+                        System.IO.Directory.CreateDirectory("C:\HAC\scripts\temp")
+                        System.IO.Compression.ZipFile.ExtractToDirectory("C:\HAC\scripts\update.zip", "C:\HAC\scripts\temp")
+                    Catch NetExcep As System.Net.WebException
+                        My.Application.Log.WriteException(NetExcep)
+                        Return "Unable to download updates"
+                    End Try
                     Return " "
                 End If
             Catch NetExcep As System.Net.WebException

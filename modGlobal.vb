@@ -75,7 +75,7 @@ Public Module modGlobal
         Return LogFile.Length
     End Function
 
-    Function ClickOnceUpdate() As String
+    Function RunUpdate() As String
         ' HAController isn't fully functional in ClickOnce mode, this will almost never run
         Dim info As System.Deployment.Application.UpdateCheckInfo = Nothing
 

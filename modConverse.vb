@@ -268,9 +268,12 @@ Module modConverse
                         End If
                     End If
                 Case "run"
-                    If inputData(1) = "script" Then
-                        strCommandResponse = modComputer.RunScript(inputData(2))
-                    End If
+                    Select Case inputData(1)
+                        Case "script"
+                            strCommandResponse = modComputer.RunScript(inputData(2))
+                        Case "update"
+                            strCommandResponse = modGlobal.RunUpdate()
+                    End Select
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
                     If RemoteCommand = True Then
@@ -371,7 +374,7 @@ Module modConverse
                     End Select
                 Case "update"
                     If inputData(1) = "now" Then
-                        strCommandResponse = modGlobal.ClickOnceUpdate()
+                        strCommandResponse = modGlobal.RunUpdate()
                     End If
                 Case "what"
                     If inputData(1) = "do" AndAlso inputData(2) = "you" AndAlso inputData(3) = "do" Then

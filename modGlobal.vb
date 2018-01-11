@@ -126,11 +126,16 @@ Public Module modGlobal
                         My.Application.Log.WriteEntry("Decompressing update", TraceEventType.Information)
                         System.IO.Directory.CreateDirectory("C:\HAC\scripts\temp")
                         System.IO.Compression.ZipFile.ExtractToDirectory("C:\HAC\scripts\update.zip", "C:\HAC\scripts\temp")
+                        System.IO.File.Delete("C:\HAC\scripts\update.zip")
+
+                        modSpeech.Say("Restarting application", False)
+                        modComputer.RunScript("updateoverwrite")
+
+                        Return " "
                     Catch NetExcep As System.Net.WebException
                         My.Application.Log.WriteException(NetExcep)
                         Return "Unable to download updates"
                     End Try
-                    Return " "
                 End If
             Catch NetExcep As System.Net.WebException
                 My.Application.Log.WriteException(NetExcep)

@@ -80,6 +80,7 @@ Public Module modGlobal
         Dim info As System.Deployment.Application.UpdateCheckInfo = Nothing
 
         If (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) Then
+            My.Application.Log.WriteEntry("Application is a ClickOnce application", TraceEventType.Information)
             Dim AD As System.Deployment.Application.ApplicationDeployment = System.Deployment.Application.ApplicationDeployment.CurrentDeployment
 
             Try
@@ -109,8 +110,21 @@ Public Module modGlobal
                 Return "No update available"
             End If
         Else
-            My.Application.Log.WriteEntry("Application is not a ClickOnce application", TraceEventType.Warning)
-            Return "Application is not a ClickOnce application"
+            My.Application.Log.WriteEntry("Application is not a ClickOnce application", TraceEventType.Information)
+
+            Dim UpdateDownloadClient As System.Net.WebClient = New System.Net.WebClient
+            Try
+                Dim strLatestVersion As String = UpdateDownloadClient.DownloadString("https://hac.jacobweisz.com/dl/current.txt")
+                My.Application.Log.WriteEntry("Application version is " & My.Application.Info.Version.Revision.ToString & ". Latest version is " & strLatestVersion)
+                If My.Application.Info.Version.Revision.ToString = strLatestVersion Then
+                    Return "No update available"
+                Else
+                    Return " "
+                End If
+            Catch NetExcep As System.Net.WebException
+                My.Application.Log.WriteException(NetExcep)
+                Return "Unable to check for updates"
+            End Try
         End If
     End Function
 End Module

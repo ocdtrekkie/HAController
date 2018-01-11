@@ -29,8 +29,13 @@
     Function SpokenQuery(ByVal strQuestion As String) As String
         If My.Settings.WolframAlpha_Enable = True Then
             Dim RequestClient As System.Net.WebClient = New System.Net.WebClient
-            Dim strQuestionResult As String = RequestClient.DownloadString("http://api.wolframalpha.com/v1/spoken?appid=" & My.Settings.WolframAlpha_APIKey & "&i=" & System.Net.WebUtility.UrlEncode(strQuestion))
-            Return strQuestionResult
+            Try
+                Dim strQuestionResult As String = RequestClient.DownloadString("http://api.wolframalpha.com/v1/spoken?appid=" & My.Settings.WolframAlpha_APIKey & "&i=" & System.Net.WebUtility.UrlEncode(strQuestion))
+                Return strQuestionResult
+            Catch NetExcep As System.Net.WebException
+                My.Application.Log.WriteException(NetExcep)
+                Return "Unable to query WolframAlpha"
+            End Try
         Else
             Return "WolframAlpha module is disabled, query not sent"
         End If

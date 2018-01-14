@@ -10,6 +10,7 @@
     Public DirectionsNarrative() As String
     Public DirectionsLatitudeList() As Double
     Public DirectionsLongitudeList() As Double
+    Public DistanceToNext As Double = 0
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
     Public isNavigating As Boolean
@@ -218,8 +219,8 @@
                         modDatabase.Execute("INSERT INTO LOCATION (Date, Latitude, Longitude, Speed) VALUES('" + Now.ToUniversalTime.ToString("u") + "', " + CStr(dblLatitude) + ", " + CStr(dblLongitude) + ", " + CStr(dblSpeed) + ")")
 
                         If isNavigating = True Then
-                            Dim dblDistanceToNext As Double = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
-                            My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(dblDistanceToNext) & " miles")
+                            DistanceToNext = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
+                            My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(DistanceToNext) & " miles")
                         End If
                     End If
                 End If

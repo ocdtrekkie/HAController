@@ -303,13 +303,20 @@ Module modConverse
                     End If
                 Case "sh", "show"
                     Select Case inputData(1)
-                        Case "gps"
+                        Case "coordinates", "coords", "gps"
                             If My.Settings.GPS_Enable = True Then
                                 strCommandResponse = modGPS.CurrentLatitude.ToString.Substring(0, 7) & ", " & modGPS.CurrentLongitude.ToString.Substring(0, 7)
                             Else
                                 strCommandResponse = "Unavailable"
                             End If
                             modMatrixLCD.ShowNotification("GPS Coordinates:", strCommandResponse)
+                        Case "dist", "distance"
+                            If My.Settings.GPS_Enable = True AndAlso modGPS.isNavigating = True Then
+                                strCommandResponse = CStr(Math.Round(modGPS.DistanceToNext, 1)) & " miles"
+                            Else
+                                strCommandResponse = "Unavailable"
+                            End If
+                            modMatrixLCD.ShowNotification("Distance to Next", strCommandResponse)
                         Case "ver", "version"
                             strCommandResponse = My.Application.Info.Version.ToString
                             modMatrixLCD.ShowNotification("HAController", strCommandResponse)

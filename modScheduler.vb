@@ -1,5 +1,6 @@
 ﻿Imports Quartz
 Imports Quartz.Impl
+Imports Quartz.Logging
 
 ' modScheduler cannot be disabled, Disable and Enable methods will be skipped
 
@@ -7,6 +8,42 @@ Module modScheduler
     ' construct a scheduler factory
     Dim schedFact As ISchedulerFactory = New StdSchedulerFactory()
     Public sched As IScheduler
+
+    Private Class QuartzLogProvider : Implements ILogProvider
+        Public Function GetLogger(ByVal name As String) As Logger Implements ILogProvider.GetLogger
+            Dim EventType As TraceEventType
+            Return Function(level, func, exception, parameters)
+                       If func IsNot Nothing Then
+                           Select Case level
+                               Case LogLevel.Debug
+                                   EventType = TraceEventType.Verbose
+                               Case LogLevel.Error
+                                   EventType = TraceEventType.Error
+                               Case LogLevel.Fatal
+                                   EventType = TraceEventType.Critical
+                               Case LogLevel.Info
+                                   EventType = TraceEventType.Information
+                               Case LogLevel.Trace
+                                   EventType = TraceEventType.Verbose
+                               Case LogLevel.Warn
+                                   EventType = TraceEventType.Warning
+                           End Select
+                           My.Application.Log.WriteEntry("Quartz.NET: " & func(), EventType)
+                       End If
+
+                       Return True
+                   End Function
+        End Function
+
+        Public Function OpenNestedContext(ByVal message As String) As IDisposable Implements ILogProvider.OpenNestedContext
+            Throw New NotImplementedException()
+        End Function
+
+        Public Function OpenMappedContext(ByVal key As String, ByVal value As String) As IDisposable Implements ILogProvider.OpenMappedContext
+            Throw New NotImplementedException()
+        End Function
+    End Class
+
 
     Public Class ScheduleJob : Implements IJob
         Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
@@ -23,6 +60,7 @@ Module modScheduler
     End Class
 
     Async Sub Load()
+        LogProvider.SetCurrentLogProvider(New QuartzLogProvider)
         My.Application.Log.WriteEntry("Getting scheduler")
         sched = Await schedFact.GetScheduler()
         My.Application.Log.WriteEntry("Starting scheduler")

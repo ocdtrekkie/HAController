@@ -118,7 +118,8 @@ Public Module modGlobal
                 My.Application.Log.WriteEntry("Application version is " & My.Application.Info.Version.Revision.ToString & ". Latest version is " & strLatestVersion)
                 If My.Application.Info.Version.Revision.ToString = strLatestVersion Then
                     Return "No update available"
-                Else
+                ElseIf CInt(My.Application.Info.Version.Revision.ToString) < CInt(strLatestVersion) Then
+                    My.Application.Log.WriteEntry("Newer version available")
                     Try
                         modSpeech.Say("Downloading update", False)
                         My.Computer.Network.DownloadFile("https://hac.jacobweisz.com/dl/update.zip", "C:\HAC\scripts\update.zip")
@@ -136,6 +137,8 @@ Public Module modGlobal
                         My.Application.Log.WriteException(NetExcep)
                         Return "Unable to download updates"
                     End Try
+                Else
+                    Return "Application version is newer than online."
                 End If
             Catch NetExcep As System.Net.WebException
                 My.Application.Log.WriteException(NetExcep)

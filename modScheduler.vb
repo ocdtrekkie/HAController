@@ -41,8 +41,8 @@ Module modScheduler
         Await sched.ScheduleJob(job, trigger)
     End Sub
 
-    Sub Unload()
+    Async Sub Unload()
         My.Application.Log.WriteEntry("Shutting down scheduler")
-        sched.Shutdown()
+        Await sched.Shutdown()
     End Sub
 End Module

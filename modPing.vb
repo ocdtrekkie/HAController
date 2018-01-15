@@ -76,7 +76,7 @@ Module modPing
     End Function
 
     Public Class CheckInternetConnectivity : Implements IJob
-        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             My.Application.Log.WriteEntry("Checking Internet connectivity")
             Dim response As String = ""
 
@@ -90,6 +90,7 @@ Module modPing
                 My.Application.Log.WriteEntry(response, TraceEventType.Warning)
                 modGlobal.IsOnline = False
             End If
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 End Module

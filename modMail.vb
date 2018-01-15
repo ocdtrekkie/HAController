@@ -284,10 +284,11 @@ Module modMail
     End Function
 
     Public Class CheckMailSchedule : Implements IJob
-        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             If modGlobal.IsOnline = True Then
                 CheckMail()
             End If
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 End Module

@@ -112,8 +112,9 @@ Module modOpenWeatherMap
     End Sub
 
     Public Class WeatherUpdateSchedule : Implements IJob
-        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             GatherWeatherData()
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 End Module

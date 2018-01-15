@@ -1836,21 +1836,23 @@ Module modInsteon
     End Function
 
     Public Class InsteonAlarmControlSchedule : Implements IJob
-        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             My.Application.Log.WriteEntry("Executing scheduled InsteonAlarmControl")
             Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
             Dim response As String = ""
 
             InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetString("Command1"), CInt(dataMap.GetString("intSeconds")))
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 
     Public Class InsteonCheckTemperatureSchedule : Implements IJob
-        Public Sub Execute(context As IJobExecutionContext) Implements IJob.Execute
+        Public Async Function Execute(context As IJobExecutionContext) As Task Implements IJob.Execute
             My.Application.Log.WriteEntry("Executing scheduled InsteonCheckTemperature")
             Dim response As String = ""
 
             InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, "read")
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 End Module

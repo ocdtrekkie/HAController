@@ -6,12 +6,10 @@ Imports Quartz.Impl
 Module modScheduler
     ' construct a scheduler factory
     Dim schedFact As ISchedulerFactory = New StdSchedulerFactory()
-
-    ' get a scheduler
-    Public sched As IScheduler = schedFact.GetScheduler()
+    Public sched As IScheduler
 
     Public Class ScheduleJob : Implements IJob
-        Public Sub Execute(context As Quartz.IJobExecutionContext) Implements Quartz.IJob.Execute
+        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
             Dim response As String = ""
             'write your schedule job
@@ -20,24 +18,27 @@ Module modScheduler
             Threading.Thread.Sleep(2000)
             modInsteon.InsteonLightControl(My.Settings.Insteon_WakeLightAddr, response, "on")
             ' Tested: Four seconds is EXACTLY enough to make you want to rip the BuzzLinc out of the wall, but too short to let you do so.
-        End Sub
+            Await Task.Delay(1)
+        End Function
     End Class
 
-    Sub Load()
+    Async Sub Load()
+        My.Application.Log.WriteEntry("Getting scheduler")
+        sched = Await schedFact.GetScheduler()
         My.Application.Log.WriteEntry("Starting scheduler")
-        sched.Start()
+        Await sched.Start()
 
         ' TEMP WAKE ALARM CODE
         ' construct job info
-        Dim intHour As Integer = 6
-        Dim intMinute As Integer = 50
+        Dim intHour As Integer = 7
+        Dim intMinute As Integer = 5
         Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).UsingJobData("intHour", CStr(intHour)).UsingJobData("intMinute", CStr(intMinute)).WithIdentity("wakejob", "modscheduler").Build()
         ' construct trigger
 
         Dim tempTrigger As ITrigger = TriggerBuilder.Create().WithIdentity("waketrigger", "modscheduler").StartNow().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(intHour, intMinute)).Build()
         Dim trigger As ICronTrigger = DirectCast(tempTrigger, ICronTrigger)
 
-        sched.ScheduleJob(job, trigger)
+        Await sched.ScheduleJob(job, trigger)
     End Sub
 
     Sub Unload()

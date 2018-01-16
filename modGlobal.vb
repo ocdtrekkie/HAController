@@ -10,34 +10,35 @@ Public Module modGlobal
     Public DeviceCollection As New ArrayList
 
     Sub LoadModules()
+        'TODO: Load these modules Async, waiting for dependent tasks to finish first
         My.Application.Log.WriteEntry("Loading database module")
-        modDatabase.Load()
+        modDatabase.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading scheduler module")
-        modScheduler.Load()
+        modScheduler.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading ping module")
-        modPing.Load()
+        modPing.Load() 'Dependencies: Scheduler
         My.Application.Log.WriteEntry("Loading Insteon module")
-        modInsteon.Load()
+        modInsteon.Load() 'Dependencies: Database, Scheduler, Mail
         My.Application.Log.WriteEntry("Loading speech module")
-        modSpeech.Load()
+        modSpeech.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
-        modOpenWeatherMap.Load()
+        modOpenWeatherMap.Load() 'Dependencies: Database, Scheduler
         My.Application.Log.WriteEntry("Loading Matrix LCD module")
-        modMatrixLCD.Load()
+        modMatrixLCD.Load() 'Dependencies: Speech
         My.Application.Log.WriteEntry("Loading GPS module")
-        modGPS.Load()
+        modGPS.Load() 'Dependencies: Database
         My.Application.Log.WriteEntry("Loading MapQuest module")
-        modMapQuest.Load()
+        modMapQuest.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading WolframAlpha module")
-        modWolframAlpha.Load()
+        modWolframAlpha.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
-        modDreamCheeky.Load()
+        modDreamCheeky.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading mail module")
-        modMail.Load()
+        modMail.Load() 'Dependencies: Scheduler, FIX: Don't check first mail until load complete
         My.Application.Log.WriteEntry("Loading music module")
-        modMusic.Load()
+        modMusic.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading computer module")
-        modComputer.Load()
+        modComputer.Load() 'Dependencies: None
     End Sub
 
     Sub SaveCollection()

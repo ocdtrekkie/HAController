@@ -170,5 +170,11 @@
     <Setting Name="WolframAlpha_APIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Global_UpdateCheckURI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://hac.jacobweisz.com/dl/current.txt</Value>
+    </Setting>
+    <Setting Name="Global_UpdateFileURI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://hac.jacobweisz.com/dl/update.zip</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -717,6 +717,24 @@ Namespace My
                 Me("WolframAlpha_APIKey") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("https://hac.jacobweisz.com/dl/current.txt")>  _
+        Public ReadOnly Property Global_UpdateCheckURI() As String
+            Get
+                Return CType(Me("Global_UpdateCheckURI"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("https://hac.jacobweisz.com/dl/update.zip")>  _
+        Public ReadOnly Property Global_UpdateFileURI() As String
+            Get
+                Return CType(Me("Global_UpdateFileURI"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

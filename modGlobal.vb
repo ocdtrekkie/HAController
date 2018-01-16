@@ -114,7 +114,7 @@ Public Module modGlobal
 
             Dim UpdateDownloadClient As System.Net.WebClient = New System.Net.WebClient
             Try
-                Dim strLatestVersion As String = UpdateDownloadClient.DownloadString("https://hac.jacobweisz.com/dl/current.txt")
+                Dim strLatestVersion As String = UpdateDownloadClient.DownloadString(My.Settings.Global_UpdateCheckURI)
                 My.Application.Log.WriteEntry("Application version is " & My.Application.Info.Version.Revision.ToString & ". Latest version is " & strLatestVersion)
                 If My.Application.Info.Version.Revision.ToString = strLatestVersion Then
                     Return "No update available"
@@ -122,7 +122,7 @@ Public Module modGlobal
                     My.Application.Log.WriteEntry("Newer version available")
                     Try
                         modSpeech.Say("Downloading update", False)
-                        My.Computer.Network.DownloadFile("https://hac.jacobweisz.com/dl/update.zip", "C:\HAC\scripts\update.zip")
+                        My.Computer.Network.DownloadFile(My.Settings.Global_UpdateFileURI, "C:\HAC\scripts\update.zip")
 
                         My.Application.Log.WriteEntry("Decompressing update", TraceEventType.Information)
                         System.IO.Directory.CreateDirectory("C:\HAC\scripts\temp")

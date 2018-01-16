@@ -54,16 +54,13 @@ Namespace My
             End Get
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("C:\HAC\HACdb.sqlite")>  _
-        Public Property Database_FileURI() As String
+        Public ReadOnly Property Database_FileURI() As String
             Get
                 Return CType(Me("Database_FileURI"),String)
             End Get
-            Set
-                Me("Database_FileURI") = value
-            End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
@@ -448,16 +445,13 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("C:\HAC\HAClog.txt")>  _
-        Public Property Global_LogFileURI() As String
+        Public ReadOnly Property Global_LogFileURI() As String
             Get
                 Return CType(Me("Global_LogFileURI"),String)
             End Get
-            Set
-                Me("Global_LogFileURI") = value
-            End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _

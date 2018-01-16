@@ -25,7 +25,7 @@ Module modComputer
     End Sub
 
     Sub GetInfo()
-        My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion)
+        My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion & "/" & GetOSVersion())
         My.Application.Log.WriteEntry("Computer Name: " & My.Computer.Name)
         My.Application.Log.WriteEntry("Computer Language: " & Globalization.CultureInfo.CurrentCulture.DisplayName)
 
@@ -57,6 +57,18 @@ Module modComputer
             End If
         Next
     End Sub
+
+    Function GetOSVersion() As String
+        Dim sCaption As String = String.Empty
+        Dim sVersion As String = String.Empty
+        Dim searcher As New ManagementObjectSearcher("root\CIMV2",
+                "SELECT * FROM Win32_OperatingSystem")
+        For Each queryObj As ManagementObject In searcher.Get()
+            sCaption = DirectCast(queryObj("Caption"), String)
+            sVersion = DirectCast(queryObj("Version"), String)
+        Next
+        Return sVersion
+    End Function
 
     Function GetProcessList() As String
         Dim ProcessList As String = ""

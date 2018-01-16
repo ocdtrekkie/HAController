@@ -320,6 +320,9 @@ Module modConverse
                         Case "ver", "version"
                             strCommandResponse = My.Application.Info.Version.ToString
                             modMatrixLCD.ShowNotification("HAController", strCommandResponse)
+                        Case "winver"
+                            strCommandResponse = modComputer.GetOSVersion()
+                            modMatrixLCD.ShowNotification("Windows", strCommandResponse)
                     End Select
                 Case "shut", "shutdown"
                     If inputData(inputData.Length - 1) = "video" Then

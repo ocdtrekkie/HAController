@@ -4,21 +4,21 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 
 ## Modules ##
 
-* Form1 is basically meant to get factored out eventually in it's entirety.
-* modComputer will have features for monitoring and controlling the local computer.
+* Form1 is the UI screen which handles user input collection and some shortcut buttons.
+* modComputer can monitor and control the local computer, including audio and video recording.
 * modConverse is a cross between a command line interface and a conversation system.
 * modDatabase handles the SQLite database that will store persistent data about the system.
-* modGlobal will mostly just hang onto stuff that needs to be accessible to the whole program.
+* modGlobal mostly just hangs onto stuff that needs to be accessible to the whole program.
 * modRandom generates random numbers and can optionally query Random.org for true random results.
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
 The following modules should function optionally:
-* modDreamCheeky will support the Dream Cheeky Big Red Button and WebMail Notifier devices.
-* modGPS will collect location data from NMEA-compatible GPS receivers.
-* modInsteon will handle Insteon and X10 home automation devices.
-* modOpenWeatherMap gathers weather data from an API to present to the user.
+* modDreamCheeky supports the Dream Cheeky Big Red Button and WebMail Notifier devices.
+* modGPS collects location data from NMEA-compatible GPS receivers and manages navigation.
+* modInsteon handles Insteon home automation devices, and may eventually add legacy X10.
+* modOpenWeatherMap gathers weather data from the OpenWeatherMap API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
-* modMapQuest uses the MapQuest API to get location information.
+* modMapQuest uses the MapQuest API to get location information and directions.
 * modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
 * modMusic implements Windows Media Player to play music.
 * modPing handles checks for the Internet and other devices on the network.

@@ -59,15 +59,14 @@ Module modComputer
     End Sub
 
     Function GetOSVersion() As String
-        Dim sCaption As String = String.Empty
-        Dim sVersion As String = String.Empty
-        Dim searcher As New ManagementObjectSearcher("root\CIMV2",
-                "SELECT * FROM Win32_OperatingSystem")
-        For Each queryObj As ManagementObject In searcher.Get()
-            sCaption = DirectCast(queryObj("Caption"), String)
-            sVersion = DirectCast(queryObj("Version"), String)
-        Next
-        Return sVersion
+        Dim strBuild1, strBuild2, strBuild3, strBuild4 As String
+        Dim regKey As Microsoft.Win32.RegistryKey
+        regKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion")
+        strBuild1 = regKey.GetValue("CurrentMajorVersionNumber")
+        strBuild2 = regKey.GetValue("CurrentMinorVersionNumber")
+        strBuild3 = regKey.GetValue("CurrentBuild")
+        strBuild4 = regKey.GetValue("UBR")
+        Return strBuild1 & "." & strBuild2 & "." & strBuild3 & "." & strBuild4
     End Function
 
     Function GetProcessList() As String

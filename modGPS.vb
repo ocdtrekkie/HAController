@@ -98,6 +98,21 @@
     End Function
 
     ''' <summary>
+    ''' This function removes all entries from the PLACES table with the specified name.
+    ''' </summary>
+    ''' <param name="strPinName">Name of the pinned location to delete</param>
+    ''' <returns></returns>
+    Function RemovePinnedLocation(ByVal strPinName As String) As String
+        strPinName = strPinName.Replace("'", "")
+        If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
+            modDatabase.Execute("DELETE FROM PLACES WHERE Name = '" & strPinName & "'")
+            Return strPinName + " removed from your places"
+        Else
+            Return "Invalid pin name"
+        End If
+    End Function
+
+    ''' <summary>
     ''' This function returns the location stored in the PLACES table if it is pinned, otherwise returns the original destination.
     ''' </summary>
     ''' <param name="strDestination">Destination to look for</param>

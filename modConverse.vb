@@ -465,6 +465,11 @@ Module modConverse
                                     strCommandResponse = modComputer.RebootHost()
                                     frmMain.Close()
                                 End If
+                            Case "remove"
+                                If inputData(4) = "pin" Then
+                                    Dim strPinName As String = strInputString.Replace("would you kindly remove pin ", "")
+                                    strCommandResponse = modGPS.RemovePinnedLocation(strPinName)
+                                End If
                             Case "shut"
                                 If inputData(4) = "down" And inputData(5) = "host" Then
                                     strCommandResponse = modComputer.ShutdownHost()

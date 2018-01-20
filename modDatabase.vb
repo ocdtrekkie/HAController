@@ -9,7 +9,7 @@ Module modDatabase
         Execute("CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT UNIQUE)")
         Execute("CREATE TABLE IF NOT EXISTS ENVIRONMENT(Id INTEGER PRIMARY KEY, Date TEXT, Source TEXT, Location TEXT, Temperature INTEGER, Humidity INTEGER, Condition TEXT)")
         Execute("CREATE TABLE IF NOT EXISTS LOCATION(Id INTEGER PRIMARY KEY, Date TEXT, Latitude REAL, Longitude REAL, Speed REAL)")
-        Execute("CREATE TABLE IF NOT EXISTS PERSONS(Id INTEGER PRIMARY KEY, Date TEXT, FirstName TEXT, LastName TEXT, Nickname TEXT, PersonType INTEGER, Email TEXT, PhoneNumber TEXT, PhoneCarrier INTEGER, Address TEXT, Gender INTEGER, IsSocial INTEGER")
+        Execute("CREATE TABLE IF NOT EXISTS PERSONS(Id INTEGER PRIMARY KEY, Date TEXT, FirstName TEXT, LastName TEXT, Nickname TEXT, PersonType INTEGER, Email TEXT, PhoneNumber TEXT, PhoneCarrier INTEGER, Address TEXT, Gender INTEGER, IsSocial INTEGER)")
         Execute("CREATE TABLE IF NOT EXISTS PLACES(Id INTEGER PRIMARY KEY, Date TEXT, Name TEXT, Location TEXT)")
     End Sub
 
@@ -89,6 +89,7 @@ Module modDatabase
             My.Application.Log.WriteEntry("Connecting to database")
             conn.Open()
             CreateDb()
+            CheckDbForPerson("me")
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try
@@ -98,4 +99,17 @@ Module modDatabase
         My.Application.Log.WriteEntry("Closing database")
         conn.Close()
     End Sub
+
+    Function CheckDbForPerson(ByVal strNickname As String) As Integer
+        Dim result As Integer = New Integer
+
+        modDatabase.ExecuteScalar("SELECT Id FROM PERSONS WHERE Nickname = """ + strNickname + """", result)
+        If result <> 0 Then
+            My.Application.Log.WriteEntry(strNickname + " database ID is " + result.ToString)
+            Return result
+        Else
+            My.Application.Log.WriteEntry(strNickname + " is not in the contact database")
+            Return 0
+        End If
+    End Function
 End Module

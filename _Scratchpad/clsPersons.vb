@@ -7,7 +7,8 @@ Class HAUser
 	Public Property PersonType As PersonTypes
     Public Property Email As String
 	Public Property PhoneNum As String
-	Public Property PhoneCarrier As String 'Used for emailing cell phones, like @vtext.com for Verizon
+	Public Property PhoneCarrier As PhoneCarriers 'Used for emailing cell phones, like @vtext.com for Verizon
+	Public Property Address As String
     Public Property Gender As Genders
     Public Property IsSocial As Boolean 'Use friendlier responses
 End Class
@@ -26,15 +27,10 @@ Public Enum PersonTypes As Integer
 	Admin = 4 'Primary user
 End Enum
 
-'Table PERSONS
-'------------
-'Id INTEGER PRIMARY KEY
-'FirstName TEXT
-'LastName TEXT
-'Nickname TEXT
-'PersonType INTEGER
-'Email TEXT
-'PhoneNum TEXT
-'PhoneCarrier TEXT
-'Gender INTEGER
-'IsSocial BOOLEAN
+Public Enum PhoneCarriers As Integer
+	Unknown = 0
+	Verizon = 1
+	ATT = 2
+	Sprint = 3
+	TMobile = 4
+End Enum

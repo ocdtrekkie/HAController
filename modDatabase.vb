@@ -89,7 +89,7 @@ Module modDatabase
             My.Application.Log.WriteEntry("Connecting to database")
             conn.Open()
             CreateDb()
-            CheckDbForPerson("me")
+            AddPersonDb("me", 4)
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try
@@ -98,6 +98,12 @@ Module modDatabase
     Sub Unload()
         My.Application.Log.WriteEntry("Closing database")
         conn.Close()
+    End Sub
+
+    Sub AddPersonDb(ByVal strNickname As String, Optional ByVal PersonType As Integer = 0)
+        If CheckDbForPerson(strNickname) = 0 Then
+            modDatabase.Execute("INSERT INTO PERSONS (Date, Nickname, PersonType) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strNickname + "', '" + CStr(PersonType) + "')")
+        End If
     End Sub
 
     Function CheckDbForPerson(ByVal strNickname As String) As Integer

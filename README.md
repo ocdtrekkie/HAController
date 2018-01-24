@@ -21,6 +21,7 @@ The following modules should function optionally:
 * modMapQuest uses the MapQuest API to get location information and directions.
 * modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
 * modMusic implements Windows Media Player to play music.
+* modPersons contains functions for managing users and contacts.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
 * modWolframAlpha can request general knowledge from Wolfram Alpha's API.

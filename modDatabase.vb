@@ -89,7 +89,7 @@ Module modDatabase
             My.Application.Log.WriteEntry("Connecting to database")
             conn.Open()
             CreateDb()
-            AddPersonDb("me", 4)
+            modPersons.AddPersonDb("me", 4)
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try
@@ -99,23 +99,4 @@ Module modDatabase
         My.Application.Log.WriteEntry("Closing database")
         conn.Close()
     End Sub
-
-    Sub AddPersonDb(ByVal strNickname As String, Optional ByVal PersonType As Integer = 0)
-        If CheckDbForPerson(strNickname) = 0 Then
-            modDatabase.Execute("INSERT INTO PERSONS (Date, Nickname, PersonType) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strNickname + "', '" + CStr(PersonType) + "')")
-        End If
-    End Sub
-
-    Function CheckDbForPerson(ByVal strNickname As String) As Integer
-        Dim result As Integer = New Integer
-
-        modDatabase.ExecuteScalar("SELECT Id FROM PERSONS WHERE Nickname = """ + strNickname + """", result)
-        If result <> 0 Then
-            My.Application.Log.WriteEntry(strNickname + " database ID is " + result.ToString)
-            Return result
-        Else
-            My.Application.Log.WriteEntry(strNickname + " is not in the contact database")
-            Return 0
-        End If
-    End Function
 End Module

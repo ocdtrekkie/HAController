@@ -4,15 +4,17 @@ Huge credit for all of the INSTEON code that I built off of goes to **Jonathan D
 
 ## Modules ##
 
+The following modules are core modules which cannot be disabled:
 * Form1 is the UI screen which handles user input collection and some shortcut buttons.
 * modComputer can monitor and control the local computer, including audio and video recording.
 * modConverse is a cross between a command line interface and a conversation system.
 * modDatabase handles the SQLite database that will store persistent data about the system.
 * modGlobal mostly just hangs onto stuff that needs to be accessible to the whole program.
+* modPersons contains functions for managing users and contacts.
 * modRandom generates random numbers and can optionally query Random.org for true random results.
 * modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
-The following modules should function optionally:
+The following modules function optionally and add features:
 * modDreamCheeky supports the Dream Cheeky Big Red Button and WebMail Notifier devices.
 * modGPS collects location data from NMEA-compatible GPS receivers and manages navigation.
 * modInsteon handles Insteon home automation devices, and may eventually add legacy X10.
@@ -21,7 +23,6 @@ The following modules should function optionally:
 * modMapQuest uses the MapQuest API to get location information and directions.
 * modMatrixLCD handles Matrix Orbital-compatible LCDs like the Adafruit LCD Backpack.
 * modMusic implements Windows Media Player to play music.
-* modPersons contains functions for managing users and contacts.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
 * modWolframAlpha can request general knowledge from Wolfram Alpha's API.

@@ -16,6 +16,11 @@ Module modConverse
             Dim inputData() = strInputString.Split(" ")
 
             Select Case inputData(0)
+                Case "add"
+                    If inputData(1) = "contact" OrElse inputData(1) = "person" Then
+                        modPersons.AddPersonDb(inputData(2))
+                        strCommandResponse = "Contact added"
+                    End If
                 Case "ask"
                     If inputData(1) = "wolfram" Then
                         Dim strQuestion As String = strInputString.Replace("ask wolfram ", "")

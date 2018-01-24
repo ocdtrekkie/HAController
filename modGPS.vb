@@ -14,7 +14,6 @@
     Public GPSReceiver As HAGPSDevice
     Public GPSReceiverIndex As Integer
     Public isNavigating As Boolean
-    Dim strLettersPattern As String = "^[a-zA-Z ]{1,25}$"
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading GPS module")
@@ -86,7 +85,7 @@
     Function PinLocation(ByVal strPinName As String) As String
         If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
-            If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
+            If modDatabase.IsCleanString(strPinName) Then
                 modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strPinName + "', '" + CStr(CurrentLatitude) + "," + CStr(CurrentLongitude) + "')")
                 Return strPinName + " added to your places"
             Else
@@ -104,7 +103,7 @@
     ''' <returns></returns>
     Function RemovePinnedLocation(ByVal strPinName As String) As String
         strPinName = strPinName.Replace("'", "")
-        If System.Text.RegularExpressions.Regex.IsMatch(strPinName, strLettersPattern) Then
+        If modDatabase.IsCleanString(strPinName) Then
             modDatabase.Execute("DELETE FROM PLACES WHERE Name = '" & strPinName & "'")
             Return strPinName + " removed from your places"
         Else

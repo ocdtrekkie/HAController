@@ -99,4 +99,14 @@ Module modDatabase
         My.Application.Log.WriteEntry("Closing database")
         conn.Close()
     End Sub
+
+    Function IsCleanString(ByVal strInputString As String) As Boolean
+        Dim strLettersPattern As String = "^[a-zA-Z0-9 ]{1,25}$"
+
+        If System.Text.RegularExpressions.Regex.IsMatch(strInputString, strLettersPattern) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 End Module

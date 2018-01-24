@@ -18,8 +18,7 @@ Module modConverse
             Select Case inputData(0)
                 Case "add"
                     If inputData(1) = "contact" OrElse inputData(1) = "person" Then
-                        modPersons.AddPersonDb(inputData(2))
-                        strCommandResponse = "Contact added"
+                        strCommandResponse = modPersons.AddPersonDb(inputData(2))
                     End If
                 Case "ask"
                     If inputData(1) = "wolfram" Then

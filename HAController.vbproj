@@ -155,6 +155,7 @@
     <Compile Include="modMail.vb" />
     <Compile Include="modMapQuest.vb" />
     <Compile Include="modOpenWeatherMap.vb" />
+    <Compile Include="modPersons.vb" />
     <Compile Include="modPing.vb" />
     <Compile Include="modRandom.vb" />
     <Compile Include="modScheduler.vb" />

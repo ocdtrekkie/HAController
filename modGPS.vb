@@ -119,7 +119,7 @@
     Function ReplacePinnedLocation(ByVal strDestination As String) As String
         Dim result As String = ""
         Dim strDestinationStripped As String = strDestination.Replace("'", "")
-        If System.Text.RegularExpressions.Regex.IsMatch(strDestinationStripped, strLettersPattern) Then
+        If modDatabase.IsCleanString(strDestinationStripped) Then
             modDatabase.ExecuteReader("SELECT Location FROM PLACES WHERE Name = """ + strDestinationStripped + """ LIMIT 1", result)
             My.Application.Log.WriteEntry("Pinned location lookup result: " & result)
             If result = "" Then

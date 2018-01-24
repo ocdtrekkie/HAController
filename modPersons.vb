@@ -1,6 +1,12 @@
 ﻿' modPersons cannot be disabled and doesn't need to be loaded or unloaded
 
 Module modPersons
+    ''' <summary>
+    ''' Adds a contact or user entry to the database.
+    ''' </summary>
+    ''' <param name="strNickname">Unique identifier for the person</param>
+    ''' <param name="PersonType">Contact (0), Guest (1), User (2), or Admin (4), default is 0</param>
+    ''' <returns>Text result of command</returns>
     Function AddPersonDb(ByVal strNickname As String, Optional ByVal PersonType As Integer = 0) As String
         If modDatabase.IsCleanString(strNickname) Then
             If CheckDbForPerson(strNickname) = 0 Then
@@ -14,6 +20,11 @@ Module modPersons
         End If
     End Function
 
+    ''' <summary>
+    ''' This function returns the database ID of a given person nickname in the PERSONS table.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of person to look up</param>
+    ''' <returns>Id of entry in PERSONS table</returns>
     Function CheckDbForPerson(ByVal strNickname As String) As Integer
         Dim result As Integer = New Integer
         If modDatabase.IsCleanString(strNickname) Then

@@ -100,8 +100,18 @@ Module modDatabase
         conn.Close()
     End Sub
 
-    Function IsCleanString(ByVal strInputString As String) As Boolean
-        Dim strLettersPattern As String = "^[a-zA-Z0-9 ]{1,25}$"
+    ''' <summary>
+    ''' Ensures string doesn't have any escape characters and can't provide unexpected behavior.
+    ''' </summary>
+    ''' <param name="strInputString">String to check</param>
+    ''' <param name="AllowSpaces">Whether or not the string may contain spaces</param>
+    ''' <returns></returns>
+    Function IsCleanString(ByVal strInputString As String, Optional ByVal AllowSpaces As Boolean = False) As Boolean
+        Dim strAdditions As String = ""
+        If AllowSpaces = True Then
+            strAdditions = strAdditions & " "
+        End If
+        Dim strLettersPattern As String = "^[a-zA-Z0-9" & strAdditions & "]{1,25}$"
 
         If System.Text.RegularExpressions.Regex.IsMatch(strInputString, strLettersPattern) Then
             Return True

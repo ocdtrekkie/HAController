@@ -120,7 +120,7 @@ Module modComputer
     End Function
 
     Function RunScript(ByVal strScriptName As String) As String
-        If modDatabase.IsCleanString(strScriptName) Then
+        If modDatabase.IsCleanString(strScriptName, False) Then
             Try
                 System.Diagnostics.Process.Start("C:\HAC\scripts\" + strScriptName + ".bat")
                 Return "Running " + strScriptName

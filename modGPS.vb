@@ -85,7 +85,7 @@
     Function PinLocation(ByVal strPinName As String) As String
         If My.Settings.GPS_Enable = True AndAlso (modGPS.CurrentLatitude <> 0 OrElse modGPS.CurrentLongitude <> 0) Then
             strPinName = strPinName.Replace("'", "") 'Rather than fail with an apostrophe, we'll just drop it so "grandma's house" is stored and retrieved as "grandmas house".
-            If modDatabase.IsCleanString(strPinName) Then
+            If modDatabase.IsCleanString(strPinName, True) Then
                 modDatabase.Execute("INSERT INTO PLACES (Date, Name, Location) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strPinName + "', '" + CStr(CurrentLatitude) + "," + CStr(CurrentLongitude) + "')")
                 Return strPinName + " added to your places"
             Else
@@ -103,7 +103,7 @@
     ''' <returns></returns>
     Function RemovePinnedLocation(ByVal strPinName As String) As String
         strPinName = strPinName.Replace("'", "")
-        If modDatabase.IsCleanString(strPinName) Then
+        If modDatabase.IsCleanString(strPinName, True) Then
             modDatabase.Execute("DELETE FROM PLACES WHERE Name = '" & strPinName & "'")
             Return strPinName + " removed from your places"
         Else
@@ -119,7 +119,7 @@
     Function ReplacePinnedLocation(ByVal strDestination As String) As String
         Dim result As String = ""
         Dim strDestinationStripped As String = strDestination.Replace("'", "")
-        If modDatabase.IsCleanString(strDestinationStripped) Then
+        If modDatabase.IsCleanString(strDestinationStripped, True) Then
             modDatabase.ExecuteReader("SELECT Location FROM PLACES WHERE Name = """ + strDestinationStripped + """ LIMIT 1", result)
             My.Application.Log.WriteEntry("Pinned location lookup result: " & result)
             If result = "" Then

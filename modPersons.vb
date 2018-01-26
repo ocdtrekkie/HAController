@@ -8,7 +8,7 @@ Module modPersons
     ''' <param name="PersonType">Contact (0), Guest (1), User (2), or Admin (4), default is 0</param>
     ''' <returns>Text result of command</returns>
     Function AddPersonDb(ByVal strNickname As String, Optional ByVal PersonType As Integer = 0) As String
-        If modDatabase.IsCleanString(strNickname) Then
+        If modDatabase.IsCleanString(strNickname, True) Then
             If CheckDbForPerson(strNickname) = 0 Then
                 modDatabase.Execute("INSERT INTO PERSONS (Date, Nickname, PersonType) VALUES('" + Now.ToUniversalTime.ToString("u") + "', '" + strNickname + "', '" + CStr(PersonType) + "')")
                 Return strNickname & " added to your contacts"
@@ -27,7 +27,7 @@ Module modPersons
     ''' <returns>Id of entry in PERSONS table</returns>
     Function CheckDbForPerson(ByVal strNickname As String) As Integer
         Dim result As Integer = New Integer
-        If modDatabase.IsCleanString(strNickname) Then
+        If modDatabase.IsCleanString(strNickname, True) Then
             modDatabase.ExecuteScalar("SELECT Id FROM PERSONS WHERE Nickname = """ + strNickname + """", result)
         Else
             My.Application.Log.WriteEntry(strNickname + " is not a valid query", TraceEventType.Warning)

@@ -105,13 +105,18 @@ Module modDatabase
     ''' </summary>
     ''' <param name="strInputString">String to check</param>
     ''' <param name="AllowSpaces">Whether or not the string may contain spaces</param>
+    ''' <param name="AllowSymbols">Whether or not the string may contain specific symbols</param>
+    ''' <param name="intMaxLength">Maximum length of string, default is 25</param>
     ''' <returns></returns>
-    Function IsCleanString(ByVal strInputString As String, Optional ByVal AllowSpaces As Boolean = False) As Boolean
+    Function IsCleanString(ByVal strInputString As String, Optional ByVal AllowSpaces As Boolean = False, Optional ByVal AllowSymbols As Boolean = False, Optional ByVal intMaxLength As Integer = 25) As Boolean
         Dim strAdditions As String = ""
         If AllowSpaces = True Then
             strAdditions = strAdditions & " "
         End If
-        Dim strLettersPattern As String = "^[a-zA-Z0-9" & strAdditions & "]{1,25}$"
+        If AllowSymbols = True Then
+            strAdditions = strAdditions & "@_.+-"
+        End If
+        Dim strLettersPattern As String = "^[a-zA-Z0-9" & strAdditions & "]{1," & CStr(intMaxLength) & "}$"
 
         If System.Text.RegularExpressions.Regex.IsMatch(strInputString, strLettersPattern) Then
             Return True

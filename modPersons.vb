@@ -20,6 +20,21 @@ Module modPersons
         End If
     End Function
 
+    Function AddEmailToPerson(ByVal strNickname As String, ByVal strEmail As String) As String
+        If modDatabase.IsCleanString(strNickname, True, False, 25) AndAlso modDatabase.IsCleanString(strEmail, False, True, 100) Then
+            Dim intId As Integer = 0
+            intId = CheckDbForPerson(strNickname)
+            If intId <> 0 Then
+                modDatabase.Execute("UPDATE PERSONS SET Email = """ & strEmail & """ WHERE Id = """ & CStr(intId) & """")
+                Return "Email address added to " & strNickname
+            Else
+                Return "Contact does not exist"
+            End If
+        Else
+                Return "Contact name or email is invalid"
+        End If
+    End Function
+
     ''' <summary>
     ''' This function returns the database ID of a given person nickname in the PERSONS table.
     ''' </summary>

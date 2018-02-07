@@ -248,7 +248,7 @@ Module modConverse
                         End If
                     End If
                 Case "remind"
-                    If inputData(1) = "me" AndAlso (inputData(2) = "about" OrElse inputData(2) = "to") Then
+                    If inputData(1) = "me" Then
                         Dim reminderString As String = strInputString.Replace("remind me", "Reminder")
                         modMail.Send(reminderString, reminderString)
                         strCommandResponse = "Acknowledged"

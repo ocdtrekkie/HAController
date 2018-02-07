@@ -244,12 +244,12 @@ Module modMail
         If My.Settings.Mail_Enable = True Then
             Dim oMsg As New MailMessage()
 
-            oMsg.From = New MailAddress(My.Settings.Mail_From, "HAController")
+            oMsg.From = New MailAddress(My.Settings.Mail_From, My.Settings.Converse_BotName & " (HAController)")
             oMsg.To.Add(New MailAddress(My.Settings.Mail_To))
             oMsg.Subject = oSubj
             oMsg.Priority = MailPriority.High
             oMsg.IsBodyHtml = False
-            oMsg.Body = oBody
+            oMsg.Body = oBody & System.Environment.NewLine & System.Environment.NewLine & " -- This bot does not care about your replies and will discard them."
 
             SyncLock smtpLock
                 oClient.Send(oMsg)

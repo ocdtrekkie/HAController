@@ -218,7 +218,7 @@ Module modMail
             Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
 
             Try
-                modScheduler.sched.ScheduleJob(MailCheckJob, MailCheckTrigger)
+                modScheduler.ScheduleJob(MailCheckJob, MailCheckTrigger)
             Catch QzExcep As Quartz.ObjectAlreadyExistsException
                 My.Application.Log.WriteException(QzExcep)
             End Try

@@ -97,7 +97,7 @@ Module modInsteon
                 Dim TCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("tchecktrigger", "modinsteon").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(20).RepeatForever()).Build()
 
                 Try
-                    modScheduler.sched.ScheduleJob(TCheckJob, TCheckTrigger)
+                    modScheduler.ScheduleJob(TCheckJob, TCheckTrigger)
                 Catch QzExcep As Quartz.ObjectAlreadyExistsException
                     My.Application.Log.WriteException(QzExcep)
                 End Try
@@ -135,7 +135,7 @@ Module modInsteon
             Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("alarmtrigger", "modinsteon").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
 
             Try
-                modScheduler.sched.ScheduleJob(AlarmJob, AlarmTrigger)
+                modScheduler.ScheduleJob(AlarmJob, AlarmTrigger)
             Catch QzExcep As Quartz.ObjectAlreadyExistsException
                 My.Application.Log.WriteException(QzExcep)
             End Try

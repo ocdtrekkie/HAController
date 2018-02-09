@@ -25,7 +25,7 @@ Module modPing
             Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("pingtrigger", "modping").WithSimpleSchedule(Sub(x) x.WithIntervalInSeconds(60).RepeatForever()).Build()
 
             Try
-                modScheduler.sched.ScheduleJob(InternetCheckJob, InternetCheckTrigger)
+                modScheduler.ScheduleJob(InternetCheckJob, InternetCheckTrigger)
             Catch QzExcep As Quartz.ObjectAlreadyExistsException
                 My.Application.Log.WriteException(QzExcep)
             End Try

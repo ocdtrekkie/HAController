@@ -45,7 +45,7 @@ Module modScheduler
     End Class
 
 
-    Public Class ScheduleJob : Implements IJob
+    Public Class WakeJob : Implements IJob
         Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
             Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
             Dim response As String = ""
@@ -74,12 +74,20 @@ Module modScheduler
         ' construct job info
         Dim intHour As Integer = 7
         Dim intMinute As Integer = 5
-        Dim job As IJobDetail = JobBuilder.Create(GetType(ScheduleJob)).UsingJobData("intHour", CStr(intHour)).UsingJobData("intMinute", CStr(intMinute)).WithIdentity("wakejob", "modscheduler").Build()
+        Dim job As IJobDetail = JobBuilder.Create(GetType(WakeJob)).UsingJobData("intHour", CStr(intHour)).UsingJobData("intMinute", CStr(intMinute)).WithIdentity("wakejob", "modscheduler").Build()
         ' construct trigger
 
         Dim tempTrigger As ITrigger = TriggerBuilder.Create().WithIdentity("waketrigger", "modscheduler").StartNow().WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(intHour, intMinute)).Build()
         Dim trigger As ICronTrigger = DirectCast(tempTrigger, ICronTrigger)
 
+        ScheduleJob(job, trigger)
+    End Sub
+
+    Async Sub ScheduleJob(job As IJobDetail, trigger As ICronTrigger)
+        Await sched.ScheduleJob(job, trigger)
+    End Sub
+
+    Async Sub ScheduleJob(job As IJobDetail, trigger As ISimpleTrigger)
         Await sched.ScheduleJob(job, trigger)
     End Sub
 

@@ -98,7 +98,7 @@ Module modOpenWeatherMap
             Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(10).RepeatForever()).Build()
 
             Try
-                modScheduler.sched.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)
+                modScheduler.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)
             Catch QzExcep As Quartz.ObjectAlreadyExistsException
                 My.Application.Log.WriteException(QzExcep)
             End Try

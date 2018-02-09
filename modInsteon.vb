@@ -94,7 +94,7 @@ Module modInsteon
             If My.Settings.Insteon_ThermostatAddr <> "" Then
                 My.Application.Log.WriteEntry("Scheduling automatic thermostat temperature checks")
                 Dim TCheckJob As IJobDetail = JobBuilder.Create(GetType(InsteonCheckTemperatureSchedule)).WithIdentity("tcheckjob", "modinsteon").Build()
-                Dim TCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("tchecktrigger", "modinsteon").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(20).RepeatForever()).Build()
+                Dim TCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("tchecktrigger", "modinsteon").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(20).RepeatForever()).Build()
 
                 Try
                     modScheduler.ScheduleJob(TCheckJob, TCheckTrigger)

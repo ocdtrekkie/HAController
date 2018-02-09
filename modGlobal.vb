@@ -34,7 +34,7 @@ Public Module modGlobal
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading mail module")
-        modMail.Load() 'Dependencies: Scheduler, FIX: Don't check first mail until load complete
+        modMail.Load() 'Dependencies: Scheduler
         My.Application.Log.WriteEntry("Loading music module")
         modMusic.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading computer module")

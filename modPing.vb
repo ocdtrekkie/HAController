@@ -22,7 +22,7 @@ Module modPing
         If My.Settings.Ping_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
             Dim InternetCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckInternetConnectivity)).WithIdentity("pingjob", "modping").Build()
-            Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("pingtrigger", "modping").WithSimpleSchedule(Sub(x) x.WithIntervalInSeconds(60).RepeatForever()).Build()
+            Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("pingtrigger", "modping").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInSeconds(60).RepeatForever()).Build()
 
             Try
                 modScheduler.ScheduleJob(InternetCheckJob, InternetCheckTrigger)

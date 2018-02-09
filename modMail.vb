@@ -215,7 +215,7 @@ Module modMail
 
             My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
             Dim MailCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckMailSchedule)).WithIdentity("checkjob", "modmail").Build()
-            Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
+            Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
 
             Try
                 modScheduler.ScheduleJob(MailCheckJob, MailCheckTrigger)

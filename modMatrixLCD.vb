@@ -1,6 +1,7 @@
 ﻿Module modMatrixLCD
     Public MatrixLCDConnected As Boolean = False
     Public MatrixLCDisplayIndex As Integer
+    Public DashMode As Boolean = False
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading Matrix LCD module")

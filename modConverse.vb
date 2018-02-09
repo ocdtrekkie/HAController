@@ -316,6 +316,9 @@ Module modConverse
                                 strCommandResponse = "Unavailable"
                             End If
                             modMatrixLCD.ShowNotification("GPS Coordinates:", strCommandResponse)
+                        Case "dash", "dashboard"
+                            modMatrixLCD.DashMode = True
+                            strCommandResponse = "Enabling dashboard"
                         Case "dist", "distance"
                             If My.Settings.GPS_Enable = True AndAlso modGPS.isNavigating = True Then
                                 strCommandResponse = CStr(Math.Round(modGPS.DistanceToNext, 1)) & " miles"

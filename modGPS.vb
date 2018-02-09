@@ -236,6 +236,10 @@
                             DistanceToNext = CalculateDistance(CurrentLatitude, CurrentLongitude, DirectionsLatitudeList(DirectionsCurrentIndex + 1), DirectionsLongitudeList(DirectionsCurrentIndex + 1))
                             My.Application.Log.WriteEntry("Distance to next waypoint: " & CStr(DistanceToNext) & " miles")
                         End If
+
+                        If modMatrixLCD.DashMode = True Then
+                            modMatrixLCD.ShowNotification(CStr(Math.Round(dblSpeed * KnotsToMPH, 1)) & " mph  " & CStr(Math.Round(DistanceToNext, 1)), CurrentLatitude.ToString.Substring(0, 7) & ", " & CurrentLongitude.ToString.Substring(0, 7))
+                        End If
                     End If
                 End If
             Catch IOExcep As System.IO.IOException

@@ -149,6 +149,7 @@ Module modInsteon
     Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Integer = 255)
         Dim comm1 As Short
         Dim comm2 As Short
+        Dim needExtended As Boolean = False
 
         Select Case Command1
             Case "Beep", "beep"
@@ -169,12 +170,27 @@ Module modInsteon
             Case "Nite", "nite"
                 comm1 = 17
                 comm2 = 68
+                'Below sets operating flags, which behave differently on different devices
+                'Currently intended only for bulbs, which tells them what state to enter when power resumes
+                'On a 2477S switch, these "resume dim" on (4) and off (5) respectively.
+            Case "powerstatelast"
+                comm1 = 32
+                comm2 = 4
+                needExtended = True
+            Case "powerstateon"
+                comm1 = 32
+                comm2 = 5
+                needExtended = True
             Case Else
                 My.Application.Log.WriteEntry("InsteonLightControl received invalid request", TraceEventType.Warning)
                 Exit Sub
         End Select
 
-        InsteonSendStdCommand(strAddress, comm1, comm2)
+        If needExtended = True Then
+            InsteonSendExtCommand(strAddress, comm1, comm2)
+        Else
+            InsteonSendStdCommand(strAddress, comm1, comm2)
+        End If
     End Sub
 
     Sub InsteonLinkI2CSDevice(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal intLinkType As Integer)

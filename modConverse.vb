@@ -368,11 +368,14 @@ Module modConverse
                     Select Case inputData(1)
                         Case "alarm", "siren"
                             modInsteon.InsteonAlarmControl(modInsteon.GetInsteonAddressFromNickname(inputData(1)), response, inputData(2))
+                            strCommandResponse = "Acknowledged"
                         Case "thermostat"
                             modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
+                            strCommandResponse = "Acknowledged"
                         Case Else
                             If modInsteon.IsInsteonAddress(inputData(1)) = True Then
                                 modInsteon.InsteonLightControl(inputData(1).ToUpper, response, inputData(2))
+                                strCommandResponse = "Acknowledged"
                             Else
                                 'This loop gets the name after the turn word, but before the command word at the end
                                 Dim strNickname As String = inputData(1)
@@ -381,10 +384,15 @@ Module modConverse
                                     strNickname = strNickname + " " + inputData(intLC)
                                     intLC = intLC + 1
                                 End While
-                                modInsteon.InsteonLightControl(modInsteon.GetInsteonAddressFromNickname(strNickname), response, inputData(inputData.Length - 1))
+                                Dim strAddressOfDevice = modInsteon.GetInsteonAddressFromNickname(strNickname)
+                                If strAddressOfDevice IsNot Nothing Then
+                                    modInsteon.InsteonLightControl(strAddressOfDevice, response, inputData(inputData.Length - 1))
+                                    strCommandResponse = "Acknowledged"
+                                Else
+                                    strCommandResponse = "Device not found"
+                                End If
                             End If
                     End Select
-                    strCommandResponse = "Acknowledged"
                 Case "unmute"
                     Select Case inputData(1)
                         Case "alarm"

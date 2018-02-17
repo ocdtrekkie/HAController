@@ -25,6 +25,9 @@
     <application>
       <!-- A list of all Windows versions that this application is designed to work with. 
       Windows will automatically select the most compatible environment.-->
+      
+      <!-- Windows 10 compatibility -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
 
       <!-- If your application is designed to work with Windows Vista, uncomment the following supportedOS node-->
       <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"></supportedOS>-->

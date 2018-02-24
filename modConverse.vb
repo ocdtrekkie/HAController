@@ -311,7 +311,7 @@ Module modConverse
                     Select Case inputData(1)
                         Case "coordinates", "coords", "gps"
                             If My.Settings.GPS_Enable = True Then
-                                strCommandResponse = modGPS.CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & ", " & modGPS.CurrentLongitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7)
+                                strCommandResponse = modGPS.CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & "," & modGPS.CurrentLongitude.ToString.PadRight(8, Convert.ToChar("0")).Substring(0, 8)
                             Else
                                 strCommandResponse = "Unavailable"
                             End If

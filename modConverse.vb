@@ -343,6 +343,9 @@ Module modConverse
                     strCommandResponse = modComputer.TakeSnapshot()
                 Case "stop"
                     Select Case inputData(1)
+                        Case "dash", "dashboard"
+                            modMatrixLCD.DashMode = False
+                            strCommandResponse = "Disabling dashboard"
                         Case "mus", "music"
                             modMusic.StopMusic()
                             strCommandResponse = "Music stopped"

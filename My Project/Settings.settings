@@ -176,5 +176,8 @@
     <Setting Name="Global_UpdateFileURI" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://hac.jacobweisz.com/dl/update.zip</Value>
     </Setting>
+    <Setting Name="Global_StartupCommand" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

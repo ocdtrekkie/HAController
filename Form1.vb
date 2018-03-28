@@ -64,6 +64,10 @@
             modSpeech.Say("System online")
         End If
 
+        If My.Settings.Global_StartupCommand <> "" Then
+            modConverse.Interpet(My.Settings.Global_StartupCommand)
+        End If
+
         Stopwatch.Stop()
         My.Application.Log.WriteEntry("Load cycle completed in " & Stopwatch.Elapsed.Milliseconds & " milliseconds")
 

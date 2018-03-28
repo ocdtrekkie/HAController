@@ -735,6 +735,18 @@ Namespace My
                 Return CType(Me("Global_UpdateFileURI"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Global_StartupCommand() As String
+            Get
+                Return CType(Me("Global_StartupCommand"),String)
+            End Get
+            Set
+                Me("Global_StartupCommand") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

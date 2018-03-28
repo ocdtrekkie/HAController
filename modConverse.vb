@@ -171,6 +171,17 @@ Module modConverse
                         modMusic.PlayNext()
                         strCommandResponse = " "
                     End If
+                Case "on"
+                    If inputData(1) = "startup" Then
+                        Dim strStartupCommand = strInputString.Replace("on startup ", "")
+                        If strStartupCommand = "do nothing" Then
+                            My.Settings.Global_StartupCommand = ""
+                            strCommandResponse = "Startup command cleared"
+                        Else
+                            My.Settings.Global_StartupCommand = strStartupCommand
+                            strCommandResponse = "Startup command set"
+                        End If
+                    End If
                 Case "pause"
                     modMusic.PauseMusic()
                     strCommandResponse = "Music paused"

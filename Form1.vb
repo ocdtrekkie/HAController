@@ -65,7 +65,7 @@
         End If
 
         If My.Settings.Global_StartupCommand <> "" Then
-            modConverse.Interpet(My.Settings.Global_StartupCommand)
+            modConverse.Interpret(My.Settings.Global_StartupCommand)
         End If
 
         Stopwatch.Stop()
@@ -251,7 +251,7 @@
         End If
 
         If e.KeyCode = Keys.Return Then
-            modConverse.Interpet(strCommandString)
+            modConverse.Interpret(strCommandString)
         End If
     End Sub
 

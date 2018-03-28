@@ -3,7 +3,7 @@
 Module modConverse
     Public strLastRequest As String = ""
 
-    Sub Interpet(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False)
+    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False)
         Dim strCommandResponse As String = ""
         strLastRequest = strInputString
 

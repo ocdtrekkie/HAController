@@ -309,6 +309,9 @@ Module modConverse
                     ElseIf inputData(1) = "offline" AndAlso inputData(2) = "mode" Then
                         modGlobal.IsOnline = False
                         strCommandResponse = "Acknowledged"
+                    ElseIf inputData(1) = "ping" AndAlso inputData(2) = "address" AndAlso inputData(3) = "to" Then
+                        My.Settings.Ping_InternetCheckAddress = inputData(4)
+                        strCommandResponse = "Connectivity test address set to " & inputData(4)
                     ElseIf inputData(1) = "status" AndAlso inputData(2) = "to" Then
                         If inputData(3) = "off" OrElse inputData(3) = "stay" OrElse inputData(3) = "away" OrElse inputData(3) = "guests" Then
                             modGlobal.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))

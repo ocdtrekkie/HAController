@@ -94,14 +94,21 @@ Module modOpenWeatherMap
             End If
 
             My.Application.Log.WriteEntry("Scheduling automatic OpenWeatherMap checks")
-            Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("checkjob", "modopenweathermap").Build()
-            Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(10).RepeatForever()).Build()
+            'Dim WeatherCheckJob As IJobDetail = JobBuilder.Create(GetType(WeatherUpdateSchedule)).WithIdentity("checkjob", "modopenweathermap").Build()
+            'Dim WeatherCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modopenweathermap").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(10).RepeatForever()).Build()
 
-            Try
-                modScheduler.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)
-            Catch QzExcep As Quartz.ObjectAlreadyExistsException
-                My.Application.Log.WriteException(QzExcep)
-            End Try
+            'Try
+            '    modScheduler.ScheduleJob(WeatherCheckJob, WeatherCheckTrigger)
+            'Catch QzExcep As Quartz.ObjectAlreadyExistsException
+            '    My.Application.Log.WriteException(QzExcep)
+            'End Try
+
+            Dim tmrOWMCheckTimer As New System.Timers.Timer
+            AddHandler tmrOWMCheckTimer.Elapsed, AddressOf GatherWeatherData
+            tmrOWMCheckTimer.Interval = 600000 ' 10min
+            tmrOWMCheckTimer.Enabled = True
+
+            GatherWeatherData()
         Else
             My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")
         End If
@@ -111,10 +118,10 @@ Module modOpenWeatherMap
 
     End Sub
 
-    Public Class WeatherUpdateSchedule : Implements IJob
-        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
-            GatherWeatherData()
-            Await Task.Delay(1)
-        End Function
-    End Class
+    'Public Class WeatherUpdateSchedule : Implements IJob
+    '    Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
+    '        GatherWeatherData()
+    '        Await Task.Delay(1)
+    '    End Function
+    'End Class
 End Module

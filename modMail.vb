@@ -25,46 +25,48 @@ Module modMail
     Private server_Stat(2) As String
     Private smtpLock As New Object
 
-    Sub CheckMail()
-        Try
-            If pClient.Connected = True Then
+    Sub CheckMail(source As Object, e As System.Timers.ElapsedEventArgs)
+        If modGlobal.IsOnline = True Then
+            Try
+                If pClient.Connected = True Then
+                    CloseServer()
+                    pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+                    ret_Val = 0
+                    Exit Sub
+                Else
+                    pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+
+                    NetworkS_tream = pClient.GetStream 'Read the stream
+                    m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
+                    m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
+                    Read_Stream = New StreamReader(m_sslStream) 'Read the stream
+                    StatResp = Read_Stream.ReadLine()
+
+                    StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
+                    My.Application.Log.WriteEntry("POP3: " & StatResp)
+                    StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
+                    My.Application.Log.WriteEntry("POP3: " & StatResp)
+                    StatResp = Login(m_sslStream, "STAT ")
+                    My.Application.Log.WriteEntry("POP3: " & StatResp)
+
+                    'Get Messages count
+                    server_Stat = StatResp.Split(" ")
+                    My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
+                    ret_Val = 1
+                End If
+
+                If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
+                    GetMessages(server_Stat(1))
+                Else
+                    My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
+                End If
                 CloseServer()
-                pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-                ret_Val = 0
-                Exit Sub
-            Else
-                pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-
-                NetworkS_tream = pClient.GetStream 'Read the stream
-                m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
-                m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
-                Read_Stream = New StreamReader(m_sslStream) 'Read the stream
-                StatResp = Read_Stream.ReadLine()
-
-                StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
-                My.Application.Log.WriteEntry("POP3: " & StatResp)
-                StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
-                My.Application.Log.WriteEntry("POP3: " & StatResp)
-                StatResp = Login(m_sslStream, "STAT ")
-                My.Application.Log.WriteEntry("POP3: " & StatResp)
-
-                'Get Messages count
-                server_Stat = StatResp.Split(" ")
-                My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
-                ret_Val = 1
-            End If
-
-            If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
-                GetMessages(server_Stat(1))
-            Else
-                My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
-            End If
-            CloseServer()
-        Catch SocketEx As System.Net.Sockets.SocketException
-            My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
-        Catch NullRefEx As System.NullReferenceException
-            My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
-        End Try
+            Catch SocketEx As System.Net.Sockets.SocketException
+                My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+            Catch NullRefEx As System.NullReferenceException
+                My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
+            End Try
+        End If
     End Sub
 
     Sub CloseServer()
@@ -214,14 +216,19 @@ Module modMail
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
             My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
-            Dim MailCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckMailSchedule)).WithIdentity("checkjob", "modmail").Build()
-            Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
+            'Dim MailCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckMailSchedule)).WithIdentity("checkjob", "modmail").Build()
+            'Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
 
-            Try
-                modScheduler.ScheduleJob(MailCheckJob, MailCheckTrigger)
-            Catch QzExcep As Quartz.ObjectAlreadyExistsException
-                My.Application.Log.WriteException(QzExcep)
-            End Try
+            'Try
+            '    modScheduler.ScheduleJob(MailCheckJob, MailCheckTrigger)
+            'Catch QzExcep As Quartz.ObjectAlreadyExistsException
+            '    My.Application.Log.WriteException(QzExcep)
+            'End Try
+
+            Dim tmrMailCheckTimer As New System.Timers.Timer
+            AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
+            tmrMailCheckTimer.Interval = 120000 ' 2min
+            tmrMailCheckTimer.Enabled = True
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
         End If
@@ -283,12 +290,12 @@ Module modMail
         End If
     End Function
 
-    Public Class CheckMailSchedule : Implements IJob
-        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
-            If modGlobal.IsOnline = True Then
-                CheckMail()
-            End If
-            Await Task.Delay(1)
-        End Function
-    End Class
+    'Public Class CheckMailSchedule : Implements IJob
+    '    Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
+    '        If modGlobal.IsOnline = True Then
+    '            CheckMail()
+    '        End If
+    '        Await Task.Delay(1)
+    '    End Function
+    'End Class
 End Module

@@ -1,7 +1,4 @@
-﻿Imports Quartz
-Imports Quartz.Impl
-
-Module modInsteon
+﻿Module modInsteon
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
 
     Structure InsteonDevice
@@ -134,14 +131,9 @@ Module modInsteon
         ' Shut it back off
         If (Command1 = "On" OrElse Command1 = "on") AndAlso intSeconds > 0 Then
             My.Application.Log.WriteEntry("Scheduling automatic shut off of " & strAddress & " in " & intSeconds.ToString & " seconds")
-            Dim AlarmJob As IJobDetail = JobBuilder.Create(GetType(InsteonAlarmControlSchedule)).WithIdentity("alarmjob " & strAddress, "modinsteon").UsingJobData("strAddress", strAddress).UsingJobData("Command1", "Off").UsingJobData("intSeconds", "0").Build()
-            Dim AlarmTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("alarmtrigger", "modinsteon").StartAt(DateBuilder.FutureDate(intSeconds, IntervalUnit.Second)).Build()
-
-            Try
-                modScheduler.ScheduleJob(AlarmJob, AlarmTrigger)
-            Catch QzExcep As Quartz.ObjectAlreadyExistsException
-                My.Application.Log.WriteException(QzExcep)
-            End Try
+            Threading.Thread.Sleep(intSeconds * 1000)
+            Dim response As String = ""
+            InsteonAlarmControl(strAddress, response, "Off", 0)
         End If
     End Sub
 
@@ -1853,15 +1845,4 @@ Module modInsteon
                 Return "(" & Hex(comm1) & ") Unrecognized (" & Hex(comm2) & ")"
         End Select
     End Function
-
-    Public Class InsteonAlarmControlSchedule : Implements IJob
-        Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
-            My.Application.Log.WriteEntry("Executing scheduled InsteonAlarmControl")
-            Dim dataMap As JobDataMap = context.JobDetail.JobDataMap
-            Dim response As String = ""
-
-            InsteonAlarmControl(dataMap.GetString("strAddress"), response, dataMap.GetString("Command1"), CInt(dataMap.GetString("intSeconds")))
-            Await Task.Delay(1)
-        End Function
-    End Class
 End Module

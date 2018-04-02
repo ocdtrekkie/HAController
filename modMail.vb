@@ -22,6 +22,7 @@ Module modMail
     Private StatResp As String
     Private server_Stat(2) As String
     Private smtpLock As New Object
+    Dim tmrMailCheckTimer As System.Timers.Timer
 
     Sub CheckMail(source As Object, e As System.Timers.ElapsedEventArgs)
         If modGlobal.IsOnline = True Then
@@ -214,7 +215,7 @@ Module modMail
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
             My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
-            Dim tmrMailCheckTimer As New System.Timers.Timer
+            tmrMailCheckTimer = New System.Timers.Timer
             AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
@@ -254,6 +255,7 @@ Module modMail
     End Sub
 
     Sub Unload()
+        tmrMailCheckTimer.Enabled = False
         CloseServer()
     End Sub
 

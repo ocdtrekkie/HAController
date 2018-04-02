@@ -1,6 +1,8 @@
 ﻿Module modPing
     ' Credit for the ping module code goes to Dain Axel Muller from Planet Source Code. http://planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=4311&lngWId=10
 
+    Dim tmrPingCheckTimer As System.Timers.Timer
+
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading ping module")
         Unload()
@@ -18,7 +20,7 @@
     Sub Load()
         If My.Settings.Ping_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
-            Dim tmrPingCheckTimer As New System.Timers.Timer
+            tmrPingCheckTimer = New System.Timers.Timer
             AddHandler tmrPingCheckTimer.Elapsed, AddressOf PingInternet
             tmrPingCheckTimer.Interval = 60000 ' 1min
             tmrPingCheckTimer.Enabled = True
@@ -44,7 +46,7 @@
     End Sub
 
     Sub Unload()
-
+        tmrPingCheckTimer.Enabled = False
     End Sub
 
     Public Function Ping(ByVal host As String, Optional ByVal repeat As Integer = 1) As String

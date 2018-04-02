@@ -1,6 +1,8 @@
 ﻿Imports System.Xml
 
 Module modOpenWeatherMap
+    Dim tmrOWMCheckTimer As System.Timers.Timer
+
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading OpenWeatherMap module")
         Unload()
@@ -92,7 +94,7 @@ Module modOpenWeatherMap
             End If
 
             My.Application.Log.WriteEntry("Scheduling automatic OpenWeatherMap checks")
-            Dim tmrOWMCheckTimer As New System.Timers.Timer
+            tmrOWMCheckTimer = New System.Timers.Timer
             AddHandler tmrOWMCheckTimer.Elapsed, AddressOf GatherWeatherData
             tmrOWMCheckTimer.Interval = 600000 ' 10min
             tmrOWMCheckTimer.Enabled = True
@@ -104,6 +106,6 @@ Module modOpenWeatherMap
     End Sub
 
     Sub Unload()
-
+        tmrOWMCheckTimer.Enabled = False
     End Sub
 End Module

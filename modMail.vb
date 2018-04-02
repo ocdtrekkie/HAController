@@ -255,8 +255,10 @@ Module modMail
     End Sub
 
     Sub Unload()
-        tmrMailCheckTimer.Enabled = False
-        CloseServer()
+        If tmrMailCheckTimer IsNot Nothing Then
+            tmrMailCheckTimer.Enabled = False
+            CloseServer()
+        End If
     End Sub
 
     Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String

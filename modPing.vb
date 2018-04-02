@@ -46,7 +46,9 @@
     End Sub
 
     Sub Unload()
-        tmrPingCheckTimer.Enabled = False
+        If tmrPingCheckTimer IsNot Nothing Then
+            tmrPingCheckTimer.Enabled = False
+        End If
     End Sub
 
     Public Function Ping(ByVal host As String, Optional ByVal repeat As Integer = 1) As String

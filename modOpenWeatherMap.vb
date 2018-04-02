@@ -106,6 +106,8 @@ Module modOpenWeatherMap
     End Sub
 
     Sub Unload()
-        tmrOWMCheckTimer.Enabled = False
+        If tmrOWMCheckTimer IsNot Nothing Then
+            tmrOWMCheckTimer.Enabled = False
+        End If
     End Sub
 End Module

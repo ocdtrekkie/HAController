@@ -1105,7 +1105,9 @@
     End Sub
 
     Sub Unload()
-        tmrIThermCheckTimer.Enabled = False
+        If tmrIThermCheckTimer IsNot Nothing Then
+            tmrIThermCheckTimer.Enabled = False
+        End If
         If SerialPLM IsNot Nothing Then
             If SerialPLM.IsOpen = True Then
                 My.Application.Log.WriteEntry("Closing serial connection")

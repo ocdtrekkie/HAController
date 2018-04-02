@@ -100,15 +100,6 @@ Module modInsteon
 
             If My.Settings.Insteon_ThermostatAddr <> "" Then
                 My.Application.Log.WriteEntry("Scheduling automatic thermostat temperature checks")
-                'Dim TCheckJob As IJobDetail = JobBuilder.Create(GetType(InsteonCheckTemperatureSchedule)).WithIdentity("tcheckjob", "modinsteon").Build()
-                'Dim TCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("tchecktrigger", "modinsteon").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(20).RepeatForever()).Build()
-
-                'Try
-                '    modScheduler.ScheduleJob(TCheckJob, TCheckTrigger)
-                'Catch QzExcep As Quartz.ObjectAlreadyExistsException
-                '    My.Application.Log.WriteException(QzExcep)
-                'End Try
-
                 Dim tmrIThermCheckTimer As New System.Timers.Timer
                 AddHandler tmrIThermCheckTimer.Elapsed, AddressOf CheckInsteonThermostat
                 tmrIThermCheckTimer.Interval = 1200000 ' 20min
@@ -1873,14 +1864,4 @@ Module modInsteon
             Await Task.Delay(1)
         End Function
     End Class
-
-    'Public Class InsteonCheckTemperatureSchedule : Implements IJob
-    '    Public Async Function Execute(context As IJobExecutionContext) As Task Implements IJob.Execute
-    '        My.Application.Log.WriteEntry("Executing scheduled InsteonCheckTemperature")
-    '        Dim response As String = ""
-
-    '        InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, "read")
-    '        Await Task.Delay(1)
-    '    End Function
-    'End Class
 End Module

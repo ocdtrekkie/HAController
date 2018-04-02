@@ -1,7 +1,4 @@
-﻿Imports Quartz
-Imports Quartz.Impl
-
-Module modPing
+﻿Module modPing
     ' Credit for the ping module code goes to Dain Axel Muller from Planet Source Code. http://planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=4311&lngWId=10
 
     Sub Disable()
@@ -21,15 +18,6 @@ Module modPing
     Sub Load()
         If My.Settings.Ping_Enable = True Then
             My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
-            'Dim InternetCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckInternetConnectivity)).WithIdentity("pingjob", "modping").Build()
-            'Dim InternetCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("pingtrigger", "modping").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInSeconds(60).RepeatForever()).Build()
-
-            'Try
-            'modScheduler.ScheduleJob(InternetCheckJob, InternetCheckTrigger)
-            'Catch QzExcep As Quartz.ObjectAlreadyExistsException
-            'My.Application.Log.WriteException(QzExcep)
-            'End Try
-
             Dim tmrPingCheckTimer As New System.Timers.Timer
             AddHandler tmrPingCheckTimer.Elapsed, AddressOf PingInternet
             tmrPingCheckTimer.Interval = 60000 ' 1min
@@ -95,23 +83,4 @@ Module modPing
             Return "Ping disabled"
         End If
     End Function
-
-    'Public Class CheckInternetConnectivity : Implements IJob
-    '    Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
-    '        My.Application.Log.WriteEntry("Checking Internet connectivity")
-    '        Dim response As String = ""
-
-    '        response = Ping(My.Settings.Ping_InternetCheckAddress)
-    '        If response.StartsWith("Reply from") Then
-    '            My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
-    '            modGlobal.IsOnline = True
-    '        ElseIf response = "Ping disabled" Then
-    '            ' Do nothing, Ping is disabled
-    '        Else
-    '            My.Application.Log.WriteEntry(response, TraceEventType.Warning)
-    '            modGlobal.IsOnline = False
-    '        End If
-    '        Await Task.Delay(1)
-    '    End Function
-    'End Class
 End Module

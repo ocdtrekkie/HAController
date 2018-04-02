@@ -1,6 +1,4 @@
-﻿Imports Quartz
-Imports Quartz.Impl
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
 Imports System.Net.Mail
@@ -216,15 +214,6 @@ Module modMail
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
             My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
-            'Dim MailCheckJob As IJobDetail = JobBuilder.Create(GetType(CheckMailSchedule)).WithIdentity("checkjob", "modmail").Build()
-            'Dim MailCheckTrigger As ISimpleTrigger = TriggerBuilder.Create().WithIdentity("checktrigger", "modmail").StartAt(DateBuilder.FutureDate(30, IntervalUnit.Second)).WithSimpleSchedule(Sub(x) x.WithIntervalInMinutes(2).RepeatForever()).Build()
-
-            'Try
-            '    modScheduler.ScheduleJob(MailCheckJob, MailCheckTrigger)
-            'Catch QzExcep As Quartz.ObjectAlreadyExistsException
-            '    My.Application.Log.WriteException(QzExcep)
-            'End Try
-
             Dim tmrMailCheckTimer As New System.Timers.Timer
             AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
             tmrMailCheckTimer.Interval = 120000 ' 2min
@@ -289,13 +278,4 @@ Module modMail
             Return "Dumped"
         End If
     End Function
-
-    'Public Class CheckMailSchedule : Implements IJob
-    '    Public Async Function Execute(context As Quartz.IJobExecutionContext) As Task Implements Quartz.IJob.Execute
-    '        If modGlobal.IsOnline = True Then
-    '            CheckMail()
-    '        End If
-    '        Await Task.Delay(1)
-    '    End Function
-    'End Class
 End Module

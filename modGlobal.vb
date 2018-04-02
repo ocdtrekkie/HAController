@@ -16,13 +16,13 @@ Public Module modGlobal
         My.Application.Log.WriteEntry("Loading scheduler module")
         modScheduler.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading ping module")
-        modPing.Load() 'Dependencies: Scheduler
+        modPing.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading Insteon module")
-        modInsteon.Load() 'Dependencies: Database, Scheduler, Mail
+        modInsteon.Load() 'Dependencies: Database, Mail
         My.Application.Log.WriteEntry("Loading speech module")
         modSpeech.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
-        modOpenWeatherMap.Load() 'Dependencies: Database, Scheduler
+        modOpenWeatherMap.Load() 'Dependencies: Database
         My.Application.Log.WriteEntry("Loading Matrix LCD module")
         modMatrixLCD.Load() 'Dependencies: Speech
         My.Application.Log.WriteEntry("Loading GPS module")
@@ -34,7 +34,7 @@ Public Module modGlobal
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading mail module")
-        modMail.Load() 'Dependencies: Scheduler
+        modMail.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading music module")
         modMusic.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading computer module")
@@ -58,6 +58,9 @@ Public Module modGlobal
     End Sub
 
     Sub UnloadModules()
+        modMail.Unload()
+        modOpenWeatherMap.Unload()
+        modPing.Unload()
         modMatrixLCD.Unload()
         modMusic.Unload()
         modGPS.Unload()

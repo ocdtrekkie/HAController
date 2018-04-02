@@ -28,6 +28,7 @@
     Public x_Start As Short ' Index of next byte of data to process in array
 
     Private serialLock As New Object
+    Dim tmrIThermCheckTimer As System.Timers.Timer
 
     Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short)
         If CheckDbForInsteon(strAddress) = 0 Then
@@ -97,7 +98,7 @@
 
             If My.Settings.Insteon_ThermostatAddr <> "" Then
                 My.Application.Log.WriteEntry("Scheduling automatic thermostat temperature checks")
-                Dim tmrIThermCheckTimer As New System.Timers.Timer
+                tmrIThermCheckTimer = New System.Timers.Timer
                 AddHandler tmrIThermCheckTimer.Elapsed, AddressOf CheckInsteonThermostat
                 tmrIThermCheckTimer.Interval = 1200000 ' 20min
                 tmrIThermCheckTimer.Enabled = True
@@ -1104,6 +1105,7 @@
     End Sub
 
     Sub Unload()
+        tmrIThermCheckTimer.Enabled = False
         If SerialPLM IsNot Nothing Then
             If SerialPLM.IsOpen = True Then
                 My.Application.Log.WriteEntry("Closing serial connection")

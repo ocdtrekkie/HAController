@@ -3,7 +3,7 @@
 Module modConverse
     Public strLastRequest As String = ""
 
-    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False)
+    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False, Optional ByVal CommandLineArg As Boolean = False)
         Dim strCommandResponse As String = ""
         strLastRequest = strInputString
 
@@ -293,7 +293,7 @@ Module modConverse
                     End Select
                 Case "say"
                     strCommandResponse = strInputString.Replace("say ", "")
-                    If RemoteCommand = True Then
+                    If RemoteCommand = True OrElse CommandLineArg = True Then
                         modSpeech.Say(strCommandResponse)
                     End If
                 Case "set"
@@ -521,7 +521,7 @@ Module modConverse
                 My.Application.Log.WriteEntry("Command response: " & strCommandResponse)
                 If RemoteCommand = True Then
                     modMail.Send("Re: " & strInputString, strCommandResponse)
-                Else
+                ElseIf CommandLineArg = False Then
                     modSpeech.Say(strCommandResponse)
                 End If
             End If

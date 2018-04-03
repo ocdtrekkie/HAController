@@ -8,7 +8,10 @@
     Partial Friend Class MyApplication
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
             For Each s As String In e.CommandLine
-                My.Application.Log.WriteEntry("Command line instruction received: " & s, TraceEventType.Information)
+                My.Application.Log.WriteEntry("Command line argument received: " & s, TraceEventType.Information)
+                If s.Substring(0, 1) <> "/" Then
+                    modConverse.Interpret(s, False, True)
+                End If
             Next
         End Sub
     End Class

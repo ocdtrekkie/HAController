@@ -257,7 +257,7 @@ Module modMail
     Sub Unload()
         If tmrMailCheckTimer IsNot Nothing Then
             tmrMailCheckTimer.Enabled = False
-            CloseServer()
+            ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
         End If
     End Sub
 

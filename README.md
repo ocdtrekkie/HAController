@@ -12,7 +12,6 @@ The following modules are core modules which cannot be disabled:
 * modGlobal mostly just hangs onto stuff that needs to be accessible to the whole program.
 * modPersons contains functions for managing users and contacts.
 * modRandom generates random numbers and can optionally query Random.org for true random results.
-* modScheduler handles code that schedules events. (Currently using Quartz.NET)
 
 The following modules function optionally and add features:
 * modDreamCheeky supports the Dream Cheeky Big Red Button and WebMail Notifier devices.

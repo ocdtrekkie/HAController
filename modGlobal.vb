@@ -13,8 +13,6 @@ Public Module modGlobal
         'TODO: Load these modules Async, waiting for dependent tasks to finish first
         My.Application.Log.WriteEntry("Loading database module")
         modDatabase.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading scheduler module")
-        modScheduler.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading ping module")
         modPing.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading Insteon module")
@@ -66,7 +64,6 @@ Public Module modGlobal
         modGPS.Unload()
         modInsteon.Unload()
         modComputer.Unload()
-        modScheduler.Unload()
         modDatabase.Unload()
     End Sub
 

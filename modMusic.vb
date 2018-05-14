@@ -154,6 +154,17 @@ Module modMusic
         End If
     End Sub
 
+    Public Function ShowAlbum() As String
+        If isPlaying = True Then
+            Dim strAlbum As String = MusicPlayer.currentMedia.getItemInfo("Album")
+            Dim strAlbumArtist As String = MusicPlayer.currentMedia.getItemInfo("AlbumArtist")
+            modMatrixLCD.ShowNotification(strAlbum, strAlbumArtist)
+            Return "This song is from " & strAlbum & " by " & strAlbumArtist
+        Else
+            Return "Not currently playing music"
+        End If
+    End Function
+
     Public Sub StopMusic()
         If isPlaying = True Then
             MusicPlayer.controls.stop()

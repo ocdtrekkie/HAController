@@ -323,6 +323,8 @@ Module modConverse
                     End If
                 Case "sh", "show"
                     Select Case inputData(1)
+                        Case "album"
+                            strCommandResponse = modMusic.ShowAlbum()
                         Case "coordinates", "coords", "gps"
                             If My.Settings.GPS_Enable = True Then
                                 strCommandResponse = modGPS.CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & "," & modGPS.CurrentLongitude.ToString.PadRight(8, Convert.ToChar("0")).Substring(0, 8)

@@ -389,7 +389,11 @@ Module modConverse
                             modInsteon.InsteonAlarmControl(modInsteon.GetInsteonAddressFromNickname(inputData(1)), response, inputData(2))
                             strCommandResponse = "Acknowledged"
                         Case "thermostat"
-                            modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
+                            If inputData.Length = 4 AndAlso IsNumeric(inputData(3)) Then
+                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2), inputData(3))
+                            Else
+                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
+                            End If
                             strCommandResponse = "Acknowledged"
                         Case Else
                             If modInsteon.IsInsteonAddress(inputData(1)) = True Then

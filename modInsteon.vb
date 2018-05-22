@@ -440,6 +440,14 @@
                     '    Threading.Thread.Sleep(1000)
                     '    InsteonGetEngineVersion(FromAddress, response)
                     'End If
+
+                    'Always print the whole command
+                    strTemp = "PLM Raw In: "
+                    For i = 0 To DataAvailable
+                        strTemp = strTemp & Hex(x(ms + i)) & " "
+                    Next
+                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
                         strTemp = strTemp & " (PLM)"
@@ -603,6 +611,10 @@
                                     strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1) & " (Group " & Format(Group) & ")"
                                 Else
                                     strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1)
+                                End If
+
+                                If FromAddress = My.Settings.Insteon_SmokeBridgeAddr Then ' TODO: Detect this by device model
+                                    strTemp = strTemp & " Smoke Bridge: " & InsteonSmokeBridgeResponse(Group)
                                 End If
                                 My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
                                 ' Handle incoming event and play sounds

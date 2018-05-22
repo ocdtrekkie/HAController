@@ -230,6 +230,7 @@
 
         If e.KeyCode = Keys.Up Then
             txtCommandBar.Text = modConverse.strLastRequest
+            txtCommandBar.Select(txtCommandBar.Text.Length, 0)
         End If
 
         If e.KeyCode = Keys.Down Then

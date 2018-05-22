@@ -299,6 +299,9 @@
             Case "Cool", "cool"
                 comm1 = 107
                 comm2 = 5
+            Case "CoolSet", "coolset"
+                comm1 = 108
+                comm2 = intTemperature * 2
             Case "Down", "down"
                 comm1 = 105
                 comm2 = 2
@@ -311,6 +314,9 @@
             Case "Heat", "heat"
                 comm1 = 107
                 comm2 = 4
+            Case "HeatSet", "heatset"
+                comm1 = 109
+                comm2 = intTemperature * 2
             Case "Off", "off"
                 comm1 = 107
                 comm2 = 9

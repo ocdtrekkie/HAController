@@ -2,6 +2,7 @@
     Public MatrixLCDConnected As Boolean = False
     Public MatrixLCDisplayIndex As Integer
     Public DashMode As Boolean = False
+    Public intToast As Integer = 0
 
     Sub Disable()
         My.Application.Log.WriteEntry("Unloading Matrix LCD module")
@@ -34,9 +35,12 @@
         End If
     End Sub
 
-    Sub ShowNotification(ByVal strLine1 As String, Optional ByVal strLine2 As String = "")
+    Sub ShowNotification(ByVal strLine1 As String, Optional ByVal strLine2 As String = "", Optional ByVal IsToast As Boolean = True)
         If MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+            If IsToast = True Then
+                intToast = My.Settings.MatrixLCD_ToastHoldTime
+            End If
             MatrixLCDisplay.Clear()
             If strLine1.Length > MatrixLCDisplay.Cols Then
                 strLine1 = strLine1.Substring(0, MatrixLCDisplay.Cols)

@@ -247,6 +247,7 @@
             If txtCommandBar.Text.Length > (MatrixLCDisplay.Cols * 2 - 2) Then
                 MatrixLCDisplay.SetAutoscrollOn()
             End If
+            modMatrixLCD.intToast = My.Settings.MatrixLCD_ToastHoldTime
             MatrixLCDisplay.Clear()
             MatrixLCDisplay.WriteString("> " + txtCommandBar.Text)
         End If

@@ -182,5 +182,11 @@
     <Setting Name="MatrixLCD_ToastHoldTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
+    <Setting Name="Insteon_ThermostatSlaveAddr" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Global_LastKnownInsideTemp2nd" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

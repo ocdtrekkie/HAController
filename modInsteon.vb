@@ -44,6 +44,10 @@
         Dim response As String = ""
 
         InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, "read")
+        If My.Settings.Insteon_ThermostatSlaveAddr <> "" Then
+            Threading.Thread.Sleep(800)
+            InsteonThermostatControl(My.Settings.Insteon_ThermostatSlaveAddr, response, "read")
+        End If
     End Sub
 
     Sub CreateInsteonDb()
@@ -281,16 +285,16 @@
     End Sub
 
     Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Integer = 72)
-        ' TODO: Apparently I don't use intTemperature. I should probably be able to set the temperature with this code.
         Dim comm1 As Short
         Dim comm2 As Short
 
-        ' TODO: Yes, I'm currently ignoring strAddress here, this is terrible. I should do better.
-        If My.Settings.Insteon_ThermostatAddr = "" Then
+        If strAddress = "" And My.Settings.Insteon_ThermostatAddr = "" Then
             My.Application.Log.WriteEntry("No thermostat set, asking for it")
             My.Settings.Insteon_ThermostatAddr = InputBox("Enter Thermostat Address", "Thermostat")
         End If
-        strAddress = My.Settings.Insteon_ThermostatAddr
+        If strAddress = "" And My.Settings.Insteon_ThermostatAddr <> "" Then
+            strAddress = My.Settings.Insteon_ThermostatAddr
+        End If
 
         Select Case Command1
             Case "Auto", "auto"
@@ -480,10 +484,10 @@
                         Case 224 ' 111 NAK group cleanup direct message
                             strTemp = strTemp & " (NAK Group cleanup direct) "
                     End Select
-                    If FromAddress = My.Settings.Insteon_ThermostatAddr AndAlso Command1 > 109 Then ' TODO: Detect this by device model
-                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_ThermostatAddr AndAlso Command1 = 106 Then ' TODO: Detect this by device model
-                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2)
+                    If (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 > 109 Then ' TODO: Detect this by device model
+                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
+                    ElseIf (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 = 106 Then ' TODO: Detect this by device model
+                        strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr OrElse FromAddress = My.Settings.Insteon_BackDoorSensorAddr) AndAlso ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
                     ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then ' TODO: Detect this by device model
@@ -1820,12 +1824,17 @@
         End Select
     End Function
 
-    Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte) As String
+    Function InsteonThermostatResponse(ByVal comm1 As Byte, ByVal comm2 As Byte, ByVal FromAddress As String) As String
         Select Case comm1
             Case 106
                 ' TODO: Don't assume this info is temperature! It might not be! (But currently my code only requests it.)
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
-                My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
+                If FromAddress = My.Settings.Insteon_ThermostatAddr Then
+                    My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
+                    My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
+                End If
+                ' TODO: Probably should grab these temperature warnings from the second thermostat too someday.
                 If My.Settings.Global_LastKnownInsideTemp >= My.Settings.Global_InsideTempHeatWarning Then
                     My.Application.Log.WriteEntry("WARNING: Inside Temperature Heat Warning", TraceEventType.Warning)
                     modMail.Send("Temperature Warning", "Last known inside temperature was " & My.Settings.Global_LastKnownInsideTemp & " F")
@@ -1836,11 +1845,15 @@
                 End If
                 Return "Temperature: " & Int(comm2 / 2) & " F"
             Case 110
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
-                My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
+                If FromAddress = My.Settings.Insteon_ThermostatAddr Then
+                    My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
+                    My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
+                End If
                 Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"
             Case 111
-                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Humidity) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon', 'Interior', " & CStr(comm2) & ")")
+                modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Humidity) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(comm2) & ")")
                 Return "Humidity Level: " & comm2 & "%"
             Case 112
                 Select Case comm2

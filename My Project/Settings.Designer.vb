@@ -759,6 +759,30 @@ Namespace My
                 Me("MatrixLCD_ToastHoldTime") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Insteon_ThermostatSlaveAddr() As String
+            Get
+                Return CType(Me("Insteon_ThermostatSlaveAddr"),String)
+            End Get
+            Set
+                Me("Insteon_ThermostatSlaveAddr") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Global_LastKnownInsideTemp2nd() As Integer
+            Get
+                Return CType(Me("Global_LastKnownInsideTemp2nd"),Integer)
+            End Get
+            Set
+                Me("Global_LastKnownInsideTemp2nd") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

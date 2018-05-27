@@ -51,6 +51,7 @@ Partial Class frmMain
         Me.lblInsideTempLabel = New System.Windows.Forms.Label()
         Me.lblOutsideTempLabel = New System.Windows.Forms.Label()
         Me.lblOutsideCondition = New System.Windows.Forms.Label()
+        Me.lblInsideTemp2nd = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmbComPort
@@ -212,7 +213,7 @@ Partial Class frmMain
         '
         'btnInsteonAlarmOn
         '
-        Me.btnInsteonAlarmOn.Location = New System.Drawing.Point(12, 183)
+        Me.btnInsteonAlarmOn.Location = New System.Drawing.Point(12, 211)
         Me.btnInsteonAlarmOn.Name = "btnInsteonAlarmOn"
         Me.btnInsteonAlarmOn.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonAlarmOn.TabIndex = 24
@@ -221,7 +222,7 @@ Partial Class frmMain
         '
         'btnInsteonAlarmOff
         '
-        Me.btnInsteonAlarmOff.Location = New System.Drawing.Point(12, 212)
+        Me.btnInsteonAlarmOff.Location = New System.Drawing.Point(68, 211)
         Me.btnInsteonAlarmOff.Name = "btnInsteonAlarmOff"
         Me.btnInsteonAlarmOff.Size = New System.Drawing.Size(50, 23)
         Me.btnInsteonAlarmOff.TabIndex = 25
@@ -231,7 +232,7 @@ Partial Class frmMain
         'lblAlarm
         '
         Me.lblAlarm.AutoSize = True
-        Me.lblAlarm.Location = New System.Drawing.Point(0, 167)
+        Me.lblAlarm.Location = New System.Drawing.Point(27, 195)
         Me.lblAlarm.Name = "lblAlarm"
         Me.lblAlarm.Size = New System.Drawing.Size(74, 13)
         Me.lblAlarm.TabIndex = 26
@@ -248,7 +249,7 @@ Partial Class frmMain
         '
         'btnAddIP
         '
-        Me.btnAddIP.Location = New System.Drawing.Point(12, 96)
+        Me.btnAddIP.Location = New System.Drawing.Point(127, 105)
         Me.btnAddIP.Name = "btnAddIP"
         Me.btnAddIP.Size = New System.Drawing.Size(50, 23)
         Me.btnAddIP.TabIndex = 28
@@ -257,9 +258,9 @@ Partial Class frmMain
         '
         'btnCheckWeather
         '
-        Me.btnCheckWeather.Location = New System.Drawing.Point(71, 96)
+        Me.btnCheckWeather.Location = New System.Drawing.Point(183, 105)
         Me.btnCheckWeather.Name = "btnCheckWeather"
-        Me.btnCheckWeather.Size = New System.Drawing.Size(104, 23)
+        Me.btnCheckWeather.Size = New System.Drawing.Size(106, 23)
         Me.btnCheckWeather.TabIndex = 29
         Me.btnCheckWeather.Text = "Check Weather"
         Me.btnCheckWeather.UseVisualStyleBackColor = True
@@ -320,11 +321,23 @@ Partial Class frmMain
         Me.lblOutsideCondition.TabIndex = 35
         Me.lblOutsideCondition.Text = "Condition"
         '
+        'lblInsideTemp2nd
+        '
+        Me.lblInsideTemp2nd.AutoSize = True
+        Me.lblInsideTemp2nd.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblInsideTemp2nd.Location = New System.Drawing.Point(56, 91)
+        Me.lblInsideTemp2nd.Name = "lblInsideTemp2nd"
+        Me.lblInsideTemp2nd.Size = New System.Drawing.Size(47, 24)
+        Me.lblInsideTemp2nd.TabIndex = 36
+        Me.lblInsideTemp2nd.Text = "00 F"
+        Me.lblInsideTemp2nd.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(304, 301)
+        Me.Controls.Add(Me.lblInsideTemp2nd)
         Me.Controls.Add(Me.lblOutsideCondition)
         Me.Controls.Add(Me.lblOutsideTempLabel)
         Me.Controls.Add(Me.lblInsideTempLabel)
@@ -392,4 +405,5 @@ Partial Class frmMain
     Friend WithEvents lblInsideTempLabel As System.Windows.Forms.Label
     Friend WithEvents lblOutsideTempLabel As System.Windows.Forms.Label
     Friend WithEvents lblOutsideCondition As System.Windows.Forms.Label
+    Friend WithEvents lblInsideTemp2nd As Label
 End Class

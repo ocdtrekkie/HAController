@@ -44,10 +44,6 @@
         Dim response As String = ""
 
         InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, "read")
-        If My.Settings.Insteon_ThermostatSlaveAddr <> "" Then
-            Threading.Thread.Sleep(800)
-            InsteonThermostatControl(My.Settings.Insteon_ThermostatSlaveAddr, response, "read")
-        End If
     End Sub
 
     Sub CreateInsteonDb()

@@ -148,12 +148,16 @@
 
     Private Sub btnInsteonAlarmOn_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOn.Click
         My.Application.Log.WriteEntry("Turning alarm on")
-        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "on")
+        modInsteon.InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), lblCommandSent.Text, "on")
+        Threading.Thread.Sleep(500)
+        modInsteon.InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), lblCommandSent.Text, "on")
     End Sub
 
     Private Sub btnInsteonAlarmOff_Click(sender As Object, e As EventArgs) Handles btnInsteonAlarmOff.Click
         My.Application.Log.WriteEntry("Turning alarm off")
-        modInsteon.InsteonAlarmControl(txtAddress.Text, lblCommandSent.Text, "off")
+        modInsteon.InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), lblCommandSent.Text, "off")
+        Threading.Thread.Sleep(500)
+        modInsteon.InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), lblCommandSent.Text, "off")
     End Sub
 
     Private Sub btnAddIP_Click(sender As Object, e As EventArgs) Handles btnAddIP.Click

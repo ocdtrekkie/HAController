@@ -1784,6 +1784,7 @@
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
                 InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 180)
+                Threading.Thread.Sleep(500)
                 InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 180)
                 Return "Smoke Detected"
             Case 2
@@ -1793,6 +1794,7 @@
                 Dim response As String = ""
                 Threading.Thread.Sleep(3000)
                 InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 180)
+                Threading.Thread.Sleep(500)
                 InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 180)
                 Return "Carbon Monoxide Detected"
             Case 3

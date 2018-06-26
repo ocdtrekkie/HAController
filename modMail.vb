@@ -9,19 +9,27 @@ Imports System.Text
 Module modMail
     ' Credit for the POP3 part of the mail module goes to evry1falls from CodeProject: http://www.codeproject.com/Tips/441809/Receiving-response-from-POP3-mail-server
 
+    'SMTP Client
     Private oClient As SmtpClient = New SmtpClient
+    Private smtpLock As New Object
+
+    'POP3/IMAP Client Shared
     Private pClient As TcpClient = New TcpClient
+    Private m_sslStream As SslStream
+    Private m_buffer As Byte()
+
+    'IMAP Client
+    Private m_dummy As Byte()
+
+    'POP3 Client
     Private Read_Stream As StreamReader
     Private NetworkS_tream As NetworkStream
-    Private m_sslStream As SslStream
-    Private server_Command As String
     Private ret_Val As Integer
     Private Response As String
     Private Parts() As String
-    Private m_buffer() As Byte
     Private StatResp As String
     Private server_Stat(2) As String
-    Private smtpLock As New Object
+
     Dim tmrMailCheckTimer As System.Timers.Timer
 
     Sub CheckMail(source As Object, e As System.Timers.ElapsedEventArgs)
@@ -68,6 +76,27 @@ Module modMail
         End If
     End Sub
 
+    Sub CheckMailImap(source As Object, e As System.Timers.ElapsedEventArgs)
+        If modGlobal.IsOnline = True Then
+            Try
+                pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
+                m_sslStream = New SslStream(pClient.GetStream())
+                m_sslStream.AuthenticateAsClient(My.Settings.Mail_IMAPHost)
+                ReceiveResponse("")
+                ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & "  " & vbCrLf)
+                'ReceiveResponse("$ LIST " & """""" & " ""*""" & vbCrLf)
+                ReceiveResponse("$ SELECT INBOX" & vbCrLf)
+                ReceiveResponse("$ STATUS INBOX (MESSAGES)" & vbCrLf)
+                ReceiveResponse("$ FETCH " & 1 & " body[header]" & vbCrLf)
+                ReceiveResponse("$ LOGOUT" & vbCrLf)
+            Catch SocketEx As System.Net.Sockets.SocketException
+                My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+            Catch NullRefEx As System.NullReferenceException
+                My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty IMAP response")
+            End Try
+        End If
+    End Sub
+
     Sub CloseServer()
         StatResp = Login(m_sslStream, "QUIT ")
         My.Application.Log.WriteEntry("POP3: " & StatResp)
@@ -92,8 +121,8 @@ Module modMail
     Sub GetEmails(ByVal Server_Command As String)
         Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
         Dim stream_Reader As StreamReader
-        Dim TxtLine, CmdRec, CmdID, ReSubj As String
-        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = ""
+        Dim TxtLine, CmdRec, ReSubj As String
+        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = ""
         Try
             m_sslStream.Write(m_buffer, 0, m_buffer.Length)
             stream_Reader = New StreamReader(m_sslStream)
@@ -121,7 +150,7 @@ Module modMail
                     My.Application.Log.WriteEntry("Command " & CmdTo)
                 End If
 
-                If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" Then
+                If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
                     Exit Do
                 End If
             Loop
@@ -155,14 +184,24 @@ Module modMail
 
     Sub Load()
         If My.Settings.Mail_Enable = True Then
-            If My.Settings.Mail_POPHost = "" Then
+            If My.Settings.Mail_IMAPMode = False AndAlso My.Settings.Mail_POPHost = "" Then
                 My.Application.Log.WriteEntry("No mail POP host set, asking for it")
                 My.Settings.Mail_POPHost = InputBox("Enter mail POP host.", "Mail POP Host")
             End If
 
-            If My.Settings.Mail_POPPort = "" Then
+            If My.Settings.Mail_IMAPMode = False AndAlso My.Settings.Mail_POPPort = "" Then
                 My.Application.Log.WriteEntry("No mail POP port set, asking for it")
                 My.Settings.Mail_POPPort = InputBox("Enter mail POP port.", "Mail POP Port", "995")
+            End If
+
+            If My.Settings.Mail_IMAPMode = True AndAlso My.Settings.Mail_IMAPHost = "" Then
+                My.Application.Log.WriteEntry("No mail IMAP host set, asking for it")
+                My.Settings.Mail_IMAPHost = InputBox("Enter mail IMAP host.", "Mail IMAP Host")
+            End If
+
+            If My.Settings.Mail_IMAPMode = True AndAlso My.Settings.Mail_IMAPPort = "" Then
+                My.Application.Log.WriteEntry("No mail IMAP port set, asking for it")
+                My.Settings.Mail_IMAPPort = InputBox("Enter mail IMAP port.", "Mail IMAP Port", "993")
             End If
 
             If My.Settings.Mail_SMTPHost = "" Then
@@ -214,9 +253,14 @@ Module modMail
 
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
-            My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
             tmrMailCheckTimer = New System.Timers.Timer
-            AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
+            If My.Settings.Mail_IMAPMode = False Then
+                My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
+                AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
+            Else
+                My.Application.Log.WriteEntry("Scheduling automatic IMAP mail checks")
+                AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailImap
+            End If
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
         Else
@@ -235,6 +279,65 @@ Module modMail
         Else
             My.Application.Log.WriteEntry("Notification mail sent to " + My.Settings.Mail_To)
         End If
+    End Sub
+
+    Sub ReceiveResponse(ByVal Server_Command As String)
+        Try
+            If Server_Command <> "" Then
+                If pClient.Connected = True Then
+                    m_dummy = Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
+                    m_sslStream.Write(m_dummy, 0, m_dummy.Length)
+                Else
+                    My.Application.Log.WriteEntry("IMAP: TCP Connection is disconnected", TraceEventType.Error)
+                End If
+            End If
+            m_sslStream.Flush()
+            Dim stream_Reader As StreamReader = New StreamReader(m_sslStream)
+            Dim TxtLine, CmdRec, ReSubj As String
+            Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = ""
+            Do While stream_Reader.Peek() <> -1
+                TxtLine = stream_Reader.ReadLine()
+
+                If TxtLine.StartsWith("*") Then
+                    My.Application.Log.WriteEntry("IMAP: " & TxtLine)
+                Else
+                    If TxtLine.StartsWith("Received: ") Then
+                        CmdRec = String.Copy(TxtLine)
+                        My.Application.Log.WriteEntry("Command " & CmdRec)
+                    End If
+                    If TxtLine.StartsWith("Message-ID: ") Then
+                        CmdID = String.Copy(TxtLine)
+                        My.Application.Log.WriteEntry("Command " & CmdID)
+                    End If
+                    If TxtLine.StartsWith("Subject: ") Then
+                        CmdSubj = String.Copy(TxtLine)
+                        My.Application.Log.WriteEntry("Command " & CmdSubj)
+                    End If
+                    If TxtLine.StartsWith("From: ") Then
+                        CmdFrom = String.Copy(TxtLine)
+                        My.Application.Log.WriteEntry("Command " & CmdFrom)
+                    End If
+                    If TxtLine.StartsWith("To: ") Then
+                        CmdTo = String.Copy(TxtLine)
+                        My.Application.Log.WriteEntry("Command " & CmdTo)
+                    End If
+
+                    If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
+                        Exit Do
+                    End If
+                End If
+            Loop
+
+            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist AndAlso CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
+                My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
+                ReSubj = CmdSubj.Replace("Subject: ", "")
+                modConverse.Interpret(ReSubj, True)
+            ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
+                My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+            End If
+        Catch ex As Exception
+            My.Application.Log.WriteException(ex)
+        End Try
     End Sub
 
     Sub Send(oSubj As String, oBody As String)

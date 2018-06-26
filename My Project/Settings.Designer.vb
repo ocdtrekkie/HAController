@@ -783,6 +783,42 @@ Namespace My
                 Me("Global_LastKnownInsideTemp2nd") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Mail_IMAPMode() As Boolean
+            Get
+                Return CType(Me("Mail_IMAPMode"),Boolean)
+            End Get
+            Set
+                Me("Mail_IMAPMode") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Mail_IMAPHost() As String
+            Get
+                Return CType(Me("Mail_IMAPHost"),String)
+            End Get
+            Set
+                Me("Mail_IMAPHost") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("993")>  _
+        Public Property Mail_IMAPPort() As String
+            Get
+                Return CType(Me("Mail_IMAPPort"),String)
+            End Get
+            Set
+                Me("Mail_IMAPPort") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

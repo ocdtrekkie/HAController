@@ -188,5 +188,14 @@
     <Setting Name="Global_LastKnownInsideTemp2nd" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="Mail_IMAPMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Mail_IMAPHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Mail_IMAPPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">993</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

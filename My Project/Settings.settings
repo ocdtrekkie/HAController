@@ -48,7 +48,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Mail_SMTPPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">587</Value>
     </Setting>
     <Setting Name="Mail_To" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -78,7 +78,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Mail_POPPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">995</Value>
     </Setting>
     <Setting Name="Mail_CmdWhitelist" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

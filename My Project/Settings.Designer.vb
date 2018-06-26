@@ -232,7 +232,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("587")>  _
         Public Property Mail_SMTPPort() As String
             Get
                 Return CType(Me("Mail_SMTPPort"),String)
@@ -352,7 +352,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("995")>  _
         Public Property Mail_POPPort() As String
             Get
                 Return CType(Me("Mail_POPPort"),String)

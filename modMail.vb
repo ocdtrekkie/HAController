@@ -162,7 +162,7 @@ Module modMail
 
             If My.Settings.Mail_POPPort = "" Then
                 My.Application.Log.WriteEntry("No mail POP port set, asking for it")
-                My.Settings.Mail_POPPort = InputBox("Enter mail POP port.", "Mail POP Port")
+                My.Settings.Mail_POPPort = InputBox("Enter mail POP port.", "Mail POP Port", "995")
             End If
 
             If My.Settings.Mail_SMTPHost = "" Then
@@ -172,7 +172,7 @@ Module modMail
 
             If My.Settings.Mail_SMTPPort = "" Then
                 My.Application.Log.WriteEntry("No mail SMTP port set, asking for it")
-                My.Settings.Mail_SMTPPort = InputBox("Enter mail SMTP port.", "Mail SMTP Port")
+                My.Settings.Mail_SMTPPort = InputBox("Enter mail SMTP port.", "Mail SMTP Port", "587")
             End If
 
             If My.Settings.Mail_Username = "" OrElse My.Settings.Mail_From = "" Then

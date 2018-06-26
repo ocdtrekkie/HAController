@@ -38,6 +38,10 @@ Module modConverse
                             modDreamCheeky.Disable()
                         Case "gps"
                             modGPS.Disable()
+                        Case "imap"
+                            My.Settings.Mail_IMAPMode = False
+                            modMail.Unload()
+                            modMail.Load()
                         Case "insteon"
                             modInsteon.Disable()
                         Case "mail"
@@ -68,6 +72,10 @@ Module modConverse
                             modDreamCheeky.Enable()
                         Case "gps"
                             modGPS.Enable()
+                        Case "imap"
+                            My.Settings.Mail_IMAPMode = True
+                            modMail.Unload()
+                            modMail.Load()
                         Case "insteon"
                             modInsteon.Enable()
                         Case "mail"

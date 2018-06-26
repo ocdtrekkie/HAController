@@ -34,7 +34,7 @@ Module modMail
     Dim tmrMailCheckTimer As System.Timers.Timer
 
     Sub CheckMail(source As Object, e As System.Timers.ElapsedEventArgs)
-        If modGlobal.IsOnline = True Then
+        If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
             Try
                 If pClient.Connected = True Then
                     CloseServer()
@@ -78,7 +78,7 @@ Module modMail
     End Sub
 
     Sub CheckMailImap(source As Object, e As System.Timers.ElapsedEventArgs)
-        If modGlobal.IsOnline = True Then
+        If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = True Then
             Try
                 pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
                 m_sslStream = New SslStream(pClient.GetStream())
@@ -362,6 +362,8 @@ Module modMail
     Sub Unload()
         If tmrMailCheckTimer IsNot Nothing Then
             tmrMailCheckTimer.Enabled = False
+            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
+            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailImap
             ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
         End If
     End Sub

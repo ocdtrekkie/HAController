@@ -8,6 +8,7 @@ Imports System.Text
 
 Module modMail
     ' Credit for the POP3 part of the mail module goes to evry1falls from CodeProject: http://www.codeproject.com/Tips/441809/Receiving-response-from-POP3-mail-server
+    ' Credit for the IMAP part of the mail module goes to Sridhar Rajan Venkataramani: https://code.msdn.microsoft.com/windowsdesktop/Simple-IMAP-CLIENT-b249d2e6
 
     'SMTP Client
     Private oClient As SmtpClient = New SmtpClient
@@ -83,8 +84,7 @@ Module modMail
                 m_sslStream = New SslStream(pClient.GetStream())
                 m_sslStream.AuthenticateAsClient(My.Settings.Mail_IMAPHost)
                 ReceiveResponse("")
-                ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & "  " & vbCrLf)
-                'ReceiveResponse("$ LIST " & """""" & " ""*""" & vbCrLf)
+                ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & vbCrLf)
                 ReceiveResponse("$ SELECT INBOX" & vbCrLf)
                 ReceiveResponse("$ STATUS INBOX (MESSAGES)" & vbCrLf)
                 ReceiveResponse("$ FETCH " & 1 & " body[header]" & vbCrLf)

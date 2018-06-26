@@ -87,7 +87,9 @@ Module modMail
                 ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & vbCrLf)
                 ReceiveResponse("$ SELECT INBOX" & vbCrLf)
                 ReceiveResponse("$ STATUS INBOX (MESSAGES)" & vbCrLf)
-                ReceiveResponse("$ FETCH " & 1 & " body[header]" & vbCrLf)
+                ReceiveResponse("$ FETCH 1 body[header]" & vbCrLf)
+                ReceiveResponse("$ STORE 1 +FLAGS (\Deleted)" & vbCrLf)
+                ReceiveResponse("$ EXPUNGE" & vbCrLf)
                 ReceiveResponse("$ LOGOUT" & vbCrLf)
             Catch SocketEx As System.Net.Sockets.SocketException
                 My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")

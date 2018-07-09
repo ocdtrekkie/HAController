@@ -233,7 +233,7 @@
                     data(5) = 31 'flags
                     data(6) = comm1
                     data(7) = comm2
-                    data(21) = (Not (data(6) + data(7))) + 1
+                    data(21) = CByte(((Not (CInt(data(6)) + CInt(data(7)))) + 1) And 255)
                     Try
                         SerialPLM.Write(data, 0, 22)
                     Catch Excep As System.InvalidOperationException

@@ -34,9 +34,9 @@ Module modConverse
                     Select Case inputData(1)
                         Case "mail"
                             If My.Settings.Mail_IMAPMode = True Then
-                                CheckMailImap(vbNull, EventArgs.Empty)
+                                CheckMailImap()
                             Else
-                                CheckMail(vbNull, EventArgs.Empty)
+                                CheckMail()
                             End If
                             strCommandResponse = "Checking mail"
                     End Select

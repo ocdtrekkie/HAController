@@ -33,7 +33,7 @@ Module modMail
 
     Dim tmrMailCheckTimer As System.Timers.Timer
 
-    Sub CheckMail(source As Object, e As System.Timers.ElapsedEventArgs)
+    Sub CheckMail()
         If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
             Try
                 If pClient.Connected = True Then
@@ -77,7 +77,7 @@ Module modMail
         End If
     End Sub
 
-    Sub CheckMailImap(source As Object, e As System.Timers.ElapsedEventArgs)
+    Sub CheckMailImap()
         If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = True Then
             Try
                 pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
@@ -96,6 +96,14 @@ Module modMail
             Catch NullRefEx As System.NullReferenceException
                 My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty IMAP response")
             End Try
+        End If
+    End Sub
+
+    Sub CheckMailHandler(source As Object, e As System.Timers.ElapsedEventArgs)
+        If My.Settings.Mail_IMAPMode = True Then
+            CheckMailImap()
+        Else
+            CheckMail()
         End If
     End Sub
 
@@ -256,13 +264,8 @@ Module modMail
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
             tmrMailCheckTimer = New System.Timers.Timer
-            If My.Settings.Mail_IMAPMode = False Then
-                My.Application.Log.WriteEntry("Scheduling automatic POP3 mail checks")
-                AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
-            Else
-                My.Application.Log.WriteEntry("Scheduling automatic IMAP mail checks")
-                AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailImap
-            End If
+            My.Application.Log.WriteEntry("Scheduling automatic mail checks")
+            AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
         Else
@@ -366,8 +369,7 @@ Module modMail
     Sub Unload()
         If tmrMailCheckTimer IsNot Nothing Then
             tmrMailCheckTimer.Enabled = False
-            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMail
-            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailImap
+            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
             ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
         End If
     End Sub

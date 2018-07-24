@@ -20,4 +20,8 @@ _IMAP Host:_ imap-mail.outlook.com _Port:_ 993
 
 _SMTP Host:_ smtp-mail.outlook.com _Port:_ 587
 
-Note: HAC's POP3 client does not appear to work correctly with Outlook.com at this time.
+Note: Outlook.com seems to pretty aggressively treat HAController as a spam sender. Not recommended. HAC's POP3 client does not appear to work correctly with Outlook.com at this time.
+
+### HostGator
+
+Note: Your HostGator mail account should work with IMAP 993 and SMTP 587. POP isn't tested. Use the domains recommended by your HostGator account.

@@ -354,7 +354,11 @@ Module modMail
             oMsg.Body = oBody & System.Environment.NewLine & System.Environment.NewLine & " -- This bot does not care about your replies and will discard them."
 
             SyncLock smtpLock
-                oClient.Send(oMsg)
+                Try
+                    oClient.Send(oMsg)
+                Catch SmtpEx As SmtpException
+                    My.Application.Log.WriteException(SmtpEx)
+                End Try
             End SyncLock
         End If
     End Sub

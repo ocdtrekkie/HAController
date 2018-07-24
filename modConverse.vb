@@ -30,6 +30,16 @@ Module modConverse
                 Case "bye", "exit", "quit"
                     strCommandResponse = "Goodbye"
                     frmMain.Close()
+                Case "check"
+                    Select Case inputData(1)
+                        Case "mail"
+                            If My.Settings.Mail_IMAPMode = True Then
+                                CheckMailImap(vbNull, EventArgs.Empty)
+                            Else
+                                CheckMail(vbNull, EventArgs.Empty)
+                            End If
+                            strCommandResponse = "Checking mail"
+                    End Select
                 Case "disable"
                     Select Case inputData(1)
                         Case "carmode"

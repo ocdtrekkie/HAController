@@ -93,6 +93,8 @@ Module modMail
                 ReceiveResponse("$ LOGOUT" & vbCrLf)
             Catch SocketEx As System.Net.Sockets.SocketException
                 My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+            Catch AuthEx As System.Security.Authentication.AuthenticationException
+                My.Application.Log.WriteException(AuthEx)
             Catch NullRefEx As System.NullReferenceException
                 My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty IMAP response")
             End Try

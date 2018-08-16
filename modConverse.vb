@@ -34,11 +34,13 @@ Module modConverse
                     Select Case inputData(1)
                         Case "mail"
                             If My.Settings.Mail_IMAPMode = True Then
-                                CheckMailImap()
+                                modMail.CheckMailImap()
                             Else
-                                CheckMail()
+                                modMail.CheckMail()
                             End If
                             strCommandResponse = "Checking mail"
+                        Case "pihole"
+                            strCommandResponse = modPihole.CheckPiholeStatus()
                     End Select
                 Case "disable"
                     Select Case inputData(1)
@@ -64,6 +66,8 @@ Module modConverse
                             modMusic.Disable()
                         Case "openweathermap"
                             modOpenWeatherMap.Disable()
+                        Case "pihole"
+                            modPihole.Disable()
                         Case "ping"
                             modPing.Disable()
                         Case "speech"
@@ -98,6 +102,8 @@ Module modConverse
                             modMusic.Enable()
                         Case "openweathermap"
                             modOpenWeatherMap.Enable()
+                        Case "pihole"
+                            modPihole.Enable()
                         Case "ping"
                             modPing.Enable()
                         Case "speech"

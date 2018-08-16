@@ -37,6 +37,7 @@ Public Module modGlobal
         modMusic.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading computer module")
         modComputer.Load() 'Dependencies: None
+        modPihole.Load() 'Dependencies: None
     End Sub
 
     Sub SaveCollection()

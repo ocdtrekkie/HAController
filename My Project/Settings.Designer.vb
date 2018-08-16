@@ -819,6 +819,30 @@ Namespace My
                 Me("Mail_IMAPPort") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Pihole_Enable() As Boolean
+            Get
+                Return CType(Me("Pihole_Enable"),Boolean)
+            End Get
+            Set
+                Me("Pihole_Enable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0.0.0.0")>  _
+        Public Property Pihole_IPAddress() As String
+            Get
+                Return CType(Me("Pihole_IPAddress"),String)
+            End Get
+            Set
+                Me("Pihole_IPAddress") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -197,5 +197,11 @@
     <Setting Name="Mail_IMAPPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">993</Value>
     </Setting>
+    <Setting Name="Pihole_Enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Pihole_IPAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.0.0.0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

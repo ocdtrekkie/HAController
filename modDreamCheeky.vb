@@ -34,32 +34,36 @@ Module modDreamCheeky
         End If
     End Sub
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading DreamCheeky module")
+    Function Disable() As String
         Unload()
         My.Settings.DreamCheeky_Enable = False
         My.Application.Log.WriteEntry("DreamCheeky module is disabled")
-    End Sub
+        Return "DreamCheeky module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.DreamCheeky_Enable = True
         My.Application.Log.WriteEntry("DreamCheeky module is enabled")
-        My.Application.Log.WriteEntry("Loading DreamCheeky module")
         Load()
-    End Sub
+        Return "DreamCheeky module enabled"
+    End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.DreamCheeky_Enable = True Then
+            My.Application.Log.WriteEntry("Loading DreamCheeky module")
             CreateButton()
             CreateNotifier()
+            Return "DreamCheeky module loaded"
         Else
             My.Application.Log.WriteEntry("DreamCheeky module is disabled, module not loaded")
+            Return "DreamCheeky module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
-    Sub Unload()
-
-    End Sub
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading DreamCheeky module")
+        Return "DreamCheeky module unloaded"
+    End Function
 
     Public Class HABigRedButton
         Inherits HAUSBDevice

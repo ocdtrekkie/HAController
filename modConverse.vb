@@ -47,7 +47,7 @@ Module modConverse
                         Case "carmode"
                             frmMain.DisableCarMode()
                         Case "dreamcheeky"
-                            modDreamCheeky.Disable()
+                            strCommandResponse = modDreamCheeky.Disable()
                         Case "gps"
                             modGPS.Disable()
                         Case "imap"
@@ -76,6 +76,8 @@ Module modConverse
                             strCommandResponse = modComputer.DisableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Disable()
+                        Case Else
+                            strCommandResponse = "Module or feature not found"
                     End Select
                     If strCommandResponse = "" Then
                         strCommandResponse = "Acknowledged"
@@ -85,7 +87,7 @@ Module modConverse
                         Case "carmode"
                             frmMain.EnableCarMode()
                         Case "dreamcheeky"
-                            modDreamCheeky.Enable()
+                            strCommandResponse = modDreamCheeky.Enable()
                         Case "gps"
                             modGPS.Enable()
                         Case "imap"
@@ -114,6 +116,8 @@ Module modConverse
                             strCommandResponse = modComputer.EnableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Enable()
+                        Case Else
+                            strCommandResponse = "Module or feature not found"
                     End Select
                     If strCommandResponse = "" Then
                         strCommandResponse = "Acknowledged"

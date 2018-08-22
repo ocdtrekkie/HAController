@@ -25,7 +25,6 @@ Public Module modGlobal
         My.Application.Log.WriteEntry("Loading MapQuest module")
         modMapQuest.Load() 'Dependencies: None
         modWolframAlpha.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load() 'Dependencies: None
         modMail.Load() 'Dependencies: None
         modMusic.Load() 'Dependencies: None

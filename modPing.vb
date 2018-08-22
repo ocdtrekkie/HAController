@@ -3,31 +3,34 @@
 
     Dim tmrPingCheckTimer As System.Timers.Timer
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading ping module")
+    Function Disable() As String
         Unload()
         My.Settings.Ping_Enable = False
         My.Application.Log.WriteEntry("Ping module is disabled")
-    End Sub
+        Return "Ping module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.Ping_Enable = True
         My.Application.Log.WriteEntry("Ping module is enabled")
-        My.Application.Log.WriteEntry("Loading ping module")
         Load()
-    End Sub
+        Return "Ping module enabled"
+    End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.Ping_Enable = True Then
+            My.Application.Log.WriteEntry("Loading ping module")
             My.Application.Log.WriteEntry("Scheduling automatic Internet checks")
             tmrPingCheckTimer = New System.Timers.Timer
             AddHandler tmrPingCheckTimer.Elapsed, AddressOf PingInternet
             tmrPingCheckTimer.Interval = 60000 ' 1min
             tmrPingCheckTimer.Enabled = True
+            Return "Ping module loaded"
         Else
             My.Application.Log.WriteEntry("Ping module is disabled, module not loaded")
+            Return "Ping module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
     Private Sub PingInternet(source As Object, e As System.Timers.ElapsedEventArgs)
         My.Application.Log.WriteEntry("Checking Internet connectivity")
@@ -42,12 +45,6 @@
         Else
             My.Application.Log.WriteEntry(response, TraceEventType.Warning)
             modGlobal.IsOnline = False
-        End If
-    End Sub
-
-    Sub Unload()
-        If tmrPingCheckTimer IsNot Nothing Then
-            tmrPingCheckTimer.Enabled = False
         End If
     End Sub
 
@@ -86,5 +83,13 @@
         Else
             Return "Ping disabled"
         End If
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading ping module")
+        If tmrPingCheckTimer IsNot Nothing Then
+            tmrPingCheckTimer.Enabled = False
+        End If
+        Return "Ping module unloaded"
     End Function
 End Module

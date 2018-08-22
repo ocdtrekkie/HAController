@@ -69,7 +69,7 @@ Module modConverse
                         Case "pihole"
                             strCommandResponse = modPihole.Disable()
                         Case "ping"
-                            modPing.Disable()
+                            strCommandResponse = modPing.Disable()
                         Case "speech"
                             strCommandResponse = modSpeech.Disable()
                         Case "startup"
@@ -107,7 +107,7 @@ Module modConverse
                         Case "pihole"
                             strCommandResponse = modPihole.Enable()
                         Case "ping"
-                            modPing.Enable()
+                            strCommandResponse = modPing.Enable()
                         Case "speech"
                             strCommandResponse = modSpeech.Enable()
                         Case "startup"

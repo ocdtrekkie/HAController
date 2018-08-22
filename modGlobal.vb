@@ -10,22 +10,48 @@ Public Module modGlobal
     Public DeviceCollection As New ArrayList
 
     Sub LoadModules()
-        'TODO: Load these modules Async, waiting for dependent tasks to finish first
-        modDatabase.Load() 'Dependencies: None
-        modPing.Load() 'Dependencies: None
-        modInsteon.Load() 'Dependencies: Database, Mail
-        modSpeech.Load() 'Dependencies: None
-        modOpenWeatherMap.Load() 'Dependencies: Database
-        modMatrixLCD.Load() 'Dependencies: Speech
-        modGPS.Load() 'Dependencies: Database
-        modMapQuest.Load() 'Dependencies: None
-        modWolframAlpha.Load() 'Dependencies: None
-        modDreamCheeky.Load() 'Dependencies: None
-        modMail.Load() 'Dependencies: None
-        modMusic.Load() 'Dependencies: None
-        modComputer.Load() 'Dependencies: None
-        modPihole.Load() 'Dependencies: None
+        My.Application.Log.WriteEntry("Loading modules")
+
+        Dim LoadModuleTasks As System.Collections.Concurrent.ConcurrentBag(Of Task) = New System.Collections.Concurrent.ConcurrentBag(Of Task)()
+        LoadModuleTasks.Add(Task.Run(Function() modDatabase.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modPing.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modSpeech.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modMapQuest.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modWolframAlpha.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modDreamCheeky.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modMail.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modMusic.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modComputer.Load())) 'Dependencies: None
+        LoadModuleTasks.Add(Task.Run(Function() modPihole.Load())) 'Dependencies: None
+
+        Task.WaitAll(LoadModuleTasks.ToArray())
+
+        LoadModuleTasks.Add(Task.Run(Function() modInsteon.Load())) 'Dependencies: Database, Mail
+        LoadModuleTasks.Add(Task.Run(Function() modOpenWeatherMap.Load())) 'Dependencies: Database
+        LoadModuleTasks.Add(Task.Run(Function() modMatrixLCD.Load())) 'Dependencies: Speech
+        LoadModuleTasks.Add(Task.Run(Function() modGPS.Load())) 'Dependencies: Database
+
+        Task.WaitAll(LoadModuleTasks.ToArray())
+        My.Application.Log.WriteEntry("Module loading complete")
     End Sub
+
+    'Sub LoadModules()
+    '    'TODO: Load these modules Async, waiting for dependent tasks to finish first
+    '    modDatabase.Load() 'Dependencies: None
+    '    modPing.Load() 'Dependencies: None
+    '    modInsteon.Load() 'Dependencies: Database, Mail
+    '    modSpeech.Load() 'Dependencies: None
+    '    modOpenWeatherMap.Load() 'Dependencies: Database
+    '    modMatrixLCD.Load() 'Dependencies: Speech
+    '    modGPS.Load() 'Dependencies: Database
+    '    modMapQuest.Load() 'Dependencies: None
+    '    modWolframAlpha.Load() 'Dependencies: None
+    '    modDreamCheeky.Load() 'Dependencies: None
+    '    modMail.Load() 'Dependencies: None
+    '    modMusic.Load() 'Dependencies: None
+    '    modComputer.Load() 'Dependencies: None
+    '    modPihole.Load() 'Dependencies: None
+    'End Sub
 
     Sub SaveCollection()
         Dim targetFile As New FileStream("C:\HAC\DeviceCollection.xml", FileMode.Create)

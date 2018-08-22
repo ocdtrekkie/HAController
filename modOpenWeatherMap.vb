@@ -100,7 +100,8 @@ Module modOpenWeatherMap
             tmrOWMCheckTimer.Interval = 600000 ' 10min
             tmrOWMCheckTimer.Enabled = True
 
-            GatherWeatherData()
+            Dim InitialOWMCheck As New Threading.Thread(AddressOf GatherWeatherData)
+            InitialOWMCheck.Start()
             Return "OpenWeatherMap module loaded"
         Else
             My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")

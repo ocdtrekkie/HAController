@@ -27,7 +27,6 @@ Public Module modGlobal
         modWolframAlpha.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading mail module")
         modMail.Load() 'Dependencies: None
         modMusic.Load() 'Dependencies: None
         modComputer.Load() 'Dependencies: None

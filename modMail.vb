@@ -116,19 +116,19 @@ Module modMail
         ret_Val = 0
     End Sub
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading mail module")
+    Function Disable() As String
         Unload()
         My.Settings.Mail_Enable = False
         My.Application.Log.WriteEntry("Mail module is disabled")
-    End Sub
+        Return "Mail module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.Mail_Enable = True
         My.Application.Log.WriteEntry("Mail module is enabled")
-        My.Application.Log.WriteEntry("Loading mail module")
         Load()
-    End Sub
+        Return "Mail module enabled"
+    End Function
 
     Sub GetEmails(ByVal Server_Command As String)
         Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
@@ -194,7 +194,8 @@ Module modMail
         Next I
     End Sub
 
-    Sub Load()
+    Function Load() As String
+        My.Application.Log.WriteEntry("Loading mail module")
         If My.Settings.Mail_Enable = True Then
             If My.Settings.Mail_IMAPMode = False AndAlso My.Settings.Mail_POPHost = "" Then
                 My.Application.Log.WriteEntry("No mail POP host set, asking for it")
@@ -270,10 +271,12 @@ Module modMail
             AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
+            Return "Mail module loaded"
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")
+            Return "Mail module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
     Sub oClient_SendCompleted(sender As Object, e As AsyncCompletedEventArgs)
         Dim token As String = CStr(e.UserState)
@@ -368,14 +371,6 @@ Module modMail
         End If
     End Sub
 
-    Sub Unload()
-        If tmrMailCheckTimer IsNot Nothing Then
-            tmrMailCheckTimer.Enabled = False
-            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
-            ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
-        End If
-    End Sub
-
     Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String
         Dim justExit As Boolean = False
         Dim Read_Stream2 = New StreamReader(SslStrem)
@@ -396,5 +391,15 @@ Module modMail
         Else
             Return "Dumped"
         End If
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading mail module")
+        If tmrMailCheckTimer IsNot Nothing Then
+            tmrMailCheckTimer.Enabled = False
+            RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
+            ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
+        End If
+        Return "Mail module unloaded"
     End Function
 End Module

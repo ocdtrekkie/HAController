@@ -57,7 +57,7 @@ Module modConverse
                         Case "insteon"
                             modInsteon.Disable()
                         Case "mail"
-                            modMail.Disable()
+                            strCommandResponse = modMail.Disable()
                         Case "mapquest"
                             modMapQuest.Disable()
                         Case "matrixlcd"
@@ -95,7 +95,7 @@ Module modConverse
                         Case "insteon"
                             modInsteon.Enable()
                         Case "mail"
-                            modMail.Enable()
+                            strCommandResponse = modMail.Enable()
                         Case "mapquest"
                             modMapQuest.Enable()
                         Case "matrixlcd"

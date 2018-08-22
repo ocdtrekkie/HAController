@@ -20,7 +20,6 @@ Public Module modGlobal
         modOpenWeatherMap.Load() 'Dependencies: Database
         My.Application.Log.WriteEntry("Loading Matrix LCD module")
         modMatrixLCD.Load() 'Dependencies: Speech
-        My.Application.Log.WriteEntry("Loading GPS module")
         modGPS.Load() 'Dependencies: Database
         modMapQuest.Load() 'Dependencies: None
         modWolframAlpha.Load() 'Dependencies: None

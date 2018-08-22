@@ -49,7 +49,7 @@ Module modConverse
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Disable()
                         Case "gps"
-                            modGPS.Disable()
+                            strCommandResponse = modGPS.Disable()
                         Case "imap"
                             My.Settings.Mail_IMAPMode = False
                             modMail.Unload()
@@ -89,7 +89,7 @@ Module modConverse
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Enable()
                         Case "gps"
-                            modGPS.Enable()
+                            strCommandResponse = modGPS.Enable()
                         Case "imap"
                             My.Settings.Mail_IMAPMode = True
                             modMail.Unload()

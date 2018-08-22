@@ -15,42 +15,48 @@
     Public GPSReceiverIndex As Integer
     Public isNavigating As Boolean
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading GPS module")
+    Function Disable() As String
         Unload()
         My.Settings.GPS_Enable = False
         My.Application.Log.WriteEntry("GPS module is disabled")
-    End Sub
+        Return "GPS module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.GPS_Enable = True
         My.Application.Log.WriteEntry("GPS module is enabled")
-        My.Application.Log.WriteEntry("Loading GPS module")
         Load()
-    End Sub
+        Return "GPS module enabled"
+    End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.GPS_Enable = True Then
+            My.Application.Log.WriteEntry("Loading GPS module")
             GPSReceiver = New HAGPSDevice
             If GPSReceiver.IsConnected = True Then
                 DeviceCollection.Add(GPSReceiver)
                 GPSReceiverIndex = DeviceCollection.IndexOf(GPSReceiver)
                 My.Application.Log.WriteEntry("GPS Receiver has a device index of " & GPSReceiverIndex)
+                Return "GPS module loaded"
             Else
                 My.Application.Log.WriteEntry("GPS Receiver not found")
                 GPSReceiver.Dispose()
+                Return "GPS Receiver not found"
             End If
         Else
             My.Application.Log.WriteEntry("GPS module is disabled, module not loaded")
+            Return "GPS module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
-    Sub Unload()
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading GPS module")
         If GPSReceiver IsNot Nothing Then
             GPSReceiver.Dispose()
             Threading.Thread.Sleep(200)
         End If
-    End Sub
+        Return "GPS module unloaded"
+    End Function
 
     ''' <summary>
     ''' This function returns the distance between GPS coordinates A and B on a spherical Earth.

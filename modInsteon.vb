@@ -51,19 +51,19 @@
         modDatabase.Execute("CREATE TABLE IF NOT EXISTS INSTEON_DEVICES(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, DeviceOn INTEGER, Level INTEGER, Checking INTEGER, LastCommand INTEGER, LastFlags INTEGER, LastTime STRING, LastGroup INTEGER, DevCat INTEGER, SubCat INTEGER, Firmware INTEGER)")
     End Sub
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading Insteon module")
+    Function Disable() As String
         Unload()
         My.Settings.Insteon_Enable = False
         My.Application.Log.WriteEntry("Insteon module is disabled")
-    End Sub
+        Return "Insteon module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.Insteon_Enable = True
         My.Application.Log.WriteEntry("Insteon module is enabled")
-        My.Application.Log.WriteEntry("Loading Insteon module")
         Load()
-    End Sub
+        Return "Insteon module enabled"
+    End Function
 
     Sub InsteonConnect(ByVal PortName As String, ByRef ResponseMsg As String)
         If My.Settings.Insteon_Enable = True Then
@@ -334,16 +334,19 @@
         InsteonSendExtCommand(strAddress, comm1, comm2)
     End Sub
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.Insteon_Enable = True Then
+            My.Application.Log.WriteEntry("Loading Insteon module")
             SerialPLM = New System.IO.Ports.SerialPort
             AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
 
             CreateInsteonDb()
+            Return "Insteon module loaded"
         Else
             My.Application.Log.WriteEntry("Insteon module is disabled, module not loaded")
+            Return "Insteon module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
     Sub NicknameInsteonDeviceDb(ByVal strAddress As String, ByVal strNickname As String)
         If CheckDbForInsteon(strAddress) = 0 Then
@@ -1122,7 +1125,8 @@
         Exit Sub
     End Sub
 
-    Sub Unload()
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading Insteon module")
         If tmrIThermCheckTimer IsNot Nothing Then
             tmrIThermCheckTimer.Enabled = False
         End If
@@ -1134,7 +1138,8 @@
             SerialPLM.Dispose()
             Threading.Thread.Sleep(200)
         End If
-    End Sub
+        Return "Insteon module unloaded"
+    End Function
 
     Public Function InsteonNum(ByVal Address As String) As Short
         ' return the array index for this insteon device based on the address

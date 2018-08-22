@@ -13,7 +13,6 @@ Public Module modGlobal
         'TODO: Load these modules Async, waiting for dependent tasks to finish first
         modDatabase.Load() 'Dependencies: None
         modPing.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading Insteon module")
         modInsteon.Load() 'Dependencies: Database, Mail
         modSpeech.Load() 'Dependencies: None
         modOpenWeatherMap.Load() 'Dependencies: Database

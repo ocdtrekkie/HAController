@@ -55,7 +55,7 @@ Module modConverse
                             modMail.Unload()
                             modMail.Load()
                         Case "insteon"
-                            modInsteon.Disable()
+                            strCommandResponse = modInsteon.Disable()
                         Case "mail"
                             strCommandResponse = modMail.Disable()
                         Case "mapquest"
@@ -95,7 +95,7 @@ Module modConverse
                             modMail.Unload()
                             modMail.Load()
                         Case "insteon"
-                            modInsteon.Enable()
+                            strCommandResponse = modInsteon.Enable()
                         Case "mail"
                             strCommandResponse = modMail.Enable()
                         Case "mapquest"

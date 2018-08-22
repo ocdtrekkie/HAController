@@ -203,5 +203,8 @@
     <Setting Name="Pihole_IPAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">0.0.0.0</Value>
     </Setting>
+    <Setting Name="Global_LoadModulesAsync" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

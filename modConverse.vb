@@ -67,7 +67,7 @@ Module modConverse
                         Case "openweathermap"
                             modOpenWeatherMap.Disable()
                         Case "pihole"
-                            modPihole.Disable()
+                            strCommandResponse = modPihole.Disable()
                         Case "ping"
                             modPing.Disable()
                         Case "speech"
@@ -75,9 +75,11 @@ Module modConverse
                         Case "startup"
                             modComputer.DisableStartup()
                         Case "wolframalpha"
-                            modWolframAlpha.Disable()
+                            strCommandResponse = modWolframAlpha.Disable()
                     End Select
-                    strCommandResponse = "Acknowledged"
+                    If strCommandResponse = "" Then
+                        strCommandResponse = "Acknowledged"
+                    End If
                 Case "enable"
                     Select Case inputData(1)
                         Case "carmode"
@@ -103,7 +105,7 @@ Module modConverse
                         Case "openweathermap"
                             modOpenWeatherMap.Enable()
                         Case "pihole"
-                            modPihole.Enable()
+                            strCommandResponse = modPihole.Enable()
                         Case "ping"
                             modPing.Enable()
                         Case "speech"
@@ -111,9 +113,11 @@ Module modConverse
                         Case "startup"
                             modComputer.EnableStartup()
                         Case "wolframalpha"
-                            modWolframAlpha.Enable()
+                            strCommandResponse = modWolframAlpha.Enable()
                     End Select
-                    strCommandResponse = "Acknowledged"
+                    If strCommandResponse = "" Then
+                        strCommandResponse = "Acknowledged"
+                    End If
                 Case "flip"
                     If inputData(1) = "a" AndAlso inputData(2) = "coin" Then
                         Dim intFlip As Integer = modRandom.RandomInteger(2)

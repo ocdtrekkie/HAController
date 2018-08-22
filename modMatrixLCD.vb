@@ -4,36 +4,40 @@
     Public DashMode As Boolean = False
     Public intToast As Integer = 0
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading Matrix LCD module")
+    Function Disable() As String
         Unload()
         My.Settings.MatrixLCD_Enable = False
         My.Application.Log.WriteEntry("Matrix LCD module is disabled")
-    End Sub
+        Return "Matrix LCD module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.MatrixLCD_Enable = True
         My.Application.Log.WriteEntry("Matrix LCD module is enabled")
-        My.Application.Log.WriteEntry("Loading Matrix LCD module")
         Load()
-    End Sub
+        Return "Matrix LCD module enabled"
+    End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.MatrixLCD_Enable = True Then
+            My.Application.Log.WriteEntry("Loading Matrix LCD module")
             Dim MatrixLCDisplay As HAMatrixLCD = New HAMatrixLCD
             If MatrixLCDisplay.IsConnected = True Then
                 MatrixLCDConnected = True
                 DeviceCollection.Add(MatrixLCDisplay)
                 MatrixLCDisplayIndex = DeviceCollection.IndexOf(MatrixLCDisplay)
                 My.Application.Log.WriteEntry("Matrix LCD has a device index of " & MatrixLCDisplayIndex)
+                Return "Matrix LCD module loaded"
             Else
                 My.Application.Log.WriteEntry("Matrix LCD not found")
                 MatrixLCDisplay.Dispose()
+                Return "Matrix LCD not found"
             End If
         Else
             My.Application.Log.WriteEntry("Matrix LCD module is disabled, module not loaded")
+            Return "Matrix LCD module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
     Sub ShowNotification(ByVal strLine1 As String, Optional ByVal strLine2 As String = "", Optional ByVal IsToast As Boolean = True)
         If MatrixLCDConnected = True Then
@@ -61,12 +65,14 @@
         End If
     End Sub
 
-    Sub Unload()
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading Matrix LCD module")
         If MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
             MatrixLCDisplay.Dispose()
         End If
-    End Sub
+        Return "Matrix LCD module unloaded"
+    End Function
 
     <Serializable()>
     Public Class HAMatrixLCD

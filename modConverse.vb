@@ -61,7 +61,7 @@ Module modConverse
                         Case "mapquest"
                             strCommandResponse = modMapQuest.Disable()
                         Case "matrixlcd"
-                            modMatrixLCD.Disable()
+                            strCommandResponse = modMatrixLCD.Disable()
                         Case "music"
                             strCommandResponse = modMusic.Disable()
                         Case "openweathermap"
@@ -101,7 +101,7 @@ Module modConverse
                         Case "mapquest"
                             strCommandResponse = modMapQuest.Enable()
                         Case "matrixlcd"
-                            modMatrixLCD.Enable()
+                            strCommandResponse = modMatrixLCD.Enable()
                         Case "music"
                             strCommandResponse = modMusic.Enable()
                         Case "openweathermap"

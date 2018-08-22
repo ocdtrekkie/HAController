@@ -18,7 +18,6 @@ Public Module modGlobal
         modSpeech.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load() 'Dependencies: Database
-        My.Application.Log.WriteEntry("Loading Matrix LCD module")
         modMatrixLCD.Load() 'Dependencies: Speech
         modGPS.Load() 'Dependencies: Database
         modMapQuest.Load() 'Dependencies: None

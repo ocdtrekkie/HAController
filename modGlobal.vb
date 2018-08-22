@@ -31,7 +31,6 @@ Public Module modGlobal
         modDreamCheeky.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading mail module")
         modMail.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading music module")
         modMusic.Load() 'Dependencies: None
         modComputer.Load() 'Dependencies: None
         modPihole.Load() 'Dependencies: None

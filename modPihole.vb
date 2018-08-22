@@ -1,13 +1,6 @@
 ﻿Imports System.Web.Script.Serialization
 
 Module modPihole
-    Function Disable() As String
-        Unload()
-        My.Settings.Pihole_Enable = False
-        My.Application.Log.WriteEntry("Pi-hole module is disabled")
-        Return "Pi-hole module disabled"
-    End Function
-
     Function CheckPiholeStatus() As String
         If My.Settings.Pihole_Enable = True Then
             My.Application.Log.WriteEntry("Pinging Pi-hole", TraceEventType.Verbose)
@@ -30,6 +23,13 @@ Module modPihole
         Else
             Return "Pi-hole module is disabled"
         End If
+    End Function
+
+    Function Disable() As String
+        Unload()
+        My.Settings.Pihole_Enable = False
+        My.Application.Log.WriteEntry("Pi-hole module is disabled")
+        Return "Pi-hole module disabled"
     End Function
 
     Function Enable() As String

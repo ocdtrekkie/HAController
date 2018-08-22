@@ -9,32 +9,35 @@ Module modMusic
     Dim strNowPlayingArtist As String
     Dim strPrevPlaying As String
 
-    Public Sub Disable()
-        My.Application.Log.WriteEntry("Unloading music module")
+    Public Function Disable() As String
         Unload()
         My.Settings.Music_Enable = False
         My.Application.Log.WriteEntry("Music module is disabled")
-    End Sub
+        Return "Music module disabled"
+    End Function
 
-    Public Sub Enable()
+    Public Function Enable() As String
         My.Settings.Music_Enable = True
         My.Application.Log.WriteEntry("Music module is enabled")
-        My.Application.Log.WriteEntry("Loading music module")
         Load()
-    End Sub
+        Return "Music module enabled"
+    End Function
 
-    Public Sub Load()
+    Public Function Load() As String
         If My.Settings.Music_Enable = True Then
+            My.Application.Log.WriteEntry("Loading music module")
             MusicPlayer = New WMPLib.WindowsMediaPlayer
             MusicPlayer.settings.autoStart = True
             MusicPlayer.settings.setMode("loop", True)
             MusicPlayer.settings.setMode("shuffle", True)
             MusicPlayer.settings.volume = My.Settings.Music_Volume
             MusicPlayer.uiMode = "invisible"
+            Return "Music module loaded"
         Else
-            My.Application.Log.WriteEntry("Music module is disabled, module Not loaded")
+            My.Application.Log.WriteEntry("Music module is disabled, module not loaded")
+            Return "Music module is disabled, module Not loaded"
         End If
-    End Sub
+    End Function
 
     Private Sub MusicPlayer_MediaError(ByVal pMediaObject As Object) Handles MusicPlayer.MediaError
         My.Application.Log.WriteEntry("Cannot play media file", TraceEventType.Warning)
@@ -172,9 +175,11 @@ Module modMusic
         End If
     End Sub
 
-    Public Sub Unload()
+    Public Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading music module")
         If MusicPlayer IsNot Nothing Then
             MusicPlayer.close()
         End If
-    End Sub
+        Return "Music module unloaded"
+    End Function
 End Module

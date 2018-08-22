@@ -63,7 +63,7 @@ Module modConverse
                         Case "matrixlcd"
                             modMatrixLCD.Disable()
                         Case "music"
-                            modMusic.Disable()
+                            strCommandResponse = modMusic.Disable()
                         Case "openweathermap"
                             modOpenWeatherMap.Disable()
                         Case "pihole"
@@ -101,7 +101,7 @@ Module modConverse
                         Case "matrixlcd"
                             modMatrixLCD.Enable()
                         Case "music"
-                            modMusic.Enable()
+                            strCommandResponse = modMusic.Enable()
                         Case "openweathermap"
                             modOpenWeatherMap.Enable()
                         Case "pihole"

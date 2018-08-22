@@ -81,7 +81,8 @@ Module modDatabase
         End If
     End Sub
 
-    Sub Load()
+    Function Load() As String
+        My.Application.Log.WriteEntry("Loading database module")
         Dim connstring As String = "URI=file:" + My.Settings.Database_FileURI
 
         conn.ConnectionString = connstring
@@ -90,15 +91,12 @@ Module modDatabase
             conn.Open()
             CreateDb()
             modPersons.AddPersonDb("me", 4)
+            Return "Database module loaded"
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
+            Return "Database module failed to load"
         End Try
-    End Sub
-
-    Sub Unload()
-        My.Application.Log.WriteEntry("Closing database")
-        conn.Close()
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Ensures string doesn't have any escape characters and can't provide unexpected behavior.
@@ -123,5 +121,11 @@ Module modDatabase
         Else
             Return False
         End If
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading database module")
+        conn.Close()
+        Return "Database module unloaded"
     End Function
 End Module

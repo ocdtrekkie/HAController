@@ -11,7 +11,6 @@ Public Module modGlobal
 
     Sub LoadModules()
         'TODO: Load these modules Async, waiting for dependent tasks to finish first
-        My.Application.Log.WriteEntry("Loading database module")
         modDatabase.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading ping module")
         modPing.Load() 'Dependencies: None

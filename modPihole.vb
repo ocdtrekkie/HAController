@@ -1,33 +1,12 @@
 ﻿Imports System.Web.Script.Serialization
 
 Module modPihole
-    Sub Disable()
+    Function Disable() As String
         Unload()
         My.Settings.Pihole_Enable = False
         My.Application.Log.WriteEntry("Pi-hole module is disabled")
-    End Sub
-
-    Sub Enable()
-        My.Settings.Pihole_Enable = True
-        My.Application.Log.WriteEntry("Pi-hole module is enabled")
-        Load()
-    End Sub
-
-    Sub Load()
-        If My.Settings.Pihole_Enable = True Then
-            My.Application.Log.WriteEntry("Loading Pi-hole module")
-            If My.Settings.Pihole_IPAddress = "0.0.0.0" OrElse My.Settings.Pihole_IPAddress = "" Then
-                My.Application.Log.WriteEntry("No Pi-hole IP address set, asking for it")
-                My.Settings.Pihole_IPAddress = InputBox("Enter Pi-hole IP address.", "Pi-hole")
-            End If
-        Else
-            My.Application.Log.WriteEntry("Pi-hole module is disabled, module not loaded")
-        End If
-    End Sub
-
-    Sub Unload()
-        My.Application.Log.WriteEntry("Unloading Pi-hole module")
-    End Sub
+        Return "Pi-hole module is disabled"
+    End Function
 
     Function CheckPiholeStatus() As String
         If My.Settings.Pihole_Enable = True Then
@@ -53,6 +32,13 @@ Module modPihole
         End If
     End Function
 
+    Function Enable() As String
+        My.Settings.Pihole_Enable = True
+        My.Application.Log.WriteEntry("Pi-hole module is enabled")
+        Load()
+        Return "Pi-hole module is enabled"
+    End Function
+
     Function GetPiholeAPI() As PiholeResult
         My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
         Dim PiholeAPIRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php")
@@ -67,6 +53,25 @@ Module modPihole
         Dim json As New JavaScriptSerializer
         Dim data As PiholeResult = json.Deserialize(Of PiholeResult)(PiholeAPIJSON)
         Return data
+    End Function
+
+    Function Load() As String
+        If My.Settings.Pihole_Enable = True Then
+            My.Application.Log.WriteEntry("Loading Pi-hole module")
+            If My.Settings.Pihole_IPAddress = "0.0.0.0" OrElse My.Settings.Pihole_IPAddress = "" Then
+                My.Application.Log.WriteEntry("No Pi-hole IP address set, asking for it")
+                My.Settings.Pihole_IPAddress = InputBox("Enter Pi-hole IP address.", "Pi-hole")
+            End If
+            Return "Pi-hole module loaded"
+        Else
+            My.Application.Log.WriteEntry("Pi-hole module is disabled, module not loaded")
+            Return "Pi-hole is disabled, module not loaded"
+        End If
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading Pi-hole module")
+        Return "Pi-hole module unloaded"
     End Function
 
     Public Class PiholeResult

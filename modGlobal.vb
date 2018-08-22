@@ -33,7 +33,6 @@ Public Module modGlobal
         modMail.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading music module")
         modMusic.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading computer module")
         modComputer.Load() 'Dependencies: None
         modPihole.Load() 'Dependencies: None
     End Sub

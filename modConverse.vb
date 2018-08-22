@@ -73,7 +73,7 @@ Module modConverse
                         Case "speech"
                             modSpeech.Disable()
                         Case "startup"
-                            modComputer.DisableStartup()
+                            strCommandResponse = modComputer.DisableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Disable()
                     End Select
@@ -111,7 +111,7 @@ Module modConverse
                         Case "speech"
                             modSpeech.Enable()
                         Case "startup"
-                            modComputer.EnableStartup()
+                            strCommandResponse = modComputer.EnableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Enable()
                     End Select

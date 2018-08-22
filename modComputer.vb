@@ -8,22 +8,6 @@ Module modComputer
     Public isRecordingAudio As Boolean = False
     Public isRecordingVideo As Boolean = False
 
-    Sub DisableStartup()
-        My.Application.Log.WriteEntry("Removing run on system startup registry key")
-        Dim regKey As Microsoft.Win32.RegistryKey
-        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
-        regKey.DeleteValue(Application.ProductName, False)
-        regKey.Close()
-    End Sub
-
-    Sub EnableStartup()
-        My.Application.Log.WriteEntry("Adding registry key to run on system startup")
-        Dim regKey As Microsoft.Win32.RegistryKey
-        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
-        regKey.SetValue(Application.ProductName, """" & Application.ExecutablePath & """")
-        regKey.Close()
-    End Sub
-
     Sub GetInfo()
         My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion & "/" & GetOSVersion())
         My.Application.Log.WriteEntry("Computer Name: " & My.Computer.Name)
@@ -34,16 +18,6 @@ Module modComputer
         My.Application.Log.WriteEntry("Screen: " & My.Computer.Screen.Bounds.Width & " x " & My.Computer.Screen.Bounds.Height)
 
         My.Application.Log.WriteEntry("Running Processes: " & GetProcessList())
-    End Sub
-
-    Sub Load()
-        GetInfo()
-    End Sub
-
-    Sub Unload()
-        If isRecordingAudio = True Then
-            StopRecordingAudio()
-        End If
     End Sub
 
     Sub AddressChangedCallback(sender As Object, e As EventArgs)
@@ -57,6 +31,24 @@ Module modComputer
             End If
         Next
     End Sub
+
+    Function DisableStartup() As String
+        My.Application.Log.WriteEntry("Removing run on system startup registry key")
+        Dim regKey As Microsoft.Win32.RegistryKey
+        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
+        regKey.DeleteValue(Application.ProductName, False)
+        regKey.Close()
+        Return "Automatic startup disabled"
+    End Function
+
+    Function EnableStartup() As String
+        My.Application.Log.WriteEntry("Adding registry key to run on system startup")
+        Dim regKey As Microsoft.Win32.RegistryKey
+        regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Run", True)
+        regKey.SetValue(Application.ProductName, """" & Application.ExecutablePath & """")
+        regKey.Close()
+        Return "Automatic startup enabled"
+    End Function
 
     Function GetOSVersion() As String
         Dim strBuild1, strBuild2, strBuild3, strBuild4 As String
@@ -77,6 +69,12 @@ Module modComputer
         Next
 
         Return ProcessList
+    End Function
+
+    Function Load() As String
+        My.Application.Log.WriteEntry("Loading computer module")
+        GetInfo()
+        Return "Computer module loaded"
     End Function
 
     Function LockScreen() As String
@@ -177,5 +175,13 @@ Module modComputer
     Function TakeSnapshot() As String
         System.Diagnostics.Process.Start("C:\Program Files\iSpy\iSpy.exe", "commands ""snapshot""")
         Return "Snapshot requested"
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading computer module")
+        If isRecordingAudio = True Then
+            StopRecordingAudio()
+        End If
+        Return "Computer module unloaded"
     End Function
 End Module

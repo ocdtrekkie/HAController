@@ -27,7 +27,6 @@ Public Module modGlobal
         modGPS.Load() 'Dependencies: Database
         My.Application.Log.WriteEntry("Loading MapQuest module")
         modMapQuest.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading WolframAlpha module")
         modWolframAlpha.Load() 'Dependencies: None
         My.Application.Log.WriteEntry("Loading DreamCheeky module")
         modDreamCheeky.Load() 'Dependencies: None

@@ -65,7 +65,7 @@ Module modPihole
             Return "Pi-hole module loaded"
         Else
             My.Application.Log.WriteEntry("Pi-hole module is disabled, module not loaded")
-            Return "Pi-hole is disabled, module not loaded"
+            Return "Pi-hole module is disabled, module not loaded"
         End If
     End Function
 

@@ -34,9 +34,11 @@ Module modConverse
                     Select Case inputData(1)
                         Case "mail"
                             If My.Settings.Mail_IMAPMode = True Then
-                                modMail.CheckMailImap()
+                                Dim MailCheckThread As New Threading.Thread(AddressOf modMail.CheckMailImap)
+                                MailCheckThread.Start()
                             Else
-                                modMail.CheckMail()
+                                Dim MailCheckThread As New Threading.Thread(AddressOf modMail.CheckMail)
+                                MailCheckThread.Start()
                             End If
                             strCommandResponse = "Checking mail"
                         Case "pihole"

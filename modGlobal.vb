@@ -16,7 +16,6 @@ Public Module modGlobal
         My.Application.Log.WriteEntry("Loading Insteon module")
         modInsteon.Load() 'Dependencies: Database, Mail
         modSpeech.Load() 'Dependencies: None
-        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         modOpenWeatherMap.Load() 'Dependencies: Database
         modMatrixLCD.Load() 'Dependencies: Speech
         modGPS.Load() 'Dependencies: Database

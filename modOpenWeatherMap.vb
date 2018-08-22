@@ -3,19 +3,19 @@
 Module modOpenWeatherMap
     Dim tmrOWMCheckTimer As System.Timers.Timer
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading OpenWeatherMap module")
+    Function Disable() As String
         Unload()
         My.Settings.OpenWeatherMap_Enable = False
         My.Application.Log.WriteEntry("OpenWeatherMap module is disabled")
-    End Sub
+        Return "OpenWeatherMap module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.OpenWeatherMap_Enable = True
         My.Application.Log.WriteEntry("OpenWeatherMap module is enabled")
-        My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
         Load()
-    End Sub
+        Return "OpenWeatherMap module enabled"
+    End Function
 
     Function GatherWeatherData() As String
         If My.Settings.OpenWeatherMap_Enable = True Then
@@ -86,8 +86,9 @@ Module modOpenWeatherMap
         End If
     End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.OpenWeatherMap_Enable = True Then
+            My.Application.Log.WriteEntry("Loading OpenWeatherMap module")
             If My.Settings.OpenWeatherMap_APIKey = "" Then
                 My.Application.Log.WriteEntry("No OpenWeatherMap API key, asking for it")
                 My.Settings.OpenWeatherMap_APIKey = InputBox("Enter OpenWeatherMap API Key. You can get an API key at http://openweathermap.org/appid by signing up for a free account.", "OpenWeatherMap API")
@@ -100,14 +101,18 @@ Module modOpenWeatherMap
             tmrOWMCheckTimer.Enabled = True
 
             GatherWeatherData()
+            Return "OpenWeatherMap module loaded"
         Else
             My.Application.Log.WriteEntry("OpenWeatherMap module is disabled, module not loaded")
+            Return "OpenWeatherMap module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
-    Sub Unload()
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading OpenWeatherMap module")
         If tmrOWMCheckTimer IsNot Nothing Then
             tmrOWMCheckTimer.Enabled = False
         End If
-    End Sub
+        Return "OpenWeatherMap module unloaded"
+    End Function
 End Module

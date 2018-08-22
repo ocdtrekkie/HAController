@@ -65,7 +65,7 @@ Module modConverse
                         Case "music"
                             strCommandResponse = modMusic.Disable()
                         Case "openweathermap"
-                            modOpenWeatherMap.Disable()
+                            strCommandResponse = modOpenWeatherMap.Disable()
                         Case "pihole"
                             strCommandResponse = modPihole.Disable()
                         Case "ping"
@@ -105,7 +105,7 @@ Module modConverse
                         Case "music"
                             strCommandResponse = modMusic.Enable()
                         Case "openweathermap"
-                            modOpenWeatherMap.Enable()
+                            strCommandResponse = modOpenWeatherMap.Enable()
                         Case "pihole"
                             strCommandResponse = modPihole.Enable()
                         Case "ping"

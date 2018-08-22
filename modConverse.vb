@@ -59,7 +59,7 @@ Module modConverse
                         Case "mail"
                             strCommandResponse = modMail.Disable()
                         Case "mapquest"
-                            modMapQuest.Disable()
+                            strCommandResponse = modMapQuest.Disable()
                         Case "matrixlcd"
                             modMatrixLCD.Disable()
                         Case "music"
@@ -99,7 +99,7 @@ Module modConverse
                         Case "mail"
                             strCommandResponse = modMail.Enable()
                         Case "mapquest"
-                            modMapQuest.Enable()
+                            strCommandResponse = modMapQuest.Enable()
                         Case "matrixlcd"
                             modMatrixLCD.Enable()
                         Case "music"

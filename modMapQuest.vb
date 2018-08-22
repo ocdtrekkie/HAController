@@ -1,19 +1,19 @@
 ﻿Imports System.Xml
 
 Module modMapQuest
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading MapQuest module")
+    Function Disable() As String
         Unload()
         My.Settings.MapQuest_Enable = False
         My.Application.Log.WriteEntry("MapQuest module is disabled")
-    End Sub
+        Return "MapQuest module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.MapQuest_Enable = True
         My.Application.Log.WriteEntry("MapQuest module is enabled")
-        My.Application.Log.WriteEntry("Loading MapQuest module")
         Load()
-    End Sub
+        Return "MapQuest module enabled"
+    End Function
 
     Function GetDirections(ByVal strOrigin As String, ByVal strDestination As String) As String
         If My.Settings.MapQuest_Enable = True Then
@@ -101,18 +101,22 @@ Module modMapQuest
         End If
     End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.MapQuest_Enable = True Then
+            My.Application.Log.WriteEntry("Loading MapQuest module")
             If My.Settings.MapQuest_APIKey = "" Then
                 My.Application.Log.WriteEntry("No MapQuest API key, asking for it")
                 My.Settings.MapQuest_APIKey = InputBox("Enter MapQuest API Key. You can get an API key at https://developer.mapquest.com by signing up for a free account.", "MapQuest API")
             End If
+            Return "MapQuest module loaded"
         Else
             My.Application.Log.WriteEntry("MapQuest module is disabled, module not loaded")
+            Return "MapQuest module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
-    Sub Unload()
-
-    End Sub
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading MapQuest module")
+        Return "MapQuest module unloaded"
+    End Function
 End Module

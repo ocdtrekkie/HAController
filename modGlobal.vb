@@ -22,7 +22,6 @@ Public Module modGlobal
         modMatrixLCD.Load() 'Dependencies: Speech
         My.Application.Log.WriteEntry("Loading GPS module")
         modGPS.Load() 'Dependencies: Database
-        My.Application.Log.WriteEntry("Loading MapQuest module")
         modMapQuest.Load() 'Dependencies: None
         modWolframAlpha.Load() 'Dependencies: None
         modDreamCheeky.Load() 'Dependencies: None

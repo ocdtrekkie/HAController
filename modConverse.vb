@@ -71,7 +71,7 @@ Module modConverse
                         Case "ping"
                             modPing.Disable()
                         Case "speech"
-                            modSpeech.Disable()
+                            strCommandResponse = modSpeech.Disable()
                         Case "startup"
                             strCommandResponse = modComputer.DisableStartup()
                         Case "wolframalpha"
@@ -109,7 +109,7 @@ Module modConverse
                         Case "ping"
                             modPing.Enable()
                         Case "speech"
-                            modSpeech.Enable()
+                            strCommandResponse = modSpeech.Enable()
                         Case "startup"
                             strCommandResponse = modComputer.EnableStartup()
                         Case "wolframalpha"

@@ -1,22 +1,23 @@
 ﻿Module modSpeech
     Dim synth As System.Speech.Synthesis.SpeechSynthesizer
 
-    Sub Disable()
-        My.Application.Log.WriteEntry("Unloading speech module")
+    Function Disable() As String
         Unload()
         My.Settings.Speech_Enable = False
         My.Application.Log.WriteEntry("Speech module is disabled")
-    End Sub
+        Return "Speech module disabled"
+    End Function
 
-    Sub Enable()
+    Function Enable() As String
         My.Settings.Speech_Enable = True
         My.Application.Log.WriteEntry("Speech module is enabled")
-        My.Application.Log.WriteEntry("Loading speech module")
         Load()
-    End Sub
+        Return "Speech module enabled"
+    End Function
 
-    Sub Load()
+    Function Load() As String
         If My.Settings.Speech_Enable = True Then
+            My.Application.Log.WriteEntry("Loading speech module")
             synth = New Speech.Synthesis.SpeechSynthesizer
             synth.SetOutputToDefaultAudioDevice()
             If My.Settings.Speech_SelectedVoice <> "" Then
@@ -27,10 +28,12 @@
                 synth.SelectVoiceByHints(Speech.Synthesis.VoiceGender.Male, Speech.Synthesis.VoiceAge.Adult)
             End If
             My.Application.Log.WriteEntry("Voice selected: " & synth.Voice.Name)
+            Return "Speech module loaded"
         Else
             My.Application.Log.WriteEntry("Speech module is disabled, module not loaded")
+            Return "Speech module is disabled, module not loaded"
         End If
-    End Sub
+    End Function
 
     Sub Say(ByVal strTextToSpeak As String, Optional ByVal isAsync As Boolean = True)
         If My.Settings.Speech_Enable = True Then
@@ -40,10 +43,6 @@
                 synth.Speak(strTextToSpeak)
             End If
         End If
-    End Sub
-
-    Sub Unload()
-        synth.Dispose()
     End Sub
 
     Function GetVoices() As String
@@ -58,5 +57,11 @@
         Next
 
         Return strVoices
+    End Function
+
+    Function Unload() As String
+        My.Application.Log.WriteEntry("Unloading speech module")
+        synth.Dispose()
+        Return "Speech module unloaded"
     End Function
 End Module

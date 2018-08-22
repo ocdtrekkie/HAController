@@ -3,14 +3,14 @@
         Unload()
         My.Settings.WolframAlpha_Enable = False
         My.Application.Log.WriteEntry("WolframAlpha module is disabled")
-        Return "WolframAlpha module is disabled"
+        Return "WolframAlpha module disabled"
     End Function
 
     Function Enable() As String
         My.Settings.WolframAlpha_Enable = True
         My.Application.Log.WriteEntry("WolframAlpha module is enabled")
         Load()
-        Return "WolframAlpha module is enabled"
+        Return "WolframAlpha module enabled"
     End Function
 
     Function Load() As String

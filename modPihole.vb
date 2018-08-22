@@ -5,7 +5,7 @@ Module modPihole
         Unload()
         My.Settings.Pihole_Enable = False
         My.Application.Log.WriteEntry("Pi-hole module is disabled")
-        Return "Pi-hole module is disabled"
+        Return "Pi-hole module disabled"
     End Function
 
     Function CheckPiholeStatus() As String
@@ -36,7 +36,7 @@ Module modPihole
         My.Settings.Pihole_Enable = True
         My.Application.Log.WriteEntry("Pi-hole module is enabled")
         Load()
-        Return "Pi-hole module is enabled"
+        Return "Pi-hole module enabled"
     End Function
 
     Function GetPiholeAPI() As PiholeResult

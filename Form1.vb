@@ -75,21 +75,23 @@
         txtCommandBar.Select()
     End Sub
 
-    Sub DisableCarMode()
+    Function DisableCarMode() As String
         Me.TopMost = False
         tmrFocusTimer.Dispose()
         My.Settings.Global_CarMode = False
         RemoveHandler Net.NetworkInformation.NetworkChange.NetworkAddressChanged, AddressOf modComputer.AddressChangedCallback
-    End Sub
+        Return "Car mode disabled"
+    End Function
 
-    Sub EnableCarMode()
+    Function EnableCarMode() As String
         Me.TopMost = True
         tmrFocusTimer = New Timer
         tmrFocusTimer.Interval = 5000
         tmrFocusTimer.Start()
         My.Settings.Global_CarMode = True
         AddHandler Net.NetworkInformation.NetworkChange.NetworkAddressChanged, AddressOf modComputer.AddressChangedCallback
-    End Sub
+        Return "Car mode enabled"
+    End Function
 
     Private Sub btnInsteonCheck_Click(sender As Object, e As EventArgs) Handles btnInsteonCheck.Click
         My.Application.Log.WriteEntry("Checking device " + txtAddress.Text)

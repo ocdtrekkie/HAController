@@ -45,7 +45,7 @@ Module modConverse
                 Case "disable"
                     Select Case inputData(1)
                         Case "carmode"
-                            frmMain.DisableCarMode()
+                            strCommandResponse = frmMain.DisableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Disable()
                         Case "gps"
@@ -54,6 +54,7 @@ Module modConverse
                             My.Settings.Mail_IMAPMode = False
                             modMail.Unload()
                             modMail.Load()
+                            strCommandResponse = "IMAP mode disabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Disable()
                         Case "mail"
@@ -79,13 +80,10 @@ Module modConverse
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select
-                    If strCommandResponse = "" Then
-                        strCommandResponse = "Acknowledged"
-                    End If
                 Case "enable"
                     Select Case inputData(1)
                         Case "carmode"
-                            frmMain.EnableCarMode()
+                            strCommandResponse = frmMain.EnableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Enable()
                         Case "gps"
@@ -94,6 +92,7 @@ Module modConverse
                             My.Settings.Mail_IMAPMode = True
                             modMail.Unload()
                             modMail.Load()
+                            strCommandResponse = "IMAP mode enabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Enable()
                         Case "mail"
@@ -119,9 +118,6 @@ Module modConverse
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select
-                    If strCommandResponse = "" Then
-                        strCommandResponse = "Acknowledged"
-                    End If
                 Case "flip"
                     If inputData(1) = "a" AndAlso inputData(2) = "coin" Then
                         Dim intFlip As Integer = modRandom.RandomInteger(2)

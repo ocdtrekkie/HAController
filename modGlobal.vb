@@ -162,4 +162,19 @@ Public Module modGlobal
             End Try
         End If
     End Function
+
+    Function SendStatusReport() As String
+        Dim strStatusReport As String = "The current time is " & Now() & vbCrLf & vbCrLf & "Home monitoring status is set to " & modGlobal.HomeStatus & "." & vbCrLf & vbCrLf & "The current inside temperature is " & My.Settings.Global_LastKnownInsideTemp & " F."
+        If My.Settings.Insteon_ThermostatSlaveAddr <> "" Then
+            strStatusReport = strStatusReport & " (Second reading: " & My.Settings.Global_LastKnownInsideTemp2nd & " F)"
+        End If
+        If My.Settings.Global_TimeDoorLastOpened <> "" Then
+            strStatusReport = strStatusReport & vbCrLf & vbCrLf & "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
+        End If
+        If My.Settings.Pihole_Enable = True Then
+            strStatusReport = strStatusReport & vbCrLf & vbCrLf & modPihole.CheckPiholeStatus()
+        End If
+        modMail.Send("HAController Status Report", strStatusReport)
+        Return "Sending status report"
+    End Function
 End Module

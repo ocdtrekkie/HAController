@@ -328,12 +328,7 @@ Module modConverse
                     End If
                 Case "send"
                     If inputData(1) = "status" AndAlso inputData(2) = "report" Then
-                        Dim strStatusReport As String = "The current time is " & Now() & vbCrLf & vbCrLf & "Home monitoring status is set to " & modGlobal.HomeStatus & "." & vbCrLf & vbCrLf & "The current inside temperature is " & My.Settings.Global_LastKnownInsideTemp & " F."
-                        If My.Settings.Insteon_ThermostatSlaveAddr <> "" Then
-                            strStatusReport = strStatusReport & " (Second reading: " & My.Settings.Global_LastKnownInsideTemp2nd & " F)"
-                        End If
-                        modMail.Send("HAController Status Report", strStatusReport)
-                        strCommandResponse = "Sending report"
+                        strCommandResponse = modGlobal.SendStatusReport()
                     End If
                 Case "set"
                     If inputData(1) = "experimental" AndAlso inputData(2) = "mode" Then

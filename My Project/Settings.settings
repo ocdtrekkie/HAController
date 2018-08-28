@@ -206,5 +206,8 @@
     <Setting Name="Global_LoadModulesAsync" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Global_TimeThermostatLastUpdated" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

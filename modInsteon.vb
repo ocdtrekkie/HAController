@@ -1834,6 +1834,7 @@
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 If FromAddress = My.Settings.Insteon_ThermostatAddr Then
                     My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                    My.Settings.Global_TimeThermostatLastUpdated = Now()
                 ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
                     My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
                 End If
@@ -1851,6 +1852,7 @@
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 If FromAddress = My.Settings.Insteon_ThermostatAddr Then
                     My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                    My.Settings.Global_TimeThermostatLastUpdated = Now()
                 ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
                     My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
                 End If

@@ -164,11 +164,11 @@ Public Module modGlobal
     End Function
 
     Function SendStatusReport() As String
-        Dim strStatusReport As String = "The current time is " & Now() & vbCrLf & vbCrLf & "Home monitoring status is set to " & modGlobal.HomeStatus & "." & vbCrLf & vbCrLf & "The current inside temperature is " & My.Settings.Global_LastKnownInsideTemp & " F."
+        Dim strStatusReport As String = "The current time is " & Now() & vbCrLf & vbCrLf & "Home monitoring status is set to " & modGlobal.HomeStatus & "." & vbCrLf & vbCrLf & "The inside temperature read " & My.Settings.Global_LastKnownInsideTemp & " F at " & My.Settings.Global_TimeThermostatLastUpdated.ToShortTimeString & " on " & My.Settings.Global_TimeThermostatLastUpdated.ToShortDateString & "."
         If My.Settings.Insteon_ThermostatSlaveAddr <> "" Then
             strStatusReport = strStatusReport & " (Second reading: " & My.Settings.Global_LastKnownInsideTemp2nd & " F)"
         End If
-        If My.Settings.Global_TimeDoorLastOpened <> "" Then
+        If My.Settings.Global_TimeDoorLastOpened > DateTime.MinValue Then
             strStatusReport = strStatusReport & vbCrLf & vbCrLf & "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
         End If
         If My.Settings.Pihole_Enable = True Then

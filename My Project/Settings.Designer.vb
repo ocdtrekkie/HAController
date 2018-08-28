@@ -855,6 +855,17 @@ Namespace My
                 Me("Global_LoadModulesAsync") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property Global_TimeThermostatLastUpdated() As Date
+            Get
+                Return CType(Me("Global_TimeThermostatLastUpdated"),Date)
+            End Get
+            Set
+                Me("Global_TimeThermostatLastUpdated") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -235,19 +235,26 @@
     Private Sub txtCommandBar_KeyUp(sender As Object, e As KeyEventArgs) Handles txtCommandBar.KeyUp
         Dim strCommandString As String = ""
 
-        If e.KeyCode = Keys.Up Then
-            txtCommandBar.Text = modConverse.strLastRequest
-            txtCommandBar.Select(txtCommandBar.Text.Length, 0)
-        End If
-
-        If e.KeyCode = Keys.Down Then
-            txtCommandBar.Text = ""
-        End If
-
-        If e.KeyCode = Keys.Return Then
-            strCommandString = txtCommandBar.Text
-            txtCommandBar.Text = ""
-        End If
+        Select Case e.KeyCode
+            Case Keys.Down
+                txtCommandBar.Text = ""
+            Case Keys.Left
+                If txtCommandBar.Text = "" Then
+                    txtCommandBar.Text = "previous"
+                    txtCommandBar.Select(txtCommandBar.Text.Length, 0)
+                End If
+            Case Keys.Return
+                strCommandString = txtCommandBar.Text
+                txtCommandBar.Text = ""
+            Case Keys.Right
+                If txtCommandBar.Text = "" Then
+                    txtCommandBar.Text = "next"
+                    txtCommandBar.Select(txtCommandBar.Text.Length, 0)
+                End If
+            Case Keys.Up
+                txtCommandBar.Text = modConverse.strLastRequest
+                txtCommandBar.Select(txtCommandBar.Text.Length, 0)
+        End Select
 
         If modMatrixLCD.MatrixLCDConnected = True Then
             Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)

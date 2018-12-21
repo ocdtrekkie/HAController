@@ -22,7 +22,7 @@
             ZWaveInterface = New HAZWaveInterface
             If ZWaveInterface.IsConnected = True Then
                 DeviceCollection.Add(ZWaveInterface)
-                ZWaveInterfaceIndex = DeviceCollection.IndexOf(ZWaveeInterface)
+                ZWaveInterfaceIndex = DeviceCollection.IndexOf(ZWaveInterface)
                 My.Application.Log.WriteEntry("Z-Wave Interface has a device index of " & ZWaveInterfaceIndex)
                 Return "Z-Wave module loaded"
             Else

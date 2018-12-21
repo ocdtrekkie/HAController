@@ -46,6 +46,13 @@
     End Function
 
     <Serializable()>
+    Public Class HAZWaveDevice
+        Inherits HADevice
+        Public Property NodeId As Byte
+        Protected MSG_ACKNOWLEDGE As Byte() = New Byte() {&H6}
+    End Class
+
+    <Serializable()>
     Public Class HAZWaveInterface
         Inherits HASerialDevice
         Private ReceiverThread As Threading.Thread
@@ -165,5 +172,22 @@
             ret = CByte((Not ret))
             Return ret
         End Function
+    End Class
+
+    <Serializable()>
+    Public Class HAZWaveSwitch
+        Inherits HAZWaveDevice
+
+        Public Sub SetBrightness(ByVal Value As Byte)
+
+        End Sub
+
+        Public Sub TurnOff()
+            SetBrightness(0)
+        End Sub
+
+        Public Sub TurnOn()
+            SetBrightness(100)
+        End Sub
     End Class
 End Module

@@ -412,6 +412,14 @@ Module modConverse
                     End Select
                 Case "test"
                     Select Case inputData(1)
+                        Case "crypto"
+                            Dim intVer As Integer
+                            If inputData.Count > 2 AndAlso IsNumeric(inputData(2)) Then
+                                intVer = CInt(inputData(2))
+                            Else
+                                intVer = 0
+                            End If
+                            strCommandResponse = modCrypto.TestCrypto(intVer)
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"

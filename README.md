@@ -8,6 +8,7 @@ The following modules are core modules which cannot be disabled:
 * Form1 is the UI screen which handles user input collection and some shortcut buttons.
 * modComputer can monitor and control the local computer, including audio and video recording.
 * modConverse is a cross between a command line interface and a conversation system.
+* modCrypto handles basic encryption and decryption functionality.
 * modDatabase handles the SQLite database that will store persistent data about the system.
 * modGlobal mostly just hangs onto stuff that needs to be accessible to the whole program.
 * modPersons contains functions for managing users and contacts.

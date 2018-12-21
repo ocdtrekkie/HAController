@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="modComputer.vb" />
     <Compile Include="modConverse.vb" />
+    <Compile Include="modCrypto.vb" />
     <Compile Include="modDatabase.vb" />
     <Compile Include="modDreamCheeky.vb" />
     <Compile Include="modGlobal.vb" />

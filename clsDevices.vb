@@ -22,7 +22,7 @@
 Class HADevice
     Implements IDisposable
     Public Property DeviceName As String
-    Public Property DeviceType As String 'Maybe make this an Enum: Controller, Switch, Sensor
+    Public Property DeviceType As String 'Maybe make this an Enum: Controller, Switch, Sensor, Interface
     Public Property DeviceUID As String
     Public Property Model As String
     Public Property Location As String

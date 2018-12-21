@@ -27,3 +27,4 @@ The following modules function optionally and add features:
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
 * modWolframAlpha can request general knowledge from Wolfram Alpha's API.
+* modZWave will handle Z-Wave home automation devices.

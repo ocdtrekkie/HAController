@@ -48,6 +48,9 @@
     <Serializable()>
     Public Class HAZWaveInterface
         Inherits HASerialDevice
+        Private ReceiverThread As Threading.Thread
+        Private sendACK As Boolean = True
+        Private MSG_ACKNOWLEDGE As Byte() = New Byte() {&H6}
 
         Public Overloads Sub Dispose()
             If Me.IsConnected = True Then
@@ -81,7 +84,7 @@
             SerialPort.RtsEnable = True
             SerialPort.NewLine = Environment.NewLine
 
-            'AddHandler SerialPort.DataReceived, AddressOf DataReceivedHandler
+            ReceiverThread = New Threading.Thread(New Threading.ThreadStart(AddressOf ReceiveMessage))
 
             Try
                 My.Application.Log.WriteEntry("Trying to connect on port " + SerialPort.PortName)
@@ -96,19 +99,60 @@
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
                 Me.IsConnected = True
                 My.Settings.ZWave_LastGoodCOMPort = SerialPort.PortName
+
+                ReceiverThread.Start()
             End If
+        End Sub
+
+        Private Sub ReceiveMessage()
+            While Me.IsConnected = True
+                Dim bytesToRead As Integer = SerialPort.BytesToRead
+
+                If (bytesToRead <> 0) And (Me.IsConnected = True) Then
+                    Dim message As Byte() = New Byte(bytesToRead - 1) {}
+                    SerialPort.Read(message, 0, bytesToRead)
+                    My.Application.Log.WriteEntry("Z-Wave: Message received: " & ByteArrayToString(message))
+
+                    If sendACK Then
+                        SendAckMessage()
+                    End If
+                    sendACK = True
+                End If
+            End While
+        End Sub
+
+        Private Sub SendMessage(ByVal message As Byte())
+            If Me.IsConnected = True Then
+                If message IsNot MSG_ACKNOWLEDGE Then
+                    sendACK = False
+                    message(message.Length - 1) = GenerateChecksum(message)
+                End If
+
+                SerialPort.Write(message, 0, message.Length)
+                My.Application.Log.WriteEntry("Z-Wave: Message sent: " & ByteArrayToString(message))
+            End If
+        End Sub
+
+        Private Sub SendAckMessage()
+            SendMessage(MSG_ACKNOWLEDGE)
         End Sub
 
         Public Sub TurnDeviceOn()
             Dim nodeId As Byte = &H6 'The nodeId from the sample code
             Dim state As Byte = &HFF '0xFF is on, 0x00 is off
-
-            If Me.IsConnected = True Then
-                Dim message As Byte() = New Byte() {&H1, &H9, &H0, &H13, nodeId, &H3, &H20, &H1, state, &H5, &H0}
-                message(message.Length - 1) = GenerateChecksum(message)
-                SerialPort.Write(message, 0, message.Length)
-            End If
+            Dim message As Byte() = New Byte() {&H1, &H9, &H0, &H13, nodeId, &H3, &H20, &H1, state, &H5, &H0}
+            SendMessage(message)
         End Sub
+
+        Private Function ByteArrayToString(ByVal message As Byte()) As String
+            Dim ret As String = ""
+
+            For Each b As Byte In message
+                ret += b.ToString("X2") & " "
+            Next
+
+            Return ret.Trim()
+        End Function
 
         Private Shared Function GenerateChecksum(ByVal data As Byte()) As Byte
             Dim offset As Integer = 1

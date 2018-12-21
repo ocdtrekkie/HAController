@@ -79,6 +79,8 @@ Module modConverse
                             strCommandResponse = modComputer.DisableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Disable()
+                        Case "zwave"
+                            strCommandResponse = modZWave.Disable()
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select
@@ -117,6 +119,8 @@ Module modConverse
                             strCommandResponse = modComputer.EnableStartup()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Enable()
+                        Case "zwave"
+                            strCommandResponse = modZWave.Enable()
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select

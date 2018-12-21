@@ -98,5 +98,28 @@
                 My.Settings.ZWave_LastGoodCOMPort = SerialPort.PortName
             End If
         End Sub
+
+        Public Sub TurnDeviceOn()
+            Dim nodeId As Byte = &H6 'The nodeId from the sample code
+            Dim state As Byte = &HFF '0xFF is on, 0x00 is off
+
+            If Me.IsConnected = True Then
+                Dim message As Byte() = New Byte() {&H1, &H9, &H0, &H13, nodeId, &H3, &H20, &H1, state, &H5, &H0}
+                message(message.Length - 1) = GenerateChecksum(message)
+                SerialPort.Write(message, 0, message.Length)
+            End If
+        End Sub
+
+        Private Shared Function GenerateChecksum(ByVal data As Byte()) As Byte
+            Dim offset As Integer = 1
+            Dim ret As Byte = data(offset)
+
+            For i As Integer = offset + 1 To data.Length - 1 - 1
+                ret = ret Xor data(i)
+            Next
+
+            ret = CByte((Not ret))
+            Return ret
+        End Function
     End Class
 End Module

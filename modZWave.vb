@@ -55,9 +55,15 @@
     <Serializable()>
     Public Class HAZWaveInterface
         Inherits HASerialDevice
+        Public Delegate Sub MessageHandler(ByVal message As Byte())
+        'Private msgHandler As MessageHandler
         Private ReceiverThread As Threading.Thread
         Private sendACK As Boolean = True
         Private MSG_ACKNOWLEDGE As Byte() = New Byte() {&H6}
+        Private messagingLocker As Object = New Object()
+        Private messagingLock As Boolean
+        Private callbackIdPool As Byte = 0
+        Private callbackIdLock As Object = New Object()
 
         Public Overloads Sub Dispose()
             If Me.IsConnected = True Then
@@ -67,6 +73,10 @@
                 End If
                 SerialPort.Dispose()
             End If
+        End Sub
+
+        Public Sub MessagingCompleted()
+            SetMessagingLock(False)
         End Sub
 
         Public Sub New()
@@ -124,24 +134,35 @@
                         SendAckMessage()
                     End If
                     sendACK = True
+                    'If (Not (msgHandler) Is Nothing) Then
+                    'msgHandler(message)
+                    'End If
                 End If
             End While
         End Sub
 
-        Private Sub SendMessage(ByVal message As Byte())
+        Private Function SendMessage(ByVal message As Byte()) As Boolean
             If Me.IsConnected = True Then
                 If message IsNot MSG_ACKNOWLEDGE Then
+                    If Not SetMessagingLock(True) Then Return False
                     sendACK = False
                     message(message.Length - 1) = GenerateChecksum(message)
                 End If
 
                 SerialPort.Write(message, 0, message.Length)
                 My.Application.Log.WriteEntry("Z-Wave: Message sent: " & ByteArrayToString(message))
+                Return True
+            Else
+                Return False
             End If
-        End Sub
+        End Function
 
         Private Sub SendAckMessage()
             SendMessage(MSG_ACKNOWLEDGE)
+        End Sub
+
+        Public Sub SubscribeToMessages(ByVal msgHandler As MessageHandler)
+            '    msgHandler = (msgHandler + msgHandler)
         End Sub
 
         Public Sub TurnDeviceOn()
@@ -171,6 +192,30 @@
 
             ret = CByte((Not ret))
             Return ret
+        End Function
+
+        Public Function GetCallbackId() As Byte
+            SyncLock Me.callbackIdLock
+                Return System.Threading.Interlocked.Increment(CByte(callbackIdPool))
+            End SyncLock
+        End Function
+
+        Private Function SetMessagingLock(ByVal state As Boolean) As Boolean
+            SyncLock messagingLocker
+
+                If state Then
+
+                    If Me.messagingLock Then
+                        Return False
+                    Else
+                        Me.messagingLock = True
+                        Return True
+                    End If
+                Else
+                    Me.messagingLock = False
+                    Return True
+                End If
+            End SyncLock
         End Function
     End Class
 

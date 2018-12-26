@@ -890,6 +890,18 @@ Namespace My
                 Me("ZWave_Enable") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Converse_PreserveCaps() As Boolean
+            Get
+                Return CType(Me("Converse_PreserveCaps"),Boolean)
+            End Get
+            Set
+                Me("Converse_PreserveCaps") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

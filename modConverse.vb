@@ -10,7 +10,9 @@ Module modConverse
         If strInputString <> "" Then
             My.Application.Log.WriteEntry("Command received: " + strInputString)
             ' Clean string for easier reading
-            strInputString = strInputString.ToLower()
+            If My.Settings.Converse_PreserveCaps = False Then
+                strInputString = strInputString.ToLower()
+            End If
             strInputString = strInputString.Replace("what does", "what's")
             strInputString = strInputString.Replace("what is", "what's")
             Dim inputData() = strInputString.Split(" ")
@@ -46,6 +48,9 @@ Module modConverse
                     End Select
                 Case "disable"
                     Select Case inputData(1)
+                        Case "caps"
+                            My.Settings.Converse_PreserveCaps = False
+                            strCommandResponse = "Preserve caps disabled"
                         Case "carmode"
                             strCommandResponse = frmMain.DisableCarMode()
                         Case "dreamcheeky"
@@ -86,6 +91,9 @@ Module modConverse
                     End Select
                 Case "enable"
                     Select Case inputData(1)
+                        Case "caps"
+                            My.Settings.Converse_PreserveCaps = True
+                            strCommandResponse = "Preserve caps enabled"
                         Case "carmode"
                             strCommandResponse = frmMain.EnableCarMode()
                         Case "dreamcheeky"

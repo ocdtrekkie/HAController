@@ -28,6 +28,12 @@
             My.Settings.Save()
         End If
 
+        If My.Settings.Converse_PreserveCaps = True Then
+            My.Application.Log.WriteEntry("Preserve caps mode is enabled")
+        Else
+            My.Application.Log.WriteEntry("Preserve caps mode is disabled")
+        End If
+
         AddHandler My.Settings.PropertyChanged, AddressOf Settings_Changed
 
         Dim SysTrayMenu = New ContextMenu

@@ -235,7 +235,7 @@ Module modMail
 
             If My.Settings.Mail_Password = "" Then
                 My.Application.Log.WriteEntry("No mail password set, asking for it")
-                My.Settings.Mail_Password = InputBox("Enter mail password. This is not a very secure password storage, do not store credentials to sensitive mail accounts here.", "Mail Password")
+                SetMailPassword()
             End If
 
             If My.Settings.Mail_To = "" Then
@@ -391,6 +391,15 @@ Module modMail
         Else
             Return "Dumped"
         End If
+    End Function
+
+    ''' <summary>
+    ''' Asks for an updated mail password.
+    ''' </summary>
+    ''' <returns>The fact that the mail password has been set</returns>
+    Function SetMailPassword() As String
+        My.Settings.Mail_Password = InputBox("Enter mail password. This is not a very secure password storage, do not store credentials to sensitive mail accounts here.", "Mail Password")
+        Return "Mail password set"
     End Function
 
     Function Unload() As String

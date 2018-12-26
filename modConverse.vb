@@ -349,6 +349,8 @@ Module modConverse
                         ElseIf inputData(3) = "off" Then
                             My.Settings.Global_Experimental = False
                         End If
+                    ElseIf inputData(1) = "mail" AndAlso inputData(2) = "password" Then
+                        strCommandResponse = modMail.SetMailPassword()
                     ElseIf inputData(1) = "online" AndAlso inputData(2) = "mode" Then
                         modGlobal.IsOnline = True
                         strCommandResponse = "Acknowledged"

@@ -902,6 +902,30 @@ Namespace My
                 Me("Converse_PreserveCaps") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Library_Enable() As Boolean
+            Get
+                Return CType(Me("Library_Enable"),Boolean)
+            End Get
+            Set
+                Me("Library_Enable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Library_Repository() As String
+            Get
+                Return CType(Me("Library_Repository"),String)
+            End Get
+            Set
+                Me("Library_Repository") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

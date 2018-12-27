@@ -139,6 +139,7 @@
     <Compile Include="modGlobal.vb" />
     <Compile Include="modGPS.vb" />
     <Compile Include="modInsteon.vb" />
+    <Compile Include="modLibrary.vb" />
     <Compile Include="modMail.vb" />
     <Compile Include="modMapQuest.vb" />
     <Compile Include="modOpenWeatherMap.vb" />

@@ -46,6 +46,10 @@ Module modConverse
                         Case "pihole"
                             strCommandResponse = modPihole.CheckPiholeStatus()
                     End Select
+                Case "convert"
+                    If inputData(1) = "isbn" AndAlso inputData.Length > 2 Then
+                        strCommandResponse = modLibrary.ConvertISBN(inputData(2))
+                    End If
                 Case "disable"
                     Select Case inputData(1)
                         Case "caps"

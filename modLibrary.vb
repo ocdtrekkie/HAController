@@ -1,5 +1,11 @@
 ﻿Module modLibrary
+    ''' <summary>
+    ''' Retrieves an ebook from the repository and emails it to the user
+    ''' </summary>
+    ''' <param name="strBarcode">Material barcode</param>
+    ''' <returns>Temp: Type of material</returns>
     Function CheckOutEbook(ByVal strBarcode As String)
+        ' TODO: This function should identify the correct files, compress them, and attach them to an email
         If My.Settings.Library_Enable = True Then
             If IsNumeric(strBarcode) = True Then
                 Dim FolderTest As New System.IO.DirectoryInfo(My.Settings.Library_Repository & strBarcode)

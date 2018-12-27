@@ -18,6 +18,7 @@ The following modules function optionally and add features:
 * modDreamCheeky supports the Dream Cheeky Big Red Button and WebMail Notifier devices.
 * modGPS collects location data from NMEA-compatible GPS receivers and manages navigation.
 * modInsteon handles Insteon home automation devices, and may eventually add legacy X10.
+* modLibrary will be able to retrieve digital books from a central repository.
 * modOpenWeatherMap gathers weather data from the OpenWeatherMap API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
 * modMapQuest uses the MapQuest API to get location information and directions.

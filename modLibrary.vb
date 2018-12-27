@@ -1,4 +1,9 @@
 ﻿Module modLibrary
+    ''' <summary>
+    ''' Strips the hyphens from an ISBN number, determines if it is ISBN10 or ISBN13, and then returns the converted value.
+    ''' </summary>
+    ''' <param name="strInputISBN">ISBN to convert</param>
+    ''' <returns>ISBN converted to other format</returns>
     Function ConvertISBN(ByVal strInputISBN As String) As String
         strInputISBN = Replace(strInputISBN, "-", "")
         If strInputISBN.Length = 10 Then
@@ -25,6 +30,11 @@
         Return "Library module enabled"
     End Function
 
+    ''' <summary>
+    ''' Converts a 13-digit ISBN to a 10-digit ISBN.
+    ''' </summary>
+    ''' <param name="strISBN13">ISBN13 to convert</param>
+    ''' <returns>ISBN10</returns>
     Function GetISBN10(ByVal strISBN13 As String) As String
         ' Credit to jmaddalone at https://snipplr.com/view/5127/convert-isbn-13-to-10/
         Dim a As Integer
@@ -71,6 +81,11 @@
         Return CStr(d & e & f & g & h & i & j & k & l & o)
     End Function
 
+    ''' <summary>
+    ''' Converts a 10-digit ISBN to a 13-digit ISBN.
+    ''' </summary>
+    ''' <param name="strISBN10">ISBN10 to convert</param>
+    ''' <returns>ISBN13</returns>
     Function GetISBN13(ByVal strISBN10 As String) As String
         ' Credit to Mehrdad, Asghari at https://www.codeproject.com/tips/75999/%2fTips%2f75999%2fConvert-ISBN10-To-ISBN-13
         Dim isbn10 As String = "978" & strISBN10.Substring(0, 9)

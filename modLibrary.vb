@@ -1,4 +1,27 @@
 ﻿Module modLibrary
+    Function CheckOutEbook(ByVal strBarcode As String)
+        If My.Settings.Library_Enable = True Then
+            If IsNumeric(strBarcode) = True Then
+                Dim FolderTest As New System.IO.DirectoryInfo(My.Settings.Library_Repository & strBarcode)
+                If FolderTest.Exists Then
+                    Return "This is a directory"
+                Else
+                    Dim FileTest As New System.IO.FileInfo(My.Settings.Library_Repository & strBarcode & ".pdf")
+                    If FileTest.Exists Then
+                        Return "This is a PDF"
+                    Else
+                        Return "It must be in another format"
+                    End If
+                End If
+            Else
+                Return "Invalid barcode format"
+            End If
+        Else
+            My.Application.Log.WriteEntry("Library module is disabled")
+            Return "Disabled"
+        End If
+    End Function
+
     ''' <summary>
     ''' Strips the hyphens from an ISBN number, determines if it is ISBN10 or ISBN13, and then returns the converted value.
     ''' </summary>

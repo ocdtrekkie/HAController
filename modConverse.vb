@@ -43,6 +43,10 @@ Module modConverse
                                 MailCheckThread.Start()
                             End If
                             strCommandResponse = "Checking mail"
+                        Case "out"
+                            If inputData.Length > 2 Then
+                                strCommandResponse = modLibrary.CheckOutEbook(inputData(2))
+                            End If
                         Case "pihole"
                             strCommandResponse = modPihole.CheckPiholeStatus()
                     End Select
@@ -68,6 +72,8 @@ Module modConverse
                             strCommandResponse = "IMAP mode disabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Disable()
+                        Case "library"
+                            strCommandResponse = modLibrary.Disable()
                         Case "mail"
                             strCommandResponse = modMail.Disable()
                         Case "mapquest"
@@ -111,6 +117,8 @@ Module modConverse
                             strCommandResponse = "IMAP mode enabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Enable()
+                        Case "library"
+                            strCommandResponse = modLibrary.Enable()
                         Case "mail"
                             strCommandResponse = modMail.Enable()
                         Case "mapquest"

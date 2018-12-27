@@ -34,70 +34,78 @@ Module modMail
     Dim tmrMailCheckTimer As System.Timers.Timer
 
     Sub CheckMail()
-        If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
-            Try
-                If pClient.Connected = True Then
+        If My.Settings.Mail_Enable = True Then
+            If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
+                Try
+                    If pClient.Connected = True Then
+                        CloseServer()
+                        pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+                        ret_Val = 0
+                        Exit Sub
+                    Else
+                        pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
+
+                        NetworkS_tream = pClient.GetStream 'Read the stream
+                        m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
+                        m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
+                        Read_Stream = New StreamReader(m_sslStream) 'Read the stream
+                        StatResp = Read_Stream.ReadLine()
+
+                        StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
+                        My.Application.Log.WriteEntry("POP3: " & StatResp)
+                        StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
+                        My.Application.Log.WriteEntry("POP3: " & StatResp)
+                        StatResp = Login(m_sslStream, "STAT ")
+                        My.Application.Log.WriteEntry("POP3: " & StatResp)
+
+                        'Get Messages count
+                        server_Stat = StatResp.Split(" ")
+                        My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
+                        ret_Val = 1
+                    End If
+
+                    If IsNumeric(server_Stat(1)) = True Then 'Apparently POP3 returned 'bad' during a "Temporary system problem" and 'Command' when an invalid password is used, which I want to mitigate.
+                        GetMessages(server_Stat(1))
+                    Else
+                        My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
+                    End If
                     CloseServer()
-                    pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-                    ret_Val = 0
-                    Exit Sub
-                Else
-                    pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-
-                    NetworkS_tream = pClient.GetStream 'Read the stream
-                    m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
-                    m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
-                    Read_Stream = New StreamReader(m_sslStream) 'Read the stream
-                    StatResp = Read_Stream.ReadLine()
-
-                    StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
-                    My.Application.Log.WriteEntry("POP3: " & StatResp)
-                    StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
-                    My.Application.Log.WriteEntry("POP3: " & StatResp)
-                    StatResp = Login(m_sslStream, "STAT ")
-                    My.Application.Log.WriteEntry("POP3: " & StatResp)
-
-                    'Get Messages count
-                    server_Stat = StatResp.Split(" ")
-                    My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
-                    ret_Val = 1
-                End If
-
-                If IsNumeric(server_Stat(1)) = True Then 'Apparently POP3 returned 'bad' during a "Temporary system problem" and 'Command' when an invalid password is used, which I want to mitigate.
-                    GetMessages(server_Stat(1))
-                Else
-                    My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
-                End If
-                CloseServer()
-            Catch SocketEx As System.Net.Sockets.SocketException
-                My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
-            Catch NullRefEx As System.NullReferenceException
-                My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
-            End Try
+                Catch SocketEx As System.Net.Sockets.SocketException
+                    My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+                Catch NullRefEx As System.NullReferenceException
+                    My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
+                End Try
+            End If
+        Else
+            My.Application.Log.WriteEntry("Mail module is disabled")
         End If
     End Sub
 
     Sub CheckMailImap()
-        If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = True Then
-            Try
-                pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
-                m_sslStream = New SslStream(pClient.GetStream())
-                m_sslStream.AuthenticateAsClient(My.Settings.Mail_IMAPHost)
-                ReceiveResponse("")
-                ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & vbCrLf)
-                ReceiveResponse("$ SELECT INBOX" & vbCrLf)
-                ReceiveResponse("$ STATUS INBOX (MESSAGES)" & vbCrLf)
-                ReceiveResponse("$ FETCH 1 body[header]" & vbCrLf)
-                ReceiveResponse("$ STORE 1 +FLAGS (\Deleted)" & vbCrLf)
-                ReceiveResponse("$ EXPUNGE" & vbCrLf)
-                ReceiveResponse("$ LOGOUT" & vbCrLf)
-            Catch SocketEx As System.Net.Sockets.SocketException
-                My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
-            Catch AuthEx As System.Security.Authentication.AuthenticationException
-                My.Application.Log.WriteException(AuthEx)
-            Catch NullRefEx As System.NullReferenceException
-                My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty IMAP response")
-            End Try
+        If My.Settings.Mail_Enable = True Then
+            If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = True Then
+                Try
+                    pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
+                    m_sslStream = New SslStream(pClient.GetStream())
+                    m_sslStream.AuthenticateAsClient(My.Settings.Mail_IMAPHost)
+                    ReceiveResponse("")
+                    ReceiveResponse("$ LOGIN " & My.Settings.Mail_Username & " " & My.Settings.Mail_Password & vbCrLf)
+                    ReceiveResponse("$ SELECT INBOX" & vbCrLf)
+                    ReceiveResponse("$ STATUS INBOX (MESSAGES)" & vbCrLf)
+                    ReceiveResponse("$ FETCH 1 body[header]" & vbCrLf)
+                    ReceiveResponse("$ STORE 1 +FLAGS (\Deleted)" & vbCrLf)
+                    ReceiveResponse("$ EXPUNGE" & vbCrLf)
+                    ReceiveResponse("$ LOGOUT" & vbCrLf)
+                Catch SocketEx As System.Net.Sockets.SocketException
+                    My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
+                Catch AuthEx As System.Security.Authentication.AuthenticationException
+                    My.Application.Log.WriteException(AuthEx)
+                Catch NullRefEx As System.NullReferenceException
+                    My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty IMAP response")
+                End Try
+            End If
+        Else
+            My.Application.Log.WriteEntry("Mail module is disabled")
         End If
     End Sub
 
@@ -368,6 +376,8 @@ Module modMail
                     My.Application.Log.WriteException(SmtpEx)
                 End Try
             End SyncLock
+        Else
+            My.Application.Log.WriteEntry("Mail module is disabled")
         End If
     End Sub
 

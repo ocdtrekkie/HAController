@@ -358,7 +358,7 @@ Module modMail
         End Try
     End Sub
 
-    Sub Send(oSubj As String, oBody As String)
+    Sub Send(oSubj As String, oBody As String, Optional ByVal oAttachFileName As String = "")
         If My.Settings.Mail_Enable = True Then
             Dim oMsg As New MailMessage()
 
@@ -368,6 +368,15 @@ Module modMail
             oMsg.Priority = MailPriority.High
             oMsg.IsBodyHtml = False
             oMsg.Body = oBody & System.Environment.NewLine & System.Environment.NewLine & " -- This bot does not care about your replies and will discard them."
+
+            If oAttachFileName <> "" Then
+                My.Application.Log.WriteEntry("Attaching file " & oAttachFileName & " to email")
+                Dim oAttachment As New Attachment(oAttachFileName, GetMimeType(oAttachFileName))
+                oAttachment.ContentDisposition.CreationDate = System.IO.File.GetCreationTime(oAttachFileName)
+                oAttachment.ContentDisposition.ModificationDate = System.IO.File.GetLastWriteTime(oAttachFileName)
+                oAttachment.ContentDisposition.ReadDate = System.IO.File.GetLastAccessTime(oAttachFileName)
+                oMsg.Attachments.Add(oAttachment)
+            End If
 
             SyncLock smtpLock
                 Try
@@ -380,6 +389,18 @@ Module modMail
             My.Application.Log.WriteEntry("Mail module is disabled")
         End If
     End Sub
+
+    Function GetMimeType(ByVal strFileName As String) As String
+        Dim strExtension As String = System.IO.Path.GetExtension(strFileName)
+        Select Case strExtension
+            Case ".cbz", ".epub", ".zip"
+                Return System.Net.Mime.MediaTypeNames.Application.Zip
+            Case ".pdf"
+                Return System.Net.Mime.MediaTypeNames.Application.Pdf
+            Case Else
+                Return System.Net.Mime.MediaTypeNames.Application.Octet
+        End Select
+    End Function
 
     Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String
         Dim justExit As Boolean = False

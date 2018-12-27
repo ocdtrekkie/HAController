@@ -63,7 +63,7 @@ Module modMail
                     ret_Val = 1
                 End If
 
-                If server_Stat(1) <> "bad" Then 'Apparently POP3 returned 'bad' during a "Temporary system problem", which I want to mitigate.
+                If IsNumeric(server_Stat(1)) = True Then 'Apparently POP3 returned 'bad' during a "Temporary system problem" and 'Command' when an invalid password is used, which I want to mitigate.
                     GetMessages(server_Stat(1))
                 Else
                     My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)

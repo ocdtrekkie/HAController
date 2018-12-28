@@ -393,10 +393,22 @@ Module modMail
     Function GetMimeType(ByVal strFileName As String) As String
         Dim strExtension As String = System.IO.Path.GetExtension(strFileName)
         Select Case strExtension
-            Case ".cbz", ".epub", ".zip"
-                Return System.Net.Mime.MediaTypeNames.Application.Zip
+            Case ".7z"
+                Return "application/x-7z-compressed"
+            Case ".cbr"
+                Return "application/vnd.comicbook-rar"
+            Case ".cbz"
+                Return "application/vnd.comicbook+zip"
+            Case ".epub"
+                Return "application/epub+zip"
+            Case ".mobi", ".prc"
+                Return "application/x-mobipocket-ebook"
             Case ".pdf"
                 Return System.Net.Mime.MediaTypeNames.Application.Pdf
+            Case ".rar"
+                Return "application/x-rar-compressed"
+            Case ".zip"
+                Return System.Net.Mime.MediaTypeNames.Application.Zip
             Case Else
                 Return System.Net.Mime.MediaTypeNames.Application.Octet
         End Select

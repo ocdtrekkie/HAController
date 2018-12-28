@@ -66,48 +66,52 @@
     ''' <returns>ISBN10</returns>
     Function GetISBN10(ByVal strISBN13 As String) As String
         ' Credit to jmaddalone at https://snipplr.com/view/5127/convert-isbn-13-to-10/
-        Dim a As Integer
-        Dim b As Integer
-        Dim c As Integer
-        Dim d As Integer
-        Dim e As Integer
-        Dim f As Integer
-        Dim g As Integer
-        Dim h As Integer
-        Dim i As Integer
-        Dim j As Integer
-        Dim k As Integer
-        Dim l As Integer
-        Dim m As Integer
-        Dim n As Integer
-        Dim o As Object
-        Dim n2 As Integer
-        Dim isbnarr(12)
-        For i = 0 To 12
-            isbnarr(i) = CInt(Mid(strISBN13, i + 1, 1))
-        Next
-        a = isbnarr(0)
-        b = isbnarr(1)
-        c = isbnarr(2)
-        d = isbnarr(3)
-        e = isbnarr(4)
-        f = isbnarr(5)
-        g = isbnarr(6)
-        h = isbnarr(7)
-        i = isbnarr(8)
-        j = isbnarr(9)
-        k = isbnarr(10)
-        l = isbnarr(11)
-        m = isbnarr(12)
-        n = (d * 10) + (9 * e) + (8 * f) + (7 * g) + (6 * h) + (5 * i) + (4 * j) + (3 * k) + (2 * l)
-        n2 = Int((n / 11) + 1)
-        o = (11 * n2) - n
-        If o = 10 Then
-            o = "X"
-        ElseIf o = 11 Then
-            o = 0
+        If strISBN13.Substring(0, 3) <> "978" Then
+            Return "NO ISBN10"
+        Else
+            Dim a As Integer
+            Dim b As Integer
+            Dim c As Integer
+            Dim d As Integer
+            Dim e As Integer
+            Dim f As Integer
+            Dim g As Integer
+            Dim h As Integer
+            Dim i As Integer
+            Dim j As Integer
+            Dim k As Integer
+            Dim l As Integer
+            Dim m As Integer
+            Dim n As Integer
+            Dim o As Object
+            Dim n2 As Integer
+            Dim isbnarr(12)
+            For i = 0 To 12
+                isbnarr(i) = CInt(Mid(strISBN13, i + 1, 1))
+            Next
+            a = isbnarr(0)
+            b = isbnarr(1)
+            c = isbnarr(2)
+            d = isbnarr(3)
+            e = isbnarr(4)
+            f = isbnarr(5)
+            g = isbnarr(6)
+            h = isbnarr(7)
+            i = isbnarr(8)
+            j = isbnarr(9)
+            k = isbnarr(10)
+            l = isbnarr(11)
+            m = isbnarr(12)
+            n = (d * 10) + (9 * e) + (8 * f) + (7 * g) + (6 * h) + (5 * i) + (4 * j) + (3 * k) + (2 * l)
+            n2 = Int((n / 11) + 1)
+            o = (11 * n2) - n
+            If o = 10 Then
+                o = "X"
+            ElseIf o = 11 Then
+                o = 0
+            End If
+            Return CStr(d & e & f & g & h & i & j & k & l & o)
         End If
-        Return CStr(d & e & f & g & h & i & j & k & l & o)
     End Function
 
     ''' <summary>

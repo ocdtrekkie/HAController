@@ -1,5 +1,6 @@
 ﻿Module modInsteon
     ' IMMENSE amount of credit goes to Jonathan Dale at http://www.madreporite.com for the Insteon code
+    ' When asked about licensing, he stated the code was free for anyone to use
 
     Structure InsteonDevice
         Dim Address As String

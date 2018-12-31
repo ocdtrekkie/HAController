@@ -1,6 +1,6 @@
-This is a fairly simple home automation controller, which focuses on working independent of web services. Eventually it will support a variety of devices and capabilities.
+This is a fairly simple automation controller, which focuses on working independent of web services. It is unique in that it is intended to support disparate environments such as both the home and the car, and mimic a true personal assistant that is available everywhere you are. My goal in writing this code was to develop something that operated with as simple and minimal code as possible so it would be easy to understand what the application was doing and how to modify it.
 
-Huge credit for all of the INSTEON code that I built off of goes to **Jonathan Dale** of http://www.madreporite.com who stated that his code from his site is "free for anyone to use". As he does not have a specific license attached to that statement (I asked), I'm going to just plaster his name up here for credit. Basically I made a little program to send Insteon commands with his code, and that worked well and did what I wanted, but when I tried to make sense of the receiving code, I hit a roadblock. So I basically went for the concept to merge that code in directly, and then slowly integrate it with my app afterwards. I dumped it all in and got to work merging it, removing non-existant functions, and removing errors. This merge is still ongoing, while I also work on other points of interest.
+Roadmap: https://oasis.sandstorm.io/shared/SZ8UmwS2gAKhei2ruyofZy-tmf3faAwdCbkjAmSEViA
 
 ## Modules ##
 

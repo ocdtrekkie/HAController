@@ -1,4 +1,7 @@
 ﻿Module modZWave
+    'Preliminary Z-Wave code is based on some C# tutorials by Henrik Leidecker Jørgensen that were at digiWave.dk
+    'The tutorial code was offered as free for anyone to use
+    
     Public ZWaveInterface As HAZWaveInterface
     Public ZWaveInterfaceIndex As Integer
 

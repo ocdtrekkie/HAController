@@ -1206,7 +1206,7 @@
             If IsNumeric(strAddress.Substring(1, strAddress.Length - 1)) Then
                 Dim DeviceCode As Integer = CInt(strAddress.Substring(1, strAddress.Length - 1))
                 If DeviceCode > 0 AndAlso DeviceCode < 17 Then
-                    Dim HouseCode As Integer = Asc(strAddress.Substring(0, 1))
+                    Dim HouseCode As Integer = Asc(strAddress.Substring(0, 1).ToUpper)
                     If HouseCode > 64 AndAlso HouseCode < 81 Then
                         Return True
                     End If

@@ -23,6 +23,8 @@ Module modConverse
                         strCommandResponse = modPersons.AddPersonDb(inputData(2))
                     ElseIf inputData(1) = "email" AndAlso inputData(3) = "to" Then
                         strCommandResponse = modPersons.AddEmailToPerson(inputData(4), inputData(2))
+                    ElseIf inputData(1) = "x10" AndAlso inputData(2) = "device" AndAlso inputData.Length > 3 AndAlso modInsteon.IsX10Address(inputData(3)) = True Then
+                        strCommandResponse = modInsteon.AddX10DeviceDb(inputData(3).ToUpper)
                     End If
                 Case "ask"
                     If inputData(1) = "wolfram" Then
@@ -310,6 +312,9 @@ Module modConverse
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
                             modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
                             strCommandResponse = "Okay, I will save this information" 'TODO: This doesn't check for success
+                        ElseIf modInsteon.IsX10Address(inputData(2)) = True AndAlso inputData(3) = "as" Then
+                            Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
+                            strCommandResponse = modInsteon.NicknameX10DeviceDb(inputData(2).ToUpper, strNickname)
                         End If
                     End If
                 Case "remind"

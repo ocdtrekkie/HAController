@@ -40,6 +40,15 @@
         End If
     End Sub
 
+    Function AddX10DeviceDb(ByVal strAddress As String) As String
+        If CheckDbForX10(strAddress) = 0 Then
+            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Address) VALUES('X10 Device', 'X10', '" & strAddress & "')")
+            Return "Device added"
+        Else
+            Return "Device already exists"
+        End If
+    End Function
+
     Private Sub CheckInsteonThermostat()
         My.Application.Log.WriteEntry("Executing scheduled thermostat check")
         Dim response As String = ""
@@ -357,6 +366,16 @@
             modDatabase.Execute("UPDATE DEVICES SET Name = """ + strNickname + """ WHERE Type = ""Insteon"" AND Address = """ + strAddress + """")
         End If
     End Sub
+
+    Function NicknameX10DeviceDb(ByVal strAddress As String, ByVal strNickname As String) As String
+        If CheckDbForX10(strAddress) = 0 Then
+            My.Application.Log.WriteEntry("Cannot set nickname, X10 address is unknown")
+            Return "Cannot set nickname, X10 address is unknown"
+        Else
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""X10"" AND Address = """ & strAddress + """")
+            Return "Okay, I will save this information"
+        End If
+    End Function
 
     Private Sub SerialPLM_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)
         ' this is the serial port data received event on a secondary thread
@@ -1173,6 +1192,25 @@
         Return False
     End Function
 
+    ''' <summary>
+    ''' Returns true if input is a proper X10 address.
+    ''' </summary>
+    ''' <param name="strAddress">X10 address in X0 format</param>
+    ''' <returns>True if formatted correctly, false otherwise</returns>
+    Public Function IsX10Address(ByVal strAddress As String) As Boolean
+        If strAddress.Length = 2 OrElse strAddress.Length = 3 Then
+            If IsNumeric(strAddress.Substring(1, strAddress.Length - 1)) Then
+                Dim DeviceCode As Integer = CInt(strAddress.Substring(1, strAddress.Length - 1))
+                If DeviceCode > 0 AndAlso DeviceCode < 17 Then
+                    If Char.IsLetter(strAddress.Substring(0, 1)) Then 'TODO: Fails to check for invalid house codes Q-Z
+                        Return True
+                    End If
+                End If
+            End If
+        End If
+        Return False
+    End Function
+
     Public Function X10House_from_PLM(ByVal Index As Byte) As Short
         Dim i As Short
         ' Given the MSB from the PLM, return the House (0-15). If not found, return -1.
@@ -1249,6 +1287,24 @@
             Return result
         Else
             My.Application.Log.WriteEntry(strAddress + " is not in the device database")
+            Return 0
+        End If
+    End Function
+
+    ''' <summary>
+    ''' This function results the database ID of an X10 device in the DEVICES table.
+    ''' </summary>
+    ''' <param name="strAddress">X10 address in the X0 format</param>
+    ''' <returns>Result index or 0 for no result</returns>
+    Function CheckDbForX10(ByVal strAddress As String) As Integer
+        Dim result As Integer = New Integer
+
+        modDatabase.ExecuteScalar("SELECT Id FROM DEVICES WHERE Type = ""X10"" AND Address = """ + strAddress + """", result)
+        If result <> 0 Then
+            My.Application.Log.WriteEntry(strAddress + " database ID is " + result.ToString)
+            Return result
+        Else
+            My.Application.Log.WriteEntry(strAddress & " is not in the device database")
             Return 0
         End If
     End Function

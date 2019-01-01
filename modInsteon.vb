@@ -1332,6 +1332,18 @@
     End Function
 
     ''' <summary>
+    ''' This function returns the device type of a given device nickname. i.e. Insteon, X10, etc.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of device to look for</param>
+    ''' <returns>Device type</returns>
+    Function GetDeviceTypeFromNickname(ByVal strNickname) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT Type FROM DEVICES WHERE Name = """ & strNickname & """", result)
+        Return result
+    End Function
+
+    ''' <summary>
     ''' This function returns the Insteon address of a given device nickname.
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>
@@ -1340,6 +1352,18 @@
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = """ + strNickname + """ AND Type = ""Insteon""", result)
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' This function returns the X10 address of a given device nickname.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of device to look for</param>
+    ''' <returns>X10 address in X0 format</returns>
+    Function GetX10AddressFromNickname(ByVal strNickname) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = """ & strNickname & """ AND Type = ""X10""", result)
         Return result
     End Function
 

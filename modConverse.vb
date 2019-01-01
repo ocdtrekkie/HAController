@@ -482,13 +482,21 @@ Module modConverse
                                     strNickname = strNickname + " " + inputData(intLC)
                                     intLC = intLC + 1
                                 End While
-                                Dim strAddressOfDevice = modInsteon.GetInsteonAddressFromNickname(strNickname)
-                                If strAddressOfDevice IsNot Nothing Then
-                                    modInsteon.InsteonLightControl(strAddressOfDevice, response, inputData(inputData.Length - 1))
-                                    strCommandResponse = "Acknowledged"
-                                Else
-                                    strCommandResponse = "Device not found"
-                                End If
+                                Select Case modInsteon.GetDeviceTypeFromNickname(strNickname)
+                                    Case "Insteon"
+                                        Dim strAddressOfDevice = modInsteon.GetInsteonAddressFromNickname(strNickname)
+                                        If strAddressOfDevice IsNot Nothing Then
+                                            modInsteon.InsteonLightControl(strAddressOfDevice, response, inputData(inputData.Length - 1))
+                                            strCommandResponse = "Acknowledged"
+                                        End If
+                                    Case "X10"
+                                        Dim strAddressOfDevice = modInsteon.GetX10AddressFromNickname(strNickname)
+                                        If strAddressOfDevice IsNot Nothing Then
+                                            strCommandResponse = modInsteon.X10SendCommand(strAddressOfDevice, inputData(inputData.Length - 1))
+                                        End If
+                                    Case Else
+                                        strCommandResponse = "Device not found"
+                                End Select
                             End If
                     End Select
                 Case "unmute"

@@ -449,6 +449,10 @@ Module modConverse
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
+                        Case "x10"
+                            '2 is on, 3 is off, 4 is dim, 5 is bright
+                            modInsteon.X10SendCommand(0, 4, CInt(inputData(2))) 'Should be device A4
+                            strCommandResponse = "X10 Command Sent"
                     End Select
                 Case "turn"
                     Dim response As String = ""

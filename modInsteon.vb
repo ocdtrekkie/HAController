@@ -21,8 +21,8 @@
 
     Public PLM_Address As String
     Public PLM_LastX10Device As Byte
-    Public PLM_X10_Device(16) As Byte
-    Public PLM_X10_House(16) As Byte
+    Public PLM_X10_House() As Byte = New Byte(16) {0, 96, 224, 32, 160, 16, 144, 80, 208, 112, 240, 48, 176, 0, 128, 64, 192} 'House Codes A-P
+    Public PLM_X10_Device() As Byte = New Byte(16) {0, 6, 14, 2, 10, 1, 9, 5, 13, 7, 15, 3, 11, 0, 8, 4, 12} 'Device Codes 1-16
 
     Public x(1030) As Byte ' Serial data as it gets brought in
     Public x_LastWrite As Short ' Index of last byte in array updated with new data
@@ -1199,6 +1199,40 @@
         Else
             X10Device_from_PLM = -1
         End If
+    End Function
+
+    Function X10SendCommand(HouseCode As Byte, DeviceCode As Byte, Command As Byte) As String
+        Dim strOutcome As String = ""
+        SyncLock serialLock
+            If My.Settings.Insteon_Enable = True Then
+                If SerialPLM.IsOpen = True Then
+                    Dim data(3) As Byte
+                    data(0) = 2 'Start message
+                    data(1) = 99 '0x63 - Send X10
+                    data(2) = PLM_X10_House(HouseCode + 1) + PLM_X10_Device(DeviceCode) 'X10 Address (house + device)
+                    data(3) = 0 'Flag - This is the address
+                    Try
+                        SerialPLM.Write(data, 0, 4)
+                    Catch Excep As System.InvalidOperationException
+                        My.Application.Log.WriteException(Excep)
+                    End Try
+                    Threading.Thread.Sleep(500)
+                    data(2) = PLM_X10_House(HouseCode + 1) + Command 'X10 Address (house + command)
+                    data(3) = 128 'Flag - This is the command
+                    Try
+                        SerialPLM.Write(data, 0, 4)
+                    Catch Excep As System.InvalidOperationException
+                        My.Application.Log.WriteException(Excep)
+                    End Try
+                    strOutcome = "Command sent"
+                Else
+                    strOutcome = "Command not sent, serial interface is not open"
+                End If
+            Else
+                strOutcome = "Command not sent, module is disabled"
+            End If
+        End SyncLock
+        Return strOutcome
     End Function
 
     ''' <summary>

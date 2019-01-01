@@ -310,10 +310,10 @@ Module modConverse
                             strCommandResponse = "My name is now " & My.Settings.Converse_BotName
                         ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True AndAlso inputData(3) = "as" Then
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
-                            strCommandResponse = modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
+                            strCommandResponse = modInsteon.NicknameInsteonDeviceDb(inputData(2), strNickname)
                         ElseIf modInsteon.IsX10Address(inputData(2)) = True AndAlso inputData(3) = "as" Then
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
-                            strCommandResponse = modInsteon.NicknameX10DeviceDb(inputData(2).ToUpper, strNickname)
+                            strCommandResponse = modInsteon.NicknameX10DeviceDb(inputData(2), strNickname)
                         End If
                     End If
                 Case "remind"
@@ -453,10 +453,6 @@ Module modConverse
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
-                        Case "x10"
-                            '2 is on, 3 is off, 4 is dim, 5 is bright
-                            modInsteon.X10SendCommand(0, 4, CInt(inputData(2))) 'Should be device A4
-                            strCommandResponse = "X10 Command Sent"
                     End Select
                 Case "turn"
                     Dim response As String = ""
@@ -474,6 +470,9 @@ Module modConverse
                         Case Else
                             If modInsteon.IsInsteonAddress(inputData(1)) = True Then
                                 modInsteon.InsteonLightControl(inputData(1).ToUpper, response, inputData(2))
+                                strCommandResponse = "Acknowledged"
+                            ElseIf modInsteon.IsX10Address(inputData(1)) = True Then
+                                modInsteon.X10SendCommand(inputData(1).ToUpper, inputData(2))
                                 strCommandResponse = "Acknowledged"
                             Else
                                 'This loop gets the name after the turn word, but before the command word at the end

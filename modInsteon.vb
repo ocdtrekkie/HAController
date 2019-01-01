@@ -366,7 +366,7 @@
             My.Application.Log.WriteEntry("Cannot set nickname, Insteon address is unknown")
             Return "Cannot set nickname, Insteon address is unknown"
         Else
-            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""Insteon"" AND Address = """ & strAddress & """")
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""Insteon"" AND Address = """ & strAddress.ToUpper & """")
             Return "I have saved this information"
         End If
     End Function
@@ -376,7 +376,7 @@
             My.Application.Log.WriteEntry("Cannot set nickname, X10 address is unknown")
             Return "Cannot set nickname, X10 address is unknown"
         Else
-            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""X10"" AND Address = """ & strAddress & """")
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""X10"" AND Address = """ & strAddress.ToUpper & """")
             Return "I have saved this information"
         End If
     End Function
@@ -1206,7 +1206,8 @@
             If IsNumeric(strAddress.Substring(1, strAddress.Length - 1)) Then
                 Dim DeviceCode As Integer = CInt(strAddress.Substring(1, strAddress.Length - 1))
                 If DeviceCode > 0 AndAlso DeviceCode < 17 Then
-                    If Char.IsLetter(strAddress.Substring(0, 1)) Then 'TODO: Fails to check for invalid house codes Q-Z
+                    Dim HouseCode As Integer = Asc(strAddress.Substring(0, 1))
+                    If HouseCode > 64 AndAlso HouseCode < 81 Then
                         Return True
                     End If
                 End If
@@ -1243,8 +1244,25 @@
         End If
     End Function
 
-    Function X10SendCommand(HouseCode As Byte, DeviceCode As Byte, Command As Byte) As String
+    Function X10SendCommand(ByVal strAddress As String, ByVal strCommand As String) As String
         Dim strOutcome As String = ""
+        Dim bytCommand As Byte
+        Dim HouseCode As Byte = Asc(strAddress.Substring(0, 1)) - 65
+        Dim DeviceCode As Byte = CInt(strAddress.Substring(1, strAddress.Length - 1))
+
+        Select Case strCommand
+            Case "bright"
+                bytCommand = 5
+            Case "dim"
+                bytCommand = 4
+            Case "off"
+                bytCommand = 3
+            Case "on"
+                bytCommand = 2
+            Case Else
+                bytCommand = 0
+        End Select
+
         SyncLock serialLock
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
@@ -1259,7 +1277,7 @@
                         My.Application.Log.WriteException(Excep)
                     End Try
                     Threading.Thread.Sleep(500)
-                    data(2) = PLM_X10_House(HouseCode + 1) + Command 'X10 Address (house + command)
+                    data(2) = PLM_X10_House(HouseCode + 1) + bytCommand 'X10 Address (house + command)
                     data(3) = 128 'Flag - This is the command
                     Try
                         SerialPLM.Write(data, 0, 4)

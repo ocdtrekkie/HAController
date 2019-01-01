@@ -31,14 +31,17 @@
     Private serialLock As New Object
     Dim tmrIThermCheckTimer As System.Timers.Timer
 
-    Sub AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short)
+    Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As String
         If CheckDbForInsteon(strAddress) = 0 Then
-            Dim model = InsteonDeviceLookup(DevCat, SubCat)
+            Dim strModel As String = InsteonDeviceLookup(DevCat, SubCat)
 
-            modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" + strAddress + "', '" + CStr(DevCat) + "', '" + CStr(SubCat) + "', '" + CStr(Firmware) + "')")
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " + strAddress + "', 'Insteon', '" + model + "', '" + strAddress + "')")
+            modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" & strAddress & "', '" & CStr(DevCat) & "', '" & CStr(SubCat) & "', '" & CStr(Firmware) & "')")
+            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " & strAddress & "', 'Insteon', '" & strModel & "', '" & strAddress & "')")
+            Return "Device added"
+        Else
+            Return "Device already exists"
         End If
-    End Sub
+    End Function
 
     Function AddX10DeviceDb(ByVal strAddress As String) As String
         If CheckDbForX10(strAddress) = 0 Then
@@ -358,22 +361,23 @@
         End If
     End Function
 
-    Sub NicknameInsteonDeviceDb(ByVal strAddress As String, ByVal strNickname As String)
+    Function NicknameInsteonDeviceDb(ByVal strAddress As String, ByVal strNickname As String) As String
         If CheckDbForInsteon(strAddress) = 0 Then
             My.Application.Log.WriteEntry("Cannot set nickname, Insteon address is unknown")
+            Return "Cannot set nickname, Insteon address is unknown"
         Else
-            'Update device with nickname
-            modDatabase.Execute("UPDATE DEVICES SET Name = """ + strNickname + """ WHERE Type = ""Insteon"" AND Address = """ + strAddress + """")
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""Insteon"" AND Address = """ & strAddress & """")
+            Return "I have saved this information"
         End If
-    End Sub
+    End Function
 
     Function NicknameX10DeviceDb(ByVal strAddress As String, ByVal strNickname As String) As String
         If CheckDbForX10(strAddress) = 0 Then
             My.Application.Log.WriteEntry("Cannot set nickname, X10 address is unknown")
             Return "Cannot set nickname, X10 address is unknown"
         Else
-            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""X10"" AND Address = """ & strAddress + """")
-            Return "Okay, I will save this information"
+            modDatabase.Execute("UPDATE DEVICES SET Name = """ & strNickname & """ WHERE Type = ""X10"" AND Address = """ & strAddress & """")
+            Return "I have saved this information"
         End If
     End Function
 

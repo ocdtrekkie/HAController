@@ -310,8 +310,7 @@ Module modConverse
                             strCommandResponse = "My name is now " & My.Settings.Converse_BotName
                         ElseIf modInsteon.IsInsteonAddress(inputData(2)) = True AndAlso inputData(3) = "as" Then
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
-                            modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
-                            strCommandResponse = "Okay, I will save this information" 'TODO: This doesn't check for success
+                            strCommandResponse = modInsteon.NicknameInsteonDeviceDb(inputData(2).ToUpper, strNickname)
                         ElseIf modInsteon.IsX10Address(inputData(2)) = True AndAlso inputData(3) = "as" Then
                             Dim strNickname As String = strInputString.Replace(inputData(0) + " " + inputData(1) + " " + inputData(2) + " " + inputData(3) + " ", "")
                             strCommandResponse = modInsteon.NicknameX10DeviceDb(inputData(2).ToUpper, strNickname)

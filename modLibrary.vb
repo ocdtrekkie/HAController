@@ -10,13 +10,20 @@
             If IsNumeric(strBarcode) = True Then
                 Dim FolderTest As New System.IO.DirectoryInfo(My.Settings.Library_Repository & strBarcode)
                 If FolderTest.Exists Then
-                    Return "This is a directory"
+                    Return "This is a directory" 'TODO: Support check out from folders
                 Else
                     Dim FileTest As New System.IO.FileInfo(My.Settings.Library_Repository & strBarcode & ".pdf")
                     If FileTest.Exists Then
+                        My.Application.Log.WriteEntry("PDF file for barcode " & strBarcode & " found. Size is " & FileTest.Length & " bytes.")
+                        If FileTest.Length > (5 * 1024 * 1024) Then
+                            Return "PDF file is too large to send" 'TODO: Support compressing larger files
+                        Else
+                            modMail.Send("Your library materials", "Thank you for checking out barcode " & strBarcode, FileTest.FullName)
+                            Return "PDF file sent"
+                        End If
                         Return "This is a PDF"
                     Else
-                        Return "It must be in another format"
+                        Return "It must be in another format" 'TODO: Support check out of single EPUB or MOBI
                     End If
                 End If
             Else

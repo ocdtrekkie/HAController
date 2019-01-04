@@ -23,6 +23,8 @@ Module modConverse
                         strCommandResponse = modPersons.AddPersonDb(inputData(2))
                     ElseIf inputData(1) = "email" AndAlso inputData(3) = "to" Then
                         strCommandResponse = modPersons.AddEmailToPerson(inputData(4), inputData(2))
+                    ElseIf inputData(1) = "ip" AndAlso inputData(2) = "device" Then
+                        strCommandResponse = modDevices.AddIPDevice()
                     ElseIf inputData(1) = "x10" AndAlso inputData(2) = "device" AndAlso inputData.Length > 3 AndAlso modInsteon.IsX10Address(inputData(3)) = True Then
                         strCommandResponse = modInsteon.AddX10DeviceDb(inputData(3).ToUpper)
                     End If

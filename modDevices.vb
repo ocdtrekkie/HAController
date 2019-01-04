@@ -18,6 +18,22 @@
 
 Module modDevices
     ''' <summary>
+    ''' This function is a preliminary method of adding IP-based devices to the device database.
+    ''' </summary>
+    ''' <returns>Outcome of function</returns>
+    Function AddIPDevice() As String
+        Dim inputField = InputBox("Specify the name, type of device, device model, and IP address, separated by vertical bars. ex: Name|Type|Model|IP", "Add IP Device", "")
+        If inputField <> "" Then
+            Dim inputData() = inputField.Split("|")
+
+            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "', '" + inputData(3) + "')")
+            Return "Device added"
+        Else
+            Return "Device not added"
+        End If
+    End Function
+
+    ''' <summary>
     ''' This function returns the device type of a given device nickname. i.e. Insteon, X10, etc.
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>

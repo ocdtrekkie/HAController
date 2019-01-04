@@ -123,7 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="clsDevices.vb" />
+    <Compile Include="modDevices.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>

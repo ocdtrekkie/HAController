@@ -168,15 +168,6 @@
         modInsteon.InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), lblCommandSent.Text, "off")
     End Sub
 
-    Private Sub btnAddIP_Click(sender As Object, e As EventArgs) Handles btnAddIP.Click
-        Dim inputField = InputBox("Specify the name, type of device, device model, and IP address, separated by vertical bars. ex: Name|Type|Model|IP", "Add IP Device", "")
-        If inputField <> "" Then
-            Dim inputData() = inputField.Split("|")
-
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "', '" + inputData(3) + "')")
-        End If
-    End Sub
-
     Private Sub cmbComPort_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbComPort.SelectionChangeCommitted
         modInsteon.InsteonConnect(cmbComPort.SelectedItem.ToString, ResponseMsg)
         lblComConnected.Text = ResponseMsg

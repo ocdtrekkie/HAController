@@ -43,7 +43,6 @@ Partial Class frmMain
         Me.btnInsteonAlarmOff = New System.Windows.Forms.Button()
         Me.lblAlarm = New System.Windows.Forms.Label()
         Me.btnInsteonCheck = New System.Windows.Forms.Button()
-        Me.btnAddIP = New System.Windows.Forms.Button()
         Me.btnCheckWeather = New System.Windows.Forms.Button()
         Me.txtCommandBar = New System.Windows.Forms.TextBox()
         Me.lblOutsideTemp = New System.Windows.Forms.Label()
@@ -247,15 +246,6 @@ Partial Class frmMain
         Me.btnInsteonCheck.Text = "Check"
         Me.btnInsteonCheck.UseVisualStyleBackColor = True
         '
-        'btnAddIP
-        '
-        Me.btnAddIP.Location = New System.Drawing.Point(127, 105)
-        Me.btnAddIP.Name = "btnAddIP"
-        Me.btnAddIP.Size = New System.Drawing.Size(50, 23)
-        Me.btnAddIP.TabIndex = 28
-        Me.btnAddIP.Text = "Add IP"
-        Me.btnAddIP.UseVisualStyleBackColor = True
-        '
         'btnCheckWeather
         '
         Me.btnCheckWeather.Location = New System.Drawing.Point(183, 105)
@@ -345,7 +335,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblOutsideTemp)
         Me.Controls.Add(Me.txtCommandBar)
         Me.Controls.Add(Me.btnCheckWeather)
-        Me.Controls.Add(Me.btnAddIP)
         Me.Controls.Add(Me.btnInsteonCheck)
         Me.Controls.Add(Me.lblAlarm)
         Me.Controls.Add(Me.btnInsteonAlarmOff)
@@ -397,7 +386,6 @@ Partial Class frmMain
     Friend WithEvents btnInsteonAlarmOff As System.Windows.Forms.Button
     Friend WithEvents lblAlarm As System.Windows.Forms.Label
     Friend WithEvents btnInsteonCheck As System.Windows.Forms.Button
-    Friend WithEvents btnAddIP As System.Windows.Forms.Button
     Friend WithEvents btnCheckWeather As System.Windows.Forms.Button
     Friend WithEvents txtCommandBar As System.Windows.Forms.TextBox
     Friend WithEvents lblOutsideTemp As System.Windows.Forms.Label

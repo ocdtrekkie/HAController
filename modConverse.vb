@@ -482,7 +482,7 @@ Module modConverse
                                     strNickname = strNickname + " " + inputData(intLC)
                                     intLC = intLC + 1
                                 End While
-                                Select Case modInsteon.GetDeviceTypeFromNickname(strNickname)
+                                Select Case modDevices.GetDeviceTypeFromNickname(strNickname)
                                     Case "Insteon"
                                         Dim strAddressOfDevice = modInsteon.GetInsteonAddressFromNickname(strNickname)
                                         If strAddressOfDevice IsNot Nothing Then

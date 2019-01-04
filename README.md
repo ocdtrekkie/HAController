@@ -10,6 +10,7 @@ The following modules are core modules which cannot be disabled:
 * modConverse is a cross between a command line interface and a conversation system.
 * modCrypto handles basic encryption and decryption functionality.
 * modDatabase handles the SQLite database that will store persistent data about the system.
+* modDevices contains functions and classes for general device handling.
 * modGlobal mostly just hangs onto stuff that needs to be accessible to the whole program.
 * modPersons contains functions for managing users and contacts.
 * modRandom generates random numbers and can optionally query Random.org for true random results.

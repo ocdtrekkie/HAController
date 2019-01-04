@@ -22,14 +22,17 @@ Module modDevices
     ''' </summary>
     ''' <returns>Outcome of function</returns>
     Function AddIPDevice() As String
-        Dim inputField = InputBox("Specify the name, type of device, device model, and IP address, separated by vertical bars. ex: Name|Type|Model|IP", "Add IP Device", "")
+        Dim inputField = InputBox("Specify the name, device model, and IP address, separated by vertical bars. ex: Name|Model|IP", "Add IP Device", "")
         If inputField <> "" Then
-            Dim inputData() = inputField.Split("|")
-
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', '" + inputData(1) + "', '" + inputData(2) + "', '" + inputData(3) + "')")
-            Return "Device added"
+            Dim inputData() As String = inputField.Split("|")
+            If inputData.Length = 3 Then
+                modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', 'IP', '" + inputData(1) + "', '" + inputData(2) + "')")
+                Return "Device added"
+            Else
+                Return "Invalid data entry, device not added"
+            End If
         Else
-            Return "Device not added"
+            Return "Invalid data entry, device not added"
         End If
     End Function
 

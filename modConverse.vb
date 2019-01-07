@@ -346,6 +346,8 @@ Module modConverse
                     End If
                 Case "run"
                     Select Case inputData(1)
+                        Case "hacscript"
+                            strCommandResponse = modComputer.RunHACScript(inputData(2))
                         Case "script"
                             strCommandResponse = modComputer.RunScript(inputData(2))
                         Case "update"

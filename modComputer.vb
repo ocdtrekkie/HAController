@@ -117,15 +117,36 @@ Module modComputer
         Return "Recording"
     End Function
 
+    Function RunHACScript(ByVal strScriptName As String) As String
+        If modDatabase.IsCleanString(strScriptName, False, False, 25) Then
+            Dim strHACScriptPath As String = "C:\HAC\scripts\" & strScriptName & ".hacscript"
+            Dim HACScript As New System.IO.FileInfo(strHACScriptPath)
+            If HACScript.Exists Then
+                Dim ScriptReader As System.IO.StreamReader = HACScript.OpenText
+                Do While ScriptReader.Peek() >= 0
+                    modConverse.Interpret(ScriptReader.ReadLine, False, True)
+                Loop
+                Return "Running " & strScriptName
+            Else
+                My.Application.Log.WriteEntry("Script not found")
+                Return "Script not found"
+            End If
+        Else
+            Return "Cannot run invalid script name"
+        End If
+    End Function
+
     Function RunScript(ByVal strScriptName As String) As String
         If modDatabase.IsCleanString(strScriptName, False, False, 25) Then
-            Try
-                System.Diagnostics.Process.Start("C:\HAC\scripts\" + strScriptName + ".bat")
-                Return "Running " + strScriptName
-            Catch Win32Ex As System.ComponentModel.Win32Exception
-                My.Application.Log.WriteException(Win32Ex)
+            Dim strBatScriptPath As String = "C:\HAC\scripts\" & strScriptName & ".bat"
+            Dim BatScript As New System.IO.FileInfo(strBatScriptPath)
+            If BatScript.Exists Then
+                System.Diagnostics.Process.Start(strBatScriptPath)
+                Return "Running " & strScriptName
+            Else
+                My.Application.Log.WriteEntry("Script not found")
                 Return "Script not found"
-            End Try
+            End If
         Else
             Return "Cannot run invalid script name"
         End If

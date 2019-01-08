@@ -122,11 +122,12 @@ Module modComputer
             Dim strHACScriptPath As String = My.Settings.Global_ScriptsFolderURI & strScriptName & ".hacscript"
             Dim HACScript As New System.IO.FileInfo(strHACScriptPath)
             If HACScript.Exists Then
+                My.Application.Log.WriteEntry("Running HACSCript " & strScriptName)
                 Dim ScriptReader As System.IO.StreamReader = HACScript.OpenText
                 Do While ScriptReader.Peek() >= 0
                     modConverse.Interpret(ScriptReader.ReadLine, False, True)
                 Loop
-                Return "Running " & strScriptName
+                Return "HACScript " & strScriptName & " execution complete"
             Else
                 My.Application.Log.WriteEntry("Script not found")
                 Return "Script not found"

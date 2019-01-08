@@ -119,7 +119,7 @@ Module modComputer
 
     Function RunHACScript(ByVal strScriptName As String) As String
         If modDatabase.IsCleanString(strScriptName, False, False, 25) Then
-            Dim strHACScriptPath As String = "C:\HAC\scripts\" & strScriptName & ".hacscript"
+            Dim strHACScriptPath As String = My.Settings.Global_ScriptsFolderURI & strScriptName & ".hacscript"
             Dim HACScript As New System.IO.FileInfo(strHACScriptPath)
             If HACScript.Exists Then
                 Dim ScriptReader As System.IO.StreamReader = HACScript.OpenText
@@ -138,7 +138,7 @@ Module modComputer
 
     Function RunScript(ByVal strScriptName As String) As String
         If modDatabase.IsCleanString(strScriptName, False, False, 25) Then
-            Dim strBatScriptPath As String = "C:\HAC\scripts\" & strScriptName & ".bat"
+            Dim strBatScriptPath As String = My.Settings.Global_ScriptsFolderURI & strScriptName & ".bat"
             Dim BatScript As New System.IO.FileInfo(strBatScriptPath)
             If BatScript.Exists Then
                 System.Diagnostics.Process.Start(strBatScriptPath)

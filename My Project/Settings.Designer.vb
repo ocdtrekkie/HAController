@@ -926,6 +926,15 @@ Namespace My
                 Me("Library_Repository") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\HAC\scripts\")>  _
+        Public ReadOnly Property Global_ScriptsFolderURI() As String
+            Get
+                Return CType(Me("Global_ScriptsFolderURI"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

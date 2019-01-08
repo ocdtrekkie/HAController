@@ -140,12 +140,12 @@ Public Module modGlobal
                     My.Application.Log.WriteEntry("Newer version available")
                     Try
                         modSpeech.Say("Downloading update", False)
-                        My.Computer.Network.DownloadFile(My.Settings.Global_UpdateFileURI, "C:\HAC\scripts\update.zip")
+                        My.Computer.Network.DownloadFile(My.Settings.Global_UpdateFileURI, My.Settings.Global_ScriptsFolderURI & "update.zip")
 
                         My.Application.Log.WriteEntry("Decompressing update", TraceEventType.Information)
-                        System.IO.Directory.CreateDirectory("C:\HAC\scripts\temp")
-                        System.IO.Compression.ZipFile.ExtractToDirectory("C:\HAC\scripts\update.zip", "C:\HAC\scripts\temp")
-                        System.IO.File.Delete("C:\HAC\scripts\update.zip")
+                        System.IO.Directory.CreateDirectory(My.Settings.Global_ScriptsFolderURI & "temp")
+                        System.IO.Compression.ZipFile.ExtractToDirectory(My.Settings.Global_ScriptsFolderURI & "update.zip", My.Settings.Global_ScriptsFolderURI & "temp")
+                        System.IO.File.Delete(My.Settings.Global_ScriptsFolderURI & "update.zip")
 
                         modSpeech.Say("Restarting application", False)
                         modComputer.RunScript("updateoverwrite")

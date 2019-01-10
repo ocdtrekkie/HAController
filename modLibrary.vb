@@ -5,26 +5,52 @@
     ''' <param name="strBarcode">Material barcode</param>
     ''' <returns>Temp: Type of material</returns>
     Function CheckOutEbook(ByVal strBarcode As String)
-        ' TODO: This function should identify the correct files, compress them, and attach them to an email
         If My.Settings.Library_Enable = True Then
             If IsNumeric(strBarcode) = True Then
-                Dim FolderTest As New System.IO.DirectoryInfo(My.Settings.Library_Repository & strBarcode)
-                If FolderTest.Exists Then
-                    Return "This is a directory" 'TODO: Support check out from folders
-                Else
-                    Dim FileTest As New System.IO.FileInfo(My.Settings.Library_Repository & strBarcode & ".pdf")
-                    If FileTest.Exists Then
-                        My.Application.Log.WriteEntry("PDF file for barcode " & strBarcode & " found. Size is " & FileTest.Length & " bytes.")
-                        If FileTest.Length > (5 * 1024 * 1024) Then
-                            Return "PDF file is too large to send" 'TODO: Support compressing larger files
-                        Else
-                            modMail.Send("Your library materials", "Thank you for checking out barcode " & strBarcode, FileTest.FullName)
-                            Return "PDF file sent"
-                        End If
-                        Return "This is a PDF"
+                'File Selection Section
+                Dim SelectedFile As System.IO.FileInfo
+                Dim SelectedFolder As New System.IO.DirectoryInfo(My.Settings.Library_Repository & strBarcode)
+                If SelectedFolder.Exists Then
+                    Dim SelectedFilesInFolder As String()
+                    SelectedFilesInFolder = IO.Directory.GetFiles(SelectedFolder.FullName, "*.pdf", IO.SearchOption.TopDirectoryOnly)
+                    If SelectedFilesInFolder.Count = 1 Then
+                        SelectedFile = New System.IO.FileInfo(SelectedFilesInFolder(0))
+                    ElseIf SelectedFilesInFolder.Count > 1 Then
+                        My.Application.Log.WriteEntry("Multiple PDFs found in folder, remote checkout is not supported")
+                        SelectedFile = Nothing
                     Else
-                        Return "It must be in another format" 'TODO: Support check out of single EPUB or MOBI
+                        SelectedFilesInFolder = IO.Directory.GetFiles(SelectedFolder.FullName, "*.epub", IO.SearchOption.TopDirectoryOnly)
+                        If SelectedFilesInFolder.Count = 1 Then
+                            SelectedFile = New System.IO.FileInfo(SelectedFilesInFolder(0))
+                        ElseIf SelectedFilesInFolder.Count > 1 Then
+                            My.Application.Log.WriteEntry("Multiple EPUBs found in folder, remote checkout is not supported")
+                            SelectedFile = Nothing
+                        Else
+                            My.Application.Log.WriteEntry("Folder contains neither PDFs nor EPUBs, remote checkout is not supported")
+                            SelectedFile = Nothing
+                        End If
                     End If
+                Else
+                    SelectedFile = New System.IO.FileInfo(My.Settings.Library_Repository & strBarcode & ".pdf")
+                    If SelectedFile.Exists = False Then
+                        SelectedFile = New System.IO.FileInfo(My.Settings.Library_Repository & strBarcode & ".epub")
+                        If SelectedFile.Exists = False Then
+                            My.Application.Log.WriteEntry("No folders, PDFs, or EPUBs were found, remote checkout is not supported")
+                            SelectedFile = Nothing
+                        End If
+                    End If
+                End If
+                'File Transmission Section
+                If SelectedFile IsNot Nothing Then
+                    My.Application.Log.WriteEntry("Requested file for barcode " & strBarcode & " found at " & SelectedFile.FullName & ". Size is " & SelectedFile.Length & " bytes.")
+                    If SelectedFile.Length > (5 * 1024 * 1024) Then
+                        Return "Requested file is too large to send" 'TODO: Support compressing larger files
+                    Else
+                        modMail.Send("Your library materials", "Thank you for checking out barcode " & strBarcode, SelectedFile.FullName)
+                        Return "Requested file sent"
+                    End If
+                Else
+                    Return "Acceptable file to return was not found"
                 End If
             Else
                 Return "Invalid barcode format"

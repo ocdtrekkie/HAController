@@ -227,5 +227,17 @@
     <Setting Name="Global_ScriptsFolderURI" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\HAC\scripts\</Value>
     </Setting>
+    <Setting Name="Sync_Enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Sync_ServerURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Sync_AccessKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Sync_CryptoKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

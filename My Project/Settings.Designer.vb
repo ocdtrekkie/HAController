@@ -935,6 +935,54 @@ Namespace My
                 Return CType(Me("Global_ScriptsFolderURI"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Sync_Enable() As Boolean
+            Get
+                Return CType(Me("Sync_Enable"),Boolean)
+            End Get
+            Set
+                Me("Sync_Enable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Sync_ServerURL() As String
+            Get
+                Return CType(Me("Sync_ServerURL"),String)
+            End Get
+            Set
+                Me("Sync_ServerURL") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Sync_AccessKey() As String
+            Get
+                Return CType(Me("Sync_AccessKey"),String)
+            End Get
+            Set
+                Me("Sync_AccessKey") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Sync_CryptoKey() As String
+            Get
+                Return CType(Me("Sync_CryptoKey"),String)
+            End Get
+            Set
+                Me("Sync_CryptoKey") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

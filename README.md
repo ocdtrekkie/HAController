@@ -19,7 +19,7 @@ The following modules function optionally and add features:
 * modDreamCheeky supports the Dream Cheeky Big Red Button and WebMail Notifier devices.
 * modGPS collects location data from NMEA-compatible GPS receivers and manages navigation.
 * modInsteon handles Insteon home automation devices, and may eventually add legacy X10.
-* modLibrary will be able to retrieve digital books from a central repository.
+* modLibrary can retrieve and email digital books from a central repository.
 * modOpenWeatherMap gathers weather data from the OpenWeatherMap API to present to the user.
 * modMail handles checking for commands sent by mail and sending email notifications.
 * modMapQuest uses the MapQuest API to get location information and directions.
@@ -28,5 +28,6 @@ The following modules function optionally and add features:
 * modPihole checks the status API of a Pi-hole on the network.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
+* modSync will be able to exchange messages from a central web server.
 * modWolframAlpha can request general knowledge from Wolfram Alpha's API.
 * modZWave will handle Z-Wave home automation devices.

@@ -150,6 +150,7 @@
     <Compile Include="modSpeech.vb" />
     <Compile Include="modMatrixLCD.vb" />
     <Compile Include="modMusic.vb" />
+    <Compile Include="modSync.vb" />
     <Compile Include="modWolframAlpha.vb" />
     <Compile Include="modZWave.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

@@ -16,7 +16,12 @@
 
         Try
             Output = Req.GetResponse()
-            My.Application.Log.WriteEntry("Sync Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & Output.ToString)
+            Using ResStream As System.IO.Stream = Output.GetResponseStream()
+                Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                Dim OutputStream As String = Reader.ReadToEnd()
+
+                My.Application.Log.WriteEntry("Sync Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & OutputStream)
+            End Using
             Output.Close()
         Catch WebEx As System.Net.WebException
             If WebEx.Response IsNot Nothing Then

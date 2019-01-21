@@ -96,6 +96,8 @@ Module modConverse
                             strCommandResponse = modSpeech.Disable()
                         Case "startup"
                             strCommandResponse = modComputer.DisableStartup()
+                        Case "sync"
+                            strCommandResponse = modSync.Disable()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Disable()
                         Case "zwave"
@@ -141,6 +143,8 @@ Module modConverse
                             strCommandResponse = modSpeech.Enable()
                         Case "startup"
                             strCommandResponse = modComputer.EnableStartup()
+                        Case "sync"
+                            strCommandResponse = modSync.Enable()
                         Case "wolframalpha"
                             strCommandResponse = modWolframAlpha.Enable()
                         Case "zwave"

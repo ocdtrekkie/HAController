@@ -24,6 +24,7 @@ Public Module modGlobal
             LoadModuleTasks.Add(Task.Run(Function() modComputer.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modPihole.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modLibrary.Load())) 'Dependencies: None
+            LoadModuleTasks.Add(Task.Run(Function() modSync.Load())) 'Dependencies: None
 
             Task.WaitAll(LoadModuleTasks.ToArray())
 
@@ -51,6 +52,7 @@ Public Module modGlobal
             modComputer.Load() 'Dependencies: None
             modPihole.Load() 'Dependencies: None
             modLibrary.Load() 'Dependencies: None
+            modSync.Load() 'Dependencies: None
         End If
 
         My.Application.Log.WriteEntry("Module loading complete")

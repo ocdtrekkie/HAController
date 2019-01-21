@@ -3,7 +3,33 @@
 
     Sub SendHeartbeatHandler(source As Object, e As System.Timers.ElapsedEventArgs)
         My.Application.Log.WriteEntry("Sending heartbeat to sync server", TraceEventType.Verbose)
-        'Add heartbeat send code here
+        Dim Req As System.Net.HttpWebRequest
+        Dim TargetUri As New Uri(My.Settings.Sync_ServerURL & "?message_type=heartbeat&destination=server&access_key=" & My.Settings.Sync_AccessKey)
+        Dim Output As System.Net.HttpWebResponse
+        Req = DirectCast(System.Net.HttpWebRequest.Create(TargetUri), System.Net.HttpWebRequest)
+        Req.UserAgent = "HAController/" & My.Application.Info.Version.ToString
+        Req.KeepAlive = False
+        Req.Timeout = 10000
+        Req.Proxy = Nothing
+        Req.ServicePoint.ConnectionLeaseTimeout = 10000
+        Req.ServicePoint.MaxIdleTime = 10000
+
+        Try
+            Output = Req.GetResponse()
+            My.Application.Log.WriteEntry("Sync Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & Output.ToString)
+            Output.Close()
+        Catch WebEx As System.Net.WebException
+            If WebEx.Response IsNot Nothing Then
+                Using ResStream As System.IO.Stream = WebEx.Response.GetResponseStream()
+                    Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                    Dim OutputStream As String = Reader.ReadToEnd()
+
+                    My.Application.Log.WriteEntry("Sync Error: " & OutputStream, TraceEventType.Error)
+                End Using
+            Else
+                My.Application.Log.WriteException(WebEx)
+            End If
+        End Try
     End Sub
 
     Function Disable() As String

@@ -1,7 +1,7 @@
 ﻿Module modSync
     Dim tmrSyncHeartbeatTimer As System.Timers.Timer
 
-    Sub SendHeartbeatHandler(source As Object, e As System.Timers.ElapsedEventArgs)
+    Sub SendHeartbeatHandler()
         My.Application.Log.WriteEntry("Sending heartbeat to sync server", TraceEventType.Verbose)
         Dim Req As System.Net.HttpWebRequest
         Dim TargetUri As New Uri(My.Settings.Sync_ServerURL & "?message_type=heartbeat&destination=server&access_key=" & My.Settings.Sync_AccessKey)
@@ -72,6 +72,9 @@
             AddHandler tmrSyncHeartbeatTimer.Elapsed, AddressOf SendHeartbeatHandler
             tmrSyncHeartbeatTimer.Interval = 300000 ' 5min
             tmrSyncHeartbeatTimer.Enabled = True
+
+            Dim InitialSyncHeartbeat As New Threading.Thread(AddressOf SendHeartbeatHandler)
+            InitialSyncHeartbeat.Start()
             Return "Sync module loaded"
         Else
             My.Application.Log.WriteEntry("Sync module is disabled, module not loaded")

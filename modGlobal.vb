@@ -76,6 +76,7 @@ Public Module modGlobal
 
     Sub UnloadModules()
         modMail.Unload()
+        modSync.Unload()
         modOpenWeatherMap.Unload()
         modPing.Unload()
         modMatrixLCD.Unload()

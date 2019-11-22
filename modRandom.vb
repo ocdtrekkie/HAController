@@ -31,7 +31,7 @@ Module modRandom
             My.Application.Log.WriteEntry("No Random.Org API key, asking for it")
             My.Settings.Random_RandomOrgAPIKey = InputBox("Enter Random.Org API Key. You can get an API key at https://api.random.org/api-keys/beta by entering your email address.", "Random.org API")
         End If
-        Dim randomAPIURL As String = "https://api.random.org/json-rpc/1/invoke"
+        Dim randomAPIURL As String = "https://api.random.org/json-rpc/2/invoke"
         Dim randomRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(randomAPIURL)
         randomRequest.Method = "POST"
         randomRequest.ContentType = "application/json"

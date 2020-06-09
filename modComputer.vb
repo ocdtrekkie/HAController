@@ -142,7 +142,11 @@ Module modComputer
             Dim strBatScriptPath As String = My.Settings.Global_ScriptsFolderURI & strScriptName & ".bat"
             Dim BatScript As New System.IO.FileInfo(strBatScriptPath)
             If BatScript.Exists Then
-                System.Diagnostics.Process.Start(strBatScriptPath)
+                Dim ScriptRunner As New System.Diagnostics.Process()
+                ScriptRunner.StartInfo.UseShellExecute = True
+                ScriptRunner.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                ScriptRunner.StartInfo.FileName = strBatScriptPath
+                ScriptRunner.Start()
                 Return "Running " & strScriptName
             Else
                 My.Application.Log.WriteEntry("Script not found")

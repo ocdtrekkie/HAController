@@ -352,6 +352,8 @@ Module modMail
                 modConverse.Interpret(ReSubj, True)
             ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
                 My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+            ElseIf CmdFrom <> "" Then
+                My.Application.Log.WriteEntry("Received email from unauthorized user " & CmdFrom & ", ignoring")
             End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)

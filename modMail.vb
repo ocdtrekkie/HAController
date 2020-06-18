@@ -333,6 +333,7 @@ Module modMail
                     End If
                     If TxtLine.StartsWith("From: ") Then
                         CmdFrom = String.Copy(TxtLine)
+                        CmdFrom = CmdFrom.Replace("""", "")
                         My.Application.Log.WriteEntry("Command " & CmdFrom)
                     End If
                     If TxtLine.StartsWith("To: ") Then
@@ -353,7 +354,7 @@ Module modMail
             ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
                 My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
             ElseIf CmdFrom <> "" Then
-                My.Application.Log.WriteEntry("Received email from unauthorized user " & CmdFrom & ", ignoring")
+                My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)

@@ -197,9 +197,10 @@ Module modConverse
                     strCommandResponse = "Hello"
                 Case "i'm"
                     If inputData(1) = "getting" AndAlso inputData(2) = "pulled" AndAlso inputData(3) = "over" Then
-                    My.Application.Log.WriteEntry("Police interaction started. Recording audio silently.")
-                    modConverse.Interpret("record audio", False, True)
-                    modConverse.Interpret("show gps", False, True)
+                        My.Application.Log.WriteEntry("Police interaction started. Recording audio silently.")
+                        modConverse.Interpret("record audio", False, True)
+                        modConverse.Interpret("show gps", False, True)
+                    End If
                 Case "link"
                     If inputData(1) = "insteon" AndAlso inputData(2) = "address" Then
                         Dim response As String = ""

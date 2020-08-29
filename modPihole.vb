@@ -40,19 +40,25 @@ Module modPihole
     End Function
 
     Function GetPiholeAPI() As PiholeResult
-        My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
-        Dim PiholeAPIRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php")
-        PiholeAPIRequest.Method = "GET"
-        Dim PiholeAPIResponse As System.Net.HttpWebResponse = PiholeAPIRequest.GetResponse()
-        Dim PiholeAPIResponseStream As New System.IO.StreamReader(PiholeAPIResponse.GetResponseStream(), System.Text.Encoding.UTF8)
-        Dim PiholeAPIJSON As String = PiholeAPIResponseStream.ReadToEnd()
-        PiholeAPIResponse.Close()
-        PiholeAPIResponseStream.Close()
-        My.Application.Log.WriteEntry("Response received: " & PiholeAPIJSON, TraceEventType.Verbose)
+        Try
+            My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
+            Dim PiholeAPIRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php")
+            PiholeAPIRequest.Method = "GET"
+            Dim PiholeAPIResponse As System.Net.HttpWebResponse = PiholeAPIRequest.GetResponse()
+            Dim PiholeAPIResponseStream As New System.IO.StreamReader(PiholeAPIResponse.GetResponseStream(), System.Text.Encoding.UTF8)
+            Dim PiholeAPIJSON As String = PiholeAPIResponseStream.ReadToEnd()
+            PiholeAPIResponse.Close()
+            PiholeAPIResponseStream.Close()
+            My.Application.Log.WriteEntry("Response received: " & PiholeAPIJSON, TraceEventType.Verbose)
 
-        Dim json As New JavaScriptSerializer
-        Dim data As PiholeResult = json.Deserialize(Of PiholeResult)(PiholeAPIJSON)
-        Return data
+            Dim json As New JavaScriptSerializer
+            Dim data As PiholeResult = json.Deserialize(Of PiholeResult)(PiholeAPIJSON)
+            Return data
+        Catch WebEx As System.Net.WebException
+            My.Application.Log.WriteException(WebEx)
+            Dim blankdata As PiholeResult = New PiholeResult
+            Return blankdata
+        End Try
     End Function
 
     Function Load() As String

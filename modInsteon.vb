@@ -106,6 +106,7 @@
             If SerialPLM.IsOpen = True Then
                 My.Application.Log.WriteEntry("Serial connection opened on port " + PortName)
                 My.Settings.Insteon_LastGoodCOMPort = PortName
+                My.Settings.Insteon_COMPortDeviceName = modComputer.GetCOMPortFriendlyName(PortName)
                 ResponseMsg = "Connected"
             End If
 

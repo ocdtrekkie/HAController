@@ -119,6 +119,7 @@
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
                 Me.IsConnected = True
                 My.Settings.ZWave_LastGoodCOMPort = SerialPort.PortName
+                My.Settings.ZWave_COMPortDeviceName = modComputer.GetCOMPortFriendlyName(SerialPort.PortName)
 
                 ReceiverThread.Start()
             End If

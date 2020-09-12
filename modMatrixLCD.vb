@@ -211,6 +211,7 @@
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
                 Me.IsConnected = True
                 My.Settings.MatrixLCD_LastGoodCOMPort = SerialPort.PortName
+                My.Settings.MatrixLCD_COMPortDeviceName = modComputer.GetCOMPortFriendlyName(SerialPort.PortName)
 
                 SetColor(Me.BacklightColor)
                 SetSize(Me.Cols, Me.Rows)

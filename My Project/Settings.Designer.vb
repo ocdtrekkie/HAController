@@ -983,6 +983,54 @@ Namespace My
                 Me("Sync_CryptoKey") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Insteon_COMPortDeviceName() As String
+            Get
+                Return CType(Me("Insteon_COMPortDeviceName"),String)
+            End Get
+            Set
+                Me("Insteon_COMPortDeviceName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property GPS_COMPortDeviceName() As String
+            Get
+                Return CType(Me("GPS_COMPortDeviceName"),String)
+            End Get
+            Set
+                Me("GPS_COMPortDeviceName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property MatrixLCD_COMPortDeviceName() As String
+            Get
+                Return CType(Me("MatrixLCD_COMPortDeviceName"),String)
+            End Get
+            Set
+                Me("MatrixLCD_COMPortDeviceName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property ZWave_COMPortDeviceName() As String
+            Get
+                Return CType(Me("ZWave_COMPortDeviceName"),String)
+            End Get
+            Set
+                Me("ZWave_COMPortDeviceName") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -213,6 +213,7 @@
                 My.Application.Log.WriteEntry("Serial connection opened on port " + SerialPort.PortName)
                 Me.IsConnected = True
                 My.Settings.GPS_LastGoodCOMPort = SerialPort.PortName
+                My.Settings.GPS_COMPortDeviceName = modComputer.GetCOMPortFriendlyName(SerialPort.PortName)
             End If
         End Sub
 

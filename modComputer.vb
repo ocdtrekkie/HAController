@@ -8,6 +8,38 @@ Module modComputer
     Public isRecordingAudio As Boolean = False
     Public isRecordingVideo As Boolean = False
 
+    Function GetCOMPortFriendlyName(ByVal strCOMPort As String) As String
+        Try
+            Using searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption like '%(" & strCOMPort & "%'")
+                For Each queryObj As ManagementObject In searcher.Get()
+                    Dim strDisplayName As String = CStr(queryObj("Caption"))
+                    Dim splitData = strDisplayName.Split("(")
+                    Return splitData(0).Trim()
+                Next
+            End Using
+            Return ""
+        Catch ManageExcep As ManagementException
+            My.Application.Log.WriteException(ManageExcep)
+            Return ""
+        End Try
+    End Function
+
+    Function GetCOMPortFromFriendlyName(ByVal strFriendlyName As String) As String
+        Try
+            Using searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption like '%" & strFriendlyName & " (COM%'")
+                For Each queryObj As ManagementObject In searcher.Get()
+                    Dim strDisplayName As String = CStr(queryObj("Caption"))
+                    Dim splitData = strDisplayName.Split("(")
+                    Return splitData(1).TrimEnd(")")
+                Next
+            End Using
+            Return ""
+        Catch ManageExcep As ManagementException
+            My.Application.Log.WriteException(ManageExcep)
+            Return ""
+        End Try
+    End Function
+
     Function GetCOMPorts() As List(Of String)
         ' Credit to https://stackoverflow.com/a/9371526
         Dim oList As New List(Of String)

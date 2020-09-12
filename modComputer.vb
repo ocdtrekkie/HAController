@@ -8,6 +8,30 @@ Module modComputer
     Public isRecordingAudio As Boolean = False
     Public isRecordingVideo As Boolean = False
 
+    Function GetCOMPorts() As List(Of String)
+        ' Credit to https://stackoverflow.com/a/9371526
+        Dim oList As New List(Of String)
+
+        Try
+            Using searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption like '%(COM%'")
+                For Each queryObj As ManagementObject In searcher.Get()
+                    oList.Add(CStr(queryObj("Caption")))
+                Next
+            End Using
+
+            My.Application.Log.WriteEntry("List of COM ports available:")
+            For Each port In oList
+                My.Application.Log.WriteEntry(port.ToString)
+            Next
+
+            Return oList
+        Catch ManageExcep As ManagementException
+            My.Application.Log.WriteException(ManageExcep)
+
+            Return oList
+        End Try
+    End Function
+
     Sub GetInfo()
         My.Application.Log.WriteEntry("OS: " & My.Computer.Info.OSFullName & " [" & My.Computer.Info.OSPlatform & "] " & My.Computer.Info.OSVersion & "/" & GetOSVersion())
         My.Application.Log.WriteEntry("Computer Name: " & My.Computer.Name)
@@ -74,6 +98,7 @@ Module modComputer
     Function Load() As String
         My.Application.Log.WriteEntry("Loading computer module")
         GetInfo()
+        GetCOMPorts()
         Return "Computer module loaded"
     End Function
 

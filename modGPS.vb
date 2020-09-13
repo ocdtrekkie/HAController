@@ -205,6 +205,20 @@
                 SerialPort.Open()
             Catch IOExcep As System.IO.IOException
                 My.Application.Log.WriteException(IOExcep)
+
+                If My.Settings.Global_SmartCOM = True And My.Settings.GPS_COMPortDeviceName <> "" Then
+                    SerialPort.PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.GPS_COMPortDeviceName)
+                    If My.Settings.Global_CarMode = True Then
+                        modSpeech.Say("Smart COM," & SerialPort.PortName, False)
+                    End If
+                    Try
+                        My.Application.Log.WriteEntry("Trying to connect on port " + SerialPort.PortName)
+                        SerialPort.Open()
+                    Catch IOExcep2 As System.IO.IOException
+                        My.Application.Log.WriteException(IOExcep2)
+                        My.Application.Log.WriteEntry("SmartCOM failed to connect to GPS receiver")
+                    End Try
+                End If
             Catch UnauthExcep As System.UnauthorizedAccessException
                 My.Application.Log.WriteException(UnauthExcep)
             End Try

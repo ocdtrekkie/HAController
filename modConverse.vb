@@ -92,6 +92,9 @@ Module modConverse
                             strCommandResponse = modPihole.Disable()
                         Case "ping"
                             strCommandResponse = modPing.Disable()
+                        Case "smartcom"
+                            My.Settings.Global_SmartCOM = False
+                            strCommandResponse = "Smart COM disabled"
                         Case "speech"
                             strCommandResponse = modSpeech.Disable()
                         Case "startup"
@@ -139,6 +142,9 @@ Module modConverse
                             strCommandResponse = modPihole.Enable()
                         Case "ping"
                             strCommandResponse = modPing.Enable()
+                        Case "smartcom"
+                            My.Settings.Global_SmartCOM = True
+                            strCommandResponse = "Smart COM enabled"
                         Case "speech"
                             strCommandResponse = modSpeech.Enable()
                         Case "startup"

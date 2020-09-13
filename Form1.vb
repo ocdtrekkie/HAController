@@ -61,6 +61,7 @@
             My.Application.Log.WriteEntry("Found last good COM port on " & My.Settings.Insteon_LastGoodCOMPort)
             cmbComPort.Text = My.Settings.Insteon_LastGoodCOMPort
             modInsteon.InsteonConnect(My.Settings.Insteon_LastGoodCOMPort, ResponseMsg)
+            cmbComPort.Text = My.Settings.Insteon_LastGoodCOMPort
             lblComConnected.Text = ResponseMsg
         End If
 

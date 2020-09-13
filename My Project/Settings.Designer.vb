@@ -1031,6 +1031,18 @@ Namespace My
                 Me("ZWave_COMPortDeviceName") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Global_SmartCOM() As Boolean
+            Get
+                Return CType(Me("Global_SmartCOM"),Boolean)
+            End Get
+            Set
+                Me("Global_SmartCOM") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

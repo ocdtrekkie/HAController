@@ -98,6 +98,15 @@
             Catch IOExcep As System.IO.IOException
                 My.Application.Log.WriteException(IOExcep)
                 ResponseMsg = "ERROR: " + IOExcep.Message
+
+                If My.Settings.Global_SmartCOM = True Then
+                    PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.Insteon_COMPortDeviceName)
+                    If My.Settings.Global_CarMode = True Then
+                        modSpeech.Say("Smart COM," & PortName, False)
+                    End If
+                    InsteonConnect(PortName, ResponseMsg)
+                    Exit Sub
+                End If
             Catch UnauthExcep As System.UnauthorizedAccessException
                 My.Application.Log.WriteException(UnauthExcep)
                 ResponseMsg = "ERROR: " + UnauthExcep.Message

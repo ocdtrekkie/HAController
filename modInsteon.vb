@@ -99,7 +99,7 @@
                 My.Application.Log.WriteException(IOExcep)
                 ResponseMsg = "ERROR: " + IOExcep.Message
 
-                If My.Settings.Global_SmartCOM = True Then
+                If My.Settings.Global_SmartCOM = True And My.Settings.Insteon_COMPortDeviceName <> "" Then
                     PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.Insteon_COMPortDeviceName)
                     If My.Settings.Global_CarMode = True Then
                         modSpeech.Say("Smart COM," & PortName, False)

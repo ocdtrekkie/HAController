@@ -13,8 +13,8 @@ Module modComputer
             Using searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption like '%(" & strCOMPort & "%'")
                 For Each queryObj As ManagementObject In searcher.Get()
                     Dim strDisplayName As String = CStr(queryObj("Caption"))
-                    Dim splitData = strDisplayName.Split("(")
-                    Return splitData(0).Trim()
+                    Dim idx As Integer = strDisplayName.LastIndexOf("(")
+                    Return strDisplayName.Substring(0, idx).Trim()
                 Next
             End Using
             Return ""
@@ -29,8 +29,8 @@ Module modComputer
             Using searcher As New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption like '%" & strFriendlyName & " (COM%'")
                 For Each queryObj As ManagementObject In searcher.Get()
                     Dim strDisplayName As String = CStr(queryObj("Caption"))
-                    Dim splitData = strDisplayName.Split("(")
-                    Return splitData(1).TrimEnd(")")
+                    Dim idx As Integer = strDisplayName.LastIndexOf("(")
+                    Return strDisplayName.Substring(idx + 1).TrimEnd(")")
                 Next
             End Using
             Return ""

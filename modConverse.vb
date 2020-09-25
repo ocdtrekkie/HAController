@@ -473,6 +473,9 @@ Module modConverse
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
+                        Case "syncmesg"
+                            modSync.SendMessage(inputData(2), "message", "hello!")
+                            strCommandResponse = "Acknowledged"
                     End Select
                 Case "turn"
                     Dim response As String = ""

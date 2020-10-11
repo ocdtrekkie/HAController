@@ -101,11 +101,13 @@
 
                 If My.Settings.Global_SmartCOM = True And My.Settings.Insteon_COMPortDeviceName <> "" Then
                     PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.Insteon_COMPortDeviceName)
-                    If My.Settings.Global_CarMode = True Then
-                        modSpeech.Say("Smart COM," & PortName, False)
+                    If PortName <> "" Then
+                        If My.Settings.Global_CarMode = True Then
+                            modSpeech.Say("Smart COM," & PortName, False)
+                        End If
+                        InsteonConnect(PortName, ResponseMsg)
+                        Exit Sub
                     End If
-                    InsteonConnect(PortName, ResponseMsg)
-                    Exit Sub
                 End If
             Catch UnauthExcep As System.UnauthorizedAccessException
                 My.Application.Log.WriteException(UnauthExcep)

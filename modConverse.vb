@@ -409,6 +409,9 @@ Module modConverse
                     Select Case inputData(1)
                         Case "album"
                             strCommandResponse = modMusic.ShowAlbum()
+                        Case "clock", "time"
+                            strCommandResponse = Now.ToShortTimeString
+                            modMatrixLCD.ShowNotification(Now.ToString("ddd, MM/dd/yy"), Now.ToLongTimeString)
                         Case "coordinates", "coords", "gps"
                             If My.Settings.GPS_Enable = True Then
                                 strCommandResponse = modGPS.CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & "," & modGPS.CurrentLongitude.ToString.PadRight(8, Convert.ToChar("0")).Substring(0, 8)
@@ -579,6 +582,12 @@ Module modConverse
                                         strCommandResponse = "I don't know what time zone " & inputData(5) & " is in"
                                     End If
                                 End If
+                            Case "date"
+                                strCommandResponse = Now.ToLongDateString
+                                modMatrixLCD.ShowNotification(Now.ToString("ddd, MM/dd/yy"), Now.ToLongTimeString)
+                            Case "time"
+                                strCommandResponse = Now.ToShortTimeString
+                                modMatrixLCD.ShowNotification(Now.ToString("ddd, MM/dd/yy"), Now.ToLongTimeString)
                             Case "weather"
                                 If My.Settings.OpenWeatherMap_Enable = True Then
                                     strCommandResponse = modOpenWeatherMap.GatherWeatherData()

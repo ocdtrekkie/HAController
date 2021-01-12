@@ -1,9 +1,14 @@
 ﻿Imports System.Management
+Imports System.Runtime.InteropServices
 
 ' modComputer cannot be disabled
 
 Module modComputer
     Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Public Function LockWorkStation() As Boolean
+    End Function
 
     Public isRecordingAudio As Boolean = False
     Public isRecordingVideo As Boolean = False
@@ -136,7 +141,7 @@ Module modComputer
 
     Function LockScreen() As String
         Try
-            System.Diagnostics.Process.Start("tsdiscon.exe")
+            LockWorkStation()
             Return "Acknowledged"
         Catch Win32Ex As System.ComponentModel.Win32Exception
             My.Application.Log.WriteException(Win32Ex)

@@ -10,7 +10,7 @@ Module modStreamDeck
         Unload()
         My.Settings.StreamDeck_Enable = False
         My.Application.Log.WriteEntry("Stream Deck module is disabled")
-        Return "Matrix LCD module disabled"
+        Return "Stream Deck module disabled"
     End Function
 
     Function Enable() As String
@@ -45,7 +45,7 @@ Module modStreamDeck
 
     Function Unload() As String
         My.Application.Log.WriteEntry("Unloading Stream Deck module")
-        If ActiveStreamDeck.IsConnected = True Then
+        If IsNothing(ActiveStreamDeck) = False AndAlso ActiveStreamDeck.IsConnected = True Then
             ActiveStreamDeck.ShowLogo()
             ActiveStreamDeck.Dispose()
         End If

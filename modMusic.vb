@@ -119,6 +119,10 @@ Module modMusic
             isPlaying = False
             My.Application.Log.WriteException(ArgExcep)
             Return "Unable to locate playlist"
+        Catch NotFoundExcep As System.IO.FileNotFoundException
+            isPlaying = False
+            My.Application.Log.WriteException(NotFoundExcep)
+            Return "Invalid playlist file location in library"
         End Try
     End Function
 

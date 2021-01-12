@@ -28,6 +28,7 @@ The following modules function optionally and add features:
 * modPihole checks the status API of a Pi-hole on the network.
 * modPing handles checks for the Internet and other devices on the network.
 * modSpeech contains speech synthesis code.
+* modStreamDeck uses an Elgato Stream Deck as a control console.
 * modSync will be able to exchange messages from a central web server.
 * modWolframAlpha can request general knowledge from Wolfram Alpha's API.
 * modZWave will handle Z-Wave home automation devices.

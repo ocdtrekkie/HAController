@@ -24,6 +24,7 @@ These are devices the code has been tested to work with.
 ### USB Devices ###
 
 * Matrix Orbital LCD or compatible (including Adafruit LCD Backpack)
+* Elgato Stream Deck (15-Key Version)
 * Dream Cheeky 815 WebMail Notifier
 
 ## Regarding "Service Devices" ##

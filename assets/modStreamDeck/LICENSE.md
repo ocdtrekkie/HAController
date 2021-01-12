@@ -1,0 +1,1 @@
+modStreamDeck icons are created from https://github.com/tabler/tabler-icons under the MIT License

@@ -99,6 +99,8 @@ Module modConverse
                             strCommandResponse = modSpeech.Disable()
                         Case "startup"
                             strCommandResponse = modComputer.DisableStartup()
+                        Case "streamdeck"
+                            strCommandResponse = modStreamDeck.Disable()
                         Case "sync"
                             strCommandResponse = modSync.Disable()
                         Case "wolframalpha"
@@ -149,6 +151,8 @@ Module modConverse
                             strCommandResponse = modSpeech.Enable()
                         Case "startup"
                             strCommandResponse = modComputer.EnableStartup()
+                        Case "streamdeck"
+                            strCommandResponse = modStreamDeck.Enable()
                         Case "sync"
                             strCommandResponse = modSync.Enable()
                         Case "wolframalpha"

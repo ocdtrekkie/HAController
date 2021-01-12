@@ -19,6 +19,7 @@ Public Module modGlobal
             LoadModuleTasks.Add(Task.Run(Function() modMapQuest.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modWolframAlpha.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modDreamCheeky.Load())) 'Dependencies: None
+            LoadModuleTasks.Add(Task.Run(Function() modStreamDeck.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modMail.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modMusic.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modComputer.Load())) 'Dependencies: None
@@ -47,6 +48,7 @@ Public Module modGlobal
             modMapQuest.Load() 'Dependencies: None
             modWolframAlpha.Load() 'Dependencies: None
             modDreamCheeky.Load() 'Dependencies: None
+            modStreamDeck.Load() 'Dependencies: None
             modMail.Load() 'Dependencies: None
             modMusic.Load() 'Dependencies: None
             modComputer.Load() 'Dependencies: None
@@ -80,6 +82,7 @@ Public Module modGlobal
         modOpenWeatherMap.Unload()
         modPing.Unload()
         modMatrixLCD.Unload()
+        modStreamDeck.Unload()
         modMusic.Unload()
         modGPS.Unload()
         modInsteon.Unload()

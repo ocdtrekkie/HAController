@@ -237,7 +237,7 @@
             End If
         End Sub
 
-        Private Sub DataReceivedHandler(sernder As Object, e As IO.Ports.SerialDataReceivedEventArgs)
+        Private Sub DataReceivedHandler(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs)
             Try
                 Dim strInputData As String = SerialPort.ReadLine()
 

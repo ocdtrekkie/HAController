@@ -1,0 +1,1 @@
+Icons in this repository are modified from https://github.com/tabler/tabler-icons under the MIT License

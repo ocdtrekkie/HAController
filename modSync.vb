@@ -1,7 +1,11 @@
 ﻿Module modSync
     Dim tmrSyncHeartbeatTimer As System.Timers.Timer
 
-    Sub SendHeartbeatHandler()
+    Sub InitialHeartbeatHandler()
+        SendMessage("server", "heartbeat", "none")
+    End Sub
+
+    Sub SendHeartbeatHandler(sender As Object, e As EventArgs)
         SendMessage("server", "heartbeat", "none")
     End Sub
 
@@ -41,7 +45,7 @@
             tmrSyncHeartbeatTimer.Interval = 300000 ' 5min
             tmrSyncHeartbeatTimer.Enabled = True
 
-            Dim InitialSyncHeartbeat As New Threading.Thread(AddressOf SendHeartbeatHandler)
+            Dim InitialSyncHeartbeat As New Threading.Thread(AddressOf InitialHeartbeatHandler)
             InitialSyncHeartbeat.Start()
             Return "Sync module loaded"
         Else

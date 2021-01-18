@@ -25,7 +25,7 @@ Module modPersons
             Dim intId As Integer = 0
             intId = CheckDbForPerson(strNickname)
             If intId <> 0 Then
-                modDatabase.Execute("UPDATE PERSONS SET Email = """ & strEmail & """ WHERE Id = """ & CStr(intId) & """")
+                modDatabase.Execute("UPDATE PERSONS SET Email = '" & strEmail & "' WHERE Id = '" & CStr(intId) & "'")
                 Return "Email address added to " & strNickname
             Else
                 Return "Contact does not exist"
@@ -43,7 +43,7 @@ Module modPersons
     Function CheckDbForPerson(ByVal strNickname As String) As Integer
         Dim result As Integer = New Integer
         If modDatabase.IsCleanString(strNickname, True, False, 25) Then
-            modDatabase.ExecuteScalar("SELECT Id FROM PERSONS WHERE Nickname = """ + strNickname + """", result)
+            modDatabase.ExecuteScalar("SELECT Id FROM PERSONS WHERE Nickname = '" + strNickname + "'", result)
         Else
             My.Application.Log.WriteEntry(strNickname + " is not a valid query", TraceEventType.Warning)
         End If

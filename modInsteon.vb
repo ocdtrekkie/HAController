@@ -1315,7 +1315,7 @@
     Function CheckDbForInsteon(ByVal strAddress As String) As Integer
         Dim result As Integer = New Integer
 
-        modDatabase.ExecuteScalar("SELECT Id FROM INSTEON_DEVICES WHERE Address = """ + strAddress + """", result)
+        modDatabase.ExecuteScalar("SELECT Id FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", result)
         If result <> 0 Then
             My.Application.Log.WriteEntry(strAddress + " database ID is " + result.ToString)
             Return result
@@ -1333,7 +1333,7 @@
     Function CheckDbForX10(ByVal strAddress As String) As Integer
         Dim result As Integer = New Integer
 
-        modDatabase.ExecuteScalar("SELECT Id FROM DEVICES WHERE Type = ""X10"" AND Address = """ + strAddress + """", result)
+        modDatabase.ExecuteScalar("SELECT Id FROM DEVICES WHERE Type = 'X10' AND Address = '" + strAddress + "'", result)
         If result <> 0 Then
             My.Application.Log.WriteEntry(strAddress + " database ID is " + result.ToString)
             Return result
@@ -1351,7 +1351,7 @@
     Function GetInsteonAddressFromNickname(ByVal strNickname) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = """ + strNickname + """ AND Type = ""Insteon""", result)
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Insteon'", result)
         Return result
     End Function
 
@@ -1363,7 +1363,7 @@
     Function GetX10AddressFromNickname(ByVal strNickname) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = """ & strNickname & """ AND Type = ""X10""", result)
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" & strNickname & "' AND Type = 'X10'", result)
         Return result
     End Function
 

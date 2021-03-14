@@ -87,15 +87,15 @@
     <Reference Include="HidLibrary, Version=3.2.49.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\hidlibrary.3.3.40\lib\net45\HidLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\HidSharp.2.1.0\lib\net35\HidSharp.dll</HintPath>
+    <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0867af7205b1c8cf, processorArchitecture=MSIL">
+      <HintPath>packages\StreamDeckSharp.3.0.0\lib\netstandard2.0\HidSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="OpenMacroBoard.SDK, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OpenMacroBoard.SDK.2.1.0\lib\netstandard2.0\OpenMacroBoard.SDK.dll</HintPath>
+    <Reference Include="OpenMacroBoard.SDK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=be9f0b07fc09366f, processorArchitecture=MSIL">
+      <HintPath>packages\OpenMacroBoard.SDK.3.0.0\lib\netstandard2.0\OpenMacroBoard.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="StreamDeckSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\StreamDeckSharp.2.2.0\lib\netstandard2.0\StreamDeckSharp.dll</HintPath>
+    <Reference Include="StreamDeckSharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=e3da2f522ff1f75c, processorArchitecture=MSIL">
+      <HintPath>packages\StreamDeckSharp.3.0.0\lib\netstandard2.0\StreamDeckSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -106,8 +106,8 @@
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Drawing.Common.4.7.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />

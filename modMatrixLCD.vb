@@ -209,7 +209,7 @@
                     SerialPort.PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.MatrixLCD_COMPortDeviceName)
                     If SerialPort.PortName <> "" Then
                         If My.Settings.Global_CarMode = True Then
-                            modSpeech.Say("Smart COM," & SerialPort.PortName, False)
+                            modSpeech.Say("Smart " & SerialPort.PortName, False)
                         End If
                         Try
                             My.Application.Log.WriteEntry("Trying to connect on port " + SerialPort.PortName)

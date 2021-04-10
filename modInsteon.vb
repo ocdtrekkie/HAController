@@ -103,7 +103,7 @@
                     PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.Insteon_COMPortDeviceName)
                     If PortName <> "" Then
                         If My.Settings.Global_CarMode = True Then
-                            modSpeech.Say("Smart COM," & PortName, False)
+                            modSpeech.Say("Smart " & PortName, False)
                         End If
                         InsteonConnect(PortName, ResponseMsg)
                         Exit Sub

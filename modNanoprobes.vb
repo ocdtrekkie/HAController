@@ -1,4 +1,13 @@
 ﻿Module modNanoprobes
+    Public Function ParseData(ByVal strNanoData As String)
+        Dim inputData() = strNanoData.Split(" ")
+        Dim intIndex As Integer = 0
+        While intIndex < inputData.Length
+            My.Application.Log.WriteEntry(inputData(intIndex))
+        End While
+        Return 0
+    End Function
+
     Public Function ReadNanoprobe(ByVal strDestination As String)
         If modGlobal.IsOnline = True Then
             My.Application.Log.WriteEntry("Reading nanoprobe at " & strDestination, TraceEventType.Verbose)
@@ -9,7 +18,7 @@
             Req.UserAgent = "HAController/" & My.Application.Info.Version.ToString
             Req.KeepAlive = False
             Req.Timeout = 10000
-            Req.Proxy = New System.Net.WebProxy("127.0.0.1", 8888)
+            Req.Proxy = Nothing
             Req.ServicePoint.ConnectionLeaseTimeout = 10000
             Req.ServicePoint.MaxIdleTime = 10000
 
@@ -20,6 +29,7 @@
                     Dim OutputStream As String = Reader.ReadToEnd()
 
                     My.Application.Log.WriteEntry("Nanoprobe Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & OutputStream)
+                    ParseData(OutputStream)
                 End Using
                 Output.Close()
                 Return "OK"

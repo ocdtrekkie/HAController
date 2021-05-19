@@ -477,6 +477,8 @@ Module modConverse
                                 intVer = 0
                             End If
                             strCommandResponse = modCrypto.TestCrypto(intVer)
+                        Case "nanoprobe"
+                            modNanoprobes.ReadNanoprobe(inputData(2))
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"

@@ -154,6 +154,7 @@
     <Compile Include="modLibrary.vb" />
     <Compile Include="modMail.vb" />
     <Compile Include="modMapQuest.vb" />
+    <Compile Include="modNanoprobes.vb" />
     <Compile Include="modOpenWeatherMap.vb" />
     <Compile Include="modPersons.vb" />
     <Compile Include="modPihole.vb" />

@@ -4,6 +4,7 @@
         Dim intIndex As Integer = 0
         While intIndex < inputData.Length
             My.Application.Log.WriteEntry(inputData(intIndex))
+            intIndex += 1
         End While
         Return 0
     End Function

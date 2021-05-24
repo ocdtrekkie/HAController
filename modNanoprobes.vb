@@ -3,8 +3,15 @@
         Dim inputData() = strNanoData.Split(" ")
         Dim intIndex As Integer = 0
         While intIndex < inputData.Length
-            My.Application.Log.WriteEntry(inputData(intIndex))
-            intIndex += 1
+            Select Case inputData(intIndex)
+                Case "NanoAPI"
+                    My.Application.Log.WriteEntry("Nanoprobe API Version: " & inputData(intIndex + 1))
+                Case "TemperatureC"
+                    My.Application.Log.WriteEntry("Temperature: " & inputData(intIndex + 1) & " C")
+                Case "RelativeH%"
+                    My.Application.Log.WriteEntry("Relative Humity: " & inputData(intIndex + 1) & "%")
+            End Select
+            intIndex += 2
         End While
         Return 0
     End Function
@@ -29,7 +36,7 @@
                     Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
                     Dim OutputStream As String = Reader.ReadToEnd()
 
-                    My.Application.Log.WriteEntry("Nanoprobe Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & OutputStream)
+                    My.Application.Log.WriteEntry("Nanoprobe Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & OutputStream, TraceEventType.Verbose)
                     ParseData(OutputStream)
                 End Using
                 Output.Close()

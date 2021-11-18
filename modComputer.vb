@@ -132,6 +132,39 @@ Module modComputer
         Return ProcessList
     End Function
 
+    Function InstallYouTubeDL() As String
+        If IsOnline = True Then
+            Try
+                Dim WgetProcess As New Process
+                WgetProcess.StartInfo.FileName = My.Settings.Global_ScriptsFolderURI & "wget.exe"
+                WgetProcess.StartInfo.Arguments = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe -q -O " & My.Settings.Global_ScriptsFolderURI & "youtube-dl.exe"
+                WgetProcess.StartInfo.UseShellExecute = False
+                WgetProcess.StartInfo.CreateNoWindow = True
+                WgetProcess.StartInfo.RedirectStandardOutput = True
+                WgetProcess.StartInfo.RedirectStandardError = True
+                WgetProcess.Start()
+                My.Application.Log.WriteEntry(WgetProcess.StandardOutput.ReadToEnd() & WgetProcess.StandardError.ReadToEnd())
+            Catch NetExcep As System.Net.WebException
+                My.Application.Log.WriteException(NetExcep)
+                Return "Unable to download YouTube DL"
+            End Try
+        End If
+        If System.IO.File.Exists(My.Settings.Global_ScriptsFolderURI & "youtube-dl.exe") Then
+            Dim YTDLProcess As New Process
+            YTDLProcess.StartInfo.FileName = My.Settings.Global_ScriptsFolderURI & "youtube-dl.exe"
+            YTDLProcess.StartInfo.Arguments = "-U"
+            YTDLProcess.StartInfo.UseShellExecute = False
+            YTDLProcess.StartInfo.CreateNoWindow = True
+            YTDLProcess.StartInfo.RedirectStandardOutput = True
+            YTDLProcess.StartInfo.RedirectStandardError = True
+            YTDLProcess.Start()
+            My.Application.Log.WriteEntry(YTDLProcess.StandardOutput.ReadToEnd() & YTDLProcess.StandardError.ReadToEnd())
+            Return "YouTube DL Loaded"
+        Else
+            Return "Unable to install YouTube DL"
+        End If
+    End Function
+
     Function Load() As String
         My.Application.Log.WriteEntry("Loading computer module")
         GetInfo()
@@ -216,6 +249,29 @@ Module modComputer
             End If
         Else
             Return "Cannot run invalid script name"
+        End If
+    End Function
+
+    Function SaveVideo(ByVal strVideoUrl As String) As String
+        If System.IO.File.Exists(My.Settings.Global_ScriptsFolderURI & "youtube-dl.exe") Then
+            If IsOnline = True Then
+                Dim YTDLProcess As New Process
+                YTDLProcess.StartInfo.FileName = My.Settings.Global_ScriptsFolderURI & "downloadvideo.bat"
+                YTDLProcess.StartInfo.Arguments = """" & strVideoUrl & """"
+                YTDLProcess.StartInfo.WorkingDirectory = My.Settings.Global_ScriptsFolderURI
+                YTDLProcess.StartInfo.UseShellExecute = False
+                YTDLProcess.StartInfo.CreateNoWindow = True
+                YTDLProcess.StartInfo.RedirectStandardOutput = True
+                YTDLProcess.StartInfo.RedirectStandardError = True
+                YTDLProcess.Start()
+                My.Application.Log.WriteEntry(YTDLProcess.StandardOutput.ReadToEnd())
+                My.Application.Log.WriteEntry(YTDLProcess.StandardError.ReadToEnd())
+                Return "Video saved"
+            Else
+                Return "Can not download video while offline"
+            End If
+        Else
+            Return "YouTube DL is not installed"
         End If
     End Function
 

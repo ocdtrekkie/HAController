@@ -110,6 +110,10 @@ Module modConverse
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select
+                Case "download"
+                    If inputData(1) = "video" Then
+                        strCommandResponse = modComputer.SaveVideo(inputData(2))
+                    End If
                 Case "enable"
                     Select Case inputData(1)
                         Case "caps"
@@ -210,6 +214,10 @@ Module modConverse
                         My.Application.Log.WriteEntry("Police interaction started. Recording audio silently.")
                         modConverse.Interpret("record audio", False, True)
                         modConverse.Interpret("show gps", False, True)
+                    End If
+                Case "install"
+                    If inputData(1) = "youtube-dl" Then
+                        strCommandResponse = modComputer.InstallYouTubeDL()
                     End If
                 Case "link"
                     If inputData(1) = "insteon" AndAlso inputData(2) = "address" Then

@@ -3,3 +3,5 @@ Third party executables are included for convenience but are licensed under thei
 7-zip (7z.dll, 7z.exe) was downloaded from https://www.7-zip.org/download.html and is mostly licensed under the LGPL with some additional terms.
 
 Wget (wget.exe) was downloaded from https://eternallybored.org/misc/wget/ and is licensed under the GPL.
+
+yt-dlp (youtube-dl.exe) was downloaded from https://github.com/yt-dlp/yt-dlp and is licensed under the Unlicense.

@@ -23,20 +23,29 @@ Module modStreamDeck
     Function Load() As String
         If My.Settings.StreamDeck_Enable = True Then
             My.Application.Log.WriteEntry("Loading Stream Deck module")
-            ActiveStreamDeck = StreamDeck.OpenDevice()
-            If ActiveStreamDeck.IsConnected = True Then
-                KeyCount = ActiveStreamDeck.Keys.Count
-                If KeyCount = 15 Then
-                    My.Application.Log.WriteEntry("Standard Stream Deck detected")
-                ElseIf KeyCount = 6 Then
-                    My.Application.Log.WriteEntry("Stream Deck Mini detected")
+            Try
+                ActiveStreamDeck = StreamDeck.OpenDevice()
+
+                If ActiveStreamDeck.IsConnected = True Then
+                    KeyCount = ActiveStreamDeck.Keys.Count
+                    If KeyCount = 15 Then
+                        My.Application.Log.WriteEntry("Standard Stream Deck detected")
+                    ElseIf KeyCount = 6 Then
+                        My.Application.Log.WriteEntry("Stream Deck Mini detected")
+                    End If
+                    AddHandler ActiveStreamDeck.KeyStateChanged, AddressOf StreamDeckKeyStateChanged
+                    SetStreamDeckKeys()
+                    Return "Stream Deck module loaded"
+                Else
+                    Return "Stream Deck not loaded"
                 End If
-                AddHandler ActiveStreamDeck.KeyStateChanged, AddressOf StreamDeckKeyStateChanged
-                SetStreamDeckKeys()
-                Return "Stream Deck module loaded"
-            Else
-                Return "Stream Deck not loaded"
-            End If
+            Catch StreamDeckExcep As StreamDeckSharp.Exceptions.StreamDeckException
+                My.Application.Log.WriteException(StreamDeckExcep)
+                If My.Settings.Global_CarMode = True Then
+                    modSpeech.Say("Stream Deck not found")
+                End If
+                Return "Stream Deck not found"
+            End Try
         Else
             My.Application.Log.WriteEntry("Stream Deck module is disabled, module not loaded")
             Return "Stream Deck module is disabled, module not loaded"

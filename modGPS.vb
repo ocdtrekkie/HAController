@@ -207,8 +207,8 @@
                 My.Application.Log.WriteException(IOExcep)
 
                 If My.Settings.Global_SmartCOM = True And My.Settings.GPS_COMPortDeviceName <> "" Then
-                    SerialPort.PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.GPS_COMPortDeviceName)
-                    If SerialPort.PortName <> "" Then
+                    If modComputer.GetCOMPortFromFriendlyName(My.Settings.GPS_COMPortDeviceName) <> "" Then
+                        SerialPort.PortName = modComputer.GetCOMPortFromFriendlyName(My.Settings.GPS_COMPortDeviceName)
                         If My.Settings.Global_CarMode = True Then
                             modSpeech.Say("Smart " & SerialPort.PortName, False)
                         End If

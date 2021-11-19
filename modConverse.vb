@@ -216,9 +216,12 @@ Module modConverse
                         modConverse.Interpret("show gps", False, True)
                     End If
                 Case "install"
-                    If inputData(1) = "youtube-dl" Then
-                        strCommandResponse = modComputer.InstallYouTubeDL()
-                    End If
+                    Select Case inputData(1)
+                        Case "ffmpeg"
+                            strCommandResponse = modComputer.InstallFFMPEG()
+                        Case "youtube-dl"
+                            strCommandResponse = modComputer.InstallYouTubeDL()
+                    End Select
                 Case "link"
                     If inputData(1) = "insteon" AndAlso inputData(2) = "address" Then
                         Dim response As String = ""

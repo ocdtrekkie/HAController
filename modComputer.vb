@@ -132,6 +132,40 @@ Module modComputer
         Return ProcessList
     End Function
 
+    Function InstallFFMPEG() As String
+        If IsOnline = True Then
+            Try
+                Dim WgetProcess As New Process
+                WgetProcess.StartInfo.FileName = My.Settings.Global_ScriptsFolderURI & "wget.exe"
+                WgetProcess.StartInfo.Arguments = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z -q -O " & My.Settings.Global_ScriptsFolderURI & "ffmpeg-git-essentials.7z"
+                WgetProcess.StartInfo.UseShellExecute = False
+                WgetProcess.StartInfo.CreateNoWindow = True
+                WgetProcess.StartInfo.RedirectStandardOutput = True
+                WgetProcess.StartInfo.RedirectStandardError = True
+                WgetProcess.Start()
+                My.Application.Log.WriteEntry(WgetProcess.StandardOutput.ReadToEnd() & WgetProcess.StandardError.ReadToEnd())
+            Catch NetExcep As System.Net.WebException
+                My.Application.Log.WriteException(NetExcep)
+                Return "Unable to download FFMPEG"
+            End Try
+        End If
+        If System.IO.File.Exists(My.Settings.Global_ScriptsFolderURI & "ffmpeg-git-essentials.7z") Then
+            Dim SzProcess As New Process
+            SzProcess.StartInfo.FileName = My.Settings.Global_ScriptsFolderURI & "7z.exe"
+            SzProcess.StartInfo.Arguments = "e -aoa -o" & My.Settings.Global_ScriptsFolderURI & " -ir!ffmpeg.exe " & My.Settings.Global_ScriptsFolderURI & "ffmpeg-git-essentials.7z"
+            SzProcess.StartInfo.UseShellExecute = False
+            SzProcess.StartInfo.CreateNoWindow = True
+            SzProcess.StartInfo.RedirectStandardOutput = True
+            SzProcess.StartInfo.RedirectStandardError = True
+            SzProcess.Start()
+            My.Application.Log.WriteEntry(SzProcess.StandardOutput.ReadToEnd() & SzProcess.StandardError.ReadToEnd())
+            System.IO.File.Delete(My.Settings.Global_ScriptsFolderURI & "ffmpeg-git-essentials.7z")
+            Return "FFMPEG Loaded"
+        Else
+            Return "Unable to install FFMPEG"
+        End If
+    End Function
+
     Function InstallYouTubeDL() As String
         If IsOnline = True Then
             Try

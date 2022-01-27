@@ -99,7 +99,7 @@ Module modStreamDeck
                 Case 1
                     modMusic.PlayPlaylist(My.Settings.Music_LastPlaylist)
                 Case 4
-                    modSpeech.Say("Alert button not configured")
+                    modConverse.Interpret("pursuit mode")
                 Case 5
                     modMusic.PlayPrevious()
                 Case 6

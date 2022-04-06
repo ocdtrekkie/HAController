@@ -384,6 +384,8 @@ Module modConverse
                     Select Case inputData(1)
                         Case "hacscript"
                             strCommandResponse = modComputer.RunHACScript(inputData(2))
+                        Case "preset"
+                            strCommandResponse = modPersons.RunPreset(inputData(2))
                         Case "script"
                             strCommandResponse = modComputer.RunScript(inputData(2))
                         Case "update"
@@ -416,6 +418,9 @@ Module modConverse
                     ElseIf inputData(1) = "ping" AndAlso inputData(2) = "address" AndAlso inputData(3) = "to" Then
                         My.Settings.Ping_InternetCheckAddress = inputData(4)
                         strCommandResponse = "Connectivity test address set to " & inputData(4)
+                    ElseIf inputData(1) = "preset" AndAlso IsNumeric(inputData(2)) Then
+                        Dim strPresetCommand As String = strInputString.Replace("set preset " + inputData(2) + " ", "")
+                        strCommandResponse = modPersons.StorePreset(inputData(2), strPresetCommand)
                     ElseIf inputData(1) = "status" AndAlso inputData(2) = "to" Then
                         If inputData(3) = "off" OrElse inputData(3) = "stay" OrElse inputData(3) = "away" OrElse inputData(3) = "guests" Then
                             modGlobal.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))

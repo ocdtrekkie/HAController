@@ -11,6 +11,7 @@ Module modDatabase
         Execute("CREATE TABLE IF NOT EXISTS LOCATION(Id INTEGER PRIMARY KEY, Date TEXT, Latitude REAL, Longitude REAL, Speed REAL)")
         Execute("CREATE TABLE IF NOT EXISTS PERSONS(Id INTEGER PRIMARY KEY, Date TEXT, FirstName TEXT, LastName TEXT, Nickname TEXT, PersonType INTEGER, Email TEXT, PhoneNumber TEXT, PhoneCarrier INTEGER, MsgPreference INTEGER, Address TEXT, Gender INTEGER, IsSocial INTEGER)")
         Execute("CREATE TABLE IF NOT EXISTS PLACES(Id INTEGER PRIMARY KEY, Date TEXT, Name TEXT, Location TEXT)")
+        Execute("CREATE TABLE IF NOT EXISTS PRESETS(Id INTEGER PRIMARY KEY, Nickname TEXT, PresetNum INTEGER, Command TEXT)")
     End Sub
 
     Sub Execute(query As String)

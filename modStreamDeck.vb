@@ -112,6 +112,14 @@ Module modStreamDeck
                     If HoldTimer.ElapsedMilliseconds > 3000 Then
                         modComputer.RebootHost()
                     End If
+                Case 10
+                    modPersons.RunPreset(1)
+                Case 11
+                    modPersons.RunPreset(2)
+                Case 12
+                    modPersons.RunPreset(3)
+                Case 13
+                    modPersons.RunPreset(4)
                 Case 14
                     If HoldTimer.ElapsedMilliseconds > 3000 Then
                         modComputer.ShutdownHost()

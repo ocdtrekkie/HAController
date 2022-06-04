@@ -209,19 +209,21 @@ Module modMail
                 End If
             Loop
 
-            ReFrom = CmdFrom.Replace("From: ", "")
-            CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
-            If CmdKeyLookup <> "" Then
-                If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
-                    CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
-                    My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
-                    ReSubj = CmdSubj.Replace("Subject: ", "")
-                    modConverse.Interpret(ReSubj, True)
+            If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
+                ReFrom = CmdFrom.Replace("From: ", "")
+                CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+                If CmdKeyLookup <> "" Then
+                    If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
+                        CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
+                        My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
+                        ReSubj = CmdSubj.Replace("Subject: ", "")
+                        modConverse.Interpret(ReSubj, True)
+                    Else
+                        My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                    End If
                 Else
-                    My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                    My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
                 End If
-            Else
-                My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)
@@ -383,25 +385,27 @@ Module modMail
                         My.Application.Log.WriteEntry("Command " & CmdTo)
                     End If
 
-                    If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
+                    If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" Then
                         Exit Do
                     End If
                 End If
             Loop
 
-            ReFrom = CmdFrom.Replace("From: ", "")
-            CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
-            If CmdKeyLookup <> "" Then
-                If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
-                    CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
-                    My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
-                    ReSubj = CmdSubj.Replace("Subject: ", "")
-                    modConverse.Interpret(ReSubj, True)
+            If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" Then
+                ReFrom = CmdFrom.Replace("From: ", "")
+                CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+                If CmdKeyLookup <> "" Then
+                    If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
+                        CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
+                        My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
+                        ReSubj = CmdSubj.Replace("Subject: ", "")
+                        modConverse.Interpret(ReSubj, True)
+                    Else
+                        My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                    End If
                 Else
-                    My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                    My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
                 End If
-            Else
-                My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
         Catch ex As Exception
             My.Application.Log.WriteException(ex)

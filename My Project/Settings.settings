@@ -189,7 +189,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Mail_IMAPMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Mail_IMAPHost" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

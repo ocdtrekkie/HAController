@@ -124,6 +124,15 @@ Module modMail
         ret_Val = 0
     End Sub
 
+    Sub CreateMailkeysDb()
+        modDatabase.Execute("CREATE TABLE IF NOT EXISTS MAILKEYS(Id INTEGER PRIMARY KEY, Nickname TEXT UNIQUE, CmdWhitelist TEXT, CmdKey TEXT)")
+        If My.Settings.Mail_CmdWhitelist <> "" AndAlso My.Settings.Mail_CmdWhitelist <> "(deprecated)" Then
+            modDatabase.Execute("INSERT INTO MAILKEYS (Nickname, CmdWhitelist, CmdKey) VALUES('me', '" + My.Settings.Mail_CmdWhitelist + "', '" + My.Settings.Mail_CmdKey + "')")
+            My.Settings.Mail_CmdWhitelist = "(deprecated)"
+            My.Settings.Mail_CmdKey = "(deprecated)"
+        End If
+    End Sub
+
     Function Disable() As String
         Unload()
         My.Settings.Mail_Enable = False
@@ -136,6 +145,31 @@ Module modMail
         My.Application.Log.WriteEntry("Mail module is enabled")
         Load()
         Return "Mail module enabled"
+    End Function
+
+    ''' <summary>
+    ''' This function returns the CmdKey of a CmdWhitelist email.
+    ''' </summary>
+    ''' <param name="strCmdWhitelist">Whitelist entry to look for</param>
+    ''' <returns>Matching key for whitelist</returns>
+    Function GetCmdKeyFromWhitelist(ByVal strCmdWhitelist) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT CmdKey FROM MAILKEYS WHERE CmdWhitelist = '" & strCmdWhitelist & "'", result)
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' This function returns the nickname of an inbound mail.
+    ''' </summary>
+    ''' <param name="strCmdWhitelist">Whitelist entry to look for</param>
+    ''' <param name="strCmdKey">Command key to look for</param>
+    ''' <returns>Matching nickname for inbound mail</returns>
+    Function GetNicknameFromKey(ByVal strCmdWhitelist, ByVal strCmdKey) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT Nickname FROM MAILKEYS WHERE CmdWhitelist = '" & strCmdWhitelist & "' AND CmdKey = '" & strCmdKey & "'", result)
+        Return result
     End Function
 
     Sub GetEmails(ByVal Server_Command As String)
@@ -251,6 +285,7 @@ Module modMail
                 My.Settings.Mail_To = InputBox("Enter the email account you want to send notifications to.", "Mail To")
             End If
 
+            ' TODO: Upgrade These
             If My.Settings.Mail_CmdWhitelist = "" Then
                 My.Application.Log.WriteEntry("No command whitelist set, asking for it")
                 My.Settings.Mail_CmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Mail Command Whitelist")
@@ -260,6 +295,8 @@ Module modMail
                 My.Application.Log.WriteEntry("No command key set, asking for it")
                 My.Settings.Mail_CmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's mail service account.", "Mail Command Key")
             End If
+
+            CreateMailkeysDb()
 
             oClient.Host = My.Settings.Mail_SMTPHost
             oClient.Port = My.Settings.Mail_SMTPPort

@@ -175,8 +175,8 @@ Module modMail
     Sub GetEmails(ByVal Server_Command As String)
         Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
         Dim stream_Reader As StreamReader
-        Dim TxtLine, CmdRec, ReSubj As String
-        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = ""
+        Dim TxtLine, CmdRec, ReFrom, ReSubj As String
+        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = "", CmdKeyLookup As String = "", CmdNickLookup As String = ""
         Try
             m_sslStream.Write(m_buffer, 0, m_buffer.Length)
             stream_Reader = New StreamReader(m_sslStream)
@@ -209,12 +209,17 @@ Module modMail
                 End If
             Loop
 
-            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist AndAlso CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
-                My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
-                ReSubj = CmdSubj.Replace("Subject: ", "")
-                modConverse.Interpret(ReSubj, True)
-            ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
-                My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+            ReFrom = CmdFrom.Replace("From: ", "")
+            CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+            If CmdKeyLookup <> "" Then
+                If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
+                    CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
+                    My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
+                    ReSubj = CmdSubj.Replace("Subject: ", "")
+                    modConverse.Interpret(ReSubj, True)
+                Else
+                    My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                End If
             Else
                 My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
@@ -348,8 +353,8 @@ Module modMail
             End If
             m_sslStream.Flush()
             Dim stream_Reader As StreamReader = New StreamReader(m_sslStream)
-            Dim TxtLine, CmdRec, ReSubj As String
-            Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = ""
+            Dim TxtLine, CmdRec, ReFrom, ReSubj As String
+            Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = "", CmdKeyLookup As String = "", CmdNickLookup As String = ""
             Do While stream_Reader.Peek() <> -1
                 TxtLine = stream_Reader.ReadLine()
 
@@ -384,13 +389,18 @@ Module modMail
                 End If
             Loop
 
-            If CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist AndAlso CmdTo = "To: " & My.Settings.Mail_CmdKey & " <" & My.Settings.Mail_From & ">" Then
-                My.Application.Log.WriteEntry("Received email from authorized user, command key validated")
-                ReSubj = CmdSubj.Replace("Subject: ", "")
-                modConverse.Interpret(ReSubj, True)
-            ElseIf CmdFrom = "From: " & My.Settings.Mail_CmdWhitelist Then
-                My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
-            ElseIf CmdFrom <> "" Then
+            ReFrom = CmdFrom.Replace("From: ", "")
+            CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+            If CmdKeyLookup <> "" Then
+                If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
+                    CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
+                    My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
+                    ReSubj = CmdSubj.Replace("Subject: ", "")
+                    modConverse.Interpret(ReSubj, True)
+                Else
+                    My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
+                End If
+            Else
                 My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
             End If
         Catch ex As Exception

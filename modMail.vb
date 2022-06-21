@@ -239,7 +239,7 @@ Module modMail
                         CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
                         My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
                         ReSubj = CmdSubj.Replace("Subject: ", "")
-                        modConverse.Interpret(ReSubj, True)
+                        modConverse.Interpret(ReSubj, True, False, CmdNickLookup)
                     Else
                         My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
                     End If
@@ -421,7 +421,7 @@ Module modMail
                         CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
                         My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
                         ReSubj = CmdSubj.Replace("Subject: ", "")
-                        modConverse.Interpret(ReSubj, True)
+                        modConverse.Interpret(ReSubj, True, False, CmdNickLookup)
                     Else
                         My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
                     End If
@@ -434,12 +434,20 @@ Module modMail
         End Try
     End Sub
 
-    Sub Send(oSubj As String, oBody As String, Optional ByVal oAttachFileName As String = "")
+    Sub Send(oSubj As String, oBody As String, Optional ByVal oAttachFileName As String = "", Optional ByVal strToNickname As String = "")
         If My.Settings.Mail_Enable = True Then
+            Dim strToAddress As String = ""
+            If strToNickname <> "" Then
+                strToAddress = GetEmailForPerson(strToNickname)
+            End If
+            If strToAddress = "" Then
+                strToAddress = My.Settings.Mail_To
+            End If
+
             Dim oMsg As New MailMessage()
 
             oMsg.From = New MailAddress(My.Settings.Mail_From, My.Settings.Converse_BotName & " (HAController)")
-            oMsg.To.Add(New MailAddress(My.Settings.Mail_To))
+            oMsg.To.Add(New MailAddress(strToAddress))
             oMsg.Subject = oSubj
             oMsg.Priority = MailPriority.High
             oMsg.IsBodyHtml = False

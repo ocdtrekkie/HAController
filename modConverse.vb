@@ -3,7 +3,7 @@
 Module modConverse
     Public strLastRequest As String = ""
 
-    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False, Optional ByVal CommandLineArg As Boolean = False)
+    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False, Optional ByVal CommandLineArg As Boolean = False, Optional ByVal strRequestor As String = "me")
         Dim strCommandResponse As String = ""
         strLastRequest = strInputString
 
@@ -670,7 +670,7 @@ Module modConverse
             If strCommandResponse <> " " Then
                 My.Application.Log.WriteEntry("Command response: " & strCommandResponse)
                 If RemoteCommand = True Then
-                    modMail.Send("Re: " & strInputString, strCommandResponse)
+                    modMail.Send("Re: " & strInputString, strCommandResponse, "", strRequestor)
                 ElseIf CommandLineArg = False Then
                     modSpeech.Say(strCommandResponse)
                 End If

@@ -57,6 +57,22 @@ Module modPersons
     End Function
 
     ''' <summary>
+    ''' This function returns the email address of a person.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of person</param>
+    ''' <returns>Email address of person</returns>
+    Function GetEmailForPerson(ByVal strNickname) As String
+        Dim result As String = ""
+        If modDatabase.IsCleanString(strNickname, True, False, 25) Then
+            modDatabase.ExecuteReader("SELECT Email FROM PERSONS WHERE Nickname = '" & strNickname & "'", result)
+            Return result
+        Else
+            My.Application.Log.WriteEntry(strNickname + " is not a valid query", TraceEventType.Warning)
+            Return ""
+        End If
+    End Function
+
+    ''' <summary>
     ''' This function executes a user preset command in the PRESETS table.
     ''' </summary>
     ''' <param name="intPresetNum">Preset command to run</param>

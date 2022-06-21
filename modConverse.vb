@@ -20,11 +20,13 @@ Module modConverse
             Select Case inputData(0)
                 Case "add"
                     If inputData(1) = "contact" OrElse inputData(1) = "person" Then
-                    'add person $nickname
+                        'add person $nickname
                         strCommandResponse = modPersons.AddPersonDb(inputData(2))
                     ElseIf inputData(1) = "email" AndAlso inputData(3) = "to" Then
-                    'add email $address@nickname.com to $nickname
+                        'add email $address@nickname.com to $nickname
                         strCommandResponse = modPersons.AddEmailToPerson(inputData(4), inputData(2))
+                    ElseIf inputData(1) = "mailkey" Then
+                        strCommandResponse = modMail.AddMailkey()
                     ElseIf inputData(1) = "ip" AndAlso inputData(2) = "device" Then
                         strCommandResponse = modDevices.AddIPDevice()
                     ElseIf inputData(1) = "x10" AndAlso inputData(2) = "device" AndAlso inputData.Length > 3 AndAlso modInsteon.IsX10Address(inputData(3)) = True Then

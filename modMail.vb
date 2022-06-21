@@ -33,6 +33,28 @@ Module modMail
 
     Dim tmrMailCheckTimer As System.Timers.Timer
 
+    Function AddMailkey(Optional ByVal strNickname As String = "", Optional ByVal strCmdWhitelist As String = "", Optional ByVal strCmdKey As String = "") As String
+        If strNickname = "" Then
+            strNickname = InputBox("Enter the nickname of the user whose mailkey you are adding", "Add Mailkey")
+        End If
+        If strCmdWhitelist = "" Then
+            strCmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Add Mailkey")
+        End If
+        If strCmdKey = "" Then
+            strCmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's mail service account.", "Add mailkey")
+        End If
+        If modPersons.CheckDbForPerson(strNickname) = 0 Then
+            My.Application.Log.WriteEntry("Nonexistent username provided", TraceEventType.Warning)
+            Return "Nonexistent username provided"
+        ElseIf strCmdKey = "" OrElse strCmdWhitelist = "" OrElse strCmdKey = "" Then
+            My.Application.Log.WriteEntry("Inadequate mailkey setup information provided", TraceEventType.Warning)
+            Return "Inadequate mailkey setup information provided"
+        Else
+            modDatabase.Execute("INSERT INTO MAILKEYS (Nickname, CmdWhitelist, CmdKey) VALUES('" + strNickname + "', '" + strCmdWhitelist + "', '" + strCmdKey + "')")
+            Return "Mailkey added"
+        End If
+    End Function
+
     Sub CheckMail()
         If My.Settings.Mail_Enable = True Then
             If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
@@ -127,7 +149,7 @@ Module modMail
     Sub CreateMailkeysDb()
         modDatabase.Execute("CREATE TABLE IF NOT EXISTS MAILKEYS(Id INTEGER PRIMARY KEY, Nickname TEXT UNIQUE, CmdWhitelist TEXT, CmdKey TEXT)")
         If My.Settings.Mail_CmdWhitelist <> "" AndAlso My.Settings.Mail_CmdWhitelist <> "(deprecated)" Then
-            modDatabase.Execute("INSERT INTO MAILKEYS (Nickname, CmdWhitelist, CmdKey) VALUES('me', '" + My.Settings.Mail_CmdWhitelist + "', '" + My.Settings.Mail_CmdKey + "')")
+            AddMailkey("me", My.Settings.Mail_CmdWhitelist, My.Settings.Mail_CmdKey)
             My.Settings.Mail_CmdWhitelist = "(deprecated)"
             My.Settings.Mail_CmdKey = "(deprecated)"
         End If

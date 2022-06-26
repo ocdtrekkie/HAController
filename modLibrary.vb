@@ -4,7 +4,7 @@
     ''' </summary>
     ''' <param name="strBarcode">Material barcode</param>
     ''' <returns>Temp: Type of material</returns>
-    Function CheckOutEbook(ByVal strBarcode As String, Optional ByVal strRequestor As String)
+    Function CheckOutEbook(ByVal strBarcode As String, ByVal strRequestor As String)
         If My.Settings.Library_Enable = True Then
             If IsNumeric(strBarcode) = True Then
                 'File Selection Section

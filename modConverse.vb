@@ -53,7 +53,7 @@ Module modConverse
                             strCommandResponse = "Checking mail"
                         Case "out"
                             If inputData.Length > 2 Then
-                                strCommandResponse = modLibrary.CheckOutEbook(inputData(2))
+                                strCommandResponse = modLibrary.CheckOutEbook(inputData(2), strRequestor)
                             End If
                         Case "pihole"
                             strCommandResponse = modPihole.CheckPiholeStatus()

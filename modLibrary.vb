@@ -4,7 +4,7 @@
     ''' </summary>
     ''' <param name="strBarcode">Material barcode</param>
     ''' <returns>Temp: Type of material</returns>
-    Function CheckOutEbook(ByVal strBarcode As String)
+    Function CheckOutEbook(ByVal strBarcode As String, Optional ByVal strRequestor As String)
         If My.Settings.Library_Enable = True Then
             If IsNumeric(strBarcode) = True Then
                 'File Selection Section
@@ -46,7 +46,7 @@
                     If SelectedFile.Length > (5 * 1024 * 1024) Then
                         Return "Requested file is too large to send" 'TODO: Support compressing larger files
                     Else
-                        modMail.Send("Your library materials", "Thank you for checking out barcode " & strBarcode, SelectedFile.FullName)
+                        modMail.Send("Your library materials", "Thank you for checking out barcode " & strBarcode, SelectedFile.FullName, strRequestor)
                         Return "Requested file sent"
                     End If
                 Else

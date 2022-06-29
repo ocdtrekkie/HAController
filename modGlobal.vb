@@ -64,12 +64,13 @@ Public Module modGlobal
     End Sub
 
     Sub SaveCollection()
-        Dim targetFile As New FileStream("C:\HAC\DeviceCollection.xml", FileMode.Create)
-        Dim formatter As New XmlSerializer(DeviceCollection(0).GetType)
+        Dim targetFile As New StreamWriter("C:\HAC\DeviceCollection.xml")
+        Dim serializedString As String = ""
 
-        formatter.Serialize(targetFile, DeviceCollection(0))
+        serializedString = XmlSerializerHelper.Current.SerializeToXml(DeviceCollection, True)
+
+        targetFile.Write(serializedString)
         targetFile.Close()
-        formatter = Nothing
     End Sub
 
     Sub SetHomeStatus(ByVal ChangeHomeStatus As String)

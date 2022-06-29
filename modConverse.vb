@@ -406,8 +406,10 @@ Module modConverse
                     If inputData(1) = "experimental" AndAlso inputData(2) = "mode" Then
                         If inputData(3) = "on" Then
                             My.Settings.Global_Experimental = True
+                            strCommandResponse = "Experimental mode on"
                         ElseIf inputData(3) = "off" Then
                             My.Settings.Global_Experimental = False
+                            strCommandResponse = "Experimental mode off"
                         End If
                     ElseIf inputData(1) = "mail" AndAlso inputData(2) = "password" Then
                         strCommandResponse = modMail.SetMailPassword()

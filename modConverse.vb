@@ -71,6 +71,9 @@ Module modConverse
                             strCommandResponse = frmMain.DisableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Disable()
+                        Case "experiments"
+                            My.Settings.Global_Experimental = False
+                            strCommandResponse = "Experimental mode off"
                         Case "gps"
                             strCommandResponse = modGPS.Disable()
                         Case "imap"
@@ -127,6 +130,9 @@ Module modConverse
                             strCommandResponse = frmMain.EnableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Enable()
+                        Case "experiments"
+                            My.Settings.Global_Experimental = True
+                            strCommandResponse = "Experimental mode on"
                         Case "gps"
                             strCommandResponse = modGPS.Enable()
                         Case "imap"
@@ -403,15 +409,7 @@ Module modConverse
                         strCommandResponse = modGlobal.SendStatusReport()
                     End If
                 Case "set"
-                    If inputData(1) = "experimental" AndAlso inputData(2) = "mode" Then
-                        If inputData(3) = "on" Then
-                            My.Settings.Global_Experimental = True
-                            strCommandResponse = "Experimental mode on"
-                        ElseIf inputData(3) = "off" Then
-                            My.Settings.Global_Experimental = False
-                            strCommandResponse = "Experimental mode off"
-                        End If
-                    ElseIf inputData(1) = "mail" AndAlso inputData(2) = "password" Then
+                    If inputData(1) = "mail" AndAlso inputData(2) = "password" Then
                         strCommandResponse = modMail.SetMailPassword()
                     ElseIf inputData(1) = "online" AndAlso inputData(2) = "mode" Then
                         modGlobal.IsOnline = True

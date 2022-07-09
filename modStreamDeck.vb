@@ -121,13 +121,13 @@ Module modStreamDeck
                         modComputer.RebootHost()
                     End If
                 Case 10
-                    modPersons.RunPreset(1)
+                    modPersons.RunPreset(1, My.Settings.Global_PrimaryUser)
                 Case 11
-                    modPersons.RunPreset(2)
+                    modPersons.RunPreset(2, My.Settings.Global_PrimaryUser)
                 Case 12
-                    modPersons.RunPreset(3)
+                    modPersons.RunPreset(3, My.Settings.Global_PrimaryUser)
                 Case 13
-                    modPersons.RunPreset(4)
+                    modPersons.RunPreset(4, My.Settings.Global_PrimaryUser)
                 Case 14
                     If HoldTimer.ElapsedMilliseconds > 3000 Then
                         modComputer.ShutdownHost()

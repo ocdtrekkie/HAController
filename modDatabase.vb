@@ -91,7 +91,9 @@ Module modDatabase
             My.Application.Log.WriteEntry("Connecting to database")
             conn.Open()
             CreateDb()
-            modPersons.AddPersonDb("me", 4)
+            If modPersons.CheckDbForPerson(My.Settings.Global_PrimaryUser) = 0 Then
+                modPersons.AddPersonDb(My.Settings.Global_PrimaryUser, 4)
+            End If
             Return "Database module loaded"
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)

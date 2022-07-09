@@ -3,9 +3,13 @@
 Module modConverse
     Public strLastRequest As String = ""
 
-    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False, Optional ByVal CommandLineArg As Boolean = False, Optional ByVal strRequestor As String = "me")
+    Sub Interpret(ByVal strInputString As String, Optional ByVal RemoteCommand As Boolean = False, Optional ByVal CommandLineArg As Boolean = False, Optional ByVal strRequestor As String = "")
         Dim strCommandResponse As String = ""
         strLastRequest = strInputString
+
+        If strRequestor = "" Then
+            strRequestor = My.Settings.Global_PrimaryUser
+        End If
 
         If strInputString <> "" Then
             My.Application.Log.WriteEntry("Command received: " + strInputString)

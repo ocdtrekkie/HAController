@@ -1055,6 +1055,18 @@ Namespace My
                 Me("StreamDeck_Enable") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("me")>  _
+        Public Property Global_PrimaryUser() As String
+            Get
+                Return CType(Me("Global_PrimaryUser"),String)
+            End Get
+            Set
+                Me("Global_PrimaryUser") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

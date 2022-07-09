@@ -257,5 +257,8 @@
     <Setting Name="StreamDeck_Enable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Global_PrimaryUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">me</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

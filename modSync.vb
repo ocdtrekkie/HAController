@@ -63,7 +63,7 @@
             If modGlobal.IsOnline = True Then
                 My.Application.Log.WriteEntry("Sending " & strMessageType & " to " & strDestination, TraceEventType.Verbose)
                 Dim Req As System.Net.HttpWebRequest
-                Dim TargetUri As New Uri(My.Settings.Sync_ServerURL & "?message_type=" & strMessageType & "&destination=" & strDestination & "&access_key=" & My.Settings.Sync_AccessKey & "&message=" & strMessage)
+                Dim TargetUri As New Uri(My.Settings.Sync_ServerURL & "?message_type=" & strMessageType & "&destination=" & strDestination & "&access_key=" & My.Settings.Sync_AccessKey & "&message=" & strMessage & "&user_agent=HAController/" & My.Application.Info.Version.ToString)
                 Dim Output As System.Net.HttpWebResponse
                 Req = DirectCast(System.Net.HttpWebRequest.Create(TargetUri), System.Net.HttpWebRequest)
                 Req.UserAgent = "HAController/" & My.Application.Info.Version.ToString

@@ -1067,6 +1067,18 @@ Namespace My
                 Me("Global_PrimaryUser") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Sync_SandstormToken() As String
+            Get
+                Return CType(Me("Sync_SandstormToken"),String)
+            End Get
+            Set
+                Me("Sync_SandstormToken") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

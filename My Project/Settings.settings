@@ -260,5 +260,8 @@
     <Setting Name="Global_PrimaryUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">me</Value>
     </Setting>
+    <Setting Name="Sync_SandstormToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

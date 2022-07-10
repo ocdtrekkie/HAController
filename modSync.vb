@@ -30,6 +30,10 @@
                 My.Application.Log.WriteEntry("No sync server URL set, asking for it")
                 My.Settings.Sync_ServerURL = InputBox("Enter sync server URL.", "Sync Server URL")
             End If
+            If My.Settings.Sync_SandstormToken = "" AndAlso (My.Settings.Sync_ServerURL.StartsWith("http://api-") Or My.Settings.Sync_ServerURL.StartsWith("https://api-")) Then
+                My.Application.Log.WriteEntry("Sandstorm Sync URL identified, asking for token")
+                My.Settings.Sync_SandstormToken = InputBox("Sandstorm requires an additional token for access.", "Sandstorm Access Token")
+            End If
             If My.Settings.Sync_AccessKey = "" Then
                 My.Application.Log.WriteEntry("No sync server access key set, asking for it")
                 My.Settings.Sync_AccessKey = InputBox("Enter sync server access key.", "Sync Server Access Key")
@@ -68,6 +72,11 @@
                 Req.Proxy = Nothing
                 Req.ServicePoint.ConnectionLeaseTimeout = 10000
                 Req.ServicePoint.MaxIdleTime = 10000
+
+                If My.Settings.Sync_SandstormToken <> "" Then
+                    Dim EncodedCreds As String = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes("sandstorm:" + My.Settings.Sync_SandstormToken))
+                    Req.Headers.Add("Authorization", "Basic " + EncodedCreds)
+                End If
 
                 Try
                     Output = Req.GetResponse()

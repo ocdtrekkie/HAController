@@ -1079,6 +1079,30 @@ Namespace My
                 Me("Sync_SandstormToken") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("dyndns")>  _
+        Public Property Ping_PublicIPSource() As String
+            Get
+                Return CType(Me("Ping_PublicIPSource"),String)
+            End Get
+            Set
+                Me("Ping_PublicIPSource") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Ping_LastKnownPublicIP() As String
+            Get
+                Return CType(Me("Ping_LastKnownPublicIP"),String)
+            End Get
+            Set
+                Me("Ping_LastKnownPublicIP") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

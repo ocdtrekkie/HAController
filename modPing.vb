@@ -17,6 +17,28 @@
         Return "Ping module enabled"
     End Function
 
+    Function GetPublicIPAddress() As String
+        If My.Settings.Ping_Enable = True Then
+            If modGlobal.IsOnline = True Then
+                If My.Settings.Ping_PublicIPSource = "dyndns" Then
+                    Dim reqUrl As String = "http://checkip.dyndns.org"
+                    Dim req = System.Net.WebRequest.Create(reqUrl)
+                    Dim resp As System.Net.WebResponse = req.GetResponse()
+                    Dim sr = New System.IO.StreamReader(resp.GetResponseStream)
+                    Dim response As String = sr.ReadToEnd().Trim()
+                    Dim responseArray = response.Split(" ")
+                    Return responseArray(4).Trim()
+                Else
+                    Return "No valid public IP source set"
+                End If
+            Else
+                Return "Not online"
+            End If
+        Else
+            Return "Ping disabled"
+        End If
+    End Function
+
     Function Load() As String
         If My.Settings.Ping_Enable = True Then
             My.Application.Log.WriteEntry("Loading ping module")
@@ -39,7 +61,14 @@
         response = Ping(My.Settings.Ping_InternetCheckAddress)
         If response.StartsWith("Reply from") Then
             My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
-            modGlobal.IsOnline = True
+            If modGlobal.IsOnline = False Then
+                modGlobal.IsOnline = True
+                Dim strPubIP = GetPublicIPAddress()
+                If strPubIP <> My.Settings.Ping_LastKnownPublicIP Then
+                    My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strPubIP)
+                    My.Settings.Ping_LastKnownPublicIP = strPubIP
+                End If
+            End If
         ElseIf response = "Ping disabled" Then
             ' Do nothing, Ping is disabled
         Else

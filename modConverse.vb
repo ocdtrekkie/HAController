@@ -66,6 +66,10 @@ Module modConverse
                                 strCommandResponse = modPing.GetPublicIPAddress()
                             End If
                     End Select
+                Case "clear"
+                    If inputData(1) = "sync" And inputData(2) = "credentials" Then
+                        strCommandResponse = modSync.ClearSyncCredentials()
+                    End If
                 Case "convert"
                     If inputData(1) = "isbn" AndAlso inputData.Length > 2 Then
                         strCommandResponse = modLibrary.ConvertISBN(inputData(2))

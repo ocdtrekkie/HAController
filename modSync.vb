@@ -9,6 +9,19 @@
         SendMessage("server", "heartbeat", "none")
     End Sub
 
+    Function ClearSyncCredentials() As String
+        If My.Settings.Sync_Enable = True Then
+            My.Application.Log.WriteEntry("Cannot clear sync credentials, sync is enabled", TraceEventType.Warning)
+            Return "Cannot clear sync credentials, sync is enabled"
+        Else
+            My.Settings.Sync_ServerURL = ""
+            My.Settings.Sync_AccessKey = ""
+            My.Settings.Sync_SandstormToken = ""
+            My.Settings.Sync_CryptoKey = ""
+            Return "Sync credentials cleared"
+        End If
+    End Function
+
     Function Disable() As String
         Unload()
         My.Settings.Sync_Enable = False

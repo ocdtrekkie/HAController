@@ -61,13 +61,11 @@
         response = Ping(My.Settings.Ping_InternetCheckAddress)
         If response.StartsWith("Reply from") Then
             My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
-            If modGlobal.IsOnline = False Then
-                modGlobal.IsOnline = True
-                Dim strPubIP = GetPublicIPAddress()
-                If strPubIP <> My.Settings.Ping_LastKnownPublicIP Then
-                    My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strPubIP)
-                    My.Settings.Ping_LastKnownPublicIP = strPubIP
-                End If
+            modGlobal.IsOnline = True
+            Dim strPubIP = GetPublicIPAddress()
+            If strPubIP <> My.Settings.Ping_LastKnownPublicIP Then
+                My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strPubIP)
+                My.Settings.Ping_LastKnownPublicIP = strPubIP
             End If
         ElseIf response = "Ping disabled" Then
             ' Do nothing, Ping is disabled

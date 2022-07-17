@@ -267,7 +267,7 @@
       <Value Profile="(Default)">dyndns</Value>
     </Setting>
     <Setting Name="Ping_LastKnownPublicIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">0.0.0.0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

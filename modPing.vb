@@ -26,8 +26,9 @@
                     Dim resp As System.Net.WebResponse = req.GetResponse()
                     Dim sr = New System.IO.StreamReader(resp.GetResponseStream)
                     Dim response As String = sr.ReadToEnd().Trim()
-                    Dim responseArray = response.Split(" ")
-                    Return responseArray(4).Trim()
+                    Dim responseArray = response.Split(":")
+                    Dim responseArray2 = responseArray(1).Split("<")
+                    Return responseArray2(0).Trim()
                 Else
                     Return "No valid public IP source set"
                 End If

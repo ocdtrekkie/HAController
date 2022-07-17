@@ -61,6 +61,10 @@ Module modConverse
                             End If
                         Case "pihole"
                             strCommandResponse = modPihole.CheckPiholeStatus()
+                        Case "public"
+                            If inputData(2) = "ip" Then
+                                strCommandResponse = modPing.GetPublicIPAddress()
+                            End If
                     End Select
                 Case "convert"
                     If inputData(1) = "isbn" AndAlso inputData.Length > 2 Then

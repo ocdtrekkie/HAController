@@ -28,7 +28,14 @@
                     Dim response As String = sr.ReadToEnd().Trim()
                     Dim responseArray = response.Split(":")
                     Dim responseArray2 = responseArray(1).Split("<")
-                    Return responseArray2(0).Trim()
+                    Dim strNewPubIP = responseArray2(0).Trim()
+
+                    If strNewPubIP <> My.Settings.Ping_LastKnownPublicIP Then
+                        My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strNewPubIP)
+                        My.Settings.Ping_LastKnownPublicIP = strNewPubIP
+                    End If
+
+                    Return strNewPubIP
                 Else
                     Return "No valid public IP source set"
                 End If
@@ -63,11 +70,6 @@
         If response.StartsWith("Reply from") Then
             My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
             modGlobal.IsOnline = True
-            Dim strPubIP = GetPublicIPAddress()
-            If strPubIP <> My.Settings.Ping_LastKnownPublicIP Then
-                My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strPubIP)
-                My.Settings.Ping_LastKnownPublicIP = strPubIP
-            End If
         ElseIf response = "Ping disabled" Then
             ' Do nothing, Ping is disabled
         Else

@@ -33,12 +33,12 @@ Module modMail
 
     Dim tmrMailCheckTimer As System.Timers.Timer
 
-    Function AddMailkey(Optional ByVal strNickname As String = "", Optional ByVal strCmdWhitelist As String = "", Optional ByVal strCmdKey As String = "") As String
+    Function AddMailkey(Optional ByVal strNickname As String = "", Optional ByVal strCmdAllowlist As String = "", Optional ByVal strCmdKey As String = "") As String
         If strNickname = "" Then
             strNickname = InputBox("Enter the nickname of the user whose mailkey you are adding", "Add Mailkey")
         End If
-        If strCmdWhitelist = "" Then
-            strCmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Add Mailkey")
+        If strCmdAllowlist = "" Then
+            strCmdAllowlist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Add Mailkey")
         End If
         If strCmdKey = "" Then
             strCmdKey = InputBox("Enter a random alphanumeric key which is required to submit commands to this system. It should be used as the display name for the home automation controller's mail service account.", "Add mailkey")
@@ -46,11 +46,11 @@ Module modMail
         If modPersons.CheckDbForPerson(strNickname) = 0 Then
             My.Application.Log.WriteEntry("Nonexistent username provided", TraceEventType.Warning)
             Return "Nonexistent username provided"
-        ElseIf strCmdKey = "" OrElse strCmdWhitelist = "" OrElse strCmdKey = "" Then
+        ElseIf strCmdKey = "" OrElse strCmdAllowlist = "" OrElse strCmdKey = "" Then
             My.Application.Log.WriteEntry("Inadequate mailkey setup information provided", TraceEventType.Warning)
             Return "Inadequate mailkey setup information provided"
         Else
-            modDatabase.Execute("INSERT INTO MAILKEYS (Nickname, CmdWhitelist, CmdKey) VALUES('" + strNickname + "', '" + strCmdWhitelist + "', '" + strCmdKey + "')")
+            modDatabase.Execute("INSERT INTO MAILKEYS (Nickname, CmdAllowlist, CmdKey) VALUES('" + strNickname + "', '" + strCmdAllowlist + "', '" + strCmdKey + "')")
             Return "Mailkey added"
         End If
     End Function
@@ -147,7 +147,8 @@ Module modMail
     End Sub
 
     Sub CreateMailkeysDb()
-        modDatabase.Execute("CREATE TABLE IF NOT EXISTS MAILKEYS(Id INTEGER PRIMARY KEY, Nickname TEXT UNIQUE, CmdWhitelist TEXT, CmdKey TEXT)")
+        modDatabase.Execute("CREATE TABLE IF NOT EXISTS MAILKEYS(Id INTEGER PRIMARY KEY, Nickname TEXT UNIQUE, CmdAllowlist TEXT, CmdKey TEXT)")
+        modDatabase.Execute("ALTER TABLE MAILKEYS RENAME COLUMN CmdWhitelist TO CmdAllowlist")
         If My.Settings.Mail_CmdWhitelist <> "" AndAlso My.Settings.Mail_CmdWhitelist <> "(deprecated)" Then
             AddMailkey("me", My.Settings.Mail_CmdWhitelist, My.Settings.Mail_CmdKey)
             My.Settings.Mail_CmdWhitelist = "(deprecated)"
@@ -170,27 +171,27 @@ Module modMail
     End Function
 
     ''' <summary>
-    ''' This function returns the CmdKey of a CmdWhitelist email.
+    ''' This function returns the CmdKey of a CmdAllowlist email.
     ''' </summary>
-    ''' <param name="strCmdWhitelist">Whitelist entry to look for</param>
-    ''' <returns>Matching key for whitelist</returns>
-    Function GetCmdKeyFromWhitelist(ByVal strCmdWhitelist) As String
+    ''' <param name="strCmdAllowlist">Allowlist entry to look for</param>
+    ''' <returns>Matching key for allowlist</returns>
+    Function GetCmdKeyFromAllowlist(ByVal strCmdAllowlist) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT CmdKey FROM MAILKEYS WHERE CmdWhitelist = '" & strCmdWhitelist & "'", result)
+        modDatabase.ExecuteReader("SELECT CmdKey FROM MAILKEYS WHERE CmdAllowlist = '" & strCmdAllowlist & "'", result)
         Return result
     End Function
 
     ''' <summary>
     ''' This function returns the nickname of an inbound mail.
     ''' </summary>
-    ''' <param name="strCmdWhitelist">Whitelist entry to look for</param>
+    ''' <param name="strCmdAllowlist">Allowlist entry to look for</param>
     ''' <param name="strCmdKey">Command key to look for</param>
     ''' <returns>Matching nickname for inbound mail</returns>
-    Function GetNicknameFromKey(ByVal strCmdWhitelist, ByVal strCmdKey) As String
+    Function GetNicknameFromKey(ByVal strCmdAllowlist, ByVal strCmdKey) As String
         Dim result As String = ""
 
-        modDatabase.ExecuteReader("SELECT Nickname FROM MAILKEYS WHERE CmdWhitelist = '" & strCmdWhitelist & "' AND CmdKey = '" & strCmdKey & "'", result)
+        modDatabase.ExecuteReader("SELECT Nickname FROM MAILKEYS WHERE CmdAllowlist = '" & strCmdAllowlist & "' AND CmdKey = '" & strCmdKey & "'", result)
         Return result
     End Function
 
@@ -233,7 +234,7 @@ Module modMail
 
             If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
                 ReFrom = CmdFrom.Replace("From: ", "")
-                CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+                CmdKeyLookup = GetCmdKeyFromAllowlist(ReFrom)
                 If CmdKeyLookup <> "" Then
                     If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
                         CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
@@ -316,8 +317,8 @@ Module modMail
 
             ' TODO: Upgrade These
             If My.Settings.Mail_CmdWhitelist = "" Then
-                My.Application.Log.WriteEntry("No command whitelist set, asking for it")
-                My.Settings.Mail_CmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Mail Command Whitelist")
+                My.Application.Log.WriteEntry("No command allowlist set, asking for it")
+                My.Settings.Mail_CmdWhitelist = InputBox("Enter an email header which is allowed to issue commands to this system.", "Mail Command Allowlist")
             End If
 
             If My.Settings.Mail_CmdKey = "" Then
@@ -415,7 +416,7 @@ Module modMail
 
             If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" Then
                 ReFrom = CmdFrom.Replace("From: ", "")
-                CmdKeyLookup = GetCmdKeyFromWhitelist(ReFrom)
+                CmdKeyLookup = GetCmdKeyFromAllowlist(ReFrom)
                 If CmdKeyLookup <> "" Then
                     If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
                         CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)

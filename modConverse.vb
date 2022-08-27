@@ -202,6 +202,8 @@ Module modConverse
                     End If
                 Case "get"
                     Select Case inputData(1)
+                        Case "applist"
+                            strCommandResponse = modComputer.GetInstalledSoftware()
                         Case "directions"
                             If inputData(2) = "to" Then
                                 modGPS.DirectionsDestination = strInputString.Replace("get directions to ", "")

@@ -1,4 +1,5 @@
-﻿Imports System.Management
+﻿Imports Microsoft.Win32
+Imports System.Management
 Imports System.Runtime.InteropServices
 
 ' modComputer cannot be disabled
@@ -80,6 +81,21 @@ Module modComputer
 
         My.Application.Log.WriteEntry("Running Processes: " & GetProcessList())
     End Sub
+
+    Function GetInstalledSoftware() As String
+        Dim ParentKey As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\MICROSOFT\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products")
+        Dim count As Integer = 0
+        Dim ChildKey As RegistryKey
+
+        For Each child As String In ParentKey.GetSubKeyNames()
+            ChildKey = ParentKey.OpenSubKey(child).OpenSubKey("InstallProperties")
+            If Not ChildKey Is Nothing Then
+                Console.WriteLine(ChildKey.GetValue("DisplayName").ToString & " " & ChildKey.GetValue("DisplayVersion").ToString & " " & ChildKey.GetValue("Publisher").ToString & " " & ChildKey.GetValue("InstallDate").ToString)
+            End If
+        Next
+
+        Return "Retrieved"
+    End Function
 
     Sub AddressChangedCallback(sender As Object, e As EventArgs)
         Dim NetworkInterfaces() As Net.NetworkInformation.NetworkInterface = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces()

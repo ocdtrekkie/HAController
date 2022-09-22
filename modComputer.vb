@@ -90,7 +90,7 @@ Module modComputer
         For Each child As String In ParentKey.GetSubKeyNames()
             ChildKey = ParentKey.OpenSubKey(child).OpenSubKey("InstallProperties")
             If Not ChildKey Is Nothing Then
-                Console.WriteLine(ChildKey.GetValue("DisplayName").ToString & " " & ChildKey.GetValue("DisplayVersion").ToString & " " & ChildKey.GetValue("Publisher").ToString & " " & ChildKey.GetValue("InstallDate").ToString)
+                My.Application.Log.WriteEntry(ChildKey.GetValue("DisplayName").ToString & " " & ChildKey.GetValue("DisplayVersion").ToString & " " & ChildKey.GetValue("Publisher").ToString & " " & ChildKey.GetValue("InstallDate").ToString)
             End If
         Next
 

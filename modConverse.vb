@@ -129,7 +129,7 @@ Module modConverse
                         Case Else
                             strCommandResponse = "Module or feature not found"
                     End Select
-                Case "download"
+                Case "download", "save"
                     If inputData(1) = "video" Then
                         strCommandResponse = modComputer.SaveVideo(inputData(2))
                     End If

@@ -14,6 +14,7 @@
         My.Settings.Ping_Enable = True
         My.Application.Log.WriteEntry("Ping module is enabled")
         Load()
+        GetPublicIPAddress()
         Return "Ping module enabled"
     End Function
 
@@ -68,12 +69,17 @@
 
         response = Ping(My.Settings.Ping_InternetCheckAddress)
         If response.StartsWith("Reply from") Then
-            My.Application.Log.WriteEntry(response, TraceEventType.Verbose)
+            If modGlobal.IsOnline = False Then
+                My.Application.Log.WriteEntry("System is now connected to the Internet", TraceEventType.Information)
+                GetPublicIPAddress()
+            End If
             modGlobal.IsOnline = True
         ElseIf response = "Ping disabled" Then
             ' Do nothing, Ping is disabled
         Else
-            My.Application.Log.WriteEntry(response, TraceEventType.Warning)
+            If modGlobal.IsOnline = True Then
+                My.Application.Log.WriteEntry("System is not connected to the Internet", TraceEventType.Warning)
+            End If
             modGlobal.IsOnline = False
         End If
     End Sub

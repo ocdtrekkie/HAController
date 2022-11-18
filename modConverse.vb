@@ -520,7 +520,7 @@ Module modConverse
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
                         Case "pipe"
-                            modIpcClient.Load()
+                            modIpcClient.Send()
                             strCommandResponse = "Acknowledged"
                         Case "syncmesg"
                             modSync.SendMessage(inputData(2), "message", "hello!")

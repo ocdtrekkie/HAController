@@ -25,6 +25,7 @@ Public Module modGlobal
             LoadModuleTasks.Add(Task.Run(Function() modPihole.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modLibrary.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modSync.Load())) 'Dependencies: None
+            LoadModuleTasks.Add(Task.Run(Sub() modIpcClient.Load())) 'Dependencies: None
 
             Task.WaitAll(LoadModuleTasks.ToArray())
 
@@ -81,6 +82,7 @@ Public Module modGlobal
     End Sub
 
     Sub UnloadModules()
+        modIpcClient.Unload()
         modMail.Unload()
         modSync.Unload()
         modOpenWeatherMap.Unload()

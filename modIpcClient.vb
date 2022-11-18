@@ -8,11 +8,10 @@ Module modIpcClient
 
     Public Sub Load()
         sender = New NamedPipeClient()
-        sender.Start()
     End Sub
 
     Public Sub Unload()
-        sender.Stop()
+        
     End Sub
 
     Public Sub Send()
@@ -22,14 +21,6 @@ Module modIpcClient
     Public Class NamedPipeClient
         Implements IIpcClient
         Private client As NamedPipeClientStream
-
-        Public Sub Start() Implements IIpcClient.Start
-
-        End Sub
-
-        Public Sub [Stop]() Implements IIpcClient.Stop
-            client.Dispose()
-        End Sub
 
         Public Sub Send(ByVal data As String) Implements IIpcClient.Send
             client = New NamedPipeClientStream(".", "XRFAgentCommandServer", PipeDirection.Out)
@@ -41,8 +32,6 @@ Module modIpcClient
     End Class
 
     Interface IIpcClient
-        Sub Start()
-        Sub [Stop]()
         Sub Send(ByVal data As String)
     End Interface
 
@@ -51,7 +40,6 @@ Module modIpcClient
 
         Sub Start()
         Sub [Stop]()
-        Sub Send(ByVal data As String)
         Event Received As EventHandler(Of DataReceivedEventArgs)
     End Interface
 

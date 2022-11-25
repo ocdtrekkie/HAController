@@ -1,12 +1,14 @@
-﻿Module modSync
+﻿Imports System.Text.Json
+
+Module modSync
     Dim tmrSyncHeartbeatTimer As System.Timers.Timer
 
     Sub InitialHeartbeatHandler()
-        SendMessage("server", "heartbeat", "none")
+        SendMessage("server", "fetch", "none")
     End Sub
 
     Sub SendHeartbeatHandler(sender As Object, e As EventArgs)
-        SendMessage("server", "heartbeat", "none")
+        SendMessage("server", "fetch", "none")
     End Sub
 
     Function ClearSyncCredentials() As String
@@ -98,6 +100,16 @@
                         Dim OutputStream As String = Reader.ReadToEnd()
 
                         My.Application.Log.WriteEntry("Sync Response: " & CStr(CInt(Output.StatusCode)) & " " & Output.StatusCode.ToString & " " & OutputStream)
+
+                        If OutputStream <> "[]" Then
+                            Using MessagesReceived = JsonDocument.Parse(OutputStream)
+                                For Each element As JsonElement In MessagesReceived.RootElement.EnumerateArray()
+                                    Dim strSource As String = element.GetProperty("source").ToString()
+                                    Dim strMesg As String = element.GetProperty("mesg").ToString()
+                                    modConverse.Interpret(strMesg, True, False)
+                                Next
+                            End Using
+                        End If
                     End Using
                     Output.Close()
                     Return "OK"

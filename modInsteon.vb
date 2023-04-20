@@ -1648,6 +1648,10 @@
                         Return "2674-432 LED Bulb PAR38 Bayonet (EU)"
                     Case 79
                         Return "2674-532 LED Bulb PAR38 Bayonet (AUS/NZ)"
+                    Case 87
+                        Return "PS01 i3 Paddle"
+                    Case 88
+                        Return "DS01 i3 Dial"
                     Case Else
                         Return "Unrecognized Dimmer, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select
@@ -1689,6 +1693,8 @@
                         Return "2634-222 Dual-Band Outdoor On/Off Module"
                     Case 57
                         Return "2663-222 On/Off Outlet"
+                    Case 63
+                        Return "WR01 i3 Outlet"
                     Case Else
                         Return "Unrecognized Appliance Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
                 End Select

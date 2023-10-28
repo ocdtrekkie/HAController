@@ -272,5 +272,8 @@
     <Setting Name="Pihole_APIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Insteon_SumpAlarmAddr" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

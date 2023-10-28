@@ -527,6 +527,8 @@
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
                     ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
+                    ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
+                        strTemp = strTemp & InsteonSumpAlarmResponse(Command1)
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
@@ -1965,6 +1967,22 @@
                 Return "Sensor Malfunction Detected"
             Case 10
                 Return "Heartbeat Detected"
+            Case Else
+                Return "New or Unknown Message Detected"
+        End Select
+    End Function
+
+    Function InsteonSumpAlarmResponse(ByVal ToBit As Byte) As String
+        Select Case ToBit
+            Case 17
+                My.Application.Log.WriteEntry("ALERT: Sump Pump Alarm Triggered!", TraceEventType.Warning)
+                modSpeech.Say("Sump pump alarm triggered")
+                modMail.Send("Sump pump alarm triggered", "Sump pump alarm triggered")
+                Return "Sump Pump Alarm Detected"
+            Case 19
+                My.Application.Log.WriteEntry("CANCEL ALERT: Sump Pump No Longer in Alarm State", TraceEventType.Information)
+                modMail.Send("Sump pump no longer in alarm state", "Sump pump no longer in alarm state")
+                Return "All Clear Detected"
             Case Else
                 Return "New or Unknown Message Detected"
         End Select

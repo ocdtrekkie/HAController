@@ -10,6 +10,7 @@ These are devices the code has been tested to work with.
 * 2421 - TriggerLinc _(same as 2843-222)_
 * 2441TH - Thermostat
 * 2450 - I/O Linc **as "BuzzLinc"**
+* 2450 - I/O Linc **as Sump Pump Alarm**
 * 2450 - I/O Linc **as Garage Door & Status Kit (74551)[1]**
 * 2477D - SwitchLinc Dual-Band Dimmer Switch
 * 2477S - SwitchLinc Dual-Band On/Off Switch

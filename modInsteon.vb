@@ -1550,7 +1550,7 @@
                     Case 18
                         Return "2342-222 Mini Remote - 8 Scene | 2444A2WH8 RemoteLinc 2"
                     Case Else
-                        Return "Unrecognized Controller, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Controller, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 1
                 Select Case SubCat
@@ -1636,6 +1636,8 @@
                         Return "2672-422 LED Bulb 240V Edison (EU)"
                     Case 60
                         Return "2672-522 LED Bulb 240V Edison (AUS/NZ)"
+                    Case 66
+                        Return "2334-232 Dimmer Keypad (6-Button)"
                     Case 73
                         Return "2674-222 LED Bulb PAR38 Edison"
                     Case 74
@@ -1655,7 +1657,7 @@
                     Case 88
                         Return "DS01 i3 Dial"
                     Case Else
-                        Return "Unrecognized Dimmer, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Dimmer, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 2
                 Select Case SubCat
@@ -1698,7 +1700,7 @@
                     Case 63
                         Return "WR01 i3 Outlet"
                     Case Else
-                        Return "Unrecognized Appliance Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Appliance Control, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 3
                 Select Case SubCat
@@ -1743,14 +1745,14 @@
                     Case 58
                         Return "2243-222 Insteon Hub Pro"
                     Case Else
-                        Return "Unrecognized Interface, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Interface, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 4
                 Select Case SubCat
                     Case 0
                         Return "EZRain Sprinkler Controller"
                     Case Else
-                        Return "Unrecognized Irrigation Controller, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Irrigation Controller, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 5
                 Select Case SubCat
@@ -1771,10 +1773,10 @@
                     Case 18
                         Return "2732-532 Wireless Thermostat (AUS/NZ)"
                     Case Else
-                        Return "Unrecognized Temperature Control, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Temperature Control, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 6
-                Return "Unrecognized Pool/Spa Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Pool/Spa Control Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 7
                 Select Case SubCat
                     Case 0
@@ -1800,18 +1802,18 @@
                     Case 30
                         Return "2868-222 Siren"
                     Case Else
-                        Return "Unrecognized Sensor/Actuator Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Sensor/Actuator Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 8
-                Return "Unrecognized Home Entertainment Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Home Entertainment Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 10
-                Return "Unrecognized Appliance Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Appliance Control Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 11
-                Return "Unrecognized Plumbing Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Plumbing Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 12
-                Return "Unrecognized Communication Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Communication Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 13
-                Return "Unrecognized Computer Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Computer Control Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 14
                 Select Case SubCat
                     Case 0
@@ -1823,7 +1825,7 @@
                     Case 3
                         Return "2444-522 Micro Open/Close Motor Control Module (AUS/NZ)"
                     Case Else
-                        Return "Unrecognized Window Covering Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Window Covering Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 15
                 Select Case SubCat
@@ -1842,7 +1844,7 @@
                     Case 6
                         Return "2458A1 MorningLinc"
                     Case Else
-                        Return "Unrecognized Access Control Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Access Control Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 16
                 Select Case SubCat
@@ -1873,22 +1875,22 @@
                     Case 22
                         Return "2844-222 Motion Sensor II"
                     Case Else
-                        Return "Unrecognized Security/Safety Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                        Return "Unrecognized Security/Safety Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
                 End Select
             Case 17
-                Return "Unrecognized Surveillance Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Surveillance Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 18
-                Return "Unrecognized Automotive Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Automotive Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 19
-                Return "Unrecognized Pet Care Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Pet Care Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 20
-                Return "Unrecognized Toy, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Toy, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 21
-                Return "Unrecognized Timekeeping Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Timekeeping Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case 22
-                Return "Unrecognized Holiday Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Holiday Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
             Case Else
-                Return "Unrecognized Device, DevCat: " + Hex(DevCat) + " SubCat: " + Hex(SubCat)
+                Return "Unrecognized Device, DevCat: 0x" + Hex(DevCat) + " SubCat: 0x" + Hex(SubCat)
         End Select
     End Function
 

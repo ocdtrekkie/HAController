@@ -21,17 +21,17 @@ Public Module modGlobal
             LoadModuleTasks.Add(Task.Run(Function() modDreamCheeky.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modStreamDeck.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modMusic.Load())) 'Dependencies: None
-            LoadModuleTasks.Add(Task.Run(Function() modComputer.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modPihole.Load())) 'Dependencies: None
             LoadModuleTasks.Add(Task.Run(Function() modLibrary.Load())) 'Dependencies: None
-            LoadModuleTasks.Add(Task.Run(Function() modSync.Load())) 'Dependencies: None
 
             Task.WaitAll(LoadModuleTasks.ToArray())
 
+            LoadModuleTasks.Add(Task.Run(Function() modComputer.Load())) 'Dependencies: Database
             LoadModuleTasks.Add(Task.Run(Function() modMail.Load())) 'Dependencies: Database
             LoadModuleTasks.Add(Task.Run(Function() modOpenWeatherMap.Load())) 'Dependencies: Database
             LoadModuleTasks.Add(Task.Run(Function() modMatrixLCD.Load())) 'Dependencies: Speech
             LoadModuleTasks.Add(Task.Run(Function() modGPS.Load())) 'Dependencies: Database
+            LoadModuleTasks.Add(Task.Run(Function() modSync.Load())) 'Dependencies: Database
 
             Task.WaitAll(LoadModuleTasks.ToArray())
 

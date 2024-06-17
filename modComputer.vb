@@ -128,14 +128,16 @@ Module modComputer
     End Function
 
     Function GetOSVersion() As String
-        Dim strBuild1, strBuild2, strBuild3, strBuild4 As String
+        Dim strBuild1, strBuild2, strBuild3, strBuild4, strWinVer As String
         Dim regKey As Microsoft.Win32.RegistryKey
         regKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion")
         strBuild1 = regKey.GetValue("CurrentMajorVersionNumber")
         strBuild2 = regKey.GetValue("CurrentMinorVersionNumber")
         strBuild3 = regKey.GetValue("CurrentBuild")
         strBuild4 = regKey.GetValue("UBR")
-        Return strBuild1 & "." & strBuild2 & "." & strBuild3 & "." & strBuild4
+        strWinVer = strBuild1 & "." & strBuild2 & "." & strBuild3 & "." & strBuild4
+        modDatabase.Execute("INSERT INTO CONFIG (Key, Value) VALUES('System_LastKnownWindowsVersion', '" & strWinVer & "') ON CONFLICT(Key) DO UPDATE SET Value=excluded.Value")
+        Return strWinVer
     End Function
 
     Function GetProcessList() As String

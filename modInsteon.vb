@@ -1636,6 +1636,8 @@
                         Return "2672-422 LED Bulb 240V Edison (EU)"
                     Case 60
                         Return "2672-522 LED Bulb 240V Edison (AUS/NZ)"
+                    Case 65
+                        Return "2334-222 Dimmer Keypad (8-Button)"
                     Case 66
                         Return "2334-232 Dimmer Keypad (6-Button)"
                     Case 73

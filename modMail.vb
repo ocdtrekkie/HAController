@@ -4,6 +4,7 @@ Imports System.Net
 Imports System.Net.Mail
 Imports System.Net.Security
 Imports System.Net.Sockets
+Imports System.Security.Authentication
 Imports System.Text
 
 Module modMail
@@ -468,6 +469,8 @@ Module modMail
                     oClient.Send(oMsg)
                 Catch SmtpEx As SmtpException
                     My.Application.Log.WriteException(SmtpEx)
+                Catch AuthEx As AuthenticationException
+                    My.Application.Log.WriteException(AuthEx)
                 End Try
             End SyncLock
         Else

@@ -49,7 +49,7 @@ Module modSync
     Function GetLocalMessage() As String
         Dim strLocalMesg As String = ""
         modDatabase.ExecuteReader("SELECT Mesg FROM LOCALQUEUE WHERE Src = 'sync' AND Auth = 'server' AND Dest = 'hac' AND Recv = 0 LIMIT 1", strLocalMesg)
-        modDatabase.Execute("UPDATE LOCALQUEUE SET Recv = 1 WHERE Src = 'sync' AND Auth = 'server' AND Dest = 'hac' AND Recv = 0 AND Mesg = '" And strLocalMesg And "'")
+        modDatabase.Execute("UPDATE LOCALQUEUE SET Recv = 1 WHERE Src = 'sync' AND Auth = 'server' AND Dest = 'hac' AND Recv = 0 AND Mesg = '" + strLocalMesg + "'")
         modConverse.Interpret(strLocalMesg, True, False)
         Return "OK"
     End Function

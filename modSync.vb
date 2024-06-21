@@ -4,11 +4,19 @@ Module modSync
     Dim tmrSyncHeartbeatTimer As System.Timers.Timer
 
     Sub InitialHeartbeatHandler()
-        SendMessage("server", "fetch", "none")
+        If My.Settings.Sync_LocalQueueMode = False Then
+            SendMessage("server", "fetch", "none")
+        Else
+            GetLocalMessage()
+        End If
     End Sub
 
     Sub SendHeartbeatHandler(sender As Object, e As EventArgs)
-        SendMessage("server", "fetch", "none")
+        If My.Settings.Sync_LocalQueueMode = False Then
+            SendMessage("server", "fetch", "none")
+        Else
+            GetLocalMessage()
+        End If
     End Sub
 
     Function ClearSyncCredentials() As String
@@ -36,6 +44,14 @@ Module modSync
         My.Application.Log.WriteEntry("Sync module is enabled")
         Load()
         Return "Sync module enabled"
+    End Function
+
+    Function GetLocalMessage() As String
+        Dim strLocalMesg As String = ""
+        modDatabase.ExecuteReader("SELECT Mesg FROM LOCALQUEUE WHERE Src = 'sync' AND Auth = 'server' AND Dest = 'hac' AND Recv = 0 LIMIT 1", strLocalMesg)
+        modDatabase.Execute("UPDATE LOCALQUEUE SET Recv = 1 WHERE Src = 'sync' AND Auth = 'server' AND Dest = 'hac' AND Recv = 0 AND Mesg = '" And strLocalMesg And "'")
+        modConverse.Interpret(strLocalMesg, True, False)
+        Return "OK"
     End Function
 
     Function Load() As String

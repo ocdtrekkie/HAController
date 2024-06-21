@@ -97,6 +97,9 @@ Module modConverse
                             strCommandResponse = modInsteon.Disable()
                         Case "library"
                             strCommandResponse = modLibrary.Disable()
+                        Case "localqueue"
+                            My.Settings.Sync_LocalQueueMode = False
+                            strCommandResponse = "Local queue mode disabled"
                         Case "mail"
                             strCommandResponse = modMail.Disable()
                         Case "mapquest"
@@ -156,6 +159,9 @@ Module modConverse
                             strCommandResponse = modInsteon.Enable()
                         Case "library"
                             strCommandResponse = modLibrary.Enable()
+                        Case "localqueue"
+                            My.Settings.Sync_LocalQueueMode = True
+                            strCommandResponse = "Local queue mode enabled"
                         Case "mail"
                             strCommandResponse = modMail.Enable()
                         Case "mapquest"

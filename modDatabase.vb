@@ -6,9 +6,10 @@ Module modDatabase
     Public conn As SQLiteConnection = New SQLiteConnection
 
     Sub CreateDb()
-        Execute("CREATE TABLE If Not EXISTS ""CONFIG"" (""Key"" varchar(100) primary key not null ,""Value"" varchar )")
+        Execute("CREATE TABLE IF NOT EXISTS ""CONFIG"" (""Key"" varchar(100) primary key not null ,""Value"" varchar )")
         Execute("CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT UNIQUE)")
         Execute("CREATE TABLE IF NOT EXISTS ENVIRONMENT(Id INTEGER PRIMARY KEY, Date TEXT, Source TEXT, Location TEXT, Temperature INTEGER, Humidity INTEGER, Condition TEXT)")
+        Execute("CREATE TABLE IF NOT EXISTS ""LOCALQUEUE"" (""Id"" integer primary key autoincrement not null ,""Src"" varchar ,""Auth"" varchar ,""Dest"" varchar ,""Mesg"" varchar , ""Recv"" integer )")
         Execute("CREATE TABLE IF NOT EXISTS LOCATION(Id INTEGER PRIMARY KEY, Date TEXT, Latitude REAL, Longitude REAL, Speed REAL)")
         Execute("CREATE TABLE IF NOT EXISTS PERSONS(Id INTEGER PRIMARY KEY, Date TEXT, FirstName TEXT, LastName TEXT, Nickname TEXT, PersonType INTEGER, Email TEXT, PhoneNumber TEXT, PhoneCarrier INTEGER, MsgPreference INTEGER, Address TEXT, Gender INTEGER, IsSocial INTEGER)")
         Execute("CREATE TABLE IF NOT EXISTS PLACES(Id INTEGER PRIMARY KEY, Date TEXT, Name TEXT, Location TEXT)")

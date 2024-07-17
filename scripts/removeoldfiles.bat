@@ -14,5 +14,17 @@ del /q C:\HAC\Quartz.pdb
 del /q C:\HAC\Quartz.xml
 del /q C:\HAC\System.Data.SQLite.EF6.dll
 del /q C:\HAC\System.Data.SQLite.Linq.dll
+del /q C:\HAC\scripts\agent0.zip
+del /q C:\HAC\scripts\agent1.zip
+del /q C:\HAC\scripts\agent2.zip
+del /q C:\HAC\scripts\agent3.zip
+del /q C:\HAC\scripts\agent4.zip
+del /q C:\HAC\scripts\agent5.zip
+del /q C:\HAC\scripts\agent6.zip
+del /q C:\HAC\scripts\agent7.zip
+del /q C:\HAC\scripts\agent8.zip
+del /q C:\HAC\scripts\agent9.zip
+del /q C:\HAC\scripts\agent10.zip
+del /q C:\HAC\scripts\agent11.zip
 powershell -c echo `a
 exit

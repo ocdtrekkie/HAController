@@ -18,6 +18,7 @@ These are devices the code has been tested to work with.
 * 2635-222 - On/Off Module
 * 2672-222 - LED Bulb 240V Edison
 * 2843-222 - Open/Close Sensor _(same as 2421)_
+* 2852-222 - Water Leak Sensor
 * 2867-222 - Alert Module
 * 2868-222 - Siren
 * 2982-222 - Smoke Bridge

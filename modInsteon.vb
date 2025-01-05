@@ -529,8 +529,8 @@
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
                         strTemp = strTemp & InsteonSumpAlarmResponse(Command1)
-                    ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsWaterLeakDetector(FromAddress) Then
-                        strTemp = strTemp & InsteonWaterLeakResponse(Command1)
+                    ElseIf Flags = 207 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsWaterLeakDetector(FromAddress) Then
+                        strTemp = strTemp & InsteonWaterLeakResponse(Command1, Command2)
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
@@ -1218,13 +1218,13 @@
     ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
     ''' <returns>True if in database as a water leak detector</returns>
     Function IsWaterLeakDetector(ByVal strAddress As String) As Boolean
-        Dim devcat As String = ""
-        Dim subcat As String = ""
+        Dim devcat As Integer = 0
+        Dim subcat As Integer = 0
 
-        modDatabase.ExecuteReader("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
-        modDatabase.ExecuteReader("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
+        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
+        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
 
-        If devcat = "16" AndAlso subcat = "8" Then
+        If devcat = 16 AndAlso subcat = 8 Then
             Return True
         Else
             Return False
@@ -2072,13 +2072,29 @@
         End Select
     End Function
 
-    Function InsteonWaterLeakResponse(ByVal ToBit As Byte) As String
+    Function InsteonWaterLeakResponse(ByVal ToBit As Byte, ByVal StatBit As Byte) As String
         Select Case ToBit
             Case 17
-                My.Application.Log.WriteEntry("ALERT: Water Leak Detected!", TraceEventType.Warning)
-                modSpeech.Say("Water leak detected")
-                modMail.Send("Water leak detected", "Water leak detected")
-                Return "Water Leak Detected"
+                Select Case StatBit
+                    Case 1
+                        My.Application.Log.WriteEntry("Leak sensor reports dry", TraceEventType.Information)
+                        Return "Leak sensor reports dry"
+                    Case 2
+                        My.Application.Log.WriteEntry("ALERT: Water Leak Detected!", TraceEventType.Warning)
+                        modSpeech.Say("Water leak detected")
+                        modMail.Send("Water leak detected", "Water leak detected")
+                        Return "Leak sensor reports wet"
+                    Case 4
+                        My.Application.Log.WriteEntry("Leak sensor heartbeat, dry", TraceEventType.Information)
+                        Return "Leak sensor reports dry"
+                End Select
+            Case 19
+                Select Case StatBit
+                    Case 4
+                        My.Application.Log.WriteEntry("Leak sensor heartbeat, wet", TraceEventType.Warning)
+                        modMail.Send("Water leak detected", "Water leak detected")
+                        Return "Leak sensor reports wet"
+                End Select
             Case Else
                 Return "New or Unknown Message Detected"
         End Select

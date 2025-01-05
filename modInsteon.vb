@@ -2087,6 +2087,8 @@
                     Case 4
                         My.Application.Log.WriteEntry("Leak sensor heartbeat, dry", TraceEventType.Information)
                         Return "Leak sensor reports dry"
+                    Case Else
+                        Return "New or Unknown Message Detected"
                 End Select
             Case 19
                 Select Case StatBit
@@ -2094,6 +2096,8 @@
                         My.Application.Log.WriteEntry("Leak sensor heartbeat, wet", TraceEventType.Warning)
                         modMail.Send("Water leak detected", "Water leak detected")
                         Return "Leak sensor reports wet"
+                    Case Else
+                        Return "New or Unknown Message Detected"
                 End Select
             Case Else
                 Return "New or Unknown Message Detected"

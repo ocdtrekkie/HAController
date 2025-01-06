@@ -525,7 +525,7 @@
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr OrElse FromAddress = My.Settings.Insteon_BackDoorSensorAddr) AndAlso ToAddress = "0.0.1" Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
-                    ElseIf FromAddress = My.Settings.Insteon_SmokeBridgeAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then ' TODO: Detect this by device model
+                    ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsSmokeBridge(FromAddress) Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
                         strTemp = strTemp & InsteonSumpAlarmResponse(Command1)
@@ -662,7 +662,7 @@
                                     strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1)
                                 End If
 
-                                If FromAddress = My.Settings.Insteon_SmokeBridgeAddr Then ' TODO: Detect this by device model
+                                If IsSmokeBridge(FromAddress) Then
                                     strTemp = strTemp & " Smoke Bridge: " & InsteonSmokeBridgeResponse(Group)
                                 End If
                                 My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
@@ -1210,6 +1210,25 @@
             End If
         End If
         Return False
+    End Function
+
+    ''' <summary>
+    ''' Returns true if address is for a Smoke Bridge
+    ''' </summary>
+    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
+    ''' <returns>True if in database as a smoke bridge</returns>
+    Function IsSmokeBridge(ByVal strAddress As String) As Boolean
+        Dim devcat As Integer = 0
+        Dim subcat As Integer = 0
+
+        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
+        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
+
+        If devcat = 16 AndAlso subcat = 10 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     ''' <summary>

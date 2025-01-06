@@ -62,9 +62,6 @@
     <Setting Name="Mail_Username" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Insteon_SmokeBridgeAddr" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="Insteon_BackDoorSensorAddr" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

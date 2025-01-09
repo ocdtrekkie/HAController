@@ -89,18 +89,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Insteon_DoorSensorAddr() As String
-            Get
-                Return CType(Me("Insteon_DoorSensorAddr"),String)
-            End Get
-            Set
-                Me("Insteon_DoorSensorAddr") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property Insteon_Enable() As Boolean
             Get
@@ -287,30 +275,6 @@ Namespace My
             End Get
             Set
                 Me("Mail_Username") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Insteon_BackDoorSensorAddr() As String
-            Get
-                Return CType(Me("Insteon_BackDoorSensorAddr"),String)
-            End Get
-            Set
-                Me("Insteon_BackDoorSensorAddr") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Insteon_WakeLightAddr() As String
-            Get
-                Return CType(Me("Insteon_WakeLightAddr"),String)
-            End Get
-            Set
-                Me("Insteon_WakeLightAddr") = value
             End Set
         End Property
         

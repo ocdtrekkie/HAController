@@ -523,7 +523,7 @@
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
-                    ElseIf (FromAddress = My.Settings.Insteon_DoorSensorAddr OrElse FromAddress = My.Settings.Insteon_BackDoorSensorAddr) AndAlso ToAddress = "0.0.1" Then ' TODO: Detect this by device model
+                    ElseIf ToAddress = "0.0.1" AndAlso IsDoorSensor(FromAddress) Then
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
                     ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsSmokeBridge(FromAddress) Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
@@ -1210,6 +1210,25 @@
             End If
         End If
         Return False
+    End Function
+
+    ''' <summary>
+    ''' Returns true if address is for a Door Sensor
+    ''' </summary>
+    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
+    ''' <returns>True if in database as a door sensor</returns>
+    Function IsDoorSensor(ByVal strAddress As String) As Boolean
+        Dim devcat As Integer = 0
+        Dim subcat As Integer = 0
+
+        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
+        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
+
+        If devcat = 16 AndAlso (subcat = 2 OrElse subcat = 17) Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     ''' <summary>

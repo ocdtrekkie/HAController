@@ -418,6 +418,7 @@
         Dim X10Address As String
         Dim FromAddress As String
         Dim ToAddress As String
+        Dim DeviceType As String = ""
         Dim IAddress As Short ' Insteon index number
         Dim Flags As Byte
         Dim Command1 As Byte
@@ -519,17 +520,20 @@
                         Case 224 ' 111 NAK group cleanup direct message
                             strTemp = strTemp & " (NAK Group cleanup direct) "
                     End Select
+                    If x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
+                        DeviceType = GetInsteonDeviceTypeFromDatabase(FromAddress)
+                    End If
                     If (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 > 109 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
-                    ElseIf ToAddress = "0.0.1" AndAlso IsDoorSensor(FromAddress) Then
+                    ElseIf ToAddress = "0.0.1" AndAlso DeviceType = "DoorSensor" Then
                         strTemp = strTemp & InsteonDoorSensorResponse(Command1, Command2)
-                    ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsSmokeBridge(FromAddress) Then
+                    ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "SmokeBridge" Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
                     ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
                         strTemp = strTemp & InsteonSumpAlarmResponse(Command1)
-                    ElseIf Flags = 207 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso IsWaterLeakDetector(FromAddress) Then
+                    ElseIf Flags = 207 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "LeakSensor" Then
                         strTemp = strTemp & InsteonWaterLeakResponse(Command1, Command2)
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
@@ -662,7 +666,7 @@
                                     strTemp = strTemp & FromName & " " & modInsteon.InsteonCommandLookup(Command1)
                                 End If
 
-                                If IsSmokeBridge(FromAddress) Then
+                                If DeviceType = "SmokeBridge" Then
                                     strTemp = strTemp & " Smoke Bridge: " & InsteonSmokeBridgeResponse(Group)
                                 End If
                                 My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
@@ -1213,63 +1217,6 @@
     End Function
 
     ''' <summary>
-    ''' Returns true if address is for a Door Sensor
-    ''' </summary>
-    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
-    ''' <returns>True if in database as a door sensor</returns>
-    Function IsDoorSensor(ByVal strAddress As String) As Boolean
-        Dim devcat As Integer = 0
-        Dim subcat As Integer = 0
-
-        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
-        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
-
-        If devcat = 16 AndAlso (subcat = 2 OrElse subcat = 17) Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    ''' <summary>
-    ''' Returns true if address is for a Smoke Bridge
-    ''' </summary>
-    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
-    ''' <returns>True if in database as a smoke bridge</returns>
-    Function IsSmokeBridge(ByVal strAddress As String) As Boolean
-        Dim devcat As Integer = 0
-        Dim subcat As Integer = 0
-
-        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
-        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
-
-        If devcat = 16 AndAlso subcat = 10 Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    ''' <summary>
-    ''' Returns true if address is for a Water Leak Detector.
-    ''' </summary>
-    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
-    ''' <returns>True if in database as a water leak detector</returns>
-    Function IsWaterLeakDetector(ByVal strAddress As String) As Boolean
-        Dim devcat As Integer = 0
-        Dim subcat As Integer = 0
-
-        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
-        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
-
-        If devcat = 16 AndAlso subcat = 8 Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    ''' <summary>
     ''' Returns true if input is a proper X10 address.
     ''' </summary>
     ''' <param name="strAddress">X10 address in X0 format</param>
@@ -1414,6 +1361,35 @@
 
         modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Insteon'", result)
         Return result
+    End Function
+
+    ''' <summary>
+    ''' Returns a string representing the type of device, used for identifying response behavior for certain device types
+    ''' </summary>
+    ''' <param name="strAddress">Insteon address in XX.XX.XX format</param>
+    ''' <returns>The type of device</returns>
+    Function GetInsteonDeviceTypeFromDatabase(ByVal strAddress As String) As String
+        Dim devcat As Integer = 0
+        Dim subcat As Integer = 0
+
+        modDatabase.ExecuteScalar("SELECT DevCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", devcat)
+        modDatabase.ExecuteScalar("SELECT SubCat FROM INSTEON_DEVICES WHERE Address = '" + strAddress + "'", subcat)
+
+        Select Case devcat
+            Case 16
+                Select Case subcat
+                    Case 0, 10
+                        Return "SmokeBridge"
+                    Case 2, 6, 7, 17, 20, 21
+                        Return "DoorSensor"
+                    Case 8
+                        Return "LeakSensor"
+                    Case Else
+                        Return "Other"
+                End Select
+            Case Else
+                Return "Other"
+        End Select
     End Function
 
     ''' <summary>

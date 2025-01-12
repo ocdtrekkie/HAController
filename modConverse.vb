@@ -424,6 +424,12 @@ Module modConverse
                     If RemoteCommand = True OrElse CommandLineArg = True Then
                         modSpeech.Say(strCommandResponse)
                     End If
+                Case "scan", "search"
+                    If inputData(1) = "for" AndAlso inputData(2) = "roku" Then
+                        ' TODO: Get and use local IP automatically
+                        modRoku.SearchForDevices(inputData(3))
+                        strCommandResponse = "Searching for Roku"
+                    End If
                 Case "send"
                     If inputData(1) = "status" AndAlso inputData(2) = "report" Then
                         strCommandResponse = modGlobal.SendStatusReport()

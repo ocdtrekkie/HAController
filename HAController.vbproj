@@ -97,6 +97,9 @@
     <Reference Include="OpenMacroBoard.SDK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=be9f0b07fc09366f, processorArchitecture=MSIL">
       <HintPath>packages\OpenMacroBoard.SDK.3.0.0\lib\netstandard2.0\OpenMacroBoard.SDK.dll</HintPath>
     </Reference>
+    <Reference Include="Rssdp, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Rssdp.4.0.4\lib\net45\Rssdp.dll</HintPath>
+    </Reference>
     <Reference Include="StreamDeckSharp, Version=3.2.0.0, Culture=neutral, PublicKeyToken=e3da2f522ff1f75c, processorArchitecture=MSIL">
       <HintPath>packages\StreamDeckSharp.3.2.0\lib\netstandard2.0\StreamDeckSharp.dll</HintPath>
     </Reference>
@@ -194,6 +197,7 @@
     <Compile Include="modPihole.vb" />
     <Compile Include="modPing.vb" />
     <Compile Include="modRandom.vb" />
+    <Compile Include="modRoku.vb" />
     <Compile Include="modSpeech.vb" />
     <Compile Include="modMatrixLCD.vb" />
     <Compile Include="modMusic.vb" />

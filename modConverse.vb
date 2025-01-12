@@ -531,6 +531,8 @@ Module modConverse
                         Case "notifications"
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
+                        Case "roku"
+                            strCommandResponse = modRoku.SimpleRokuCommand("family room roku", "Home")
                         Case "syncmesg"
                             modSync.SendMessage(inputData(2), "message", "hello!")
                             strCommandResponse = "Acknowledged"

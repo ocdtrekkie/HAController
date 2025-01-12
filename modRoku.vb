@@ -16,7 +16,7 @@ Public Module modRoku
 
     Function AddRokuDeviceDb(ByVal strAddress As String, ByVal strFriendlyName As String, ByVal strModel As String) As String
         If CheckDbForRoku(strModel) = 0 Then
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES('" & strFriendlyName & " Roku', 'Roku', '" & strModel & "', '" & strFriendlyName & "', '" & strAddress & "')")
+            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES('" & strFriendlyName.ToLower() & " roku', 'Roku', '" & strModel & "', '" & strFriendlyName & "', '" & strAddress & "')")
             Return "Device added"
         Else
             modDatabase.Execute("UPDATE DEVICES SET Address = """ & strAddress & """ WHERE Type = ""Roku"" AND Model = """ & strModel & """")
@@ -35,5 +35,35 @@ Public Module modRoku
             My.Application.Log.WriteEntry(strModel + " is not in the device database")
             Return 0
         End If
+    End Function
+
+    ''' <summary>
+    ''' This function returns the address of a given Roku.
+    ''' </summary>
+    ''' <param name="strNickname">Nickname of device to look for</param>
+    ''' <returns>Roku API address</returns>
+    Function GetRokuAddressFromNickname(ByVal strNickname) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Roku'", result)
+        Return result
+    End Function
+
+    Function SimpleRokuCommand(ByVal strNickname As String, ByVal strCommand As String) As String
+        Try
+            Dim strAddress As String = GetRokuAddressFromNickname(strNickname)
+            Dim RokuCmdRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(strAddress & "keypress/" & strCommand)
+            RokuCmdRequest.Method = "POST"
+            RokuCmdRequest.GetResponse()
+            Return "Command Sent"
+        Catch WebEx As System.Net.WebException
+            If WebEx.Status = Net.WebExceptionStatus.ProtocolError Then
+                Dim response As System.Net.HttpWebResponse = TryCast(WebEx.Response, System.Net.HttpWebResponse)
+                If response.StatusCode = System.Net.HttpStatusCode.Forbidden Then
+                    Return "Roku control by apps is disabled"
+                End If
+            End If
+            Return "Unknown error"
+        End Try
     End Function
 End Module

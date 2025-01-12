@@ -19,7 +19,8 @@ Public Module modRoku
             modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES('" & strFriendlyName & " Roku', 'Roku', '" & strModel & "', '" & strFriendlyName & "', '" & strAddress & "')")
             Return "Device added"
         Else
-            Return "Device already exists"
+            modDatabase.Execute("UPDATE DEVICES SET Address = """ & strAddress & """ WHERE Type = ""Roku"" AND Model = """ & strModel & """")
+            Return "Device already exists, updating address"
         End If
     End Function
 

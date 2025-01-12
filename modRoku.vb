@@ -49,6 +49,24 @@ Public Module modRoku
         Return result
     End Function
 
+    Function PlayYouTubeVideo(ByVal strNickname As String, ByVal strVideoId As String) As String
+        Try
+            Dim strAddress As String = GetRokuAddressFromNickname(strNickname)
+            Dim RokuCmdRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(strAddress & "launch/837?contentId=" & strVideoId)
+            RokuCmdRequest.Method = "POST"
+            RokuCmdRequest.GetResponse()
+            Return "Command Sent"
+        Catch WebEx As System.Net.WebException
+            If WebEx.Status = Net.WebExceptionStatus.ProtocolError Then
+                Dim response As System.Net.HttpWebResponse = TryCast(WebEx.Response, System.Net.HttpWebResponse)
+                If response.StatusCode = System.Net.HttpStatusCode.Forbidden Then
+                    Return "Roku control by apps is disabled"
+                End If
+            End If
+            Return "Unknown error"
+        End Try
+    End Function
+
     Function SimpleRokuCommand(ByVal strNickname As String, ByVal strCommand As String) As String
         Try
             Dim strAddress As String = GetRokuAddressFromNickname(strNickname)

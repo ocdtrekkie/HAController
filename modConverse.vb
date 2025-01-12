@@ -532,7 +532,11 @@ Module modConverse
                             modMail.Send("Test Notification", "Test Notification")
                             strCommandResponse = "Acknowledged"
                         Case "roku"
-                            strCommandResponse = modRoku.SimpleRokuCommand("family room roku", "Home")
+                            If inputData.Length = 3 Then
+                                strCommandResponse = modRoku.PlayYouTubeVideo("family room roku", inputData(2))
+                            Else
+                                strCommandResponse = modRoku.SimpleRokuCommand("family room roku", "Home")
+                            End If
                         Case "syncmesg"
                             modSync.SendMessage(inputData(2), "message", "hello!")
                             strCommandResponse = "Acknowledged"

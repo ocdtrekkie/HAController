@@ -2,7 +2,7 @@
 Imports StreamDeckSharp
 
 Module modStreamDeck
-    Private ActiveStreamDeck As IStreamDeckBoard
+    Private ActiveStreamDeck As IMacroBoard
     Private HoldTimer As New Stopwatch
     Private KeyCount As Integer
 

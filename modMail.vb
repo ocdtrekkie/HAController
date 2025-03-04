@@ -140,6 +140,33 @@ Module modMail
         End If
     End Sub
 
+    Function CheckPurelyMailBalance() As String
+        Try
+            Dim reqUrl As String = "https://purelymail.com/api/v0/checkAccountCredit"
+            Dim req = System.Net.WebRequest.Create(reqUrl)
+            req.Headers.Add("Purelymail-Api-Token", My.Settings.Mail_PurelyMailAPIKey)
+            req.Method = "POST"
+            Dim reqBody As String = "{}"
+            Dim reqBytes As Byte() = Encoding.ASCII.GetBytes(reqBody)
+            req.ContentLength = reqBytes.Length
+            Dim dataStream As Stream = req.GetRequestStream()
+            dataStream.Write(reqBytes, 0, reqBytes.Length)
+            Dim resp As System.Net.WebResponse = req.GetResponse()
+            Dim sr = New System.IO.StreamReader(resp.GetResponseStream)
+            Dim response As String = sr.ReadToEnd().Trim()
+            response = Json.JsonDocument.Parse(response).RootElement.GetProperty("result").GetProperty("credit").GetString().Substring(0, 5)
+
+            Dim respVal As Integer = CSng(response)
+            ' If this is low, we should send a warning!
+
+            My.Application.Log.WriteEntry("PurelyMail credit available: $" & response)
+            Return response
+        Catch WebEx As WebException
+            My.Application.Log.WriteException(WebEx)
+            Return "Error getting PurelyMail credit"
+        End Try
+    End Function
+
     Sub CloseServer()
         StatResp = Login(m_sslStream, "QUIT ")
         My.Application.Log.WriteEntry("POP3: " & StatResp)
@@ -347,6 +374,11 @@ Module modMail
             AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
+
+            If My.Settings.Mail_PurelyMailAPIKey <> "" And modGlobal.IsOnline = True Then
+                CheckPurelyMailBalance()
+            End If
+
             Return "Mail module loaded"
         Else
             My.Application.Log.WriteEntry("Mail module is disabled, module not loaded")

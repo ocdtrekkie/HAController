@@ -1091,18 +1091,6 @@ Namespace My
                 Me("Sync_LocalQueueMode") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Mail_PurelyMailAPIKey() As String
-            Get
-                Return CType(Me("Mail_PurelyMailAPIKey"),String)
-            End Get
-            Set
-                Me("Mail_PurelyMailAPIKey") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

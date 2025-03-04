@@ -140,11 +140,11 @@ Module modMail
         End If
     End Sub
 
-    Function CheckPurelyMailBalance() As String
+    Function CheckPurelyMailBalance(ByVal strPurelyMailAPIKey As String) As String
         Try
             Dim reqUrl As String = "https://purelymail.com/api/v0/checkAccountCredit"
             Dim req = System.Net.WebRequest.Create(reqUrl)
-            req.Headers.Add("Purelymail-Api-Token", My.Settings.Mail_PurelyMailAPIKey)
+            req.Headers.Add("Purelymail-Api-Token", strPurelyMailAPIKey)
             req.Method = "POST"
             Dim reqBody As String = "{}"
             Dim reqBytes As Byte() = Encoding.ASCII.GetBytes(reqBody)
@@ -157,7 +157,9 @@ Module modMail
             response = Json.JsonDocument.Parse(response).RootElement.GetProperty("result").GetProperty("credit").GetString().Substring(0, 5)
 
             Dim respVal As Integer = CSng(response)
-            ' If this is low, we should send a warning!
+            If respVal < 2 Then
+                modMail.Send("PurelyMail Credit Low", "PurelyMail credit available: $" & response)
+            End If
 
             My.Application.Log.WriteEntry("PurelyMail credit available: $" & response)
             Return response
@@ -375,8 +377,11 @@ Module modMail
             tmrMailCheckTimer.Interval = 120000 ' 2min
             tmrMailCheckTimer.Enabled = True
 
-            If My.Settings.Mail_PurelyMailAPIKey <> "" And modGlobal.IsOnline = True Then
-                CheckPurelyMailBalance()
+            Dim strPurelyMailAPIKey As String = ""
+            modDatabase.ExecuteReader("SELECT Value FROM CONFIG WHERE Key = 'Mail_PurelyMailAPIKey' LIMIT 1", strPurelyMailAPIKey)
+
+            If strPurelyMailAPIKey <> "" And modGlobal.IsOnline = True Then
+                CheckPurelyMailBalance(strPurelyMailAPIKey)
             End If
 
             Return "Mail module loaded"

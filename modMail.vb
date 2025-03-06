@@ -371,11 +371,18 @@ Module modMail
 
             AddHandler oClient.SendCompleted, AddressOf oClient_SendCompleted
 
-            tmrMailCheckTimer = New System.Timers.Timer
-            My.Application.Log.WriteEntry("Scheduling automatic mail checks")
-            AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
-            tmrMailCheckTimer.Interval = 120000 ' 2min
-            tmrMailCheckTimer.Enabled = True
+            Dim strScheduledChecksSetting As String = ""
+            modDatabase.ExecuteReader("SELECT Value FROM CONFIG WHERE Key = 'Mail_ScheduledChecks' LIMIT 1", strScheduledChecksSetting)
+
+            If strScheduledChecksSetting <> "disabled" Then
+                tmrMailCheckTimer = New System.Timers.Timer
+                My.Application.Log.WriteEntry("Scheduling automatic mail checks")
+                AddHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
+                tmrMailCheckTimer.Interval = 120000 ' 2min
+                tmrMailCheckTimer.Enabled = True
+            Else
+                My.Application.Log.WriteEntry("Automated mail checks are disabled")
+            End If
 
             Dim strPurelyMailAPIKey As String = ""
             modDatabase.ExecuteReader("SELECT Value FROM CONFIG WHERE Key = 'Mail_PurelyMailAPIKey' LIMIT 1", strPurelyMailAPIKey)

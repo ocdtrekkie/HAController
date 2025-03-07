@@ -424,7 +424,7 @@ Module modMail
                 TxtLine = stream_Reader.ReadLine()
 
                 If TxtLine.StartsWith("*") Then
-                    My.Application.Log.WriteEntry("IMAP: " & TxtLine)
+                    My.Application.Log.WriteEntry("IMAP: " & TxtLine, TraceEventType.Verbose)
                 Else
                     If TxtLine.StartsWith("Received: ") Then
                         CmdRec = String.Copy(TxtLine)

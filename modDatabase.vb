@@ -39,7 +39,7 @@ Module modDatabase
             If resultReader.HasRows Then
                 resultReader.Read()
                 result = resultReader.GetString(0)
-                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + result)
+                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + result, TraceEventType.Verbose)
             Else
                 My.Application.Log.WriteEntry("SQLite Reader has no rows", TraceEventType.Warning)
                 result = Nothing
@@ -59,7 +59,7 @@ Module modDatabase
             If resultReader.HasRows Then
                 resultReader.Read()
                 result = resultReader.GetDouble(0)
-                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + CStr(result))
+                My.Application.Log.WriteEntry("SQLite: RESPONSE: " + CStr(result), TraceEventType.Verbose)
             Else
                 My.Application.Log.WriteEntry("SQLite Reader has no rows", TraceEventType.Warning)
                 result = Nothing

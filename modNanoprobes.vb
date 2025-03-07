@@ -1,5 +1,5 @@
 ﻿Module modNanoprobes
-    Public Function ParseData(ByVal strNanoData As String)
+    Public Function ParseData(ByVal strNanoData As String) As Integer
         Dim inputData() = strNanoData.Split(" ")
         Dim intIndex As Integer = 0
         While intIndex < inputData.Length
@@ -16,7 +16,7 @@
         Return 0
     End Function
 
-    Public Function ReadNanoprobe(ByVal strDestination As String)
+    Public Function ReadNanoprobe(ByVal strDestination As String) As String
         If modGlobal.IsOnline = True Then
             My.Application.Log.WriteEntry("Reading nanoprobe at " & strDestination, TraceEventType.Verbose)
             Dim Req As System.Net.HttpWebRequest

@@ -4,7 +4,7 @@
     ''' </summary>
     ''' <param name="strBarcode">Material barcode</param>
     ''' <returns>Temp: Type of material</returns>
-    Function CheckOutEbook(ByVal strBarcode As String, ByVal strRequestor As String)
+    Function CheckOutEbook(ByVal strBarcode As String, ByVal strRequestor As String) As String
         If My.Settings.Library_Enable = True Then
             If IsNumeric(strBarcode) = True Then
                 'File Selection Section
@@ -116,9 +116,10 @@
             Dim l As Integer
             Dim m As Integer
             Dim n As Integer
-            Dim o As Object
+            Dim o As Integer
+            Dim o2 As String = ""
             Dim n2 As Integer
-            Dim isbnarr(12)
+            Dim isbnarr(12) As Integer
             For i = 0 To 12
                 isbnarr(i) = CInt(Mid(strISBN13, i + 1, 1))
             Next
@@ -139,11 +140,11 @@
             n2 = Int((n / 11) + 1)
             o = (11 * n2) - n
             If o = 10 Then
-                o = "X"
+                o2 = "X"
             ElseIf o = 11 Then
-                o = 0
+                o2 = "0"
             End If
-            Return CStr(d & e & f & g & h & i & j & k & l & o)
+            Return CStr(d & e & f & g & h & i & j & k & l & o2)
         End If
     End Function
 

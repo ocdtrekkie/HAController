@@ -41,7 +41,7 @@ Module modDevices
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>
     ''' <returns>Device type</returns>
-    Function GetDeviceTypeFromNickname(ByVal strNickname) As String
+    Function GetDeviceTypeFromNickname(ByVal strNickname As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Type FROM DEVICES WHERE Name = """ & strNickname & """", result)

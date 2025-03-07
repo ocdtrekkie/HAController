@@ -3,13 +3,13 @@
 ' modRandom cannot be disabled and doesn't need to be loaded or unloaded
 
 Module modRandom
-    Function BasicRandomInteger(ByVal intMax As Integer)
+    Function BasicRandomInteger(ByVal intMax As Integer) As Integer
         ' Returns random integer between 1 and intMax.
         Randomize()
         Return CInt(Int((intMax * Rnd()) + 1))
     End Function
 
-    Function RandomInteger(ByVal intMax As Integer)
+    Function RandomInteger(ByVal intMax As Integer) As Integer
         ' Returns random integer between 1 and intMax. Attempts to use Random.org if allowed and online.
         Dim intRandom As Integer = 0
         If modGlobal.IsOnline = True AndAlso My.Settings.Random_RandomOrgEnable = True Then
@@ -26,7 +26,7 @@ Module modRandom
         Return intRandom
     End Function
 
-    Function TrueRandomInteger(ByVal intMax As Integer)
+    Function TrueRandomInteger(ByVal intMax As Integer) As Integer
         If My.Settings.Random_RandomOrgAPIKey = "00000000-0000-0000-0000-000000000000" OrElse My.Settings.Random_RandomOrgAPIKey = "" Then
             My.Application.Log.WriteEntry("No Random.Org API key, asking for it")
             My.Settings.Random_RandomOrgAPIKey = InputBox("Enter Random.Org API Key. You can get an API key at https://api.random.org/api-keys/beta by entering your email address.", "Random.org API")

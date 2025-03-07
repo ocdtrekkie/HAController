@@ -205,7 +205,7 @@ Module modMail
     ''' </summary>
     ''' <param name="strCmdAllowlist">Allowlist entry to look for</param>
     ''' <returns>Matching key for allowlist</returns>
-    Function GetCmdKeyFromAllowlist(ByVal strCmdAllowlist) As String
+    Function GetCmdKeyFromAllowlist(ByVal strCmdAllowlist As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT CmdKey FROM MAILKEYS WHERE CmdAllowlist = '" & strCmdAllowlist & "'", result)
@@ -218,7 +218,7 @@ Module modMail
     ''' <param name="strCmdAllowlist">Allowlist entry to look for</param>
     ''' <param name="strCmdKey">Command key to look for</param>
     ''' <returns>Matching nickname for inbound mail</returns>
-    Function GetNicknameFromKey(ByVal strCmdAllowlist, ByVal strCmdKey) As String
+    Function GetNicknameFromKey(ByVal strCmdAllowlist As String, ByVal strCmdKey As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Nickname FROM MAILKEYS WHERE CmdAllowlist = '" & strCmdAllowlist & "' AND CmdKey = '" & strCmdKey & "'", result)

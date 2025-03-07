@@ -1356,7 +1356,7 @@
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>
     ''' <returns>Insteon address in XX.XX.XX format</returns>
-    Function GetInsteonAddressFromNickname(ByVal strNickname) As String
+    Function GetInsteonAddressFromNickname(ByVal strNickname As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Insteon'", result)
@@ -1397,7 +1397,7 @@
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>
     ''' <returns>X10 address in X0 format</returns>
-    Function GetX10AddressFromNickname(ByVal strNickname) As String
+    Function GetX10AddressFromNickname(ByVal strNickname As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" & strNickname & "' AND Type = 'X10'", result)
@@ -1409,7 +1409,7 @@
     ''' </summary>
     ''' <param name="ICmd">Integer or short of command</param>
     ''' <returns>Description of Insteon command</returns>
-    Function InsteonCommandLookup(ByVal ICmd) As String
+    Function InsteonCommandLookup(ByVal ICmd As Byte) As String
         Select Case ICmd
             Case 1
                 Return "Product Request Data"

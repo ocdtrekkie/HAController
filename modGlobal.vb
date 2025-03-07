@@ -94,7 +94,7 @@ Public Module modGlobal
         modDatabase.Unload()
     End Sub
 
-    Function CheckLogFileSize()
+    Function CheckLogFileSize() As Long
         Dim LogFile As New System.IO.FileInfo(My.Settings.Global_LogFileURI)
         My.Application.Log.WriteEntry("Log file is " & LogFile.Length & " bytes")
         If LogFile.Length > (50 * 1024 * 1024) Then

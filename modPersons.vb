@@ -61,7 +61,7 @@ Module modPersons
     ''' </summary>
     ''' <param name="strNickname">Nickname of person</param>
     ''' <returns>Email address of person</returns>
-    Function GetEmailForPerson(ByVal strNickname) As String
+    Function GetEmailForPerson(ByVal strNickname As String) As String
         Dim result As String = ""
         If modDatabase.IsCleanString(strNickname, True, False, 25) Then
             modDatabase.ExecuteReader("SELECT Email FROM PERSONS WHERE Nickname = '" & strNickname & "'", result)

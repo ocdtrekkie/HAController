@@ -42,7 +42,7 @@ Public Module modRoku
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>
     ''' <returns>Roku API address</returns>
-    Function GetRokuAddressFromNickname(ByVal strNickname) As String
+    Function GetRokuAddressFromNickname(ByVal strNickname As String) As String
         Dim result As String = ""
 
         modDatabase.ExecuteReader("SELECT Address FROM DEVICES WHERE Name = '" + strNickname + "' AND Type = 'Roku'", result)

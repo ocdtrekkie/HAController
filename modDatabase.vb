@@ -85,6 +85,17 @@ Module modDatabase
         End If
     End Sub
 
+    ''' <summary>
+    ''' Gets the value for a specified key from the CONFIG table.
+    ''' </summary>
+    ''' <param name="strKey">Key</param>
+    ''' <returns>Value</returns>
+    Function GetConfig(ByVal strKey As String) As String
+        Dim strValue As String = ""
+        ExecuteReader("SELECT Value FROM CONFIG WHERE Key = '" & strKey & "' LIMIT 1", strValue)
+        Return strValue
+    End Function
+
     Function Load() As String
         My.Application.Log.WriteEntry("Loading database module")
         Dim connstring As String = "URI=file:" + My.Settings.Database_FileURI

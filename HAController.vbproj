@@ -100,8 +100,9 @@
     <Reference Include="Rssdp, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Rssdp.4.0.4\lib\net45\Rssdp.dll</HintPath>
     </Reference>
-    <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
-      <HintPath>packages\SixLabors.ImageSharp.2.1.9\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+    <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13">
+      <HintPath>packages\SixLabors.ImageSharp.2.1.10\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StreamDeckSharp, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\StreamDeckSharp.6.0.0\lib\net462\StreamDeckSharp.dll</HintPath>

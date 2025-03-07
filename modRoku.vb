@@ -1,8 +1,8 @@
 ﻿Imports Rssdp
 
 Public Module modRoku
-    Public Async Sub SearchForDevices(ByVal localIP As String)
-        Dim devLocator As New SsdpDeviceLocator(localIP)
+    Public Async Sub SearchForDevices()
+        Dim devLocator As New SsdpDeviceLocator(modDatabase.GetConfig("Ping_LastKnownLocalIP"))
         Dim foundDevices = Await devLocator.SearchAsync()
 
         For Each foundDevice In foundDevices

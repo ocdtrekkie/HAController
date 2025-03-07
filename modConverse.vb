@@ -426,8 +426,7 @@ Module modConverse
                     End If
                 Case "scan", "search"
                     If inputData(1) = "for" AndAlso inputData(2) = "roku" Then
-                        ' TODO: Get and use local IP automatically
-                        modRoku.SearchForDevices(inputData(3))
+                        modRoku.SearchForDevices()
                         strCommandResponse = "Searching for Roku"
                     End If
                 Case "send"

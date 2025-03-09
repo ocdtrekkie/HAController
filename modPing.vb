@@ -27,8 +27,8 @@
                     Dim resp As System.Net.WebResponse = req.GetResponse()
                     Dim sr = New System.IO.StreamReader(resp.GetResponseStream)
                     Dim response As String = sr.ReadToEnd().Trim()
-                    Dim responseArray = response.Split(":")
-                    Dim responseArray2 = responseArray(1).Split("<")
+                    Dim responseArray = response.Split(":"c)
+                    Dim responseArray2 = responseArray(1).Split("<"c)
                     Dim strNewPubIP = responseArray2(0).Trim()
                     Dim strOldPubIP = modDatabase.GetConfig("Ping_LastKnownPublicIP")
 
@@ -85,7 +85,7 @@
         End If
     End Sub
 
-    Public Function Ping(ByVal host As String, Optional ByVal repeat As Integer = 1) As String
+    Public Function Ping(ByVal host As String, Optional ByVal repeat As Short = 1) As String
         If My.Settings.Ping_Enable = True Then
             Try
                 Dim a As New System.Net.NetworkInformation.Ping

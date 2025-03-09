@@ -1,6 +1,6 @@
 ﻿Module modNanoprobes
     Public Function ParseData(ByVal strNanoData As String) As Integer
-        Dim inputData() = strNanoData.Split(" ")
+        Dim inputData() = strNanoData.Split(" "c)
         Dim intIndex As Integer = 0
         While intIndex < inputData.Length
             Select Case inputData(intIndex)

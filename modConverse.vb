@@ -19,7 +19,7 @@ Module modConverse
             End If
             strInputString = strInputString.Replace("what does", "what's")
             strInputString = strInputString.Replace("what is", "what's")
-            Dim inputData() = strInputString.Split(" ")
+            Dim inputData() = strInputString.Split(" "c)
 
             Select Case inputData(0)
                 Case "add"
@@ -447,14 +447,14 @@ Module modConverse
                         strCommandResponse = "Connectivity test address set to " & inputData(4)
                     ElseIf inputData(1) = "preset" AndAlso IsNumeric(inputData(2)) Then
                         Dim strPresetCommand As String = strInputString.Replace("set preset " + inputData(2) + " ", "")
-                        strCommandResponse = modPersons.StorePreset(inputData(2), strPresetCommand, strRequestor)
+                        strCommandResponse = modPersons.StorePreset(CInt(inputData(2)), strPresetCommand, strRequestor)
                     ElseIf inputData(1) = "status" AndAlso inputData(2) = "to" Then
                         If inputData(3) = "off" OrElse inputData(3) = "stay" OrElse inputData(3) = "away" OrElse inputData(3) = "guests" Then
                             modGlobal.SetHomeStatus(StrConv(inputData(3), VbStrConv.ProperCase))
                             strCommandResponse = "Status set to " & inputData(3)
                         End If
                     ElseIf inputData(1) = "music" AndAlso inputData(2) = "volume" AndAlso IsNumeric(inputData(3)) Then
-                        modMusic.SetVolume(Int(inputData(3)))
+                        modMusic.SetVolume(CInt(inputData(3)))
                         strCommandResponse = " "
                     End If
                 Case "sh", "show"

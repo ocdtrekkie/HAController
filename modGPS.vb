@@ -196,7 +196,7 @@
             SerialPort.DataBits = 8
             SerialPort.Handshake = IO.Ports.Handshake.None
             SerialPort.Parity = IO.Ports.Parity.None
-            SerialPort.StopBits = 1
+            SerialPort.StopBits = IO.Ports.StopBits.One
 
             AddHandler SerialPort.DataReceived, AddressOf DataReceivedHandler
 
@@ -242,7 +242,7 @@
                 Dim strInputData As String = SerialPort.ReadLine()
 
                 If strInputData.Substring(0, 6) = "$GPRMC" Then
-                    Dim inputData() = strInputData.Split(",")
+                    Dim inputData() = strInputData.Split(","c)
                     If inputData(2) = "A" AndAlso IsNumeric(inputData(1)) AndAlso (My.Settings.GPS_RateLimit = 1 OrElse inputData(1) Mod My.Settings.GPS_RateLimit = 0) Then
                         ' inputData(1) is HHMMSS in UTC
                         ' inputData(9) is DDMMYY

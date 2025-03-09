@@ -82,7 +82,7 @@ Module modMail
                         My.Application.Log.WriteEntry("POP3: " & StatResp)
 
                         'Get Messages count
-                        server_Stat = StatResp.Split(" ")
+                        server_Stat = StatResp.Split(" "c)
                         My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
                         ret_Val = 1
                     End If

@@ -197,7 +197,7 @@
             SerialPort.DataBits = 8
             SerialPort.Handshake = IO.Ports.Handshake.None
             SerialPort.Parity = IO.Ports.Parity.None
-            SerialPort.StopBits = 1
+            SerialPort.StopBits = IO.Ports.StopBits.One
 
             Try
                 My.Application.Log.WriteEntry("Trying to connect on port " + SerialPort.PortName)

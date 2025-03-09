@@ -24,7 +24,7 @@ Module modDevices
     Function AddIPDevice() As String
         Dim inputField = InputBox("Specify the name, device model, and IP address, separated by vertical bars. ex: Name|Model|IP", "Add IP Device", "")
         If inputField <> "" Then
-            Dim inputData() As String = inputField.Split("|")
+            Dim inputData() As String = inputField.Split("|"c)
             If inputData.Length = 3 Then
                 modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', 'IP', '" + inputData(1) + "', '" + inputData(2) + "')")
                 Return "Device added"

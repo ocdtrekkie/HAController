@@ -99,7 +99,7 @@
             SerialPort.DataBits = 8
             SerialPort.Handshake = IO.Ports.Handshake.None
             SerialPort.Parity = IO.Ports.Parity.None
-            SerialPort.StopBits = 1
+            SerialPort.StopBits = IO.Ports.StopBits.One
             SerialPort.DtrEnable = True
             SerialPort.RtsEnable = True
             SerialPort.NewLine = Environment.NewLine

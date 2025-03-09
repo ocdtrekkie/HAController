@@ -90,7 +90,7 @@
             SerialPLM.DataBits = 8
             SerialPLM.Handshake = IO.Ports.Handshake.None
             SerialPLM.Parity = IO.Ports.Parity.None
-            SerialPLM.StopBits = 1
+            SerialPLM.StopBits = IO.Ports.StopBits.One
 
             Try
                 My.Application.Log.WriteEntry("Trying to connect on port " + PortName)
@@ -248,7 +248,7 @@
                 If SerialPLM.IsOpen = True Then
                     Dim data(21) As Byte
                     strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
-                    Dim arrAddress() As String = strAddress.Split(".")
+                    Dim arrAddress() As String = strAddress.Split("."c)
 
                     data(0) = 2 'all commands start with 2
                     data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
@@ -280,7 +280,7 @@
                 If SerialPLM.IsOpen = True Then
                     Dim data(7) As Byte
                     strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
-                    Dim arrAddress() As String = strAddress.Split(".")
+                    Dim arrAddress() As String = strAddress.Split("."c)
 
                     data(0) = 2 'all commands start with 2
                     data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
@@ -1208,7 +1208,7 @@
     ''' <returns>True if formatted correctly, false otherwise</returns>
     Public Function IsInsteonAddress(ByVal strAddress As String) As Boolean
         If strAddress.Length = 8 Then
-            Dim arrAddress() As String = strAddress.Split(".")
+            Dim arrAddress() As String = strAddress.Split("."c)
             If Convert.ToInt32(arrAddress(0), 16) + Convert.ToInt32(arrAddress(1), 16) + Convert.ToInt32(arrAddress(2), 16) > 0 Then
                 Return True
             End If

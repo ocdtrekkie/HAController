@@ -36,7 +36,7 @@ Module modComputer
                 For Each queryObj As ManagementObject In searcher.Get()
                     Dim strDisplayName As String = CStr(queryObj("Caption"))
                     Dim idx As Integer = strDisplayName.LastIndexOf("(")
-                    Return strDisplayName.Substring(idx + 1).TrimEnd(")")
+                    Return strDisplayName.Substring(idx + 1).TrimEnd(")"c)
                 Next
             End Using
             Return ""

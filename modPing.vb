@@ -30,10 +30,11 @@
                     Dim responseArray = response.Split(":")
                     Dim responseArray2 = responseArray(1).Split("<")
                     Dim strNewPubIP = responseArray2(0).Trim()
+                    Dim strOldPubIP = modDatabase.GetConfig("Ping_LastKnownPublicIP")
 
-                    If strNewPubIP <> My.Settings.Ping_LastKnownPublicIP Then
-                        My.Application.Log.WriteEntry("Public IP address changed from " + My.Settings.Ping_LastKnownPublicIP + " to " + strNewPubIP)
-                        My.Settings.Ping_LastKnownPublicIP = strNewPubIP
+                    If strNewPubIP <> strOldPubIP Then
+                        My.Application.Log.WriteEntry("Public IP address changed from " & strOldPubIP & " to " & strNewPubIP)
+                        modDatabase.AddOrUpdateConfig("Ping_LastKnownPublicIP", strNewPubIP)
                     End If
 
                     Return strNewPubIP

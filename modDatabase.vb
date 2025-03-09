@@ -17,17 +17,19 @@ Module modDatabase
         Execute("CREATE TABLE IF NOT EXISTS PRESETS(Id INTEGER PRIMARY KEY, Nickname TEXT, PresetNum INTEGER, Command TEXT)")
     End Sub
 
-    Sub Execute(query As String)
+    Function Execute(query As String) As Integer
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
+        Dim result As Integer = 0
 
         cmd.CommandText = query
         My.Application.Log.WriteEntry("SQLite: " + cmd.CommandText, TraceEventType.Verbose)
         Try
-            cmd.ExecuteNonQuery()
+            result = cmd.ExecuteNonQuery()
         Catch SQLiteExcep As SQLiteException
             My.Application.Log.WriteException(SQLiteExcep)
         End Try
-    End Sub
+        Return result
+    End Function
 
     Sub ExecuteReader(query As String, ByRef result As String)
         Dim cmd As SQLiteCommand = New SQLiteCommand(conn)
@@ -94,6 +96,41 @@ Module modDatabase
         Dim strValue As String = ""
         ExecuteReader("SELECT Value FROM CONFIG WHERE Key = '" & strKey & "' LIMIT 1", strValue)
         Return strValue
+    End Function
+
+    ''' <summary>
+    ''' Adds a key/value pair to the CONFIG table.
+    ''' </summary>
+    ''' <param name="strKey">Key</param>
+    ''' <param name="strValue">Value</param>
+    ''' <returns>(int) Number of rows affected</returns>
+    Function AddConfig(ByVal strKey As String, ByVal strValue As String) As Integer
+        Return Execute("INSERT INTO CONFIG (Key, Value) VALUES('" & strKey & "', '" & strValue & "')")
+    End Function
+
+    ''' <summary>
+    ''' Updates a key/value pair in the CONFIG table.
+    ''' </summary>
+    ''' <param name="strKey">Key</param>
+    ''' <param name="strValue">Value</param>
+    ''' <returns>(int) Number of rows updated</returns>
+    Function UpdateConfig(ByVal strKey As String, ByVal strValue As String) As Integer
+        Return Execute("UPDATE CONFIG SET Value = '" & strValue & "' WHERE Key = '" & strKey & "' LIMIT 1")
+    End Function
+
+    ''' <summary>
+    ''' Updates an existing key/value pair in the CONFIG table or adds it if it does not exist
+    ''' </summary>
+    ''' <param name="strKey">Key</param>
+    ''' <param name="strValue">Value</param>
+    ''' <returns>(int) Number of rows affected</returns>
+    Function AddOrUpdateConfig(ByVal strKey As String, ByVal strValue As String) As Integer
+        Dim result As Integer = 0
+        result = UpdateConfig(strKey, strValue)
+        If result = 0 Then
+            result = AddConfig(strKey, strValue)
+        End If
+        Return result
     End Function
 
     Function Load() As String

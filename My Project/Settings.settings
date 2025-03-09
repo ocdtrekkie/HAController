@@ -254,9 +254,6 @@
     <Setting Name="Ping_PublicIPSource" Type="System.String" Scope="User">
       <Value Profile="(Default)">dyndns</Value>
     </Setting>
-    <Setting Name="Ping_LastKnownPublicIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0.0.0.0</Value>
-    </Setting>
     <Setting Name="Pihole_APIKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

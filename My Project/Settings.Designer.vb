@@ -1046,18 +1046,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0.0.0.0")>  _
-        Public Property Ping_LastKnownPublicIP() As String
-            Get
-                Return CType(Me("Ping_LastKnownPublicIP"),String)
-            End Get
-            Set
-                Me("Ping_LastKnownPublicIP") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property Pihole_APIKey() As String
             Get

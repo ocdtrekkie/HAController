@@ -102,6 +102,8 @@ Module modConverse
                             strCommandResponse = "Local queue mode disabled"
                         Case "mail"
                             strCommandResponse = modMail.Disable()
+                        Case "mailchecks"
+                            strCommandResponse = modMail.DisableChecks()
                         Case "mapquest"
                             strCommandResponse = modMapQuest.Disable()
                         Case "matrixlcd"
@@ -164,6 +166,8 @@ Module modConverse
                             strCommandResponse = "Local queue mode enabled"
                         Case "mail"
                             strCommandResponse = modMail.Enable()
+                        Case "mailchecks"
+                            strCommandResponse = modMail.EnableChecks()
                         Case "mapquest"
                             strCommandResponse = modMapQuest.Enable()
                         Case "matrixlcd"

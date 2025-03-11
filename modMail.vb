@@ -193,11 +193,25 @@ Module modMail
         Return "Mail module disabled"
     End Function
 
+    Function DisableChecks() As String
+        Unload()
+        modDatabase.AddOrUpdateConfig("Mail_ScheduledChecks", "disabled")
+        Load()
+        Return "Scheduled mail checks disabled"
+    End Function
+
     Function Enable() As String
         My.Settings.Mail_Enable = True
         My.Application.Log.WriteEntry("Mail module is enabled")
         Load()
         Return "Mail module enabled"
+    End Function
+
+    Function EnableChecks() As String
+        Unload()
+        modDatabase.AddOrUpdateConfig("Mail_ScheduledChecks", "enabled")
+        Load()
+        Return "Scheduled mail checks enabled"
     End Function
 
     ''' <summary>
@@ -357,6 +371,13 @@ Module modMail
             End If
 
             CreateMailkeysDb()
+
+            If My.Settings.Mail_SMTPHost = "smtp.purelymail.com" AndAlso modDatabase.GetConfig("Mail_PurelyMailAPIKey") = "" Then
+                My.Application.Log.WriteEntry("SMTP is PurelyMail, but no API key set, asking for it")
+                Dim strNewPurelyMailAPIKey As String = InputBox("Enter an API key for your PurelyMail account to monitor remaining funds", "PurelyMail API Key")
+                If strNewPurelyMailAPIKey = "" Then strNewPurelyMailAPIKey = "(skipped)"
+                modDatabase.AddOrUpdateConfig("Mail_PurelyMailAPIKey", strNewPurelyMailAPIKey)
+            End If
 
             oClient.Host = My.Settings.Mail_SMTPHost
             oClient.Port = My.Settings.Mail_SMTPPort

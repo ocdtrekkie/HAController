@@ -11,7 +11,7 @@ Module modPihole
                 If PiholeData.status = "enabled" Then
                     Return "Pi-hole is enabled, " & PiholeData.ads_blocked_today & " queries blocked today"
                 ElseIf PiholeData.status = "disabled" Then
-                    Return "Pi-hole is disabled"
+                    Return "Pi-hole is in disabled mode"
                 Else
                     Return "Pi-hole is not responding"
                 End If

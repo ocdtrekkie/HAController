@@ -30,6 +30,7 @@
 
     Private serialLock As New Object
     Dim tmrIThermCheckTimer As System.Timers.Timer
+    Dim tetLogInsteon As System.Diagnostics.TraceEventType = TraceEventType.Verbose
 
     Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As String
         If CheckDbForInsteon(strAddress) = 0 Then
@@ -366,6 +367,12 @@
             AddHandler SerialPLM.DataReceived, AddressOf SerialPLM_DataReceived
 
             CreateInsteonDb()
+
+            If modDatabase.GetConfig("Insteon_VerboseLogging") = "enabled" Then
+                My.Application.Log.WriteEntry("Verbose logging of Insteon traffic is enabled")
+                tetLogInsteon = TraceEventType.Information
+            End If
+
             Return "Insteon module loaded"
         Else
             My.Application.Log.WriteEntry("Insteon module is disabled, module not loaded")
@@ -460,7 +467,7 @@
                     x_Start = MessageEnd
                     ' Display message
                     PLM_Address = Hex(x(ms + 2)) & "." & Hex(x(ms + 3)) & "." & Hex(x(ms + 4))
-                    My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)), TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry("PLM response to Get IM Info: PLM ID: " & PLM_Address & ", Device Category: " & Hex(x(ms + 5)) & ", Subcategory: " & Hex(x(ms + 6)) & ", Firmware: " & Hex(x(ms + 7)) & ", ACK/NAK: " & Hex(x(ms + 8)), tetLogInsteon)
                     ' Set the PLM as the controller
                     ' --> I use this to verify the PLM is connected, disable some menu options, enable others, etc
                 End If
@@ -492,7 +499,7 @@
                     For i = 0 To DataAvailable
                         strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
 
                     strTemp = "PLM: Insteon Received: From: " & FromAddress & " To: " & ToAddress
                     If ToAddress = PLM_Address Then
@@ -538,11 +545,11 @@
                     Else
                         strTemp = strTemp & " Command1: " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")" & " Command2: " & Hex(Command2)
                     End If
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
 
                     If Flags = 139 AndAlso (Command1 = 1 OrElse Command1 = 2) Then
                         ' This is a 0x01 or 0x02 Product Request Data response. The 'To' field is actually the DevCat, SubCat, and Firmware Rev.
-                        My.Application.Log.WriteEntry("ADD CASE 4", TraceEventType.Verbose)
+                        My.Application.Log.WriteEntry("ADD CASE 4", tetLogInsteon)
                         AddInsteonDeviceDb(FromAddress, x(ms + 5), x(ms + 6), x(ms + 7))
                     End If
 
@@ -613,7 +620,7 @@
                                 Else
                                     strTemp = strTemp & FromName & " broadcast command " & Hex(Command1)
                                 End If
-                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                                My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
@@ -669,7 +676,7 @@
                                 If DeviceType = "SmokeBridge" Then
                                     strTemp = strTemp & " Smoke Bridge: " & InsteonSmokeBridgeResponse(Group)
                                 End If
-                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                                My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                                 ' Handle incoming event and play sounds
                                 ' --> at this point I play a WAV file and run any macro associated with the device
                             Case 32, 96 ' 001 ACK direct message, 011 ACK group cleanup direct message
@@ -682,7 +689,7 @@
                             Case 160, 224 ' 101 NAK direct message, 111 NAK group cleanup direct message
                                 ' Command received by another device but failed - display message in log
                                 strTemp = Format(Now) & " " & FromAddress & " NAK to command " & Hex(Command1) & " (" & modInsteon.InsteonCommandLookup(Command1) & ")"
-                                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                                My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                                 Insteon(IAddress).LastCommand = Command1
                                 Insteon(IAddress).LastFlags = Flags And 224
                                 Insteon(IAddress).LastTime = Now
@@ -736,7 +743,7 @@
                                     strTemp = strTemp & Hex(x(ms + i)) & " "
                                 Next
                                 strTemp = strTemp & "--> Product Key " & Hex(x(ms + 12)) & Hex(x(ms + 13)) & Hex(x(ms + 14)) & " DevCat: " & Hex(x(ms + 15)) & " SubCat: " & Hex(x(ms + 16)) & " Firmware: " & Hex(x(ms + 17))
-                                My.Application.Log.WriteEntry("ADD CASE 1", TraceEventType.Verbose)
+                                My.Application.Log.WriteEntry("ADD CASE 1", tetLogInsteon)
                                 AddInsteonDeviceDb(FromAddress, x(ms + 15), x(ms + 16), x(ms + 17))
                             Case 1 ' FX Username Response
                                 strTemp = strTemp & " FX Username Response:" & " D1-D8 FX Command Username: "
@@ -792,7 +799,7 @@
                             strTemp = strTemp & Hex(x(ms + i)) & " "
                         Next
                     End If
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
                 ' I’m not planning on actually doing anything with this data, just displayed
             Case 82 ' 0x052 X10 Received
@@ -816,7 +823,7 @@
                             ' Now actually process the event
                             ' Does it have a name?
                             'If DeviceName(X10Address) = X10Address Then HasName = False Else HasName = True
-                            My.Application.Log.WriteEntry(Format(Now) & " " & X10Address & " " & X10Code, TraceEventType.Verbose)
+                            My.Application.Log.WriteEntry(Format(Now) & " " & X10Address & " " & X10Code, tetLogInsteon)
                             'If LoggedIn And HasName Then frmHack.WriteWebtrix(Blue, VB6.Format(TimeOfDay) & " ")
                             ' Write command to event log
                             ' Handle incoming event
@@ -833,7 +840,7 @@
                         Case Else ' invalid data
                             strTemp = strTemp & "Unrecognized X10: " & Hex(x(ms + 2)) & " " & Hex(x(ms + 3))
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 98 ' 0x062 Send Insteon standard OR extended message
                 ' PLM is just echoing the last command sent, discard this: 7 or 21 bytes
@@ -850,7 +857,7 @@
                             For i = 0 To 22
                                 strTemp = strTemp & Hex(x(ms + i)) & " "
                             Next
-                            My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                            My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                         End If
                     Else
                         ' Standard message
@@ -859,7 +866,7 @@
                         For i = 0 To 8
                             strTemp = strTemp & Hex(x(ms + i)) & " "
                         Next
-                        My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                        My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                     End If
                 End If
             Case 99 ' 0x063 Sent X10
@@ -893,7 +900,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 4)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 83 ' 0x053 ALL-Linking complete - 8 bytes of data
                 MessageEnd = ms + 9
@@ -912,8 +919,8 @@
                     FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     strTemp = strTemp & " Group: " & Hex(x(ms + 3)) & " ID: " & FromAddress & " DevCat: " & Hex(x(ms + 7)) & " SubCat: " & Hex(x(ms + 8)) & " Firmware: " & Hex(x(ms + 9))
                     If x(ms + 9) = 255 Then strTemp = strTemp & " (all newer devices = FF)"
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
-                    My.Application.Log.WriteEntry("ADD CASE 2", TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
+                    My.Application.Log.WriteEntry("ADD CASE 2", tetLogInsteon)
                     AddInsteonDeviceDb(FromAddress, x(ms + 7), x(ms + 8), x(ms + 9))
                 End If
             Case 87 ' 0x057 ALL-Link record response - 8 bytes of data
@@ -924,11 +931,11 @@
                     FromAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
                     ' Check if FromAddress is in device database, if not add it
                     If InsteonNum(FromAddress) = 0 Then
-                        My.Application.Log.WriteEntry("ADD CASE 3", TraceEventType.Verbose)
+                        My.Application.Log.WriteEntry("ADD CASE 3", tetLogInsteon)
                         ' TODO: Make this: AddInsteonDevice(FromAddress)
                         ' TODO: Make this: SortInsteon()
                     End If
-                    My.Application.Log.WriteEntry("PLM: ALL-Link Record response: 0x57 Flags: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & FromAddress & " Data: " & Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)), TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry("PLM: ALL-Link Record response: 0x57 Flags: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & FromAddress & " Data: " & Hex(x(ms + 7)) & " " & Hex(x(ms + 8)) & " " & Hex(x(ms + 9)), tetLogInsteon)
                     ' --> I assume this happened because I requested the data, and want the rest of it. So now
                     ' Send 02 6A to get next record (e.g. continue reading link database from PLM)
                     data(0) = 2  ' all commands start with 2
@@ -946,7 +953,7 @@
                 If DataAvailable >= 6 Then
                     x_Start = MessageEnd
                     ToAddress = Hex(x(ms + 4)) & "." & Hex(x(ms + 5)) & "." & Hex(x(ms + 6))
-                    My.Application.Log.WriteEntry("PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & ToAddress, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry("PLM: ALL-Link (Group Broadcast) Cleanup Failure Report 0x56 Data: " & Hex(x(ms + 2)) & " Group: " & Hex(x(ms + 3)) & " Address: " & ToAddress, tetLogInsteon)
                 End If
             Case 97 ' 0x061 Sent ALL-Link (Group Broadcast) command - 4 bytes
                 MessageEnd = ms + 5
@@ -962,7 +969,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 5)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 102 ' 0x066 Set Host Device Category - 4 bytes
                 MessageEnd = ms + 5
@@ -980,7 +987,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 5)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 115 ' 0x073 Get IM Configuration - 4 bytes
                 MessageEnd = ms + 5
@@ -994,7 +1001,7 @@
                     If x(ms + 2) And 16 Then strTemp = strTemp & " (disable deadman comm feature)"
                     If x(ms + 2) And (128 + 64 + 32 + 16) Then strTemp = strTemp & " (default)"
                     strTemp = strTemp & " Data: " & Hex(x(ms + 3)) & " " & Hex(x(ms + 4)) & " ACK: " & Hex(x(ms + 5))
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 100 ' 0x064 Start ALL-Linking, echoed - 3 bytes
                 MessageEnd = ms + 4
@@ -1021,7 +1028,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 4)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 113 ' 0x071 Set Insteon ACK message two bytes - 3 bytes
                 MessageEnd = ms + 4
@@ -1032,7 +1039,7 @@
                     For i = 2 To 4
                         strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 104, 107, 112 ' 0x068 Set Insteon ACK message byte, 0x06B Set IM Configuration, 0x070 Set Insteon NAK message byte
                 ' 2 bytes
@@ -1044,7 +1051,7 @@
                     For i = 0 To 3
                         strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 88 ' 0x058 ALL-Link cleanup status report - 1 byte
                 MessageEnd = ms + 2
@@ -1060,7 +1067,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 2)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 84, 103, 108, 109, 110, 114
                 ' 0x054 Button (on PLM) event, 0x067 Reset the IM, 0x06C Get ALL-Link record for sender, 0x06D LED On, 0x06E LED Off, 0x072 RF Sleep
@@ -1073,7 +1080,7 @@
                     For i = 0 To 2
                         strTemp = strTemp & Hex(x(ms + i)) & " "
                     Next
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 101 ' 0x065 Cancel ALL-Linking - 1 byte
                 MessageEnd = ms + 2
@@ -1089,7 +1096,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 2)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 105 ' 0x069 Get First ALL-Link record
                 MessageEnd = ms + 2
@@ -1103,7 +1110,7 @@
                         Case 21
                             strTemp = strTemp & " (NAK - no links in database)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 106 ' 0x06A Get Next ALL-Link record
                 MessageEnd = ms + 2
@@ -1117,7 +1124,7 @@
                         Case 21
                             strTemp = strTemp & " (NAK - no more links in database)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case 111 ' 0x06F Manage ALL-Link record - 10 bytes
                 MessageEnd = ms + 11
@@ -1151,7 +1158,7 @@
                         Case Else
                             strTemp = strTemp & Hex(x(ms + 11)) & " (?)"
                     End Select
-                    My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                    My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 End If
             Case Else
                 ' in principle this shouldn't happen... unless there are undocumented PLM messages (probably!)
@@ -1161,7 +1168,7 @@
                 For i = 0 To DataAvailable
                     strTemp = strTemp & Hex(x(ms + DataAvailable))
                 Next
-                My.Application.Log.WriteEntry(strTemp, TraceEventType.Verbose)
+                My.Application.Log.WriteEntry(strTemp, tetLogInsteon)
                 Debug.WriteLine("Unrecognized command received " & Hex(x(ms)) & " " & Hex(x(ms + 1)) & " " & Hex(x(ms + 2)))
         End Select
 

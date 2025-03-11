@@ -65,7 +65,7 @@
     End Function
 
     Private Sub PingInternet(source As Object, e As System.Timers.ElapsedEventArgs)
-        My.Application.Log.WriteEntry("Checking Internet connectivity")
+        My.Application.Log.WriteEntry("Checking Internet connectivity", TraceEventType.Verbose)
         Dim response As String = ""
 
         response = Ping(My.Settings.Ping_InternetCheckAddress)

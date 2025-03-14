@@ -83,9 +83,6 @@ Module modConverse
                             strCommandResponse = frmMain.DisableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Disable()
-                        Case "experiments"
-                            My.Settings.Global_Experimental = False
-                            strCommandResponse = "Experimental mode off"
                         Case "gps"
                             strCommandResponse = modGPS.Disable()
                         Case "imap"
@@ -147,9 +144,6 @@ Module modConverse
                             strCommandResponse = frmMain.EnableCarMode()
                         Case "dreamcheeky"
                             strCommandResponse = modDreamCheeky.Enable()
-                        Case "experiments"
-                            My.Settings.Global_Experimental = True
-                            strCommandResponse = "Experimental mode on"
                         Case "gps"
                             strCommandResponse = modGPS.Enable()
                         Case "imap"

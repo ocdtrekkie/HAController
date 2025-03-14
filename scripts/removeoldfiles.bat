@@ -4,6 +4,7 @@ del /q C:\HAC\Common.Logging.Core.xml
 del /q C:\HAC\Common.Logging.dll
 del /q C:\HAC\Common.Logging.pdb
 del /q C:\HAC\Common.Logging.xml
+del /q C:\HAC\DeviceCollection.xml
 del /q C:\HAC\EntityFramework.dll
 del /q C:\HAC\EntityFramework.SqlServer.dll
 del /q C:\HAC\EntityFramework.SqlServer.xml
@@ -14,6 +15,7 @@ del /q C:\HAC\Quartz.pdb
 del /q C:\HAC\Quartz.xml
 del /q C:\HAC\System.Data.SQLite.EF6.dll
 del /q C:\HAC\System.Data.SQLite.Linq.dll
+del /q C:\HAC\XmlSerializerHelper.dll
 del /q C:\HAC\scripts\agent0.zip
 del /q C:\HAC\scripts\agent1.zip
 del /q C:\HAC\scripts\agent2.zip

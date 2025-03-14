@@ -1,7 +1,4 @@
-﻿Imports System.IO
-Imports System.Xml.Serialization
-
-' modGlobal cannot be disabled, Disable and Enable methods will be skipped
+﻿' modGlobal cannot be disabled, Disable and Enable methods will be skipped
 
 Public Module modGlobal
     Public HomeStatus As String
@@ -61,16 +58,6 @@ Public Module modGlobal
         End If
 
         My.Application.Log.WriteEntry("Module loading complete")
-    End Sub
-
-    Sub SaveCollection()
-        Dim targetFile As New StreamWriter("C:\HAC\DeviceCollection.xml")
-        Dim serializedString As String = ""
-
-        serializedString = XmlSerializerHelper.Current.SerializeToXml(DeviceCollection, True)
-
-        targetFile.Write(serializedString)
-        targetFile.Close()
     End Sub
 
     Sub SetHomeStatus(ByVal ChangeHomeStatus As String)

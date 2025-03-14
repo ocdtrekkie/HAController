@@ -160,9 +160,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="XmlSerializerHelper, Version=4.0.19096.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\XmlSerializerHelper.4.0.19096.1\lib\net45\XmlSerializerHelper.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />

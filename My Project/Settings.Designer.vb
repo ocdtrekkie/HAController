@@ -293,30 +293,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Mail_POPHost() As String
-            Get
-                Return CType(Me("Mail_POPHost"),String)
-            End Get
-            Set
-                Me("Mail_POPHost") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("995")>  _
-        Public Property Mail_POPPort() As String
-            Get
-                Return CType(Me("Mail_POPPort"),String)
-            End Get
-            Set
-                Me("Mail_POPPort") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property Mail_CmdWhitelist() As String
             Get
                 Return CType(Me("Mail_CmdWhitelist"),String)
@@ -721,18 +697,6 @@ Namespace My
             End Get
             Set
                 Me("Global_LastKnownInsideTemp2nd") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property Mail_IMAPMode() As Boolean
-            Get
-                Return CType(Me("Mail_IMAPMode"),Boolean)
-            End Get
-            Set
-                Me("Mail_IMAPMode") = value
             End Set
         End Property
         

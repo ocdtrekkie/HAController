@@ -47,13 +47,8 @@ Module modConverse
                 Case "check"
                     Select Case inputData(1)
                         Case "mail"
-                            If My.Settings.Mail_IMAPMode = True Then
-                                Dim MailCheckThread As New Threading.Thread(AddressOf modMail.CheckMailImap)
-                                MailCheckThread.Start()
-                            Else
-                                Dim MailCheckThread As New Threading.Thread(AddressOf modMail.CheckMail)
-                                MailCheckThread.Start()
-                            End If
+                            Dim MailCheckThread As New Threading.Thread(AddressOf modMail.CheckMailImap)
+                            MailCheckThread.Start()
                             strCommandResponse = "Checking mail"
                         Case "out"
                             If inputData.Length > 2 Then
@@ -85,11 +80,6 @@ Module modConverse
                             strCommandResponse = modDreamCheeky.Disable()
                         Case "gps"
                             strCommandResponse = modGPS.Disable()
-                        Case "imap"
-                            My.Settings.Mail_IMAPMode = False
-                            modMail.Unload()
-                            modMail.Load()
-                            strCommandResponse = "IMAP mode disabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Disable()
                         Case "library"
@@ -146,11 +136,6 @@ Module modConverse
                             strCommandResponse = modDreamCheeky.Enable()
                         Case "gps"
                             strCommandResponse = modGPS.Enable()
-                        Case "imap"
-                            My.Settings.Mail_IMAPMode = True
-                            modMail.Unload()
-                            modMail.Load()
-                            strCommandResponse = "IMAP mode enabled"
                         Case "insteon"
                             strCommandResponse = modInsteon.Enable()
                         Case "library"

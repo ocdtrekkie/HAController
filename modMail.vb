@@ -56,57 +56,9 @@ Module modMail
         End If
     End Function
 
-    Sub CheckMail()
-        If My.Settings.Mail_Enable = True Then
-            If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = False Then
-                Try
-                    If pClient.Connected = True Then
-                        CloseServer()
-                        pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-                        ret_Val = 0
-                        Exit Sub
-                    Else
-                        pClient = New TcpClient(My.Settings.Mail_POPHost, My.Settings.Mail_POPPort)
-
-                        NetworkS_tream = pClient.GetStream 'Read the stream
-                        m_sslStream = New SslStream(NetworkS_tream) 'Read SSL stream
-                        m_sslStream.AuthenticateAsClient(My.Settings.Mail_POPHost) 'Auth
-                        Read_Stream = New StreamReader(m_sslStream) 'Read the stream
-                        StatResp = Read_Stream.ReadLine()
-
-                        StatResp = Login(m_sslStream, "USER " & My.Settings.Mail_Username)
-                        My.Application.Log.WriteEntry("POP3: " & StatResp)
-                        StatResp = Login(m_sslStream, "PASS " & My.Settings.Mail_Password)
-                        My.Application.Log.WriteEntry("POP3: " & StatResp)
-                        StatResp = Login(m_sslStream, "STAT ")
-                        My.Application.Log.WriteEntry("POP3: " & StatResp)
-
-                        'Get Messages count
-                        server_Stat = StatResp.Split(" "c)
-                        My.Application.Log.WriteEntry("POP3 Message count: " & server_Stat(1))
-                        ret_Val = 1
-                    End If
-
-                    If IsNumeric(server_Stat(1)) = True Then 'Apparently POP3 returned 'bad' during a "Temporary system problem" and 'Command' when an invalid password is used, which I want to mitigate.
-                        GetMessages(server_Stat(1))
-                    Else
-                        My.Application.Log.WriteEntry("Mail server returned a bad message count", TraceEventType.Warning)
-                    End If
-                    CloseServer()
-                Catch SocketEx As System.Net.Sockets.SocketException
-                    My.Application.Log.WriteException(SocketEx, TraceEventType.Warning, "usually caused by a mail connection timeout")
-                Catch NullRefEx As System.NullReferenceException
-                    My.Application.Log.WriteException(NullRefEx, TraceEventType.Warning, "usually caused by an empty POP3 response")
-                End Try
-            End If
-        Else
-            My.Application.Log.WriteEntry("Mail module is disabled")
-        End If
-    End Sub
-
     Sub CheckMailImap()
         If My.Settings.Mail_Enable = True Then
-            If modGlobal.IsOnline = True AndAlso My.Settings.Mail_IMAPMode = True Then
+            If modGlobal.IsOnline = True Then
                 Try
                     pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
                     m_sslStream = New SslStream(pClient.GetStream())
@@ -133,11 +85,7 @@ Module modMail
     End Sub
 
     Sub CheckMailHandler(source As Object, e As System.Timers.ElapsedEventArgs)
-        If My.Settings.Mail_IMAPMode = True Then
-            CheckMailImap()
-        Else
-            CheckMail()
-        End If
+        CheckMailImap()
     End Sub
 
     Function CheckPurelyMailBalance(ByVal strPurelyMailAPIKey As String) As String
@@ -168,13 +116,6 @@ Module modMail
             Return "Error getting PurelyMail credit"
         End Try
     End Function
-
-    Sub CloseServer()
-        StatResp = Login(m_sslStream, "QUIT ")
-        My.Application.Log.WriteEntry("POP3: " & StatResp)
-        pClient.Close()
-        ret_Val = 0
-    End Sub
 
     Sub CreateMailkeysDb()
         modDatabase.Execute("CREATE TABLE IF NOT EXISTS MAILKEYS(Id INTEGER PRIMARY KEY, Nickname TEXT UNIQUE, CmdAllowlist TEXT, CmdKey TEXT)")
@@ -239,96 +180,16 @@ Module modMail
         Return result
     End Function
 
-    Sub GetEmails(ByVal Server_Command As String)
-        Dim m_buffer() As Byte = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
-        Dim stream_Reader As StreamReader
-        Dim TxtLine, CmdRec, ReFrom, ReSubj As String
-        Dim CmdTo As String = "", CmdFrom As String = "", CmdSubj As String = "", CmdID As String = "", CmdKeyLookup As String = "", CmdNickLookup As String = ""
-        Try
-            m_sslStream.Write(m_buffer, 0, m_buffer.Length)
-            stream_Reader = New StreamReader(m_sslStream)
-            Do While stream_Reader.Peek() <> -1
-                TxtLine = stream_Reader.ReadLine()
-
-                If TxtLine.StartsWith("Received: ") Then
-                    CmdRec = String.Copy(TxtLine)
-                    My.Application.Log.WriteEntry("Command " & CmdRec)
-                End If
-                If TxtLine.StartsWith("Message-ID: ") Then
-                    CmdID = String.Copy(TxtLine)
-                    My.Application.Log.WriteEntry("Command " & CmdID)
-                End If
-                If TxtLine.StartsWith("Subject: ") Then
-                    CmdSubj = String.Copy(TxtLine)
-                    My.Application.Log.WriteEntry("Command " & CmdSubj)
-                End If
-                If TxtLine.StartsWith("From: ") Then
-                    CmdFrom = String.Copy(TxtLine)
-                    My.Application.Log.WriteEntry("Command " & CmdFrom)
-                End If
-                If TxtLine.StartsWith("To: ") Then
-                    CmdTo = String.Copy(TxtLine)
-                    My.Application.Log.WriteEntry("Command " & CmdTo)
-                End If
-
-                If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
-                    Exit Do
-                End If
-            Loop
-
-            If CmdSubj <> "" AndAlso CmdFrom <> "" AndAlso CmdTo <> "" AndAlso CmdID <> "" Then
-                ReFrom = CmdFrom.Replace("From: ", "")
-                CmdKeyLookup = GetCmdKeyFromAllowlist(ReFrom)
-                If CmdKeyLookup <> "" Then
-                    If CmdTo = "To: " & CmdKeyLookup & " <" & My.Settings.Mail_From & ">" Then
-                        CmdNickLookup = GetNicknameFromKey(ReFrom, CmdKeyLookup)
-                        My.Application.Log.WriteEntry("Received email from " + CmdNickLookup + ", command key validated")
-                        ReSubj = CmdSubj.Replace("Subject: ", "")
-                        modConverse.Interpret(ReSubj, True, False, CmdNickLookup)
-                    Else
-                        My.Application.Log.WriteEntry("Received email from authorized user, but command key was not valid")
-                    End If
-                Else
-                    My.Application.Log.WriteEntry("Received email from unauthorized user, ignoring")
-                End If
-            End If
-        Catch ex As Exception
-            My.Application.Log.WriteException(ex)
-        End Try
-    End Sub
-
-    Sub GetMessages(ByVal Num_Emails As Integer)
-        Dim List_Resp As String
-        Dim StrRetr As String
-        Dim I As Integer
-        For I = 1 To Num_Emails
-            List_Resp = Login(m_sslStream, "LIST " & I.ToString)
-            My.Application.Log.WriteEntry("POP3: " & List_Resp)
-
-            StrRetr = ("RETR " & I & vbCrLf)
-            GetEmails(StrRetr)
-        Next I
-    End Sub
-
     Function Load() As String
         My.Application.Log.WriteEntry("Loading mail module")
         If My.Settings.Mail_Enable = True Then
-            If My.Settings.Mail_IMAPMode = False AndAlso My.Settings.Mail_POPHost = "" Then
-                My.Application.Log.WriteEntry("No mail POP host set, asking for it")
-                My.Settings.Mail_POPHost = InputBox("Enter mail POP host.", "Mail POP Host")
-            End If
 
-            If My.Settings.Mail_IMAPMode = False AndAlso My.Settings.Mail_POPPort = "" Then
-                My.Application.Log.WriteEntry("No mail POP port set, asking for it")
-                My.Settings.Mail_POPPort = InputBox("Enter mail POP port.", "Mail POP Port", "995")
-            End If
-
-            If My.Settings.Mail_IMAPMode = True AndAlso My.Settings.Mail_IMAPHost = "" Then
+            If My.Settings.Mail_IMAPHost = "" Then
                 My.Application.Log.WriteEntry("No mail IMAP host set, asking for it")
                 My.Settings.Mail_IMAPHost = InputBox("Enter mail IMAP host.", "Mail IMAP Host")
             End If
 
-            If My.Settings.Mail_IMAPMode = True AndAlso My.Settings.Mail_IMAPPort = "" Then
+            If My.Settings.Mail_IMAPPort = "" Then
                 My.Application.Log.WriteEntry("No mail IMAP port set, asking for it")
                 My.Settings.Mail_IMAPPort = InputBox("Enter mail IMAP port.", "Mail IMAP Port", "993")
             End If
@@ -562,28 +423,6 @@ Module modMail
         End Select
     End Function
 
-    Function Login(ByVal SslStrem As SslStream, ByVal Server_Command As String) As String
-        Dim justExit As Boolean = False
-        Dim Read_Stream2 = New StreamReader(SslStrem)
-        Server_Command = Server_Command + vbCrLf
-        m_buffer = System.Text.Encoding.ASCII.GetBytes(Server_Command.ToCharArray())
-        Try
-            m_sslStream.Write(m_buffer, 0, m_buffer.Length)
-        Catch IOExcep As System.IO.IOException
-            My.Application.Log.WriteException(IOExcep)
-            modMail.Send("Mail crash averted", "Mail crash averted") ' Remove this line later if this retry method actually works
-            justExit = True
-            Threading.Thread.Sleep(600000)
-        End Try
-        If justExit = False Then
-            Dim Server_Response As String
-            Server_Response = Read_Stream2.ReadLine()
-            Return Server_Response
-        Else
-            Return "Dumped"
-        End If
-    End Function
-
     ''' <summary>
     ''' Asks for an updated mail password.
     ''' </summary>
@@ -598,7 +437,6 @@ Module modMail
         If tmrMailCheckTimer IsNot Nothing Then
             tmrMailCheckTimer.Enabled = False
             RemoveHandler tmrMailCheckTimer.Elapsed, AddressOf CheckMailHandler
-            ' CloseServer() - Wasn't used before, causes errors, commenting out this line.
         End If
         Return "Mail module unloaded"
     End Function

@@ -75,7 +75,7 @@ Module modComputer
         My.Application.Log.WriteEntry("Computer Name: " & My.Computer.Name)
         My.Application.Log.WriteEntry("Computer Language: " & Globalization.CultureInfo.CurrentCulture.DisplayName)
 
-        Dim ramSize As Integer = My.Computer.Info.TotalPhysicalMemory / 1024 / 1024
+        Dim ramSize As Integer = CInt(My.Computer.Info.TotalPhysicalMemory / 1024 / 1024)
         My.Application.Log.WriteEntry("Memory: " & ramSize & " MB RAM")
         My.Application.Log.WriteEntry("Screen: " & My.Computer.Screen.Bounds.Width & " x " & My.Computer.Screen.Bounds.Height)
 
@@ -131,10 +131,10 @@ Module modComputer
         Dim strBuild1, strBuild2, strBuild3, strBuild4, strWinVer As String
         Dim regKey As Microsoft.Win32.RegistryKey
         regKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion")
-        strBuild1 = regKey.GetValue("CurrentMajorVersionNumber")
-        strBuild2 = regKey.GetValue("CurrentMinorVersionNumber")
-        strBuild3 = regKey.GetValue("CurrentBuild")
-        strBuild4 = regKey.GetValue("UBR")
+        strBuild1 = regKey.GetValue("CurrentMajorVersionNumber").ToString()
+        strBuild2 = regKey.GetValue("CurrentMinorVersionNumber").ToString()
+        strBuild3 = regKey.GetValue("CurrentBuild").ToString()
+        strBuild4 = regKey.GetValue("UBR").ToString()
         strWinVer = strBuild1 & "." & strBuild2 & "." & strBuild3 & "." & strBuild4
         modDatabase.Execute("INSERT INTO CONFIG (Key, Value) VALUES('System_LastKnownWindowsVersion', '" & strWinVer & "') ON CONFLICT(Key) DO UPDATE SET Value=excluded.Value")
         Return strWinVer

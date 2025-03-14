@@ -137,7 +137,7 @@
             l = isbnarr(11)
             m = isbnarr(12)
             n = (d * 10) + (9 * e) + (8 * f) + (7 * g) + (6 * h) + (5 * i) + (4 * j) + (3 * k) + (2 * l)
-            n2 = Int((n / 11) + 1)
+            n2 = CInt(Int((n / 11) + 1))
             o = (11 * n2) - n
             If o = 10 Then
                 o2 = "X"

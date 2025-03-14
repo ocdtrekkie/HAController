@@ -240,7 +240,7 @@ Module modConverse
                         Dim response As String = ""
                         Dim intLinkType As Integer = 3
                         ' 0x00 IM is Responder, 0x01 IM is Controller, 0x03 IM is Either
-                        If inputData.Length = 5 Then intLinkType = inputData(4)
+                        If inputData.Length = 5 Then intLinkType = CInt(inputData(4))
                         modInsteon.InsteonLinkI2CSDevice(inputData(3), response, intLinkType)
                         strCommandResponse = "Linking"
                     End If
@@ -388,7 +388,7 @@ Module modConverse
                             intMax = CInt(inputData(2).Substring(1))
                         End If
                         If intMax > 0 Then
-                            strCommandResponse = modRandom.RandomInteger(intMax)
+                            strCommandResponse = modRandom.RandomInteger(intMax).ToString()
                         End If
                     End If
                 Case "run"
@@ -396,7 +396,7 @@ Module modConverse
                         Case "hacscript"
                             strCommandResponse = modComputer.RunHACScript(inputData(2))
                         Case "preset"
-                            strCommandResponse = modPersons.RunPreset(inputData(2), strRequestor)
+                            strCommandResponse = modPersons.RunPreset(CInt(inputData(2)), strRequestor)
                         Case "script"
                             strCommandResponse = modComputer.RunScript(inputData(2))
                         Case "update"
@@ -531,7 +531,7 @@ Module modConverse
                             strCommandResponse = "Acknowledged"
                         Case "thermostat"
                             If inputData.Length = 4 AndAlso IsNumeric(inputData(3)) Then
-                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2), inputData(3))
+                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2), CInt(inputData(3)))
                             Else
                                 modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                             End If

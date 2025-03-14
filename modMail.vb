@@ -60,7 +60,7 @@ Module modMail
         If My.Settings.Mail_Enable = True Then
             If modGlobal.IsOnline = True Then
                 Try
-                    pClient = New TcpClient(My.Settings.Mail_IMAPHost, My.Settings.Mail_IMAPPort)
+                    pClient = New TcpClient(My.Settings.Mail_IMAPHost, CInt(My.Settings.Mail_IMAPPort))
                     m_sslStream = New SslStream(pClient.GetStream())
                     m_sslStream.AuthenticateAsClient(My.Settings.Mail_IMAPHost)
                     ReceiveResponse("")
@@ -104,7 +104,7 @@ Module modMail
             Dim response As String = sr.ReadToEnd().Trim()
             response = Json.JsonDocument.Parse(response).RootElement.GetProperty("result").GetProperty("credit").GetString().Substring(0, 5)
 
-            Dim respVal As Integer = CSng(response)
+            Dim respVal As Single = CSng(response)
             If respVal < 2 Then
                 modMail.Send("PurelyMail Credit Low", "PurelyMail credit available: $" & response)
             End If
@@ -241,7 +241,7 @@ Module modMail
             End If
 
             oClient.Host = My.Settings.Mail_SMTPHost
-            oClient.Port = My.Settings.Mail_SMTPPort
+            oClient.Port = CInt(My.Settings.Mail_SMTPPort)
             If oClient.Port = 465 OrElse oClient.Port = 587 Then
                 oClient.EnableSsl = True
             Else

@@ -41,7 +41,7 @@
 
     Sub ShowNotification(ByVal strLine1 As String, Optional ByVal strLine2 As String = "", Optional ByVal IsToast As Boolean = True)
         If MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+            Dim MatrixLCDisplay As HAMatrixLCD = CType(DeviceCollection.Item(MatrixLCDisplayIndex), HAMatrixLCD)
             If IsToast = True Then
                 intToast = My.Settings.MatrixLCD_ToastHoldTime
             End If
@@ -68,7 +68,7 @@
     Function Unload() As String
         My.Application.Log.WriteEntry("Unloading Matrix LCD module")
         If MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(MatrixLCDisplayIndex)
+            Dim MatrixLCDisplay As HAMatrixLCD = CType(DeviceCollection.Item(MatrixLCDisplayIndex), HAMatrixLCD)
             MatrixLCDisplay.Dispose()
         End If
         Return "Matrix LCD module unloaded"
@@ -346,7 +346,7 @@
             data(1) = 64  '0x40
 
             For i As Integer = 0 To strInput.Length - 1
-                data(i + 2) = Asc(strInput(i))
+                data(i + 2) = CByte(Asc(strInput(i)))
             Next
 
             Try
@@ -380,7 +380,7 @@
             Dim data(strInput.Length) As Byte
 
             For i As Integer = 0 To strInput.Length - 1
-                data(i) = Asc(strInput(i))
+                data(i) = CByte(Asc(strInput(i)))
             Next
 
             Try

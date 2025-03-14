@@ -211,7 +211,7 @@
 
     Private Sub txtCommandBar_GotFocus(sender As Object, e As EventArgs) Handles txtCommandBar.GotFocus
         If modMatrixLCD.MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            Dim MatrixLCDisplay As HAMatrixLCD = CType(DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex), HAMatrixLCD)
             MatrixLCDisplay.Clear()
             MatrixLCDisplay.WriteString(">")
         End If
@@ -219,7 +219,7 @@
 
     Private Sub txtCommandBar_LostFocus(sender As Object, e As EventArgs) Handles txtCommandBar.LostFocus
         If modMatrixLCD.MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            Dim MatrixLCDisplay As HAMatrixLCD = CType(DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex), HAMatrixLCD)
             MatrixLCDisplay.Clear()
             MatrixLCDisplay.WriteString("x")
         End If
@@ -250,7 +250,7 @@
         End Select
 
         If modMatrixLCD.MatrixLCDConnected = True Then
-            Dim MatrixLCDisplay As HAMatrixLCD = DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex)
+            Dim MatrixLCDisplay As HAMatrixLCD = CType(DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex), HAMatrixLCD)
             If txtCommandBar.Text.Length > (MatrixLCDisplay.Cols * 2 - 2) Then
                 MatrixLCDisplay.SetAutoscrollOn()
             End If

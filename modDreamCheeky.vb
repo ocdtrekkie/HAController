@@ -26,8 +26,8 @@ Module modDreamCheeky
             WebMailNotifierIndex = DeviceCollection.IndexOf(WebMailNotifier)
             My.Application.Log.WriteEntry("WebMail Notifier has a device index of " & WebMailNotifierIndex)
 
-            DeviceCollection(WebMailNotifierIndex).SetColor("CornflowerBlue")
-            DeviceCollection(WebMailNotifierIndex).TurnOn()
+            WebMailNotifier.SetColor("CornflowerBlue")
+            WebMailNotifier.TurnOn()
         Else
             My.Application.Log.WriteEntry("WebMail Notifier not found")
             WebMailNotifier.Dispose()

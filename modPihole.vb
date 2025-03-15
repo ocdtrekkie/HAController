@@ -44,9 +44,9 @@ Module modPihole
     Function GetPiholeAPI() As PiholeResult
         Try
             My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
-            Dim PiholeAPIRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php?summary&auth=" & My.Settings.Pihole_APIKey)
+            Dim PiholeAPIRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php?summary&auth=" & My.Settings.Pihole_APIKey), System.Net.HttpWebRequest)
             PiholeAPIRequest.Method = "GET"
-            Dim PiholeAPIResponse As System.Net.HttpWebResponse = PiholeAPIRequest.GetResponse()
+            Dim PiholeAPIResponse As System.Net.HttpWebResponse = CType(PiholeAPIRequest.GetResponse(), System.Net.HttpWebResponse)
             Dim PiholeAPIResponseStream As New System.IO.StreamReader(PiholeAPIResponse.GetResponseStream(), System.Text.Encoding.UTF8)
             Dim PiholeAPIJSON As String = PiholeAPIResponseStream.ReadToEnd()
             PiholeAPIResponse.Close()

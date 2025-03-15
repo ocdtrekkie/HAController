@@ -52,7 +52,7 @@ Public Module modRoku
     Function PlayYouTubeVideo(ByVal strNickname As String, ByVal strVideoId As String) As String
         Try
             Dim strAddress As String = GetRokuAddressFromNickname(strNickname)
-            Dim RokuCmdRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(strAddress & "launch/837?contentId=" & strVideoId)
+            Dim RokuCmdRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create(strAddress & "launch/837?contentId=" & strVideoId), System.Net.HttpWebRequest)
             RokuCmdRequest.Method = "POST"
             RokuCmdRequest.GetResponse()
             Return "Command Sent"
@@ -70,7 +70,7 @@ Public Module modRoku
     Function SimpleRokuCommand(ByVal strNickname As String, ByVal strCommand As String) As String
         Try
             Dim strAddress As String = GetRokuAddressFromNickname(strNickname)
-            Dim RokuCmdRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(strAddress & "keypress/" & strCommand)
+            Dim RokuCmdRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create(strAddress & "keypress/" & strCommand), System.Net.HttpWebRequest)
             RokuCmdRequest.Method = "POST"
             RokuCmdRequest.GetResponse()
             Return "Command Sent"

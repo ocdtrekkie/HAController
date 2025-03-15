@@ -31,7 +31,7 @@
             Req.ServicePoint.MaxIdleTime = 10000
 
             Try
-                Output = Req.GetResponse()
+                Output = CType(Req.GetResponse(), System.Net.HttpWebResponse)
                 Using ResStream As System.IO.Stream = Output.GetResponseStream()
                     Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
                     Dim OutputStream As String = Reader.ReadToEnd()

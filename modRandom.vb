@@ -32,7 +32,7 @@ Module modRandom
             My.Settings.Random_RandomOrgAPIKey = InputBox("Enter Random.Org API Key. You can get an API key at https://api.random.org/api-keys/beta by entering your email address.", "Random.org API")
         End If
         Dim randomAPIURL As String = "https://api.random.org/json-rpc/2/invoke"
-        Dim randomRequest As System.Net.HttpWebRequest = System.Net.WebRequest.Create(randomAPIURL)
+        Dim randomRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create(randomAPIURL), System.Net.HttpWebRequest)
         randomRequest.Method = "POST"
         randomRequest.ContentType = "application/json"
         My.Application.Log.WriteEntry("Creating web request to " + randomAPIURL)
@@ -43,7 +43,7 @@ Module modRandom
         randomStream.Write(requestBuffer, 0, requestBuffer.Length)
         randomStream.Close()
 
-        Dim randomResponse As System.Net.HttpWebResponse = randomRequest.GetResponse()
+        Dim randomResponse As System.Net.HttpWebResponse = CType(randomRequest.GetResponse(), System.Net.HttpWebResponse)
         Dim randomResponseStream As System.IO.Stream = randomResponse.GetResponseStream()
         Dim encode As System.Text.Encoding = System.Text.Encoding.GetEncoding("utf-8")
         Dim randomResponseRead As New System.IO.StreamReader(randomResponseStream, encode)

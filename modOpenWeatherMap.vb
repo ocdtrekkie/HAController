@@ -44,17 +44,17 @@ Module modOpenWeatherMap
                 SpeechString = "The current outside weather condition is " + strWeather
 
                 WeatherNode = WeatherData.SelectSingleNode("/current/temperature")
-                Dim dblTemperature As Double = WeatherNode.Attributes.GetNamedItem("value").Value
+                Dim dblTemperature As Double = CDbl(WeatherNode.Attributes.GetNamedItem("value").Value)
                 SpeechString = SpeechString & ". The current outside temperature is " + CStr(Int(dblTemperature)) & " degrees Fahrenheit."
 
                 WeatherNode = WeatherData.SelectSingleNode("/current/humidity")
-                Dim dblHumidity As Double = WeatherNode.Attributes.GetNamedItem("value").Value
+                Dim dblHumidity As Double = CDbl(WeatherNode.Attributes.GetNamedItem("value").Value)
 
                 WeatherNode = WeatherData.SelectSingleNode("/current/city")
                 Dim strCityName As String = WeatherNode.Attributes.GetNamedItem("name").Value
 
                 WeatherNode = WeatherData.SelectSingleNode("/current/lastupdate")
-                Dim dteLastUpdate As DateTime = WeatherNode.Attributes.GetNamedItem("value").Value
+                Dim dteLastUpdate As DateTime = CDate(WeatherNode.Attributes.GetNamedItem("value").Value)
 
                 My.Application.Log.WriteEntry(SpeechString)
 
@@ -67,7 +67,7 @@ Module modOpenWeatherMap
                     modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature, Humidity, Condition) VALUES('" + dteLastUpdate.ToString("u") + "', 'OWM', '" + strCityName + "', " + CStr(Int(dblTemperature)) + ", " + CStr(Int(dblHumidity)) + ", '" + strWeather + "')")
                 End If
 
-                My.Settings.Global_LastKnownOutsideTemp = Int(dblTemperature)
+                My.Settings.Global_LastKnownOutsideTemp = CInt(Int(dblTemperature))
                 My.Settings.Global_LastKnownOutsideCondition = strWeather
 
                 Return SpeechString

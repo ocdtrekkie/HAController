@@ -1,4 +1,4 @@
-﻿Imports System.Web.Script.Serialization
+﻿Imports System.Text.Json
 
 Module modPihole
     Function CheckPiholeStatus() As String
@@ -8,9 +8,9 @@ Module modPihole
             If strPingResponse.StartsWith("Reply from") Then
                 My.Application.Log.WriteEntry(strPingResponse, TraceEventType.Verbose)
                 Dim PiholeData = GetPiholeAPI()
-                If PiholeData.status = "enabled" Then
-                    Return "Pi-hole is enabled, " & PiholeData.ads_blocked_today & " queries blocked today"
-                ElseIf PiholeData.status = "disabled" Then
+                If PiholeData = "enabled" Then
+                    Return "Pi-hole is enabled"
+                ElseIf PiholeData = "disabled" Then
                     Return "Pi-hole is in disabled mode"
                 Else
                     Return "Pi-hole is not responding"
@@ -41,10 +41,32 @@ Module modPihole
         Return "Pi-hole module enabled"
     End Function
 
-    Function GetPiholeAPI() As PiholeResult
+    Function GetPiholeAPI() As String
+        Dim PiholeSID As String = ""
+        Dim PiholeAuthResponse As System.Net.HttpWebResponse
+        Dim strBlockingStatus As String = ""
+
         Try
+            My.Application.Log.WriteEntry("Attempting to authenticate to Pi-hole")
+            Dim PiholeAuthRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/api/auth"), System.Net.HttpWebRequest)
+            My.Application.Log.WriteEntry(PiholeAuthRequest.Address.ToString)
+            PiholeAuthRequest.Method = "POST"
+            Dim PiholeAuthRequestBody As Byte() = Text.Encoding.UTF8.GetBytes("{""password"":""" & My.Settings.Pihole_APIKey & """}")
+            PiholeAuthRequest.ContentType = "application/json"
+            PiholeAuthRequest.ContentLength = PiholeAuthRequestBody.Length
+            Dim ReqStream As System.IO.Stream = PiholeAuthRequest.GetRequestStream()
+            ReqStream.Write(PiholeAuthRequestBody, 0, PiholeAuthRequestBody.Length)
+            PiholeAuthResponse = CType(PiholeAuthRequest.GetResponse(), System.Net.HttpWebResponse)
+            Using ResStream As System.IO.Stream = PiholeAuthResponse.GetResponseStream()
+                Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                Dim OutputJson As String = Reader.ReadToEnd()
+                Using JsonResponse = JsonDocument.Parse(OutputJson)
+                    PiholeSID = JsonResponse.RootElement.GetProperty("session").GetProperty("sid").GetString()
+                End Using
+            End Using
+
             My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
-            Dim PiholeAPIRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/admin/api.php?summary&auth=" & My.Settings.Pihole_APIKey), System.Net.HttpWebRequest)
+            Dim PiholeAPIRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/api/dns/blocking?sid=" & PiholeSID), System.Net.HttpWebRequest)
             PiholeAPIRequest.Method = "GET"
             Dim PiholeAPIResponse As System.Net.HttpWebResponse = CType(PiholeAPIRequest.GetResponse(), System.Net.HttpWebResponse)
             Dim PiholeAPIResponseStream As New System.IO.StreamReader(PiholeAPIResponse.GetResponseStream(), System.Text.Encoding.UTF8)
@@ -52,20 +74,21 @@ Module modPihole
             PiholeAPIResponse.Close()
             PiholeAPIResponseStream.Close()
             My.Application.Log.WriteEntry("Response received: " & PiholeAPIJSON, TraceEventType.Verbose)
+            Using JsonResponse = JsonDocument.Parse(PiholeAPIJSON)
+                strBlockingStatus = JsonResponse.RootElement.GetProperty("blocking").GetString()
+            End Using
 
-            If PiholeAPIJSON = "[]" Then
-                My.Application.Log.WriteEntry("Pi-hole authentication failed", TraceEventType.Error)
-                Dim blankdata As PiholeResult = New PiholeResult
-                Return blankdata
-            Else
-                Dim json As New JavaScriptSerializer
-                Dim data As PiholeResult = json.Deserialize(Of PiholeResult)(PiholeAPIJSON)
-                Return data
-            End If
+            Return strBlockingStatus
         Catch WebEx As System.Net.WebException
-            My.Application.Log.WriteException(WebEx)
-            Dim blankdata As PiholeResult = New PiholeResult
-            Return blankdata
+            Using ResStream As System.IO.Stream = WebEx.Response.GetResponseStream()
+                Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                Dim OutputJson As String = Reader.ReadToEnd()
+                Using JsonResponse = JsonDocument.Parse(OutputJson)
+                    PiholeSID = JsonResponse.RootElement.GetProperty("error").GetProperty("message").GetString()
+                    My.Application.Log.WriteEntry("Pi-hole Request Error: " & PiholeSID)
+                End Using
+            End Using
+            Return "failed"
         End Try
     End Function
 
@@ -91,47 +114,4 @@ Module modPihole
         My.Application.Log.WriteEntry("Unloading Pi-hole module")
         Return "Pi-hole module unloaded"
     End Function
-
-    Public Class PiholeResult
-        Public Property domains_being_blocked As String
-        Public Property dns_queries_today As String
-        Public Property ads_blocked_today As String
-        Public Property ads_percentage_today As Double
-        Public Property unique_domains As String
-        Public Property queries_forwarded As String
-        Public Property queries_cached As String
-        Public Property clients_ever_seen As String
-        Public Property unique_clients As String
-        Public Property dns_queries_all_types As String
-        Public Property reply_UNKNOWN As String
-        Public Property reply_NODATA As String
-        Public Property repy_NXDOMAIN As String
-        Public Property reply_CNAME As String
-        Public Property reply_IP As String
-        Public Property reply_DOMAIN As String
-        Public Property reply_RRNAME As String
-        Public Property reply_SERVFAIL As String
-        Public Property reply_REFUSED As String
-        Public Property reply_NOTIMP As String
-        Public Property reply_OTHER As String
-        Public Property reply_DNSSEC As String
-        Public Property reply_NONE As String
-        Public Property reply_BLOB As String
-        Public Property dns_queries_all_replies As String
-        Public Property privacy_level As String
-        Public Property status As String
-        Public Property gravity_last_updated As PiholeGravityResult
-    End Class
-
-    Public Class PiholeGravityResult
-        Public Property file_exists As Boolean
-        Public Property absolute As String
-        Public Property relative As PiholeGravityRelativeResult
-    End Class
-
-    Public Class PiholeGravityRelativeResult
-        Public Property days As Integer
-        Public Property hours As Integer
-        Public Property minutes As Integer
-    End Class
 End Module

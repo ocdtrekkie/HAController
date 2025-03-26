@@ -133,8 +133,8 @@
     End Sub
 
     Sub InsteonAlarmControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intSeconds As Integer = 0)
-        Dim comm1 As Short
-        Dim comm2 As Short
+        Dim comm1 As Byte
+        Dim comm2 As Byte
 
         Select Case Command1
             Case "Off", "off"
@@ -168,9 +168,9 @@
         InsteonSendStdCommand(strAddress, 13, 0)
     End Sub
 
-    Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Integer = 255)
-        Dim comm1 As Short
-        Dim comm2 As Short
+    Sub InsteonLightControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intBrightness As Byte = 255)
+        Dim comm1 As Byte
+        Dim comm2 As Byte
         Dim needExtended As Boolean = False
 
         Select Case Command1
@@ -215,7 +215,7 @@
         End If
     End Sub
 
-    Sub InsteonLinkI2CSDevice(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal intLinkType As Integer)
+    Sub InsteonLinkI2CSDevice(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal intLinkType As Byte)
         SyncLock serialLock
             Dim data(4) As Byte
 
@@ -243,7 +243,7 @@
         End Select
     End Sub
 
-    Sub InsteonSendExtCommand(ByVal strAddress As String, ByVal comm1 As Short, ByVal comm2 As Short)
+    Sub InsteonSendExtCommand(ByVal strAddress As String, ByVal comm1 As Byte, ByVal comm2 As Byte)
         SyncLock serialLock
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
@@ -275,7 +275,7 @@
         End SyncLock
     End Sub
 
-    Sub InsteonSendStdCommand(ByVal strAddress As String, ByVal comm1 As Short, ByVal comm2 As Short)
+    Sub InsteonSendStdCommand(ByVal strAddress As String, ByVal comm1 As Byte, ByVal comm2 As Byte)
         SyncLock serialLock
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
@@ -306,9 +306,9 @@
         End SyncLock
     End Sub
 
-    Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Integer = 72)
-        Dim comm1 As Short
-        Dim comm2 As Short
+    Sub InsteonThermostatControl(ByVal strAddress As String, ByRef ResponseMsg As String, ByVal Command1 As String, Optional ByVal intTemperature As Byte = 72)
+        Dim comm1 As Byte
+        Dim comm2 As Byte
 
         If strAddress = "" And My.Settings.Insteon_ThermostatAddr = "" Then
             My.Application.Log.WriteEntry("No thermostat set, asking for it")
@@ -327,7 +327,7 @@
                 comm2 = 5
             Case "CoolSet", "coolset"
                 comm1 = 108
-                comm2 = intTemperature * 2
+                comm2 = CByte(intTemperature * 2)
             Case "Down", "down"
                 comm1 = 105
                 comm2 = 2
@@ -342,7 +342,7 @@
                 comm2 = 4
             Case "HeatSet", "heatset"
                 comm1 = 109
-                comm2 = intTemperature * 2
+                comm2 = CByte(intTemperature * 2)
             Case "Off", "off"
                 comm1 = 107
                 comm2 = 9
@@ -405,7 +405,7 @@
         Dim PLMThread As New Threading.Thread(AddressOf PLM)
 
         Do Until SerialPLM.BytesToRead = 0
-            x(x_LastWrite + 1) = SerialPLM.ReadByte
+            x(x_LastWrite + 1) = CByte(SerialPLM.ReadByte)
             x(x_LastWrite + 10) = 0
             If x_LastWrite < 30 Then x(x_LastWrite + 1001) = x(x_LastWrite + 1)
             ' the ends overlap so no message breaks over the limit of the array
@@ -1274,8 +1274,8 @@
     Function X10SendCommand(ByVal strAddress As String, ByVal strCommand As String) As String
         Dim strOutcome As String = ""
         Dim bytCommand As Byte
-        Dim HouseCode As Byte = Asc(strAddress.Substring(0, 1)) - 65
-        Dim DeviceCode As Byte = CInt(strAddress.Substring(1, strAddress.Length - 1))
+        Dim HouseCode As Byte = CByte(Asc(strAddress.Substring(0, 1)) - 65)
+        Dim DeviceCode As Byte = CByte(strAddress.Substring(1, strAddress.Length - 1))
 
         Select Case strCommand
             Case "bright"
@@ -2040,10 +2040,10 @@
                 ' TODO: Don't assume this info is temperature! It might not be! (But currently my code only requests it.)
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" + Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 If FromAddress = My.Settings.Insteon_ThermostatAddr Then
-                    My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                    My.Settings.Global_LastKnownInsideTemp = CInt(Int(comm2 / 2))
                     My.Settings.Global_TimeThermostatLastUpdated = Now()
                 ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
-                    My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
+                    My.Settings.Global_LastKnownInsideTemp2nd = CInt(Int(comm2 / 2))
                 End If
                 ' TODO: Probably should grab these temperature warnings from the second thermostat too someday.
                 If My.Settings.Global_LastKnownInsideTemp >= My.Settings.Global_InsideTempHeatWarning Then
@@ -2058,10 +2058,10 @@
             Case 110
                 modDatabase.Execute("INSERT INTO ENVIRONMENT (Date, Source, Location, Temperature) VALUES('" & Now.ToUniversalTime.ToString("u") & "', 'Insteon " & FromAddress & "', 'Interior', " & CStr(Int(comm2 / 2)) & ")")
                 If FromAddress = My.Settings.Insteon_ThermostatAddr Then
-                    My.Settings.Global_LastKnownInsideTemp = Int(comm2 / 2)
+                    My.Settings.Global_LastKnownInsideTemp = CInt(Int(comm2 / 2))
                     My.Settings.Global_TimeThermostatLastUpdated = Now()
                 ElseIf FromAddress = My.Settings.Insteon_ThermostatSlaveAddr Then
-                    My.Settings.Global_LastKnownInsideTemp2nd = Int(comm2 / 2)
+                    My.Settings.Global_LastKnownInsideTemp2nd = CInt(Int(comm2 / 2))
                 End If
                 Return "Temperature: " & CStr(Int(comm2 / 2)) & " F"
             Case 111

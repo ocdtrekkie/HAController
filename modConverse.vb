@@ -238,9 +238,9 @@ Module modConverse
                 Case "link"
                     If inputData(1) = "insteon" AndAlso inputData(2) = "address" Then
                         Dim response As String = ""
-                        Dim intLinkType As Integer = 3
+                        Dim intLinkType As Byte = 3
                         ' 0x00 IM is Responder, 0x01 IM is Controller, 0x03 IM is Either
-                        If inputData.Length = 5 Then intLinkType = CInt(inputData(4))
+                        If inputData.Length = 5 Then intLinkType = CByte(inputData(4))
                         modInsteon.InsteonLinkI2CSDevice(inputData(3), response, intLinkType)
                         strCommandResponse = "Linking"
                     End If

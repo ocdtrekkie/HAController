@@ -83,10 +83,7 @@ Module modPihole
             Using ResStream As System.IO.Stream = WebEx.Response.GetResponseStream()
                 Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
                 Dim OutputJson As String = Reader.ReadToEnd()
-                Using JsonResponse = JsonDocument.Parse(OutputJson)
-                    PiholeSID = JsonResponse.RootElement.GetProperty("error").GetProperty("message").GetString()
-                    My.Application.Log.WriteEntry("Pi-hole Request Error: " & PiholeSID)
-                End Using
+                My.Application.Log.WriteEntry("Pi-hole Request Error:" & OutputJson, TraceEventType.Error)
             End Using
             Return "failed"
         End Try

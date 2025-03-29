@@ -105,6 +105,44 @@ Module modPihole
         End Try
     End Function
 
+    Function SetPiholeBlocking(ByVal strSetBlock As String) As String
+        Dim PiholeSID As String = AuthPiholeAPI()
+        Dim strBlockingStatus As String = ""
+
+        If PiholeSID = "failed" Then
+            Return "failed"
+        End If
+
+        Try
+            My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
+            Dim PiholeAPIRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/api/dns/blocking?sid=" & PiholeSID), System.Net.HttpWebRequest)
+            PiholeAPIRequest.Method = "POST"
+            Dim PiholeAPIRequestBody As Byte() = Text.Encoding.UTF8.GetBytes("{""blocking"":" & strSetBlock & "}")
+            PiholeAPIRequest.ContentType = "application/json"
+            PiholeAPIRequest.ContentLength = PiholeAPIRequestBody.Length
+            Dim ReqStream As System.IO.Stream = PiholeAPIRequest.GetRequestStream()
+            ReqStream.Write(PiholeAPIRequestBody, 0, PiholeAPIRequestBody.Length)
+            Dim PiholeAPIResponse As System.Net.HttpWebResponse = CType(PiholeAPIRequest.GetResponse(), System.Net.HttpWebResponse)
+            Dim PiholeAPIResponseStream As New System.IO.StreamReader(PiholeAPIResponse.GetResponseStream(), System.Text.Encoding.UTF8)
+            Dim PiholeAPIJSON As String = PiholeAPIResponseStream.ReadToEnd()
+            PiholeAPIResponse.Close()
+            PiholeAPIResponseStream.Close()
+            My.Application.Log.WriteEntry("Response received: " & PiholeAPIJSON, TraceEventType.Verbose)
+            Using JsonResponse = JsonDocument.Parse(PiholeAPIJSON)
+                strBlockingStatus = JsonResponse.RootElement.GetProperty("blocking").GetString()
+            End Using
+
+            Return strBlockingStatus
+        Catch WebEx As System.Net.WebException
+            Using ResStream As System.IO.Stream = WebEx.Response.GetResponseStream()
+                Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                Dim OutputJson As String = Reader.ReadToEnd()
+                My.Application.Log.WriteEntry("Pi-hole Request Error:" & OutputJson, TraceEventType.Error)
+            End Using
+            Return "failed"
+        End Try
+    End Function
+
     Function Load() As String
         If My.Settings.Pihole_Enable = True Then
             My.Application.Log.WriteEntry("Loading Pi-hole module")

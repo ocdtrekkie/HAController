@@ -101,6 +101,8 @@ Module modConverse
                             strCommandResponse = modOpenWeatherMap.Disable()
                         Case "pihole"
                             strCommandResponse = modPihole.Disable()
+                        Case "piholeblocking"
+                            strCommandResponse = modPihole.SetPiholeBlocking("false")
                         Case "ping"
                             strCommandResponse = modPing.Disable()
                         Case "smartcom"
@@ -157,6 +159,8 @@ Module modConverse
                             strCommandResponse = modOpenWeatherMap.Enable()
                         Case "pihole"
                             strCommandResponse = modPihole.Enable()
+                        Case "piholeblocking"
+                            strCommandResponse = modPihole.SetPiholeBlocking("true")
                         Case "ping"
                             strCommandResponse = modPing.Enable()
                         Case "smartcom"

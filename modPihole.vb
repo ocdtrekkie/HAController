@@ -41,12 +41,9 @@ Module modPihole
         Return "Pi-hole module enabled"
     End Function
 
-    Function GetPiholeAPI() As String
-        Dim PiholeSID As String = ""
-        Dim PiholeAuthResponse As System.Net.HttpWebResponse
-        Dim strBlockingStatus As String = ""
-
+    Function AuthPiholeAPI() As String
         Try
+            Dim PiholeSID As String = ""
             My.Application.Log.WriteEntry("Attempting to authenticate to Pi-hole")
             Dim PiholeAuthRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/api/auth"), System.Net.HttpWebRequest)
             My.Application.Log.WriteEntry(PiholeAuthRequest.Address.ToString)
@@ -56,7 +53,7 @@ Module modPihole
             PiholeAuthRequest.ContentLength = PiholeAuthRequestBody.Length
             Dim ReqStream As System.IO.Stream = PiholeAuthRequest.GetRequestStream()
             ReqStream.Write(PiholeAuthRequestBody, 0, PiholeAuthRequestBody.Length)
-            PiholeAuthResponse = CType(PiholeAuthRequest.GetResponse(), System.Net.HttpWebResponse)
+            Dim PiholeAuthResponse As System.Net.HttpWebResponse = CType(PiholeAuthRequest.GetResponse(), System.Net.HttpWebResponse)
             Using ResStream As System.IO.Stream = PiholeAuthResponse.GetResponseStream()
                 Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
                 Dim OutputJson As String = Reader.ReadToEnd()
@@ -64,7 +61,26 @@ Module modPihole
                     PiholeSID = JsonResponse.RootElement.GetProperty("session").GetProperty("sid").GetString()
                 End Using
             End Using
+            Return PiholeSID
+        Catch WebEx As System.Net.WebException
+            Using ResStream As System.IO.Stream = WebEx.Response.GetResponseStream()
+                Dim Reader As System.IO.StreamReader = New System.IO.StreamReader(ResStream)
+                Dim OutputJson As String = Reader.ReadToEnd()
+                My.Application.Log.WriteEntry("Pi-hole Auth Error:" & OutputJson, TraceEventType.Error)
+            End Using
+            Return "failed"
+        End Try
+    End Function
 
+    Function GetPiholeAPI() As String
+        Dim PiholeSID As String = AuthPiholeAPI()
+        Dim strBlockingStatus As String = ""
+
+        If PiholeSID = "failed" Then
+            Return "failed"
+        End If
+
+        Try
             My.Application.Log.WriteEntry("Requesting Pi-hole statistics")
             Dim PiholeAPIRequest As System.Net.HttpWebRequest = CType(System.Net.WebRequest.Create("http://" & My.Settings.Pihole_IPAddress & "/api/dns/blocking?sid=" & PiholeSID), System.Net.HttpWebRequest)
             PiholeAPIRequest.Method = "GET"

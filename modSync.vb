@@ -57,27 +57,33 @@ Module modSync
     Function Load() As String
         If My.Settings.Sync_Enable = True Then
             My.Application.Log.WriteEntry("Loading sync module")
-            If My.Settings.Sync_ServerURL = "" Then
-                My.Application.Log.WriteEntry("No sync server URL set, asking for it")
-                My.Settings.Sync_ServerURL = InputBox("Enter sync server URL.", "Sync Server URL")
-            End If
-            If My.Settings.Sync_SandstormToken = "" AndAlso (My.Settings.Sync_ServerURL.StartsWith("http://api-") Or My.Settings.Sync_ServerURL.StartsWith("https://api-")) Then
-                My.Application.Log.WriteEntry("Sandstorm Sync URL identified, asking for token")
-                My.Settings.Sync_SandstormToken = InputBox("Sandstorm requires an additional token for access.", "Sandstorm Access Token")
-            End If
-            If My.Settings.Sync_AccessKey = "" Then
-                My.Application.Log.WriteEntry("No sync server access key set, asking for it")
-                My.Settings.Sync_AccessKey = InputBox("Enter sync server access key.", "Sync Server Access Key")
-            End If
-            If My.Settings.Sync_CryptoKey = "" Then
-                My.Application.Log.WriteEntry("No sync server crypto key set, asking for it")
-                My.Settings.Sync_CryptoKey = InputBox("Enter cryptographic key for synced nodes", "Sync Crypto Key")
+            If My.Settings.Sync_LocalQueueMode = False Then
+                If My.Settings.Sync_ServerURL = "" Then
+                    My.Application.Log.WriteEntry("No sync server URL set, asking for it")
+                    My.Settings.Sync_ServerURL = InputBox("Enter sync server URL.", "Sync Server URL")
+                End If
+                If My.Settings.Sync_SandstormToken = "" AndAlso (My.Settings.Sync_ServerURL.StartsWith("http://api-") Or My.Settings.Sync_ServerURL.StartsWith("https://api-")) Then
+                    My.Application.Log.WriteEntry("Sandstorm Sync URL identified, asking for token")
+                    My.Settings.Sync_SandstormToken = InputBox("Sandstorm requires an additional token for access.", "Sandstorm Access Token")
+                End If
+                If My.Settings.Sync_AccessKey = "" Then
+                    My.Application.Log.WriteEntry("No sync server access key set, asking for it")
+                    My.Settings.Sync_AccessKey = InputBox("Enter sync server access key.", "Sync Server Access Key")
+                End If
+                If My.Settings.Sync_CryptoKey = "" Then
+                    My.Application.Log.WriteEntry("No sync server crypto key set, asking for it")
+                    My.Settings.Sync_CryptoKey = InputBox("Enter cryptographic key for synced nodes", "Sync Crypto Key")
+                End If
             End If
 
             tmrSyncHeartbeatTimer = New System.Timers.Timer
             My.Application.Log.WriteEntry("Scheduling automatic heartbeats to sync server")
             AddHandler tmrSyncHeartbeatTimer.Elapsed, AddressOf SendHeartbeatHandler
-            tmrSyncHeartbeatTimer.Interval = 300000 ' 5min
+            If My.Settings.Sync_LocalQueueMode = False Then
+                tmrSyncHeartbeatTimer.Interval = 300000 ' 5min
+            Else
+                tmrSyncHeartbeatTimer.Interval = 30000 ' 30sec
+            End If
             tmrSyncHeartbeatTimer.Enabled = True
 
             Dim InitialSyncHeartbeat As New Threading.Thread(AddressOf InitialHeartbeatHandler)

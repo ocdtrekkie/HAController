@@ -535,7 +535,7 @@ Module modConverse
                             strCommandResponse = "Acknowledged"
                         Case "thermostat"
                             If inputData.Length = 4 AndAlso IsNumeric(inputData(3)) Then
-                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2), CInt(inputData(3)))
+                                modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2), CByte(inputData(3)))
                             Else
                                 modInsteon.InsteonThermostatControl(My.Settings.Insteon_ThermostatAddr, response, inputData(2))
                             End If

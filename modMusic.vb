@@ -65,7 +65,7 @@ Module modMusic
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Album", "Contains", strAlbumName)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing songs from " + strAlbumName
@@ -79,7 +79,7 @@ Module modMusic
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Author", "Contains", strArtistName)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing some " + strArtistName
@@ -93,7 +93,7 @@ Module modMusic
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Genre", "Contains", strGenre)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing some " + strGenre + " music"
@@ -136,7 +136,7 @@ Module modMusic
         Dim oQuery As Object
         oQuery = MusicPlayer.mediaCollection.createQuery()
         oQuery.AddCondition("Title", "Contains", strSongName)
-        MusicPlayer.currentPlaylist = MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False)
+        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing " + strSongName

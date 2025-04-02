@@ -253,19 +253,24 @@ Module modConverse
                         strCommandResponse = modComputer.LockScreen()
                     End If
                 Case "matrixlcd"
-                    Select Case inputData(1)
-                        Case "bright"
-                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetBright()
-                        Case "brightness"
-                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetBrightness(inputData(2))
-                        Case "dim"
-                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetDim()
-                        Case "nite"
-                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetNite()
-                        Case "soft"
-                            DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex).SetSoft()
-                    End Select
-                    strCommandResponse = " "
+                    If modMatrixLCD.MatrixLCDConnected = True Then
+                        Dim MatrixLCDisplay As HAMatrixLCD = CType(modGlobal.DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex), modMatrixLCD.HAMatrixLCD)
+                        Select Case inputData(1)
+                            Case "bright"
+                                MatrixLCDisplay.SetBright()
+                            Case "brightness"
+                                MatrixLCDisplay.SetBrightness(inputData(2))
+                            Case "dim"
+                                MatrixLCDisplay.SetDim()
+                            Case "nite"
+                                MatrixLCDisplay.SetNite()
+                            Case "soft"
+                                MatrixLCDisplay.SetSoft()
+                        End Select
+                        strCommandResponse = " "
+                    Else
+                        strCommandResponse = "Matrix LCD not connected"
+                    End If
                 Case "mute", "silence"
                     Select Case inputData(1)
                         Case "alarm"
@@ -337,7 +342,8 @@ Module modConverse
                 Case "pursuit"
                     If inputData(1) = "mode" Then
                         If My.Settings.Global_CarMode = True AndAlso modMatrixLCD.MatrixLCDConnected = True Then
-                            modGlobal.DeviceCollection(modMatrixLCD.MatrixLCDisplayIndex).SetColor(Color.Red)
+                            Dim MatrixLCDisplay As HAMatrixLCD = CType(modGlobal.DeviceCollection.Item(modMatrixLCD.MatrixLCDisplayIndex), modMatrixLCD.HAMatrixLCD)
+                            MatrixLCDisplay.SetColor(Color.Red)
                             strCommandResponse = "Entering pursuit mode"
                         End If
                     End If

@@ -62,10 +62,11 @@ Module modMusic
     End Sub
 
     Public Function PlayAlbum(ByVal strAlbumName As String) As String
-        Dim oQuery As Object
-        oQuery = MusicPlayer.mediaCollection.createQuery()
+        Dim oQuery As IWMPQuery
+        Dim mediaC As IWMPMediaCollection2 = CType(MusicPlayer.mediaCollection, IWMPMediaCollection2)
+        oQuery = mediaC.createQuery()
         oQuery.AddCondition("Album", "Contains", strAlbumName)
-        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
+        MusicPlayer.currentPlaylist = mediaC.getPlaylistByQuery(oQuery, "audio", "", False)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing songs from " + strAlbumName
@@ -76,10 +77,11 @@ Module modMusic
     End Function
 
     Public Function PlayArtist(ByVal strArtistName As String) As String
-        Dim oQuery As Object
-        oQuery = MusicPlayer.mediaCollection.createQuery()
+        Dim oQuery As IWMPQuery
+        Dim mediaC As IWMPMediaCollection2 = CType(MusicPlayer.mediaCollection, IWMPMediaCollection2)
+        oQuery = mediaC.createQuery()
         oQuery.AddCondition("Author", "Contains", strArtistName)
-        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
+        MusicPlayer.currentPlaylist = mediaC.getPlaylistByQuery(oQuery, "audio", "", False)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing some " + strArtistName
@@ -90,10 +92,11 @@ Module modMusic
     End Function
 
     Public Function PlayGenre(ByVal strGenre As String) As String
-        Dim oQuery As Object
-        oQuery = MusicPlayer.mediaCollection.createQuery()
+        Dim oQuery As IWMPQuery
+        Dim mediaC As IWMPMediaCollection2 = CType(MusicPlayer.mediaCollection, IWMPMediaCollection2)
+        oQuery = mediaC.createQuery()
         oQuery.AddCondition("Genre", "Contains", strGenre)
-        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
+        MusicPlayer.currentPlaylist = mediaC.getPlaylistByQuery(oQuery, "audio", "", False)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing some " + strGenre + " music"
@@ -133,10 +136,11 @@ Module modMusic
     End Sub
 
     Public Function PlaySong(ByVal strSongName As String) As String
-        Dim oQuery As Object
-        oQuery = MusicPlayer.mediaCollection.createQuery()
+        Dim oQuery As IWMPQuery
+        Dim mediaC As IWMPMediaCollection2 = CType(MusicPlayer.mediaCollection, IWMPMediaCollection2)
+        oQuery = mediaC.createQuery()
         oQuery.AddCondition("Title", "Contains", strSongName)
-        MusicPlayer.currentPlaylist = CType(MusicPlayer.mediaCollection.getPlaylistByQuery(oQuery, "audio", "", False), IWMPPlaylist)
+        MusicPlayer.currentPlaylist = mediaC.getPlaylistByQuery(oQuery, "audio", "", False)
         If MusicPlayer.currentPlaylist.count > 0 Then
             isPlaying = True
             Return "Playing " + strSongName

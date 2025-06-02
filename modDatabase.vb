@@ -133,6 +133,15 @@ Module modDatabase
         Return result
     End Function
 
+    ''' <summary>
+    ''' Adds a device to the DEVICES table
+    ''' </summary>
+    ''' <param name="strName">Device Name</param>
+    ''' <param name="strType">Device Type</param>
+    ''' <param name="strModel">Device Model</param>
+    ''' <param name="strLocation">Device Location</param>
+    ''' <param name="strAddress">Device Address</param>
+    ''' <returns>(int) Number of rows affected</returns>
     Function AddDevice(ByVal strName As String, ByVal strType As String, ByVal strModel As String, ByVal strLocation As String, ByVal strAddress As String) As Integer
         Dim cmdAddDevice As New SQLiteCommand
         cmdAddDevice.CommandText = "INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES(@name, @type, @model, @location, @address)"
@@ -142,7 +151,13 @@ Module modDatabase
         cmdAddDevice.Parameters.Add(New SQLiteParameter("@location", strLocation))
         cmdAddDevice.Parameters.Add(New SQLiteParameter("@address", strAddress))
         cmdAddDevice.Connection = conn
-        Return cmdAddDevice.ExecuteNonQuery
+        My.Application.Log.WriteEntry("SQLite: Adding " & strName & " to devices - " & cmdAddDevice.CommandText, TraceEventType.Verbose)
+        Try
+            Return cmdAddDevice.ExecuteNonQuery
+        Catch SQLiteExcep As SQLiteException
+            My.Application.Log.WriteException(SQLiteExcep)
+            Return 0
+        End Try
     End Function
 
     Function Load() As String

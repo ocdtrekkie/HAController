@@ -133,6 +133,18 @@ Module modDatabase
         Return result
     End Function
 
+    Function AddDevice(ByVal strName As String, ByVal strType As String, ByVal strModel As String, ByVal strLocation As String, ByVal strAddress As String) As Integer
+        Dim cmdAddDevice As New SQLiteCommand
+        cmdAddDevice.CommandText = "INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES(@name, @type, @model, @location, @address)"
+        cmdAddDevice.Parameters.Add(New SQLiteParameter("@name", strName))
+        cmdAddDevice.Parameters.Add(New SQLiteParameter("@type", strType))
+        cmdAddDevice.Parameters.Add(New SQLiteParameter("@model", strModel))
+        cmdAddDevice.Parameters.Add(New SQLiteParameter("@location", strLocation))
+        cmdAddDevice.Parameters.Add(New SQLiteParameter("@address", strAddress))
+        cmdAddDevice.Connection = conn
+        Return cmdAddDevice.ExecuteNonQuery
+    End Function
+
     Function Load() As String
         My.Application.Log.WriteEntry("Loading database module")
         Dim connstring As String = "URI=file:" + My.Settings.Database_FileURI

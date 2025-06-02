@@ -16,7 +16,7 @@ Public Module modRoku
 
     Function AddRokuDeviceDb(ByVal strAddress As String, ByVal strFriendlyName As String, ByVal strModel As String) As String
         If CheckDbForRoku(strModel) = 0 Then
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Location, Address) VALUES('" & strFriendlyName.ToLower() & " roku', 'Roku', '" & strModel & "', '" & strFriendlyName & "', '" & strAddress & "')")
+            modDatabase.AddDevice(strFriendlyName.ToLower() & " roku", "Roku", strModel, strFriendlyName, strAddress)
             Return "Device added"
         Else
             modDatabase.Execute("UPDATE DEVICES SET Address = """ & strAddress & """ WHERE Type = ""Roku"" AND Model = """ & strModel & """")

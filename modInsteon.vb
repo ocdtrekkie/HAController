@@ -37,7 +37,7 @@
             Dim strModel As String = InsteonDeviceLookup(DevCat, SubCat)
 
             modDatabase.Execute("INSERT INTO INSTEON_DEVICES (Address, DevCat, SubCat, Firmware) VALUES('" & strAddress & "', '" & CStr(DevCat) & "', '" & CStr(SubCat) & "', '" & CStr(Firmware) & "')")
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('Insteon " & strAddress & "', 'Insteon', '" & strModel & "', '" & strAddress & "')")
+            modDatabase.AddDevice("Insteon " & strAddress, "Insteon", strModel, "", strAddress)
             Return "Device added"
         Else
             Return "Device already exists"
@@ -46,7 +46,7 @@
 
     Function AddX10DeviceDb(ByVal strAddress As String) As String
         If CheckDbForX10(strAddress) = 0 Then
-            modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Address) VALUES('X10 Device', 'X10', '" & strAddress & "')")
+            modDatabase.AddDevice("X10 Device", "X10", "", "", strAddress)
             Return "Device added"
         Else
             Return "Device already exists"

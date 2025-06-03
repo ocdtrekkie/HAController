@@ -26,7 +26,7 @@ Module modDevices
         If inputField <> "" Then
             Dim inputData() As String = inputField.Split("|"c)
             If inputData.Length = 3 Then
-                modDatabase.Execute("INSERT INTO DEVICES (Name, Type, Model, Address) VALUES('" + inputData(0) + "', 'IP', '" + inputData(1) + "', '" + inputData(2) + "')")
+                modDatabase.AddDevice(inputData(0), "IP", inputData(1), "", inputData(2))
                 Return "Device added"
             Else
                 Return "Invalid data entry, device not added"

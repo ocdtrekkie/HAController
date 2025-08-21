@@ -100,7 +100,7 @@
 
         Public Sub Command(ByVal strCommand As String)
             Dim invCommand As Boolean = False
-            Dim data(2) As Byte
+            Dim data(1) As Byte
             data(0) = 254 '0xFE
 
             Select Case strCommand
@@ -142,7 +142,7 @@
 
         Public Sub Command(ByVal strCommand As String, ByVal Value As Byte)
             Dim invCommand As Boolean = False
-            Dim data(3) As Byte
+            Dim data(2) As Byte
             data(0) = 254 '0xFE
             data(2) = Value
 
@@ -256,8 +256,8 @@
         End Sub
 
         Public Sub NewLine()
-            Dim data(1) As Byte
-            data(0) = 10 '0x0A
+            Dim data(0) As Byte
+            data(0) = 13 '0x0D
             Try
                 SerialPort.Write(data, 0, 1)
             Catch Excep As System.InvalidOperationException
@@ -282,7 +282,7 @@
         End Sub
 
         Public Sub SetColor(ByVal bytRed As Byte, ByVal bytGreen As Byte, ByVal bytBlue As Byte)
-            Dim data(5) As Byte
+            Dim data(4) As Byte
 
             data(0) = 254 '0xFE
             data(1) = 208 '0xD0
@@ -319,7 +319,7 @@
         End Sub
 
         Public Sub SetSize(ByVal Length As Integer, ByVal Height As Integer)
-            Dim data(4) As Byte
+            Dim data(3) As Byte
 
             data(0) = 254 '0xFE
             data(1) = 209 '0xD1
@@ -336,7 +336,7 @@
         Public Sub SetSplash(ByVal strInput As String)
             'TODO: Define by LCD size, fill rest of bytes with spaces automatically
             'Space is 0x20 or 32
-            Dim data(strInput.Length + 2) As Byte
+            Dim data(strInput.Length + 1) As Byte
 
             data(0) = 254 '0xFE
             data(1) = 64  '0x40
@@ -346,7 +346,7 @@
             Next
 
             Try
-                SerialPort.Write(data, 0, strInput.Length + 2)
+                SerialPort.Write(data, 0, data.Length)
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try
@@ -373,14 +373,9 @@
         End Sub
 
         Public Sub WriteString(ByVal strInput As String)
-            Dim data(strInput.Length) As Byte
-
-            For i As Integer = 0 To strInput.Length - 1
-                data(i) = CByte(Asc(strInput(i)))
-            Next
-
+            Dim data As Byte() = System.Text.Encoding.ASCII.GetBytes(strInput)
             Try
-                SerialPort.Write(data, 0, strInput.Length)
+                SerialPort.Write(data, 0, data.Length)
             Catch Excep As System.InvalidOperationException
                 My.Application.Log.WriteException(Excep)
             End Try

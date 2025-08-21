@@ -46,20 +46,16 @@
                 intToast = My.Settings.MatrixLCD_ToastHoldTime
             End If
             MatrixLCDisplay.Clear()
+            MatrixLCDisplay.SetAutoscrollOff()
             If strLine1.Length > MatrixLCDisplay.Cols Then
                 strLine1 = strLine1.Substring(0, MatrixLCDisplay.Cols)
-            ElseIf strLine2 <> "" Then
-                Do While MatrixLCDisplay.Cols > strLine1.Length
-                    'Yes, I did this.
-                    strLine1 = strLine1 + " "
-                Loop
             End If
             MatrixLCDisplay.WriteString(strLine1)
-            If strLine2.Length >= MatrixLCDisplay.Cols Then
-                strLine2 = strLine2.Substring(0, MatrixLCDisplay.Cols)
-                MatrixLCDisplay.SetAutoscrollOff()
-            End If
             If strLine2 <> "" Then
+                MatrixLCDisplay.NewLine()
+                If strLine2.Length >= MatrixLCDisplay.Cols Then
+                    strLine2 = strLine2.Substring(0, MatrixLCDisplay.Cols)
+                End If
                 MatrixLCDisplay.WriteString(strLine2)
             End If
         End If

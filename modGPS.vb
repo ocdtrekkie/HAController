@@ -266,7 +266,7 @@
 
                         If modMatrixLCD.DashMode = True Then
                             If modMatrixLCD.intToast = 0 Then
-                                modMatrixLCD.ShowNotification(CStr(Math.Round(dblSpeed * KnotsToMPH, 1)) & " mph  " & CStr(Math.Round(DistanceToNext, 1)), CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & "," & CurrentLongitude.ToString.PadRight(8, Convert.ToChar("0")).Substring(0, 8), False)
+                                modMatrixLCD.ShowNotification(CurrentLatitude.ToString.PadRight(7, Convert.ToChar("0")).Substring(0, 7) & "," & CurrentLongitude.ToString.PadRight(8, Convert.ToChar("0")).Substring(0, 8), CStr(Math.Round(dblSpeed * KnotsToMPH, 1)) & " mph  " & CStr(Math.Round(DistanceToNext, 1)), False)
                             Else
                                 modMatrixLCD.intToast = modMatrixLCD.intToast - 1
                             End If

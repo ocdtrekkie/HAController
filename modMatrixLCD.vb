@@ -52,9 +52,11 @@
             End If
             MatrixLCDisplay.WriteString(strLine1)
             If strLine2 <> "" Then
-                MatrixLCDisplay.NewLine()
+                If strLine1.Length < MatrixLCDisplay.Cols Then
+                    MatrixLCDisplay.NewLine()
+                End If
                 If strLine2.Length >= MatrixLCDisplay.Cols Then
-                    strLine2 = strLine2.Substring(0, MatrixLCDisplay.Cols)
+                    strLine2 = strLine2.Substring(0, MatrixLCDisplay.Cols - 1)
                 End If
                 MatrixLCDisplay.WriteString(strLine2)
             End If

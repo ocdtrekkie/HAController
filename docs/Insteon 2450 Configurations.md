@@ -16,4 +16,8 @@ The Sump Pump Alarm begins with the BuzzLinc configuration. A float switch is so
 
 The alarm will sound regardless of communication with the controller.
 
-Tested with Level Sense float switch, available here: https://www.amazon.com/dp/B01A4RZULM/
+Tested with Level Sense float switch, available here: https://www.amazon.com/dp/B01A4RZULM/ or https://www.level-sense.com/products/level-sense-float-switch
+
+## Garage Door Sensor
+
+The Garage Door Sensor uses a Seco-Larm SM-4201-LQ magnetic contact switch, available here: https://www.amazon.com/dp/B011OXPZ7Y/ and documented here: https://www.seco-larm.com/product/sm-4201-lq/

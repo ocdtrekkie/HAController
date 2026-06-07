@@ -9,6 +9,7 @@ Module modDatabase
         Execute("PRAGMA journal_mode = WAL")
         Execute("CREATE TABLE IF NOT EXISTS ""CONFIG"" (""Key"" varchar(100) primary key not null ,""Value"" varchar )")
         Execute("CREATE TABLE IF NOT EXISTS DEVICES(Id INTEGER PRIMARY KEY, Name TEXT, Type TEXT, Model TEXT, Location TEXT, Address TEXT UNIQUE)")
+        Execute("CREATE TABLE IF NOT EXISTS DOORS(Id INTEGER PRIMARY KEY, Address TEXT UNIQUE, State TEXT, AwayPolicy TEXT, StayPolicy TEXT, GuestsPolicy TEXT)")
         Execute("CREATE TABLE IF NOT EXISTS ENVIRONMENT(Id INTEGER PRIMARY KEY, Date TEXT, Source TEXT, Location TEXT, Temperature INTEGER, Humidity INTEGER, Condition TEXT)")
         Execute("CREATE TABLE IF NOT EXISTS ""LOCALQUEUE"" (""Id"" integer primary key autoincrement not null ,""Src"" varchar ,""Auth"" varchar ,""Dest"" varchar ,""Mesg"" varchar , ""Recv"" integer )")
         Execute("CREATE TABLE IF NOT EXISTS LOCATION(Id INTEGER PRIMARY KEY, Date TEXT, Latitude REAL, Longitude REAL, Speed REAL)")
@@ -158,6 +159,76 @@ Module modDatabase
             My.Application.Log.WriteException(SQLiteExcep)
             Return 0
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Adds a door to the DOORS table.
+    ''' </summary>
+    ''' <param name="strAddress">Door address</param>
+    ''' <param name="strState">Door state</param>
+    ''' <returns>(int) Number of rows affected</returns>
+    Function AddDoor(ByVal strAddress As String, ByVal strState As String) As Integer
+        Return Execute("INSERT INTO DOORS (Address, State, AwayPolicy, StayPolicy, GuestsPolicy) VALUES('" & strAddress & "', '" & strState & "', 'none', 'none', 'none')")
+    End Function
+
+    ''' <summary>
+    ''' Updates a door in the DOORS table.
+    ''' </summary>
+    ''' <param name="strAddress">Door address</param>
+    ''' <param name="strState">Door state</param>
+    ''' <returns>(int) Number of rows updated</returns>
+    Function UpdateDoor(ByVal strAddress As String, ByVal strState As String) As Integer
+        Return Execute("UPDATE DOORS SET State = '" & strState & "' WHERE Address = '" & strAddress & "' LIMIT 1")
+    End Function
+
+    ''' <summary>
+    ''' Updates an existing door in the DOORS table or adds it if it does not exist
+    ''' </summary>
+    ''' <param name="strAddress">Door address</param>
+    ''' <param name="strState">Door state</param>
+    ''' <returns>(int) Number of rows affected</returns>
+    Function AddOrUpdateDoor(ByVal strAddress As String, ByVal strState As String) As Integer
+        Dim result As Integer = 0
+        result = UpdateDoor(strAddress, strState)
+        If result = 0 Then
+            result = AddDoor(strAddress, strState)
+        End If
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' Updates the policy for an existing door in the DOORS table for a specific status
+    ''' </summary>
+    ''' <param name="strAddress"></param>
+    ''' <param name="strStatus"></param>
+    ''' <param name="strPolicy"></param>
+    ''' <returns></returns>
+    Function UpdateDoorPolicyForStatus(ByVal strAddress As String, ByVal strStatus As String, ByVal strPolicy As String) As String
+        Dim strResult As String = ""
+        If strStatus = "away" OrElse strStatus = "stay" OrElse strStatus = "guests" Then
+            Dim strPolicyRow As String = strStatus.Substring(0, 1).ToUpper() & strStatus.Substring(1) & "Policy"
+            Dim strRowsAffected = Execute("UPDATE DOORS SET " & strPolicyRow & " = '" & strPolicy & "' WHERE Address = '" & strAddress & "' LIMIT 1")
+            If strRowsAffected = 1 Then
+                Return "Door policy set to " & strPolicy & " for " & strStatus & "status"
+            Else
+                Return "Unable to set door policy"
+            End If
+        Else
+            Return "Invalid status for configuring door policy"
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Gets the response for a specified door and status from the DOORS table.
+    ''' </summary>
+    ''' <param name="strAddress">Door address</param>
+    ''' <param name="strStatus">Global status</param>
+    ''' <returns>Response for status</returns>
+    Function GetDoorPolicyForStatus(ByVal strAddress As String, ByVal strStatus As String) As String
+        Dim strPolicy As String = ""
+        Dim strPolicyRow As String = strStatus & "Policy"
+        ExecuteReader("SELECT " & strPolicyRow & " FROM DOORS WHERE Address = '" & strAddress & "' LIMIT 1", strPolicy)
+        Return strPolicy
     End Function
 
     Function Load() As String

@@ -438,6 +438,9 @@ Module modConverse
                     ElseIf inputData(1) = "ping" AndAlso inputData(2) = "address" AndAlso inputData(3) = "to" Then
                         My.Settings.Ping_InternetCheckAddress = inputData(4)
                         strCommandResponse = "Connectivity test address set to " & inputData(4)
+                    ElseIf inputData(1) = "policy" AndAlso inputData(2) = "for" AndAlso modInsteon.IsInsteonAddress(inputData(3)) = True AndAlso inputData(4) = "when" AndAlso inputData(6) = "to" Then
+                        ' set policy for 00.00.00 when STATUS to POLICY
+                        strCommandResponse = modDatabase.UpdateDoorPolicyForStatus(inputData(3), inputData(5), inputData(7))
                     ElseIf inputData(1) = "preset" AndAlso IsNumeric(inputData(2)) Then
                         Dim strPresetCommand As String = strInputString.Replace("set preset " + inputData(2) + " ", "")
                         strCommandResponse = modPersons.StorePreset(CInt(inputData(2)), strPresetCommand, strRequestor)

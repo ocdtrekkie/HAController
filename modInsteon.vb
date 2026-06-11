@@ -534,7 +534,7 @@
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
-                    ElseIf ToAddress = "0.0.1" AndAlso DeviceType = "DoorSensor" Then
+                    ElseIf (ToAddress = "0.0.1" OrElse ToAddress = "0.0.3") AndAlso DeviceType = "DoorSensor" Then
                         strTemp = strTemp & InsteonDoorSensorResponse(FromAddress, Command1, Command2)
                     ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "SmokeBridge" Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
@@ -1947,6 +1947,10 @@
     ''' <returns>Text definition of what happened</returns>
     Function InsteonDoorSensorResponse(ByVal strAddress As String, ByVal comm1 As Byte, ByVal comm2 As Byte) As String
         Dim strDoorName = modDevices.GetDeviceNameFromNickname(strAddress)
+        If comm2 = 3 Then
+            My.Application.Log.WriteEntry(strDoorName & "has sent a low battery warning", TraceEventType.Warning)
+            modMail.Send("Low battery warning", strDoorName & " has sent a low battery warning")
+        End If
         Select Case comm1
             Case 17
                 My.Settings.Global_TimeDoorLastOpened = Now()

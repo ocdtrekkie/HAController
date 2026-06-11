@@ -34,6 +34,9 @@ Module modMail
 
     Dim tmrMailCheckTimer As System.Timers.Timer
 
+    Private strLastMsgSentText As String = ""
+    Private dteLastMsgSentTime As DateTime = Now()
+
     Function AddMailkey(Optional ByVal strNickname As String = "", Optional ByVal strCmdAllowlist As String = "", Optional ByVal strCmdKey As String = "") As String
         If strNickname = "" Then
             strNickname = InputBox("Enter the nickname of the user whose mailkey you are adding", "Add Mailkey")
@@ -387,7 +390,13 @@ Module modMail
 
             SyncLock smtpLock
                 Try
-                    oClient.Send(oMsg)
+                    If strLastMsgSentText = oMsg.Body AndAlso (Now() - dteLastMsgSentTime).TotalSeconds < 60 Then
+                        My.Application.Log.WriteEntry("Suppressing duplicate email notification within the past minute", TraceEventType.Verbose)
+                    Else
+                        oClient.Send(oMsg)
+                        strLastMsgSentText = oMsg.Body
+                        dteLastMsgSentTime = Now()
+                    End If
                 Catch SmtpEx As SmtpException
                     My.Application.Log.WriteException(SmtpEx)
                 Catch AuthEx As AuthenticationException

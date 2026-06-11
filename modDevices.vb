@@ -37,6 +37,18 @@ Module modDevices
     End Function
 
     ''' <summary>
+    ''' The function returns the device name of a device with a given address.
+    ''' </summary>
+    ''' <param name="strAddress">Address of device to look for</param>
+    ''' <returns></returns>
+    Function GetDeviceNameFromNickname(ByVal strAddress As String) As String
+        Dim result As String = ""
+
+        modDatabase.ExecuteReader("Select Name FROM DEVICES WHERE Address = """ & strAddress & """", result)
+        Return result
+    End Function
+
+    ''' <summary>
     ''' This function returns the device type of a given device nickname. i.e. Insteon, X10, etc.
     ''' </summary>
     ''' <param name="strNickname">Nickname of device to look for</param>

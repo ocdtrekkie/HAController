@@ -1946,6 +1946,7 @@
     ''' <param name="comm2"></param>
     ''' <returns>Text definition of what happened</returns>
     Function InsteonDoorSensorResponse(ByVal strAddress As String, ByVal comm1 As Byte, ByVal comm2 As Byte) As String
+        Dim strDoorName = modDevices.GetDeviceNameFromNickname(strAddress)
         Select Case comm1
             Case 17
                 My.Settings.Global_TimeDoorLastOpened = Now()
@@ -1953,16 +1954,16 @@
                 Dim strResponsePolicy = modDatabase.GetDoorPolicyForStatus(strAddress, modGlobal.HomeStatus)
                 Select Case strResponsePolicy
                     Case "alarm"
-                        My.Application.Log.WriteEntry("ALERT: Door opened during status: " & modGlobal.HomeStatus, TraceEventType.Warning)
+                        My.Application.Log.WriteEntry("ALERT: Door '" & strDoorName & "' opened during status: " & modGlobal.HomeStatus, TraceEventType.Warning)
                         modSpeech.Say("Intruder alert!")
-                        modMail.Send("Intruder alert", "Intruder alert")
+                        modMail.Send("Intruder alert", "Intruder alert" & strDoorName)
                         Dim response As String = ""
                         Threading.Thread.Sleep(5000)
                         InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 30)
                         InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 30)
                     Case "notify"
-                        My.Application.Log.WriteEntry("INFO: Door opened during status: " & modGlobal.HomeStatus, TraceEventType.Information)
-                        modMail.Send("Door opened", "Door opened")
+                        My.Application.Log.WriteEntry("INFO: Door '" & strDoorName & "' opened during status: " & modGlobal.HomeStatus, TraceEventType.Information)
+                        modMail.Send("Door opened", "Door opened: " & strDoorName)
                 End Select
                 Return "Door Opened"
             Case 19

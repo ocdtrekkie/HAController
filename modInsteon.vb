@@ -247,25 +247,29 @@
         SyncLock serialLock
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
-                    Dim data(21) As Byte
-                    strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
-                    Dim arrAddress() As String = strAddress.Split("."c)
+                    If strAddress IsNot Nothing AndAlso IsInsteonAddress(strAddress) Then
+                        Dim data(21) As Byte
+                        strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
+                        Dim arrAddress() As String = strAddress.Split("."c)
 
-                    data(0) = 2 'all commands start with 2
-                    data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-                    data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-                    data(3) = Convert.ToInt32(arrAddress(1), 16)
-                    data(4) = Convert.ToInt32(arrAddress(2), 16)
-                    data(5) = 31 'flags
-                    data(6) = comm1
-                    data(7) = comm2
-                    data(21) = CByte(((Not (CInt(data(6)) + CInt(data(7)))) + 1) And 255)
-                    Try
-                        SerialPLM.Write(data, 0, 22)
-                    Catch Excep As System.InvalidOperationException
-                        My.Application.Log.WriteException(Excep)
-                    End Try
-                    Threading.Thread.Sleep(100)
+                        data(0) = 2 'all commands start with 2
+                        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+                        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+                        data(3) = Convert.ToInt32(arrAddress(1), 16)
+                        data(4) = Convert.ToInt32(arrAddress(2), 16)
+                        data(5) = 31 'flags
+                        data(6) = comm1
+                        data(7) = comm2
+                        data(21) = CByte(((Not (CInt(data(6)) + CInt(data(7)))) + 1) And 255)
+                        Try
+                            SerialPLM.Write(data, 0, 22)
+                        Catch Excep As System.InvalidOperationException
+                            My.Application.Log.WriteException(Excep)
+                        End Try
+                        Threading.Thread.Sleep(100)
+                    Else
+                        My.Application.Log.WriteEntry("Command not sent, valid Insteon address not provided", TraceEventType.Warning)
+                    End If
                 Else
                     My.Application.Log.WriteEntry("Command not sent, PLM is not connected", TraceEventType.Warning)
                 End If
@@ -279,24 +283,28 @@
         SyncLock serialLock
             If My.Settings.Insteon_Enable = True Then
                 If SerialPLM.IsOpen = True Then
-                    Dim data(7) As Byte
-                    strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
-                    Dim arrAddress() As String = strAddress.Split("."c)
+                    If strAddress IsNot Nothing AndAlso IsInsteonAddress(strAddress) Then
+                        Dim data(7) As Byte
+                        strAddress = Replace(strAddress, ":", ".") 'Handle 00:00:00 format
+                        Dim arrAddress() As String = strAddress.Split("."c)
 
-                    data(0) = 2 'all commands start with 2
-                    data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
-                    data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
-                    data(3) = Convert.ToInt32(arrAddress(1), 16)
-                    data(4) = Convert.ToInt32(arrAddress(2), 16)
-                    data(5) = 15 'flags
-                    data(6) = comm1
-                    data(7) = comm2
-                    Try
-                        SerialPLM.Write(data, 0, 8)
-                    Catch Excep As System.InvalidOperationException
-                        My.Application.Log.WriteException(Excep)
-                    End Try
-                    Threading.Thread.Sleep(100)
+                        data(0) = 2 'all commands start with 2
+                        data(1) = 98 '0x62 = the PLM command to send an Insteon standard or extended message
+                        data(2) = Convert.ToInt32(arrAddress(0), 16) 'three byte address of device
+                        data(3) = Convert.ToInt32(arrAddress(1), 16)
+                        data(4) = Convert.ToInt32(arrAddress(2), 16)
+                        data(5) = 15 'flags
+                        data(6) = comm1
+                        data(7) = comm2
+                        Try
+                            SerialPLM.Write(data, 0, 8)
+                        Catch Excep As System.InvalidOperationException
+                            My.Application.Log.WriteException(Excep)
+                        End Try
+                        Threading.Thread.Sleep(100)
+                    Else
+                        My.Application.Log.WriteEntry("Command not sent, valid Insteon address not provided", TraceEventType.Warning)
+                    End If
                 Else
                     My.Application.Log.WriteEntry("Command not sent, PLM is not connected", TraceEventType.Warning)
                 End If

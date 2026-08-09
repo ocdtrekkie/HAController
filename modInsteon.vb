@@ -538,7 +538,7 @@
                         strTemp = strTemp & InsteonDoorSensorResponse(FromAddress, Command1, Command2)
                     ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "SmokeBridge" Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))
-                    ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
+                    ElseIf FromAddress = My.Settings.Insteon_SumpAlarmAddr AndAlso (Flags = 203 OrElse Flags = 207) AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 Then
                         strTemp = strTemp & InsteonSumpAlarmResponse(Command1)
                     ElseIf Flags = 207 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "LeakSensor" Then
                         strTemp = strTemp & InsteonWaterLeakResponse(Command1, Command2)
@@ -2032,15 +2032,22 @@
     End Function
 
     Function InsteonSumpAlarmResponse(ByVal ToBit As Byte) As String
+        Dim response As String = ""
         Select Case ToBit
             Case 17
                 My.Application.Log.WriteEntry("ALERT: Sump Pump Alarm Triggered!", TraceEventType.Warning)
                 modSpeech.Say("Sump pump alarm triggered")
                 modMail.Send("Sump pump alarm triggered", "Sump pump alarm triggered")
+                Threading.Thread.Sleep(5000)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "on", 0)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "on", 0)
                 Return "Sump Pump Alarm Detected"
             Case 19
                 My.Application.Log.WriteEntry("CANCEL ALERT: Sump Pump No Longer in Alarm State", TraceEventType.Information)
                 modMail.Send("Sump pump no longer in alarm state", "Sump pump no longer in alarm state")
+                Threading.Thread.Sleep(5000)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("alarm"), response, "off", 0)
+                InsteonAlarmControl(GetInsteonAddressFromNickname("siren"), response, "off", 0)
                 Return "All Clear Detected"
             Case Else
                 Return "New or Unknown Message Detected"

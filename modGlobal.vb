@@ -168,8 +168,33 @@ Public Module modGlobal
             strStatusReport = strStatusReport & " (Second reading: " & My.Settings.Global_LastKnownInsideTemp2nd & " F)"
         End If
         If My.Settings.Global_TimeDoorLastOpened > DateTime.MinValue Then
-            strStatusReport = strStatusReport & vbCrLf & vbCrLf & "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
+            strStatusReport = strStatusReport & vbCrLf & vbCrLf & "A door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
         End If
+
+        Try
+            Dim cmd As New System.Data.SQLite.SQLiteCommand(modDatabase.conn)
+            cmd.CommandText = "SELECT DOORS.Address, DOORS.State, DEVICES.Name FROM DOORS LEFT JOIN DEVICES ON DOORS.Address = DEVICES.Address"
+            My.Application.Log.WriteEntry("SQLite: " & cmd.CommandText, TraceEventType.Verbose)
+            Dim reader As System.Data.SQLite.SQLiteDataReader = cmd.ExecuteReader()
+            If reader.HasRows Then
+                strStatusReport = strStatusReport & vbCrLf & vbCrLf & "Current door statuses:"
+                While reader.Read()
+                    Dim addr As String = ""
+                    Dim state As String = ""
+                    Dim name As String = ""
+
+                    If Not reader.IsDBNull(0) Then addr = reader.GetString(0)
+                    If Not reader.IsDBNull(1) Then state = reader.GetString(1)
+                    If Not reader.IsDBNull(2) Then name = reader.GetString(2)
+                    Dim displayName As String = If(name <> "", name, addr)
+                    strStatusReport = strStatusReport & vbCrLf & displayName & " is " & state & "."
+                End While
+            End If
+            reader.Close()
+        Catch ex As Exception
+            My.Application.Log.WriteException(ex)
+        End Try
+
         Dim strPurelyMailAPIKey As String = modDatabase.GetConfig("Mail_PurelyMailAPIKey")
         If strPurelyMailAPIKey <> "" And modGlobal.IsOnline = True Then
             strStatusReport = strStatusReport & vbCrLf & vbCrLf & "PurelyMail credit available: $" & CheckPurelyMailBalance(strPurelyMailAPIKey)

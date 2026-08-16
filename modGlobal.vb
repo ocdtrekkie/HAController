@@ -170,6 +170,10 @@ Public Module modGlobal
         If My.Settings.Global_TimeDoorLastOpened > DateTime.MinValue Then
             strStatusReport = strStatusReport & vbCrLf & vbCrLf & "The door was last opened at " & My.Settings.Global_TimeDoorLastOpened.ToShortTimeString & " on " & My.Settings.Global_TimeDoorLastOpened.ToShortDateString
         End If
+        Dim strPurelyMailAPIKey As String = modDatabase.GetConfig("Mail_PurelyMailAPIKey")
+        If strPurelyMailAPIKey <> "" And modGlobal.IsOnline = True Then
+            strStatusReport = strStatusReport & vbCrLf & vbCrLf & "PurelyMail credit available: $" & CheckPurelyMailBalance(strPurelyMailAPIKey)
+        End If
         If My.Settings.Pihole_Enable = True Then
             strStatusReport = strStatusReport & vbCrLf & vbCrLf & modPihole.CheckPiholeStatus()
         End If

@@ -32,6 +32,8 @@
     Dim tmrIThermCheckTimer As System.Timers.Timer
     Dim tetLogInsteon As System.Diagnostics.TraceEventType = TraceEventType.Verbose
 
+    Private strGarageDoorAddress As String = ""
+
     Function AddInsteonDeviceDb(ByVal strAddress As String, ByVal DevCat As Short, ByVal SubCat As Short, ByVal Firmware As Short) As String
         If CheckDbForInsteon(strAddress) = 0 Then
             Dim strModel As String = InsteonDeviceLookup(DevCat, SubCat)
@@ -381,6 +383,8 @@
                 tetLogInsteon = TraceEventType.Information
             End If
 
+            strGarageDoorAddress = modDatabase.GetConfig("Insteon_GarageDoorAddr")
+
             Return "Insteon module loaded"
         Else
             My.Application.Log.WriteEntry("Insteon module is disabled, module not loaded")
@@ -543,6 +547,8 @@
                     ElseIf (FromAddress = My.Settings.Insteon_ThermostatAddr OrElse FromAddress = My.Settings.Insteon_ThermostatSlaveAddr) AndAlso Command1 = 106 Then ' TODO: Detect this by device model
                         strTemp = strTemp & InsteonThermostatResponse(Command1, Command2, FromAddress)
                     ElseIf (ToAddress = "0.0.1" OrElse ToAddress = "0.0.3") AndAlso DeviceType = "DoorSensor" Then
+                        strTemp = strTemp & InsteonDoorSensorResponse(FromAddress, Command1, Command2)
+                    ElseIf (FromAddress = strGarageDoorAddress) Then
                         strTemp = strTemp & InsteonDoorSensorResponse(FromAddress, Command1, Command2)
                     ElseIf Flags = 203 AndAlso x(ms + 5) = 0 AndAlso x(ms + 6) = 0 AndAlso DeviceType = "SmokeBridge" Then
                         strTemp = strTemp & InsteonSmokeBridgeResponse(x(ms + 7))

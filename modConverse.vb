@@ -452,6 +452,10 @@ Module modConverse
                     ElseIf inputData(1) = "music" AndAlso inputData(2) = "volume" AndAlso IsNumeric(inputData(3)) Then
                         modMusic.SetVolume(CInt(inputData(3)))
                         strCommandResponse = " "
+                    ElseIf modInsteon.IsInsteonAddress(inputData(1)) AndAlso inputData(2) = "as" AndAlso inputData(3) = "garage" AndAlso inputData(4) = "door" Then
+                        modDatabase.AddOrUpdateConfig("Insteon_GarageDoorAddr", inputData(1))
+                        modDatabase.AddOrUpdateDoor(inputData(1), "closed")
+                        strCommandResponse = "Garage door configured"
                     End If
                 Case "sh", "show"
                     Select Case inputData(1)
